@@ -1,0 +1,84 @@
+name: Render on HeyGen Cloud
+
+# Alternativa OPCIONAL: en vez de renderizar en la máquina de GitHub,
+# sube el proyecto a la nube de HeyGen (HyperFrames Cloud) y descarga el MP4.
+#
+# Requiere un secreto del repositorio llamado HEYGEN_API_KEY:
+#   Settings -> Secrets and variables -> Actions -> New repository secret
+#
+# Si no quieres cuenta de HeyGen, usa el workflow "Render video" (render.yml),
+# que funciona sin credenciales.
+
+on:
+  workflow_dispatch:
+    inputs:
+      quality:
+        description: "Calidad del render"
+        type: choice
+        default: standard
+        options:
+          - draft
+          - standard
+          - high
+      aspect_ratio:
+        description: "Relación de aspecto"
+        type: choice
+        default: 16:9
+        options:
+          - 16:9
+          - 9:16
+          - 1:1
+      filename:
+        description: "Nombre del archivo de salida (se guarda en renders/)"
+        type: string
+        default: video-cloud.mp4
+
+permissions:
+  contents: read
+
+jobs:
+  cloud-render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check the HeyGen credential
+        env:
+          HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
+        run: |
+          if [ -z "$HEYGEN_API_KEY" ]; then
+            echo "::error::Falta el secreto HEYGEN_API_KEY. Añádelo en Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+      - name: Sign in to HeyGen
+        env:
+          HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
+        run: printf '%s' "$HEYGEN_API_KEY" | npx --yes hyperframes@latest auth login --api-key
+
+      - name: Cloud render
+        env:
+          QUALITY: ${{ inputs.quality }}
+          ASPECT: ${{ inputs.aspect_ratio }}
+          FILENAME: ${{ inputs.filename }}
+        run: |
+          npx --yes hyperframes@latest cloud render . \
+            --quality "${QUALITY:-standard}" \
+            --aspect-ratio "${ASPECT:-16:9}" \
+            --output "renders/${FILENAME:-video-cloud.mp4}"
+
+      - name: Upload the rendered video
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-cloud-video
+          path: renders/
+          if-no-files-found: error
+          retention-days: 30
