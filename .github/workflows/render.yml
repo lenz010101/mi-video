@@ -1,0 +1,90 @@
+name: Render video
+
+# Renderiza la composición index.html en la nube de GitHub y publica el MP4
+# como artefacto descargable. No requiere instalar nada en tu ordenador.
+
+on:
+  # Botón "Run workflow" en la pestaña Actions.
+  workflow_dispatch:
+    inputs:
+      quality:
+        description: "Calidad del render"
+        type: choice
+        default: standard
+        options:
+          - draft
+          - standard
+          - high
+      fps:
+        description: "Frames por segundo (1-240)"
+        type: string
+        default: "30"
+      filename:
+        description: "Nombre del archivo de salida (se guarda en renders/)"
+        type: string
+        default: video.mp4
+      format:
+        description: "Formato de salida"
+        type: choice
+        default: mp4
+        options:
+          - mp4
+          - webm
+          - mov
+          - gif
+
+  # También se ejecuta solo al cambiar la composición.
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "compositions/**"
+      - "assets/**"
+      - ".github/workflows/render.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install FFmpeg and fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-liberation fonts-dejavu-core
+
+      - name: Lint the composition
+        run: npx --yes hyperframes@latest lint .
+
+      - name: Render
+        env:
+          QUALITY: ${{ inputs.quality }}
+          FPS: ${{ inputs.fps }}
+          FILENAME: ${{ inputs.filename }}
+          FORMAT: ${{ inputs.format }}
+        run: |
+          npx --yes hyperframes@latest render \
+            --quality "${QUALITY:-standard}" \
+            --fps "${FPS:-30}" \
+            --format "${FORMAT:-mp4}" \
+            --no-browser-gpu \
+            --output "renders/${FILENAME:-video.mp4}"
+
+      - name: Upload the rendered video
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-video
+          path: renders/
+          if-no-files-found: error
+          retention-days: 30
