@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hola desde GitHub — HyperFrames</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #05070f;
+      }
+
+      #stage {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background:
+          radial-gradient(1200px 700px at 22% 18%, #1c3a6b 0%, rgba(28, 58, 107, 0) 60%),
+          radial-gradient(900px 600px at 85% 88%, #4b2a7a 0%, rgba(75, 42, 122, 0) 62%),
+          linear-gradient(160deg, #0a1224 0%, #070a16 55%, #04060d 100%);
+        font-family: "Inter", "Helvetica Neue", Arial, "DejaVu Sans", sans-serif;
+        color: #ffffff;
+      }
+
+      /* Fine dot grid */
+      #grid {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.10) 1.5px, transparent 1.6px);
+        background-size: 48px 48px;
+        opacity: 0.5;
+      }
+
+      #glow {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1500px;
+        height: 900px;
+        margin-left: -750px;
+        margin-top: -450px;
+        background: radial-gradient(closest-side, rgba(108, 92, 231, 0.35), rgba(108, 92, 231, 0));
+        filter: blur(20px);
+      }
+
+      #accent {
+        position: absolute;
+        left: 160px;
+        top: 452px;
+        width: 620px;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #6c5ce7 0%, #22d3ee 100%);
+        transform-origin: left center;
+      }
+
+      #title {
+        position: absolute;
+        left: 160px;
+        top: 500px;
+        margin: 0;
+        font-size: 138px;
+        font-weight: 800;
+        letter-spacing: -3px;
+        line-height: 1.02;
+      }
+
+      #subtitle {
+        position: absolute;
+        left: 164px;
+        top: 690px;
+        margin: 0;
+        max-width: 1200px;
+        font-size: 46px;
+        font-weight: 400;
+        line-height: 1.35;
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      #badge {
+        position: absolute;
+        left: 164px;
+        top: 300px;
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 30px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.05);
+        font-size: 30px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      #badge .dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #22d3ee;
+      }
+
+      #footer {
+        position: absolute;
+        left: 164px;
+        bottom: 92px;
+        font-size: 30px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.45);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="hello-github"
+      data-start="0"
+      data-duration="6"
+      data-width="1920"
+      data-height="1080"
+      data-fps="30"
+    >
+      <div id="glow"></div>
+      <div id="grid" class="clip" data-start="0" data-duration="6" data-track-index="0"></div>
+
+      <div id="badge" class="clip" data-start="0" data-duration="6" data-track-index="1">
+        <span class="dot"></span>
+        <span>HyperFrames × GitHub Actions</span>
+      </div>
+
+      <div id="accent" class="clip" data-start="0" data-duration="6" data-track-index="2"></div>
+
+      <h1 id="title" class="clip" data-start="0" data-duration="6" data-track-index="3">
+        Hola desde GitHub
+      </h1>
+
+      <p id="subtitle" class="clip" data-start="0" data-duration="6" data-track-index="4">
+        Este vídeo se ha renderizado en la nube de GitHub, sin instalar nada en tu
+        ordenador. Solo HTML, CSS y GSAP.
+      </p>
+
+      <div id="footer" class="clip" data-start="0" data-duration="6" data-track-index="5">
+        apache-2.0 · hyperframes
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script>
+      // HyperFrames drives this paused timeline by seeking it, frame by frame.
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        "#glow",
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 1.6, ease: "power2.out" },
+        0
+      );
+
+      tl.fromTo(
+        "#accent",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 1.1, ease: "power3.inOut" },
+        0.15
+      );
+
+      tl.from(
+        "#badge",
+        { opacity: 0, y: -24, duration: 0.7, ease: "power3.out" },
+        0.35
+      );
+
+      tl.from(
+        "#title",
+        { opacity: 0, y: 70, duration: 0.95, ease: "power3.out" },
+        0.55
+      );
+
+      tl.from(
+        "#subtitle",
+        { opacity: 0, y: 40, duration: 0.85, ease: "power3.out" },
+        1.05
+      );
+
+      tl.from(
+        "#footer",
+        { opacity: 0, duration: 0.7, ease: "power1.out" },
+        1.6
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["hello-github"] = tl;
+    </script>
+  </body>
+</html>
