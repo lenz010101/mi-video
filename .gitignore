@@ -1,0 +1,22 @@
+# Dependencias
+node_modules/
+
+# Salidas de render (el workflow las genera en cada ejecución)
+renders/
+snapshots/
+exports/
+dist/
+
+# Artefactos locales de HyperFrames
+.hyperframes/
+capture/
+capture-*/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Secretos: nunca subas claves al repositorio
+.env
+.env.*
+!.env.example
