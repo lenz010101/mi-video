@@ -579,7 +579,9 @@
           return [(x - y) * C, (x + y) * 0.5 - z];
         }
 
-        function build(mode) {
+        // px: lado interior de la tarjeta en pixeles. Hace falta para pasar los
+        // grosores de trazo, que en SVG van en unidades del viewBox, no en px.
+        function build(mode, px) {
           var polys = [], out = [], inn = [], opn = [], pipe = [], elec = [];
           function poly(pts, fill) { polys.push({ p: pts, fill: fill }); }
           function seg(list, a, b) { list.push([a, b]); }
@@ -680,7 +682,17 @@
           var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
           var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
           var pad = 0.2;
-          var vb = [minX - pad, minY - pad, maxX - minX + pad * 2, maxY - minY + pad * 2].join(" ");
+          var vbW = maxX - minX + pad * 2;
+          var vbH = maxY - minY + pad * 2;
+          var vb = [minX - pad, minY - pad, vbW, vbH].join(" ");
+
+          // Los stroke-width de SVG se miden en unidades del viewBox, no en
+          // pixeles. El dibujo mide ~4.7 unidades y se muestra en px pixeles
+          // (580 en la tarjeta grande), o sea ~123 px por unidad: un "2.6"
+          // suelto se veria de ~320 px y taparia la tarjeta entera.
+          // uw() convierte el grosor deseado en pixeles a unidades del viewBox.
+          var scale = Math.min(px / vbW, px / vbH);
+          function uw(pixels) { return +(pixels / scale).toFixed(4); }
 
           function fmt(p) { return p[0].toFixed(3) + "," + p[1].toFixed(3); }
           function polyStr(p) { return p.map(fmt).join(" "); }
@@ -707,7 +719,6 @@
             }).join("");
           }
 
-          var innerW = mode === "instalaciones" ? 1.35 : 1.6;
           var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '" preserveAspectRatio="xMidYMid meet">';
 
           if (polys.length) {
@@ -718,14 +729,14 @@
             svg += "</g>";
           }
 
-          svg += '<g class="iso-out">' + dashLines(out, "iso-o", INK, mode === "instalaciones" ? 2.0 : 2.6) + "</g>";
-          svg += '<g class="iso-in">' + dashLines(inn, "iso-i", INK, innerW) + "</g>";
-          svg += '<g class="iso-open">' + dashLines(opn, "iso-p", OPEN, 2.0) + "</g>";
+          svg += '<g class="iso-out">' + dashLines(out, "iso-o", INK, mode === "instalaciones" ? uw(2.0) : uw(2.6)) + "</g>";
+          svg += '<g class="iso-in">' + dashLines(inn, "iso-i", INK, mode === "instalaciones" ? uw(1.35) : uw(1.6)) + "</g>";
+          svg += '<g class="iso-open">' + dashLines(opn, "iso-p", OPEN, uw(2.0)) + "</g>";
           if (pipe.length) {
-            svg += '<g class="iso-pipe">' + dashPlain(pipe, "iso-pp", PIPE, 4.6) + "</g>";
+            svg += '<g class="iso-pipe">' + dashPlain(pipe, "iso-pp", PIPE, uw(4.6)) + "</g>";
           }
           if (elec.length) {
-            svg += '<g class="iso-elec">' + dashPlain(elec, "iso-ee", ELEC, 3.6) + "</g>";
+            svg += '<g class="iso-elec">' + dashPlain(elec, "iso-ee", ELEC, uw(3.6)) + "</g>";
           }
           svg += "</svg>";
           return svg;
@@ -740,32 +751,41 @@
       window.__timelines = window.__timelines || {};
 
       function mountIso() {
+        // Lado interior de la tarjeta en pixeles: con box-sizing border-box son
+        // 640 - 2*30 (grande) y 292 - 2*14 (chica).
+        var LG = 580, SM = 264;
         var map = {
-          cardA: "estructura",
-          cardB: "arquitectura",
-          cardC: "instalaciones",
-          cardR1: "estructura",
-          cardR2: "arquitectura",
-          cardR3: "instalaciones"
+          cardA: ["estructura", LG],
+          cardB: ["arquitectura", LG],
+          cardC: ["instalaciones", LG],
+          cardR1: ["estructura", SM],
+          cardR2: ["arquitectura", SM],
+          cardR3: ["instalaciones", SM]
         };
         Object.keys(map).forEach(function (id) {
           var el = document.getElementById(id);
-          if (el) el.innerHTML = ISO.build(map[id]);
+          if (el) el.innerHTML = ISO.build(map[id][0], map[id][1]);
         });
       }
 
       function cardReveal(tl, sel, t, stagger) {
-        tl.fromTo(sel + " .iso-fill", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, t + 0.3);
-        tl.fromTo(sel + " .iso-o", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
-          { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, t);
-        tl.fromTo(sel + " .iso-p", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
-          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, t + 0.25);
-        tl.fromTo(sel + " .iso-i", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
-          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out", stagger: stagger }, t + 0.18);
-        tl.fromTo(sel + " .iso-pp", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
-          { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, t + 0.45);
-        tl.fromTo(sel + " .iso-ee", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
-          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, t + 0.6);
+        // Cada tarjeta tiene solo algunos de estos grupos (las de estructura no
+        // tienen relleno, las de instalaciones no tienen canos ni electricidad).
+        // Si el grupo no existe en esta tarjeta, no armo el tween: si no, GSAP
+        // avisa "target not found" y ensucia el log del render.
+        function tween(sub, from, to, at) {
+          var target = sel + " " + sub;
+          if (!document.querySelectorAll(target).length) return;
+          tl.fromTo(target, from, to, at);
+        }
+        var lenOf = function (i, el) { return el.dataset.len; };
+
+        tween(".iso-fill", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, t + 0.3);
+        tween(".iso-o", { strokeDashoffset: lenOf }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, t);
+        tween(".iso-p", { strokeDashoffset: lenOf }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, t + 0.25);
+        tween(".iso-i", { strokeDashoffset: lenOf }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out", stagger: stagger }, t + 0.18);
+        tween(".iso-pp", { strokeDashoffset: lenOf }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, t + 0.45);
+        tween(".iso-ee", { strokeDashoffset: lenOf }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, t + 0.6);
       }
 
       function build() {
