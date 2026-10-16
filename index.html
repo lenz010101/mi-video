@@ -2,202 +2,817 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hola desde GitHub — HyperFrames</title>
+    <title>WOKIROLL — Escárcega, Campeche</title>
+    <link rel="stylesheet" href="assets/fonts/fonts.css" />
     <style>
       * {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box;
       }
 
       html,
       body {
-        margin: 0;
-        padding: 0;
-        background: #05070f;
+        background: #08080b;
       }
 
       #stage {
         position: relative;
-        width: 1920px;
-        height: 1080px;
+        width: 1080px;
+        height: 1920px;
         overflow: hidden;
-        background:
-          radial-gradient(1200px 700px at 22% 18%, #1c3a6b 0%, rgba(28, 58, 107, 0) 60%),
-          radial-gradient(900px 600px at 85% 88%, #4b2a7a 0%, rgba(75, 42, 122, 0) 62%),
-          linear-gradient(160deg, #0a1224 0%, #070a16 55%, #04060d 100%);
-        font-family: "Inter", "Helvetica Neue", Arial, "DejaVu Sans", sans-serif;
-        color: #ffffff;
+        background: #0a0a0e;
+        color: #fff7ec;
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* Fine dot grid */
-      #grid {
+      #cam {
         position: absolute;
         inset: 0;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.10) 1.5px, transparent 1.6px);
-        background-size: 48px 48px;
-        opacity: 0.5;
+        transform-origin: 50% 45%;
       }
 
-      #glow {
+      /* ---------- background ---------- */
+      #bg {
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 1500px;
-        height: 900px;
-        margin-left: -750px;
-        margin-top: -450px;
-        background: radial-gradient(closest-side, rgba(108, 92, 231, 0.35), rgba(108, 92, 231, 0));
-        filter: blur(20px);
+        inset: -6%;
+        background:
+          radial-gradient(1100px 900px at 18% 6%, rgba(255, 138, 31, 0.13), rgba(255, 138, 31, 0) 62%),
+          radial-gradient(900px 900px at 90% 96%, rgba(46, 230, 214, 0.10), rgba(46, 230, 214, 0) 64%),
+          linear-gradient(178deg, #101013 0%, #0a0a0e 46%, #07070a 100%);
       }
 
-      #accent {
+      #glowA,
+      #glowB {
         position: absolute;
-        left: 160px;
-        top: 452px;
-        width: 620px;
-        height: 10px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #6c5ce7 0%, #22d3ee 100%);
-        transform-origin: left center;
-      }
-
-      #title {
-        position: absolute;
-        left: 160px;
-        top: 500px;
-        margin: 0;
-        font-size: 138px;
-        font-weight: 800;
-        letter-spacing: -3px;
-        line-height: 1.02;
-      }
-
-      #subtitle {
-        position: absolute;
-        left: 164px;
-        top: 690px;
-        margin: 0;
-        max-width: 1200px;
-        font-size: 46px;
-        font-weight: 400;
-        line-height: 1.35;
-        color: rgba(255, 255, 255, 0.78);
-      }
-
-      #badge {
-        position: absolute;
-        left: 164px;
-        top: 300px;
-        display: inline-flex;
-        align-items: center;
-        gap: 16px;
-        padding: 16px 30px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.05);
-        font-size: 30px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.9);
-      }
-
-      #badge .dot {
-        width: 18px;
-        height: 18px;
         border-radius: 50%;
-        background: #22d3ee;
+        filter: blur(40px);
       }
 
-      #footer {
+      #glowA {
+        width: 1240px;
+        height: 1240px;
+        left: -360px;
+        top: 180px;
+        background: radial-gradient(closest-side, rgba(255, 46, 46, 0.42), rgba(255, 46, 46, 0));
+      }
+
+      #glowB {
+        width: 1080px;
+        height: 1080px;
+        right: -300px;
+        bottom: 120px;
+        background: radial-gradient(closest-side, rgba(46, 230, 214, 0.30), rgba(46, 230, 214, 0));
+      }
+
+      #grid {
         position: absolute;
-        left: 164px;
-        bottom: 92px;
+        inset: -120px;
+        background-image: radial-gradient(rgba(255, 247, 236, 0.085) 1.6px, rgba(0, 0, 0, 0) 1.7px);
+        background-size: 54px 54px;
+      }
+
+      #beam {
+        position: absolute;
+        top: -30%;
+        left: -40%;
+        width: 70%;
+        height: 170%;
+        background: linear-gradient(
+          100deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 196, 71, 0.16) 45%,
+          rgba(255, 46, 46, 0.10) 60%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(14deg);
+        filter: blur(24px);
+      }
+
+      #grain {
+        position: absolute;
+        inset: -50px;
+        opacity: 0.07;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+
+      #vignette {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(120% 78% at 50% 50%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, 0.72) 100%),
+          linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 14%, rgba(0, 0, 0, 0) 84%, rgba(0, 0, 0, 0.55) 100%);
+      }
+
+      /* ---------- corner frame ---------- */
+      #frame .fc {
+        position: absolute;
+        width: 62px;
+        height: 62px;
+        border: 2px solid rgba(255, 196, 71, 0.55);
+      }
+
+      #frame .fc1 {
+        left: 62px;
+        top: 62px;
+        border-right: none;
+        border-bottom: none;
+      }
+
+      #frame .fc2 {
+        right: 62px;
+        top: 62px;
+        border-left: none;
+        border-bottom: none;
+      }
+
+      #frame .fc3 {
+        left: 62px;
+        bottom: 62px;
+        border-right: none;
+        border-top: none;
+      }
+
+      #frame .fc4 {
+        right: 62px;
+        bottom: 62px;
+        border-left: none;
+        border-top: none;
+      }
+
+      /* ---------- scenes ---------- */
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #s1 {
+        opacity: 1;
+      }
+
+      #s2,
+      #s3,
+      #s4 {
+        opacity: 0;
+      }
+
+      /* ---------- scene 1: logo ---------- */
+      .s1-top {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        margin-bottom: 46px;
+      }
+
+      .s1-top .rule {
+        display: block;
+        width: 150px;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(255, 196, 71, 0), rgba(255, 196, 71, 0.85));
+        transform: scaleX(0);
+      }
+
+      .s1-top .rule:last-child {
+        background: linear-gradient(90deg, rgba(255, 196, 71, 0.85), rgba(255, 196, 71, 0));
+      }
+
+      .s1-top .est {
+        font-size: 27px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        color: #ffc247;
+        opacity: 0;
+        white-space: nowrap;
+      }
+
+      .logoWrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #logoGlow {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 208px;
+        letter-spacing: 0.005em;
+        color: #ff8a1f;
+        filter: blur(30px);
+        opacity: 0;
+        white-space: nowrap;
+      }
+
+      #logo {
+        position: relative;
+        display: flex;
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 208px;
+        line-height: 1;
+        letter-spacing: 0.005em;
+      }
+
+      #logo .l {
+        display: inline-block;
+        overflow: hidden;
+        padding: 0.05em 0;
+      }
+
+      #logo .l i,
+      .ctaMask .l i {
+        display: inline-block;
+        font-style: normal;
+        transform: translateY(112%);
+      }
+
+      #logo .l i {
+        background: linear-gradient(178deg, #fff7ec 0%, #ffdf9e 46%, #ff9a2e 78%, #ff3d1f 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      #sweep1 {
+        position: absolute;
+        top: -8%;
+        left: 0;
+        width: 130px;
+        height: 116%;
+        background: linear-gradient(
+          92deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.72) 48%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(12deg);
+        mix-blend-mode: overlay;
+        filter: blur(8px);
+        opacity: 0;
+      }
+
+      .s1-sub {
+        margin-top: 40px;
         font-size: 30px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.45);
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        color: rgba(255, 247, 236, 0.82);
+        opacity: 0;
+        transform: translateY(26px);
+        white-space: nowrap;
+      }
+
+      #s1 .seal {
+        position: absolute;
+        right: 118px;
+        top: 566px;
+        width: 172px;
+        height: 172px;
+        border-radius: 50%;
+        border: 4px solid rgba(255, 46, 46, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 82px;
+        color: #ff3b2f;
+        letter-spacing: 0.04em;
+        opacity: 0;
+        box-shadow: 0 0 40px rgba(255, 46, 46, 0.35) inset;
+      }
+
+      #s1 .sealRing {
+        position: absolute;
+        right: 118px;
+        top: 566px;
+        width: 172px;
+        height: 172px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 46, 46, 0.75);
+        opacity: 0;
+      }
+
+      /* ---------- scene 2: menu roll ---------- */
+      #rollList {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      #s2 .word {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        opacity: 0;
+        overflow: hidden;
+        padding: 0.04em 0.1em;
+      }
+
+      #s2 .word em {
+        display: inline-block;
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-style: normal;
+        font-size: 118px;
+        line-height: 1;
+        letter-spacing: 0.02em;
+        color: #fff7ec;
+        transform: translateX(-112%);
+      }
+
+      #s2 .word.alt em {
+        transform: translateX(112%);
+      }
+
+      #s2 .word .dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ff2e2e;
+        box-shadow: 0 0 22px rgba(255, 46, 46, 0.9);
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      #s2 .word:nth-child(2) em {
+        color: #ffd27a;
+      }
+
+      #s2 .word:nth-child(4) em {
+        color: #ffd27a;
+      }
+
+      #tempBadge {
+        position: absolute;
+        right: 96px;
+        bottom: 232px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 22px 34px;
+        border: 2px solid rgba(255, 138, 31, 0.6);
+        border-radius: 999px;
+        background: rgba(255, 138, 31, 0.09);
+        opacity: 0;
+      }
+
+      #tempBadge svg {
+        width: 54px;
+        height: 54px;
+        color: #ff8a1f;
+      }
+
+      #tempBadge .tb-text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #tempBadge strong {
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 56px;
+        line-height: 1;
+        letter-spacing: 0.03em;
+        color: #ffc247;
+        font-weight: 400;
+      }
+
+      #tempBadge small {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.24em;
+        color: rgba(255, 247, 236, 0.7);
+      }
+
+      /* ---------- scene 3: features ---------- */
+      .s3-title {
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 96px;
+        line-height: 1;
+        letter-spacing: 0.05em;
+        color: #fff7ec;
+        margin-bottom: 78px;
+        text-align: center;
+        opacity: 0;
+      }
+
+      .s3-title span {
+        color: #ff8a1f;
+      }
+
+      #s3 .featList {
+        display: flex;
+        flex-direction: column;
+        gap: 54px;
+        width: 830px;
+      }
+
+      #s3 .feat {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 34px;
+        padding: 26px 0 26px 40px;
+        opacity: 0;
+      }
+
+      #s3 .feat .bar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 6px;
+        height: 100%;
+        border-radius: 4px;
+        background: linear-gradient(180deg, #ffc247, #ff2e2e);
+        transform: scaleY(0);
+        transform-origin: 50% 0%;
+      }
+
+      #s3 .feat svg {
+        width: 72px;
+        height: 72px;
+        flex: none;
+        color: #ffc247;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0;
+      }
+
+      #s3 .feat .txt {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      #s3 .feat strong {
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 62px;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: 0.04em;
+        color: #fff7ec;
+      }
+
+      #s3 .feat small {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.26em;
+        color: rgba(255, 247, 236, 0.62);
+      }
+
+      /* ---------- scene 4: call to action ---------- */
+      #s4 .pinWrap {
+        width: 108px;
+        height: 108px;
+        color: #ff8a1f;
+        opacity: 0;
+      }
+
+      #s4 .pinWrap svg {
+        width: 100%;
+        height: 100%;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      #s4 .city {
+        margin-top: 34px;
+        font-size: 32px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: #ffc247;
+        opacity: 0;
+        white-space: nowrap;
+      }
+
+      .ctaMask {
+        overflow: hidden;
+        padding: 0.06em 0.04em;
+        margin-top: 22px;
+      }
+
+      .ctaMask .l {
+        display: inline-block;
+        overflow: hidden;
+        padding: 0.05em 0;
+      }
+
+      #s4 .cta {
+        display: flex;
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 168px;
+        line-height: 1;
+        letter-spacing: 0.01em;
+        color: #fff7ec;
+        text-align: center;
+      }
+
+      #s4 .cta .sp {
+        width: 0.28em;
+      }
+
+      #s4 .ctaRule {
+        margin-top: 30px;
+        width: 620px;
+        height: 5px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(255, 46, 46, 0), #ff8a1f 50%, rgba(255, 46, 46, 0));
+        transform: scaleX(0);
+        box-shadow: 0 0 26px rgba(255, 138, 31, 0.7);
+      }
+
+      #s4 .ctaSub {
+        margin-top: 42px;
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        color: rgba(255, 247, 236, 0.78);
+        text-align: center;
+        opacity: 0;
+      }
+
+      #s4 .tag {
+        margin-top: 74px;
+        padding: 14px 30px;
+        border: 2px solid rgba(255, 247, 236, 0.22);
+        border-radius: 999px;
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 44px;
+        letter-spacing: 0.22em;
+        color: #fff7ec;
+        opacity: 0;
+      }
+
+      /* ---------- persistent corner brand ---------- */
+      #corner {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        color: rgba(255, 247, 236, 0.72);
+        opacity: 0;
+      }
+
+      #corner b {
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 32px;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        color: #fff7ec;
+      }
+
+      #corner i {
+        font-style: normal;
+        color: #ff8a1f;
       }
     </style>
   </head>
   <body>
     <div
       id="stage"
-      data-composition-id="hello-github"
+      data-composition-id="wokiroll"
       data-start="0"
-      data-duration="6"
-      data-width="1920"
-      data-height="1080"
+      data-duration="13"
+      data-width="1080"
+      data-height="1920"
       data-fps="30"
     >
-      <div id="glow"></div>
-      <div id="grid" class="clip" data-start="0" data-duration="6" data-track-index="0"></div>
+      <div id="cam">
+        <div id="bg"></div>
+        <div id="glowA"></div>
+        <div id="glowB"></div>
+        <div id="grid"></div>
 
-      <div id="badge" class="clip" data-start="0" data-duration="6" data-track-index="1">
-        <span class="dot"></span>
-        <span>HyperFrames × GitHub Actions</span>
-      </div>
+        <!-- ===== ESCENA 1 · LOGO ===== -->
+        <section id="s1" class="scene">
+          <div class="s1-top">
+            <span class="rule"></span>
+            <span class="est">EST. 1995</span>
+            <span class="rule"></span>
+          </div>
 
-      <div id="accent" class="clip" data-start="0" data-duration="6" data-track-index="2"></div>
+          <div class="logoWrap">
+            <div id="logoGlow" aria-hidden="true">WOKIROLL</div>
+            <h1 id="logo" aria-label="WOKIROLL">
+              <span class="l"><i>W</i></span>
+              <span class="l"><i>O</i></span>
+              <span class="l"><i>K</i></span>
+              <span class="l"><i>I</i></span>
+              <span class="l"><i>R</i></span>
+              <span class="l"><i>O</i></span>
+              <span class="l"><i>L</i></span>
+              <span class="l"><i>L</i></span>
+            </h1>
+            <div id="sweep1"></div>
+          </div>
 
-      <h1 id="title" class="clip" data-start="0" data-duration="6" data-track-index="3">
-        Hola desde GitHub
-      </h1>
+          <p class="s1-sub">SABOR ASIÁTICO AL PASO</p>
+          <div class="sealRing"></div>
+          <div class="seal">WR</div>
+        </section>
 
-      <p id="subtitle" class="clip" data-start="0" data-duration="6" data-track-index="4">
-        Este vídeo se ha renderizado en la nube de GitHub, sin instalar nada en tu
-        ordenador. Solo HTML, CSS y GSAP.
-      </p>
+        <!-- ===== ESCENA 2 · CARTA ===== -->
+        <section id="s2" class="scene">
+          <div id="rollList">
+            <div class="word"><span class="dot"></span><em>ROLLS</em></div>
+            <div class="word alt"><span class="dot"></span><em>KIMBAP</em></div>
+            <div class="word"><span class="dot"></span><em>WOK</em></div>
+            <div class="word alt"><span class="dot"></span><em>RAMEN</em></div>
+            <div class="word"><span class="dot"></span><em>SUSHI</em></div>
+            <div class="word alt"><span class="dot"></span><em>ONIGIRI</em></div>
+          </div>
 
-      <div id="footer" class="clip" data-start="0" data-duration="6" data-track-index="5">
-        apache-2.0 · hyperframes
+          <div id="tempBadge">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 2.5c1.6 3.4 5 4.9 5 9a5 5 0 0 1-10 0c0-1.7.7-2.9 1.6-3.9"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12 20.5a2.6 2.6 0 0 0 2.6-2.6c0-1.7-2.6-4.4-2.6-4.4s-2.6 2.7-2.6 4.4A2.6 2.6 0 0 0 12 20.5z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span class="tb-text">
+              <strong>300°C</strong>
+              <small>FUEGO DIRECTO</small>
+            </span>
+          </div>
+        </section>
+
+        <!-- ===== ESCENA 3 · DIFERENCIAS ===== -->
+        <section id="s3" class="scene">
+          <h2 class="s3-title">HECHO <span>AL MOMENTO</span></h2>
+
+          <div class="featList">
+            <div class="feat">
+              <span class="bar"></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.5c1.6 3.4 5 4.9 5 9a5 5 0 0 1-10 0c0-1.7.7-2.9 1.6-3.9" />
+                <path d="M12 20.5a2.6 2.6 0 0 0 2.6-2.6c0-1.7-2.6-4.4-2.6-4.4s-2.6 2.7-2.6 4.4A2.6 2.6 0 0 0 12 20.5z" />
+              </svg>
+              <span class="txt">
+                <strong>AL WOK 300°C</strong>
+                <small>FUEGO DIRECTO, SABOR CALLEJERO</small>
+              </span>
+            </div>
+
+            <div class="feat">
+              <span class="bar"></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z" />
+                <path d="M18.5 16.5l.8 2.4 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" />
+              </svg>
+              <span class="txt">
+                <strong>PREPARADO EN VIVO</strong>
+                <small>INGREDIENTES FRESCOS AL INSTANTE</small>
+              </span>
+            </div>
+
+            <div class="feat">
+              <span class="bar"></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4.5 7.5h15l-1.2 13.5H5.7z" />
+                <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5" />
+              </svg>
+              <span class="txt">
+                <strong>PARA LLEVAR</strong>
+                <small>EMPACADO KRAFT · DELIVERY Y RETIRO</small>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== ESCENA 4 · INVITACIÓN ===== -->
+        <section id="s4" class="scene">
+          <div class="pinWrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21.5s7-6.1 7-11.2A7 7 0 0 0 5 10.3c0 5.1 7 11.2 7 11.2z" />
+              <circle cx="12" cy="10.2" r="2.7" />
+            </svg>
+          </div>
+
+          <div class="city">ESCÁRCEGA, CAMPECHE</div>
+
+          <div class="ctaMask">
+            <div id="cta" class="cta" aria-label="Te esperamos">
+              <span class="l"><i>T</i></span><span class="l"><i>E</i></span><span class="sp"></span><span class="l"><i>E</i></span><span class="l"><i>S</i></span><span class="l"><i>P</i></span><span class="l"><i>E</i></span><span class="l"><i>R</i></span><span class="l"><i>A</i></span><span class="l"><i>M</i></span><span class="l"><i>O</i></span><span class="l"><i>S</i></span>
+            </div>
+          </div>
+
+          <span class="ctaRule"></span>
+
+          <p class="ctaSub">COMIDA ASIÁTICA AL PASO · PARA LLEVAR</p>
+
+          <div class="tag">WOKIROLL</div>
+        </section>
+
+        <div id="frame">
+          <span class="fc fc1"></span>
+          <span class="fc fc2"></span>
+          <span class="fc fc3"></span>
+          <span class="fc fc4"></span>
+        </div>
+
+        <div id="beam"></div>
+        <div id="grain"></div>
+        <div id="vignette"></div>
+
+        <div id="corner">
+          <b>WOKIROLL</b>
+          <i>•</i>
+          <span>ESCÁRCEGA, CAMPECHE</span>
+        </div>
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script>
-      // HyperFrames drives this paused timeline by seeking it, frame by frame.
       const tl = gsap.timeline({ paused: true });
+      const E = gsap.parseEase;
 
-      tl.fromTo(
-        "#glow",
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 1.6, ease: "power2.out" },
-        0
-      );
+      /* ---------- cámara y ambiente (todo el vídeo) ---------- */
+      tl.fromTo("#cam", { scale: 1.075, y: 30 }, { scale: 1, y: 0, duration: 13, ease: "none" }, 0);
+      tl.fromTo("#glowA", { x: -70, y: -50, opacity: 0.6 }, { x: 90, y: 70, opacity: 0.95, duration: 13, ease: "sine.inOut" }, 0);
+      tl.fromTo("#glowB", { x: 80, y: 60, opacity: 0.55 }, { x: -80, y: -60, opacity: 0.9, duration: 13, ease: "sine.inOut" }, 0);
+      tl.fromTo("#grid", { y: 0 }, { y: -54, duration: 13, ease: "none" }, 0);
+      tl.fromTo("#beam", { xPercent: -45, opacity: 0 }, { xPercent: 55, opacity: 0.55, duration: 7, ease: "sine.inOut" }, 0);
 
-      tl.fromTo(
-        "#accent",
-        { scaleX: 0 },
-        { scaleX: 1, duration: 1.1, ease: "power3.inOut" },
-        0.15
-      );
+      /* ---------- ESCENA 1 · LOGO ---------- */
+      tl.to("#s1 .rule", { scaleX: 1, duration: 0.75, ease: "power3.inOut", stagger: 0.09 }, 0.15);
+      tl.fromTo("#s1 .est", { opacity: 0, letterSpacing: "0.12em" }, { opacity: 1, letterSpacing: "0.42em", duration: 0.9 }, 0.25);
 
-      tl.from(
-        "#badge",
-        { opacity: 0, y: -24, duration: 0.7, ease: "power3.out" },
-        0.35
-      );
+      tl.to("#s1 #logo .l i", { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.055 }, 0.45);
+      tl.fromTo("#logoGlow", { opacity: 0 }, { opacity: 0.85, duration: 1.1, ease: "sine.out" }, 1.0);
+      tl.fromTo("#sweep1", { xPercent: -170, opacity: 0 }, { xPercent: 190, opacity: 1, duration: 1.15, ease: "power2.inOut" }, 1.05);
+      tl.to("#sweep1", { opacity: 0, duration: 0.2 }, 2.15);
+      tl.fromTo("#s1 .s1-sub", { opacity: 0, y: 26, letterSpacing: "0.14em" }, { opacity: 1, y: 0, letterSpacing: "0.34em", duration: 1.0 }, 1.35);
+      tl.fromTo("#s1 .seal", { opacity: 0, scale: 2, rotate: -34 }, { opacity: 1, scale: 1, rotate: -12, duration: 0.7, ease: "back.out(2.2)" }, 1.75);
+      tl.fromTo("#s1 .sealRing", { opacity: 0.85, scale: 0.85 }, { opacity: 0, scale: 2.05, duration: 1.0, ease: "power2.out" }, 1.8);
 
-      tl.from(
-        "#title",
-        { opacity: 0, y: 70, duration: 0.95, ease: "power3.out" },
-        0.55
-      );
+      tl.fromTo("#frame .fc", { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.8)", stagger: 0.07 }, 2.0);
 
-      tl.from(
-        "#subtitle",
-        { opacity: 0, y: 40, duration: 0.85, ease: "power3.out" },
-        1.05
-      );
+      tl.to("#s1", { opacity: 0, scale: 1.05, duration: 0.45, ease: "power2.in" }, 3.35);
 
-      tl.from(
-        "#footer",
-        { opacity: 0, duration: 0.7, ease: "power1.out" },
-        1.6
-      );
+      /* ---------- ESCENA 2 · CARTA ---------- */
+      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 3.6);
+      tl.to("#s2 .word", { opacity: 1, duration: 0.3, stagger: 0.145 }, 3.75);
+      tl.to("#s2 .word em", { xPercent: 0, duration: 0.75, ease: "power4.out", stagger: 0.145 }, 3.75);
+      tl.to("#s2 .word .dot", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(3)", stagger: 0.145 }, 3.85);
+      tl.fromTo("#tempBadge", { opacity: 0, scale: 0.86, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "back.out(1.7)" }, 5.35);
+      tl.to("#rollList", { y: -58, duration: 1.4, ease: "power1.inOut" }, 5.3);
+      tl.to("#s2", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 6.42);
+
+      /* ---------- ESCENA 3 · DIFERENCIAS ---------- */
+      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 6.75);
+      tl.fromTo("#s3 .s3-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.85);
+      tl.fromTo("#s3 .feat", { opacity: 0, y: 56 }, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", stagger: 0.17 }, 7.05);
+      tl.to("#s3 .feat .bar", { scaleY: 1, duration: 0.55, ease: "power3.out", stagger: 0.17 }, 7.1);
+      tl.fromTo("#s3 .feat svg", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(2)", stagger: 0.17 }, 7.15);
+      tl.to("#s3", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 9.45);
+
+      /* ---------- ESCENA 4 · INVITACIÓN ---------- */
+      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 9.8);
+      tl.fromTo("#s4 .pinWrap", { opacity: 0, y: -26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 9.95);
+      tl.fromTo("#s4 .city", { opacity: 0, letterSpacing: "0.1em" }, { opacity: 1, letterSpacing: "0.36em", duration: 0.9 }, 10.15);
+      tl.to("#s4 #cta .l i", { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.05 }, 10.4);
+      tl.to("#s4 .ctaRule", { scaleX: 1, duration: 0.85, ease: "power3.inOut" }, 11.0);
+      tl.fromTo("#s4 .ctaSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 11.3);
+      tl.fromTo("#s4 .tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.6)" }, 11.5);
+
+      /* ---------- marca de esquina ---------- */
+      tl.fromTo("#corner", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.75);
 
       window.__timelines = window.__timelines || {};
-      window.__timelines["hello-github"] = tl;
+      window.__timelines["wokiroll"] = tl;
     </script>
   </body>
 </html>
