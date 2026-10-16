@@ -40,7 +40,7 @@ ordenador: el render corre en la nube de GitHub Actions y el MP4 aparece como
 │   ├── fonts/                       # Bebas Neue + Inter (empaquetadas)
 │   ├── img/                         # Fotografías de la escena 3
 │   └── audio/
-│       └── music-source.mp3         # Pista original (HyperFrames la recorta)
+│       └── music-source.mp3         # Pista original (el workflow la recorta)
 ├── .github/workflows/
 │   ├── render.yml                   # Render en la nube de GitHub (sin cuentas)
 │   └── render-cloud.yml             # Render en la nube de HeyGen (opcional)
@@ -55,20 +55,20 @@ recorre fotograma a fotograma. El resultado es siempre idéntico y reproducible.
 ## Cómo funciona
 
 ```
-push a GitHub  ─►  GitHub Actions  ─►  Node 22  ─►  hyperframes render
-                                                      │
-                           artifact "hyperframes-video" ◄┘
+push a GitHub  ─►  GitHub Actions  ─►  Node 22 + FFmpeg  ─►  hyperframes render
+                                                                     │
+                                          artifact "hyperframes-video" ◄┘
 ```
 
 1. Subes los cambios al repositorio.
-2. GitHub Actions arranca una máquina virtual Ubuntu, instala Node 22 y FFmpeg.
+2. GitHub Actions arranca una máquina virtual Ubuntu con Node 22.
 3. Restaura de la caché el paquete, el navegador y las fuentes de HyperFrames
-   (si aún no están).
-4. Ejecuta `hyperframes lint` (si falla, **no** renderiza) y después
-   `hyperframes render`, que recorta la música a 17,5 s y le aplica el
-   fundido de entrada y de salida.
-5. Captura fotogramas de revisión y comprueba duración y pista de audio.
-6. Publica dos *artifacts*: el vídeo y los fotogramas de control.
+   (si aún no están) e instala `ffmpeg` sin paquetes recomendados.
+4. Recorta la música a 17,5 s y le aplica los fundidos de entrada y de salida.
+5. Ejecuta `hyperframes lint` (si falla, **no** renderiza) y después
+   `hyperframes render`.
+6. Captura fotogramas de revisión y comprueba duración y pista de audio.
+7. Publica dos *artifacts*: el vídeo y los fotogramas de control.
 
 ---
 
