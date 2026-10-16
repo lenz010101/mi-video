@@ -86,7 +86,6 @@
           rgba(255, 46, 46, 0.10) 60%,
           rgba(255, 255, 255, 0) 100%
         );
-        transform: rotate(14deg);
         filter: blur(24px);
       }
 
@@ -175,7 +174,6 @@
         width: 150px;
         height: 2px;
         background: linear-gradient(90deg, rgba(255, 196, 71, 0), rgba(255, 196, 71, 0.85));
-        transform: scaleX(0);
       }
 
       .s1-top .rule:last-child {
@@ -185,7 +183,7 @@
       .s1-top .est {
         font-size: 27px;
         font-weight: 600;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.42em;
         color: #ffc247;
         opacity: 0;
         white-space: nowrap;
@@ -204,7 +202,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 208px;
         letter-spacing: 0.005em;
         color: #ff8a1f;
@@ -216,7 +214,7 @@
       #logo {
         position: relative;
         display: flex;
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 208px;
         line-height: 1;
         letter-spacing: 0.005em;
@@ -254,7 +252,6 @@
           rgba(255, 255, 255, 0.72) 48%,
           rgba(255, 255, 255, 0) 100%
         );
-        transform: rotate(12deg);
         mix-blend-mode: overlay;
         filter: blur(8px);
         opacity: 0;
@@ -264,7 +261,7 @@
         margin-top: 40px;
         font-size: 30px;
         font-weight: 600;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.34em;
         color: rgba(255, 247, 236, 0.82);
         opacity: 0;
         transform: translateY(26px);
@@ -282,7 +279,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 82px;
         color: #ff3b2f;
         letter-spacing: 0.04em;
@@ -320,7 +317,7 @@
 
       #s2 .word em {
         display: inline-block;
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-style: normal;
         font-size: 118px;
         line-height: 1;
@@ -340,7 +337,6 @@
         background: #ff2e2e;
         box-shadow: 0 0 22px rgba(255, 46, 46, 0.9);
         opacity: 0;
-        transform: scale(0);
       }
 
       #s2 .word:nth-child(2) em {
@@ -377,7 +373,7 @@
       }
 
       #tempBadge strong {
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 56px;
         line-height: 1;
         letter-spacing: 0.03em;
@@ -394,7 +390,7 @@
 
       /* ---------- scene 3: features ---------- */
       .s3-title {
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 96px;
         line-height: 1;
         letter-spacing: 0.05em;
@@ -432,7 +428,6 @@
         height: 100%;
         border-radius: 4px;
         background: linear-gradient(180deg, #ffc247, #ff2e2e);
-        transform: scaleY(0);
         transform-origin: 50% 0%;
       }
 
@@ -456,7 +451,7 @@
       }
 
       #s3 .feat strong {
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 62px;
         font-weight: 400;
         line-height: 1;
@@ -493,7 +488,7 @@
         margin-top: 34px;
         font-size: 32px;
         font-weight: 600;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.36em;
         color: #ffc247;
         opacity: 0;
         white-space: nowrap;
@@ -513,7 +508,7 @@
 
       #s4 .cta {
         display: flex;
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 168px;
         line-height: 1;
         letter-spacing: 0.01em;
@@ -531,7 +526,6 @@
         height: 5px;
         border-radius: 999px;
         background: linear-gradient(90deg, rgba(255, 46, 46, 0), #ff8a1f 50%, rgba(255, 46, 46, 0));
-        transform: scaleX(0);
         box-shadow: 0 0 26px rgba(255, 138, 31, 0.7);
       }
 
@@ -550,7 +544,7 @@
         padding: 14px 30px;
         border: 2px solid rgba(255, 247, 236, 0.22);
         border-radius: 999px;
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 44px;
         letter-spacing: 0.22em;
         color: #fff7ec;
@@ -575,7 +569,7 @@
       }
 
       #corner b {
-        font-family: "Bebas Neue", Impact, sans-serif;
+        font-family: "Bebas Neue", sans-serif;
         font-size: 32px;
         font-weight: 400;
         letter-spacing: 0.2em;
@@ -757,24 +751,23 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script>
       const tl = gsap.timeline({ paused: true });
-      const E = gsap.parseEase;
 
       /* ---------- cámara y ambiente (todo el vídeo) ---------- */
       tl.fromTo("#cam", { scale: 1.075, y: 30 }, { scale: 1, y: 0, duration: 13, ease: "none" }, 0);
       tl.fromTo("#glowA", { x: -70, y: -50, opacity: 0.6 }, { x: 90, y: 70, opacity: 0.95, duration: 13, ease: "sine.inOut" }, 0);
       tl.fromTo("#glowB", { x: 80, y: 60, opacity: 0.55 }, { x: -80, y: -60, opacity: 0.9, duration: 13, ease: "sine.inOut" }, 0);
       tl.fromTo("#grid", { y: 0 }, { y: -54, duration: 13, ease: "none" }, 0);
-      tl.fromTo("#beam", { xPercent: -45, opacity: 0 }, { xPercent: 55, opacity: 0.55, duration: 7, ease: "sine.inOut" }, 0);
+      tl.fromTo("#beam", { xPercent: -45, rotation: 14, opacity: 0 }, { xPercent: 55, rotation: 14, opacity: 0.55, duration: 7, ease: "sine.inOut" }, 0);
 
       /* ---------- ESCENA 1 · LOGO ---------- */
-      tl.to("#s1 .rule", { scaleX: 1, duration: 0.75, ease: "power3.inOut", stagger: 0.09 }, 0.15);
-      tl.fromTo("#s1 .est", { opacity: 0, letterSpacing: "0.12em" }, { opacity: 1, letterSpacing: "0.42em", duration: 0.9 }, 0.25);
+      tl.fromTo("#s1 .rule", { scaleX: 0 }, { scaleX: 1, duration: 0.75, ease: "power3.inOut", stagger: 0.09 }, 0.15);
+      tl.fromTo("#s1 .est", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 0.25);
 
       tl.to("#s1 #logo .l i", { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.055 }, 0.45);
       tl.fromTo("#logoGlow", { opacity: 0 }, { opacity: 0.85, duration: 1.1, ease: "sine.out" }, 1.0);
-      tl.fromTo("#sweep1", { xPercent: -170, opacity: 0 }, { xPercent: 190, opacity: 1, duration: 1.15, ease: "power2.inOut" }, 1.05);
-      tl.to("#sweep1", { opacity: 0, duration: 0.2 }, 2.15);
-      tl.fromTo("#s1 .s1-sub", { opacity: 0, y: 26, letterSpacing: "0.14em" }, { opacity: 1, y: 0, letterSpacing: "0.34em", duration: 1.0 }, 1.35);
+      tl.fromTo("#sweep1", { xPercent: -170, rotation: 12, opacity: 0 }, { xPercent: 190, rotation: 12, opacity: 1, duration: 1.15, ease: "power2.inOut" }, 1.05);
+      tl.to("#sweep1", { opacity: 0, duration: 0.2 }, 2.25);
+      tl.fromTo("#s1 .s1-sub", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.0 }, 1.35);
       tl.fromTo("#s1 .seal", { opacity: 0, scale: 2, rotate: -34 }, { opacity: 1, scale: 1, rotate: -12, duration: 0.7, ease: "back.out(2.2)" }, 1.75);
       tl.fromTo("#s1 .sealRing", { opacity: 0.85, scale: 0.85 }, { opacity: 0, scale: 2.05, duration: 1.0, ease: "power2.out" }, 1.8);
 
@@ -786,7 +779,7 @@
       tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 3.6);
       tl.to("#s2 .word", { opacity: 1, duration: 0.3, stagger: 0.145 }, 3.75);
       tl.to("#s2 .word em", { xPercent: 0, duration: 0.75, ease: "power4.out", stagger: 0.145 }, 3.75);
-      tl.to("#s2 .word .dot", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(3)", stagger: 0.145 }, 3.85);
+      tl.fromTo("#s2 .word .dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(3)", stagger: 0.145 }, 3.85);
       tl.fromTo("#tempBadge", { opacity: 0, scale: 0.86, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "back.out(1.7)" }, 5.35);
       tl.to("#rollList", { y: -58, duration: 1.4, ease: "power1.inOut" }, 5.3);
       tl.to("#s2", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 6.42);
@@ -795,16 +788,16 @@
       tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 6.75);
       tl.fromTo("#s3 .s3-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.85);
       tl.fromTo("#s3 .feat", { opacity: 0, y: 56 }, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", stagger: 0.17 }, 7.05);
-      tl.to("#s3 .feat .bar", { scaleY: 1, duration: 0.55, ease: "power3.out", stagger: 0.17 }, 7.1);
+      tl.fromTo("#s3 .feat .bar", { scaleY: 0 }, { scaleY: 1, duration: 0.55, ease: "power3.out", stagger: 0.17 }, 7.1);
       tl.fromTo("#s3 .feat svg", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(2)", stagger: 0.17 }, 7.15);
       tl.to("#s3", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 9.45);
 
       /* ---------- ESCENA 4 · INVITACIÓN ---------- */
       tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 9.8);
       tl.fromTo("#s4 .pinWrap", { opacity: 0, y: -26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 9.95);
-      tl.fromTo("#s4 .city", { opacity: 0, letterSpacing: "0.1em" }, { opacity: 1, letterSpacing: "0.36em", duration: 0.9 }, 10.15);
+      tl.fromTo("#s4 .city", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 10.15);
       tl.to("#s4 #cta .l i", { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.05 }, 10.4);
-      tl.to("#s4 .ctaRule", { scaleX: 1, duration: 0.85, ease: "power3.inOut" }, 11.0);
+      tl.fromTo("#s4 .ctaRule", { scaleX: 0 }, { scaleX: 1, duration: 0.85, ease: "power3.inOut" }, 11.0);
       tl.fromTo("#s4 .ctaSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 11.3);
       tl.fromTo("#s4 .tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.6)" }, 11.5);
 
