@@ -39,7 +39,7 @@
         inset: -6%;
         background:
           radial-gradient(1100px 900px at 18% 6%, rgba(255, 138, 31, 0.13), rgba(255, 138, 31, 0) 62%),
-          radial-gradient(900px 900px at 90% 96%, rgba(46, 230, 214, 0.10), rgba(46, 230, 214, 0) 64%),
+          radial-gradient(900px 900px at 90% 96%, rgba(46, 230, 214, 0.1), rgba(46, 230, 214, 0) 64%),
           linear-gradient(178deg, #101013 0%, #0a0a0e 46%, #07070a 100%);
       }
 
@@ -47,30 +47,34 @@
       #glowB {
         position: absolute;
         border-radius: 50%;
-        filter: blur(40px);
+        filter: blur(90px);
       }
 
       #glowA {
-        width: 1240px;
-        height: 1240px;
-        left: -360px;
-        top: 180px;
-        background: radial-gradient(closest-side, rgba(255, 46, 46, 0.42), rgba(255, 46, 46, 0));
+        top: -180px;
+        left: -220px;
+        width: 900px;
+        height: 900px;
+        background: radial-gradient(circle, rgba(255, 46, 46, 0.5), rgba(255, 46, 46, 0) 68%);
       }
 
       #glowB {
-        width: 1080px;
-        height: 1080px;
-        right: -300px;
-        bottom: 120px;
-        background: radial-gradient(closest-side, rgba(46, 230, 214, 0.30), rgba(46, 230, 214, 0));
+        bottom: -240px;
+        right: -200px;
+        width: 860px;
+        height: 860px;
+        background: radial-gradient(circle, rgba(46, 230, 214, 0.36), rgba(46, 230, 214, 0) 68%);
       }
 
       #grid {
         position: absolute;
-        inset: -120px;
-        background-image: radial-gradient(rgba(255, 247, 236, 0.085) 1.6px, rgba(0, 0, 0, 0) 1.7px);
+        inset: -10% 0;
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
         background-size: 54px 54px;
+        mask-image: radial-gradient(70% 60% at 50% 50%, #000 20%, transparent 100%);
+        -webkit-mask-image: radial-gradient(70% 60% at 50% 50%, #000 20%, transparent 100%);
       }
 
       #beam {
@@ -79,22 +83,17 @@
         left: -40%;
         width: 70%;
         height: 170%;
-        background: linear-gradient(
-          100deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 196, 71, 0.16) 45%,
-          rgba(255, 46, 46, 0.10) 60%,
-          rgba(255, 255, 255, 0) 100%
-        );
+        background: linear-gradient(90deg, rgba(255, 196, 71, 0), rgba(255, 196, 71, 0.13), rgba(255, 196, 71, 0));
         filter: blur(24px);
       }
 
       #grain {
         position: absolute;
-        inset: -50px;
-        opacity: 0.07;
+        inset: 0;
+        opacity: 0.05;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.9) 0.5px, transparent 0.6px);
+        background-size: 3px 3px;
         mix-blend-mode: overlay;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
       }
 
       #vignette {
@@ -157,7 +156,8 @@
 
       #s2,
       #s3,
-      #s4 {
+      #s4,
+      #s5 {
         opacity: 0;
       }
 
@@ -246,7 +246,7 @@
         width: 84px;
         height: 116%;
         background: linear-gradient(
-          92deg,
+          90deg,
           rgba(255, 255, 255, 0) 0%,
           rgba(255, 255, 255, 0.95) 50%,
           rgba(255, 255, 255, 0) 100%
@@ -263,7 +263,6 @@
         letter-spacing: 0.34em;
         color: rgba(255, 247, 236, 0.82);
         opacity: 0;
-        transform: translateY(26px);
         white-space: nowrap;
       }
 
@@ -382,8 +381,87 @@
         color: rgba(255, 247, 236, 0.7);
       }
 
-      /* ---------- scene 3: features ---------- */
-      .s3-title {
+      /* ---------- scene 3: photo gallery ---------- */
+      #s3 .shot {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        overflow: hidden;
+        background: #07070a;
+      }
+
+      #s3 .shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      #s3 .shotVeil {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(7, 7, 10, 0.9) 0%,
+          rgba(7, 7, 10, 0.34) 22%,
+          rgba(7, 7, 10, 0.1) 44%,
+          rgba(7, 7, 10, 0.68) 76%,
+          rgba(7, 7, 10, 0.96) 100%
+        );
+      }
+
+      #s3 .shotCap {
+        position: absolute;
+        left: 88px;
+        right: 88px;
+        bottom: 286px;
+        opacity: 0;
+      }
+
+      #s3 .shotCap .k {
+        display: block;
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: 0.34em;
+        color: #ffc247;
+        margin-bottom: 18px;
+      }
+
+      #s3 .shotCap b {
+        display: block;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 106px;
+        font-weight: 400;
+        line-height: 0.98;
+        letter-spacing: 0.02em;
+        color: #fff7ec;
+        text-shadow: 0 4px 40px rgba(0, 0, 0, 0.75);
+      }
+
+      #s3 .shotCap i {
+        display: block;
+        margin-top: 20px;
+        font-style: normal;
+        font-size: 24px;
+        font-weight: 600;
+        letter-spacing: 0.24em;
+        color: rgba(255, 247, 236, 0.72);
+      }
+
+      #s3 .shotNum {
+        position: absolute;
+        right: 88px;
+        bottom: 306px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 40px;
+        letter-spacing: 0.16em;
+        color: rgba(255, 247, 236, 0.5);
+        opacity: 0;
+      }
+
+      /* ---------- scene 4: features ---------- */
+      .s4-title {
         font-family: "Bebas Neue", sans-serif;
         font-size: 96px;
         line-height: 1;
@@ -394,18 +472,18 @@
         opacity: 0;
       }
 
-      .s3-title span {
+      .s4-title span {
         color: #ff8a1f;
       }
 
-      #s3 .featList {
+      #s4 .featList {
         display: flex;
         flex-direction: column;
         gap: 54px;
         width: 830px;
       }
 
-      #s3 .feat {
+      #s4 .feat {
         position: relative;
         display: flex;
         align-items: center;
@@ -414,7 +492,7 @@
         opacity: 0;
       }
 
-      #s3 .feat .bar {
+      #s4 .feat .bar {
         position: absolute;
         left: 0;
         top: 0;
@@ -425,7 +503,7 @@
         transform-origin: 50% 0%;
       }
 
-      #s3 .feat svg {
+      #s4 .feat svg {
         width: 72px;
         height: 72px;
         flex: none;
@@ -438,13 +516,13 @@
         opacity: 0;
       }
 
-      #s3 .feat .txt {
+      #s4 .feat .txt {
         display: flex;
         flex-direction: column;
         gap: 8px;
       }
 
-      #s3 .feat strong {
+      #s4 .feat strong {
         font-family: "Bebas Neue", sans-serif;
         font-size: 62px;
         font-weight: 400;
@@ -453,22 +531,22 @@
         color: #fff7ec;
       }
 
-      #s3 .feat small {
+      #s4 .feat small {
         font-size: 22px;
         font-weight: 600;
         letter-spacing: 0.26em;
         color: rgba(255, 247, 236, 0.62);
       }
 
-      /* ---------- scene 4: call to action ---------- */
-      #s4 .pinWrap {
+      /* ---------- scene 5: call to action ---------- */
+      #s5 .pinWrap {
         width: 108px;
         height: 108px;
         color: #ff8a1f;
         opacity: 0;
       }
 
-      #s4 .pinWrap svg {
+      #s5 .pinWrap svg {
         width: 100%;
         height: 100%;
         fill: none;
@@ -478,7 +556,7 @@
         stroke-linejoin: round;
       }
 
-      #s4 .city {
+      #s5 .city {
         margin-top: 34px;
         font-size: 32px;
         font-weight: 600;
@@ -500,7 +578,7 @@
         padding: 0.05em 0;
       }
 
-      #s4 .cta {
+      #s5 .cta {
         display: flex;
         font-family: "Bebas Neue", sans-serif;
         font-size: 168px;
@@ -510,11 +588,11 @@
         text-align: center;
       }
 
-      #s4 .cta .sp {
+      #s5 .cta .sp {
         width: 0.28em;
       }
 
-      #s4 .ctaRule {
+      #s5 .ctaRule {
         margin-top: 30px;
         width: 620px;
         height: 5px;
@@ -523,7 +601,7 @@
         box-shadow: 0 0 26px rgba(255, 138, 31, 0.7);
       }
 
-      #s4 .ctaSub {
+      #s5 .ctaSub {
         margin-top: 42px;
         font-size: 26px;
         font-weight: 600;
@@ -533,7 +611,7 @@
         opacity: 0;
       }
 
-      #s4 .tag {
+      #s5 .tag {
         margin-top: 74px;
         padding: 14px 30px;
         border: 2px solid rgba(255, 247, 236, 0.22);
@@ -581,11 +659,21 @@
       id="stage"
       data-composition-id="wokiroll"
       data-start="0"
-      data-duration="13"
+      data-duration="17.5"
       data-width="1080"
       data-height="1920"
       data-fps="30"
     >
+      <audio
+        id="music"
+        data-start="0"
+        data-duration="17.5"
+        data-track-index="9"
+        data-volume="0.75"
+        src="assets/audio/music.mp3"
+        preload="auto"
+      ></audio>
+
       <div id="cam">
         <div id="bg"></div>
         <div id="glowA"></div>
@@ -656,9 +744,56 @@
           </div>
         </section>
 
-        <!-- ===== ESCENA 3 · DIFERENCIAS ===== -->
+        <!-- ===== ESCENA 3 · FOTOS ===== -->
         <section id="s3" class="scene">
-          <h2 class="s3-title">HECHO <span>AL MOMENTO</span></h2>
+          <div class="shot">
+            <img src="assets/img/alley.jpg" alt="Callejón nocturno con neones" />
+            <div class="shotVeil"></div>
+            <div class="shotCap">
+              <span class="k">EST. 1995</span>
+              <b>FUEGO<br />CALLEJERO</b>
+              <i>NEÓN, WOK Y SABOR DE BARRIO</i>
+            </div>
+            <span class="shotNum">01 / 04</span>
+          </div>
+
+          <div class="shot">
+            <img src="assets/img/rolls.jpg" alt="Rolls de salmón" />
+            <div class="shotVeil"></div>
+            <div class="shotCap">
+              <span class="k">ROLLS &amp; KIMBAP</span>
+              <b>ENROLLADO<br />AL MOMENTO</b>
+              <i>ARROZ SUAVE · RELLENO GENEROSO</i>
+            </div>
+            <span class="shotNum">02 / 04</span>
+          </div>
+
+          <div class="shot">
+            <img src="assets/img/ramen.jpg" alt="Tazón de ramen" />
+            <div class="shotVeil"></div>
+            <div class="shotCap">
+              <span class="k">RAMEN &amp; WOK</span>
+              <b>CALDO<br />CALIENTE</b>
+              <i>SALTEADO A 300 °C, SERVIDO AL INSTANTE</i>
+            </div>
+            <span class="shotNum">03 / 04</span>
+          </div>
+
+          <div class="shot">
+            <img src="assets/img/local.jpg" alt="Interior cálido del local" />
+            <div class="shotVeil"></div>
+            <div class="shotCap">
+              <span class="k">NUESTRO LOCAL</span>
+              <b>MESAS<br />Y LUZ CÁLIDA</b>
+              <i>VEN, SIÉNTATE Y PIDE LO TUYO</i>
+            </div>
+            <span class="shotNum">04 / 04</span>
+          </div>
+        </section>
+
+        <!-- ===== ESCENA 4 · DIFERENCIAS ===== -->
+        <section id="s4" class="scene">
+          <h2 class="s4-title">HECHO <span>AL MOMENTO</span></h2>
 
           <div class="featList">
             <div class="feat">
@@ -699,8 +834,8 @@
           </div>
         </section>
 
-        <!-- ===== ESCENA 4 · INVITACIÓN ===== -->
-        <section id="s4" class="scene">
+        <!-- ===== ESCENA 5 · INVITACIÓN ===== -->
+        <section id="s5" class="scene">
           <div class="pinWrap">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 21.5s7-6.1 7-11.2A7 7 0 0 0 5 10.3c0 5.1 7 11.2 7 11.2z" />
@@ -747,16 +882,15 @@
       const tl = gsap.timeline({ paused: true });
 
       /* ---------- cámara y ambiente (todo el vídeo) ---------- */
-      tl.fromTo("#cam", { scale: 1.075, y: 30 }, { scale: 1, y: 0, duration: 13, ease: "none" }, 0);
-      tl.fromTo("#glowA", { x: -70, y: -50, opacity: 0.6 }, { x: 90, y: 70, opacity: 0.95, duration: 13, ease: "sine.inOut" }, 0);
-      tl.fromTo("#glowB", { x: 80, y: 60, opacity: 0.55 }, { x: -80, y: -60, opacity: 0.9, duration: 13, ease: "sine.inOut" }, 0);
-      tl.fromTo("#grid", { y: 0 }, { y: -54, duration: 13, ease: "none" }, 0);
-      tl.fromTo("#beam", { xPercent: -45, rotation: 14, opacity: 0 }, { xPercent: 55, rotation: 14, opacity: 0.55, duration: 7, ease: "sine.inOut" }, 0);
+      tl.fromTo("#cam", { scale: 1.075, y: 30 }, { scale: 1, y: 0, duration: 17.5, ease: "none" }, 0);
+      tl.fromTo("#glowA", { x: -70, y: -50, opacity: 0.6 }, { x: 90, y: 70, opacity: 0.95, duration: 17.5, ease: "sine.inOut" }, 0);
+      tl.fromTo("#glowB", { x: 80, y: 60, opacity: 0.55 }, { x: -80, y: -60, opacity: 0.9, duration: 17.5, ease: "sine.inOut" }, 0);
+      tl.fromTo("#grid", { y: 0 }, { y: -54, duration: 17.5, ease: "none" }, 0);
+      tl.fromTo("#beam", { xPercent: -45, rotation: 14, opacity: 0 }, { xPercent: 55, rotation: 14, opacity: 0.55, duration: 8.5, ease: "sine.inOut" }, 0);
 
       /* ---------- ESCENA 1 · LOGO ---------- */
       tl.fromTo("#s1 .rule", { scaleX: 0 }, { scaleX: 1, duration: 0.75, ease: "power3.inOut", stagger: 0.09 }, 0.15);
       tl.fromTo("#s1 .est", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 0.25);
-
       tl.fromTo("#s1 #logo .l i", { yPercent: 112 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.055 }, 0.45);
       tl.fromTo("#logoGlow", { opacity: 0 }, { opacity: 0.5, duration: 1.1, ease: "sine.out" }, 1.0);
       tl.fromTo("#sweep1", { xPercent: -170, rotation: 12, opacity: 0 }, { xPercent: 190, rotation: 12, opacity: 0.9, duration: 1.15, ease: "power2.inOut" }, 1.05);
@@ -764,9 +898,7 @@
       tl.fromTo("#s1 .s1-sub", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.0 }, 1.35);
       tl.fromTo("#s1 .seal", { opacity: 0, scale: 2, rotate: -34 }, { opacity: 1, scale: 1, rotate: -12, duration: 0.7, ease: "back.out(2.2)" }, 1.75);
       tl.fromTo("#s1 .sealRing", { opacity: 0.85, scale: 0.85 }, { opacity: 0, scale: 2.05, duration: 1.0, ease: "power2.out", immediateRender: false }, 1.8);
-
       tl.fromTo("#frame .fc", { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.8)", stagger: 0.07 }, 2.0);
-
       tl.to("#s1", { opacity: 0, scale: 1.05, duration: 0.45, ease: "power2.in" }, 3.35);
 
       /* ---------- ESCENA 2 · CARTA ---------- */
@@ -781,24 +913,39 @@
       tl.fromTo("#s2 .word .dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(3)", stagger: 0.145 }, 3.85);
       tl.fromTo("#tempBadge", { opacity: 0, scale: 0.86, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "back.out(1.7)" }, 5.35);
       tl.to("#rollList", { y: -58, duration: 1.4, ease: "power1.inOut" }, 5.3);
-      tl.to("#s2", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 6.42);
+      tl.to("#s2", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 6.35);
 
-      /* ---------- ESCENA 3 · DIFERENCIAS ---------- */
-      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 6.75);
-      tl.fromTo("#s3 .s3-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.85);
-      tl.fromTo("#s3 .feat", { opacity: 0, y: 56 }, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", stagger: 0.17 }, 7.05);
-      tl.fromTo("#s3 .feat .bar", { scaleY: 0 }, { scaleY: 1, duration: 0.55, ease: "power3.out", stagger: 0.17 }, 7.1);
-      tl.fromTo("#s3 .feat svg", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(2)", stagger: 0.17 }, 7.15);
-      tl.to("#s3", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 9.45);
+      /* ---------- ESCENA 3 · FOTOS ---------- */
+      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 6.5);
 
-      /* ---------- ESCENA 4 · INVITACIÓN ---------- */
-      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 9.8);
-      tl.fromTo("#s4 .pinWrap", { opacity: 0, y: -26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 9.95);
-      tl.fromTo("#s4 .city", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 10.15);
-      tl.fromTo("#s4 #cta .l i", { yPercent: 112 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.05 }, 10.4);
-      tl.fromTo("#s4 .ctaRule", { scaleX: 0 }, { scaleX: 1, duration: 0.85, ease: "power3.inOut" }, 11.0);
-      tl.fromTo("#s4 .ctaSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 11.3);
-      tl.fromTo("#s4 .tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.6)" }, 11.5);
+      const shotTimes = [6.75, 7.85, 8.95, 10.05];
+      document.querySelectorAll("#s3 .shot").forEach((shot, i) => {
+        const t = shotTimes[i];
+        tl.fromTo(shot, { opacity: 0 }, { opacity: 1, duration: 0.32, ease: "power2.out" }, t);
+        tl.to(shot, { opacity: 0, duration: 0.32, ease: "power2.in" }, t + 0.78);
+        tl.fromTo(shot.querySelector("img"), { scale: 1.05, y: 0 }, { scale: 1.17, y: -26, duration: 1.45, ease: "none" }, t);
+        tl.fromTo(shot.querySelector(".shotCap"), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, t + 0.2);
+        tl.fromTo(shot.querySelector(".shotNum"), { opacity: 0 }, { opacity: 1, duration: 0.5 }, t + 0.3);
+      });
+
+      tl.to("#s3", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 11.15);
+
+      /* ---------- ESCENA 4 · DIFERENCIAS ---------- */
+      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 11.3);
+      tl.fromTo("#s4 .s4-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 11.45);
+      tl.fromTo("#s4 .feat", { opacity: 0, y: 56 }, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", stagger: 0.17 }, 11.65);
+      tl.fromTo("#s4 .feat .bar", { scaleY: 0 }, { scaleY: 1, duration: 0.55, ease: "power3.out", stagger: 0.17 }, 11.7);
+      tl.fromTo("#s4 .feat svg", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(2)", stagger: 0.17 }, 11.75);
+      tl.to("#s4", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 14.1);
+
+      /* ---------- ESCENA 5 · INVITACIÓN ---------- */
+      tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 14.25);
+      tl.fromTo("#s5 .pinWrap", { opacity: 0, y: -26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 14.4);
+      tl.fromTo("#s5 .city", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 14.6);
+      tl.fromTo("#s5 #cta .l i", { yPercent: 112 }, { yPercent: 0, duration: 0.85, ease: "power4.out", stagger: 0.05 }, 14.8);
+      tl.fromTo("#s5 .ctaRule", { scaleX: 0 }, { scaleX: 1, duration: 0.85, ease: "power3.inOut" }, 15.4);
+      tl.fromTo("#s5 .ctaSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 15.65);
+      tl.fromTo("#s5 .tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.6)" }, 15.8);
 
       /* ---------- marca de esquina ---------- */
       tl.fromTo("#corner", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.75);
