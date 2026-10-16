@@ -230,14 +230,13 @@
       .ctaMask .l i {
         display: inline-block;
         font-style: normal;
-        transform: translateY(112%);
       }
 
       #logo .l i {
-        background: linear-gradient(178deg, #fff7ec 0%, #ffdf9e 46%, #ff9a2e 78%, #ff3d1f 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        color: #fff7ec;
+        text-shadow:
+          0 0 18px rgba(255, 196, 71, 0.45),
+          0 0 62px rgba(255, 94, 31, 0.38);
       }
 
       #sweep1 {
@@ -252,7 +251,7 @@
           rgba(255, 255, 255, 0.72) 48%,
           rgba(255, 255, 255, 0) 100%
         );
-        mix-blend-mode: overlay;
+        mix-blend-mode: screen;
         filter: blur(8px);
         opacity: 0;
       }
@@ -323,11 +322,6 @@
         line-height: 1;
         letter-spacing: 0.02em;
         color: #fff7ec;
-        transform: translateX(-112%);
-      }
-
-      #s2 .word.alt em {
-        transform: translateX(112%);
       }
 
       #s2 .word .dot {
@@ -763,8 +757,8 @@
       tl.fromTo("#s1 .rule", { scaleX: 0 }, { scaleX: 1, duration: 0.75, ease: "power3.inOut", stagger: 0.09 }, 0.15);
       tl.fromTo("#s1 .est", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 0.25);
 
-      tl.to("#s1 #logo .l i", { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.055 }, 0.45);
-      tl.fromTo("#logoGlow", { opacity: 0 }, { opacity: 0.85, duration: 1.1, ease: "sine.out" }, 1.0);
+      tl.fromTo("#s1 #logo .l i", { yPercent: 112 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.055 }, 0.45);
+      tl.fromTo("#logoGlow", { opacity: 0 }, { opacity: 0.5, duration: 1.1, ease: "sine.out" }, 1.0);
       tl.fromTo("#sweep1", { xPercent: -170, rotation: 12, opacity: 0 }, { xPercent: 190, rotation: 12, opacity: 1, duration: 1.15, ease: "power2.inOut" }, 1.05);
       tl.to("#sweep1", { opacity: 0, duration: 0.2 }, 2.25);
       tl.fromTo("#s1 .s1-sub", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.0 }, 1.35);
@@ -778,7 +772,12 @@
       /* ---------- ESCENA 2 · CARTA ---------- */
       tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 3.6);
       tl.to("#s2 .word", { opacity: 1, duration: 0.3, stagger: 0.145 }, 3.75);
-      tl.to("#s2 .word em", { xPercent: 0, duration: 0.75, ease: "power4.out", stagger: 0.145 }, 3.75);
+      tl.fromTo(
+        "#s2 .word em",
+        { xPercent: (i, el) => (el.parentElement.classList.contains("alt") ? 112 : -112) },
+        { xPercent: 0, duration: 0.75, ease: "power4.out", stagger: 0.145 },
+        3.75
+      );
       tl.fromTo("#s2 .word .dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(3)", stagger: 0.145 }, 3.85);
       tl.fromTo("#tempBadge", { opacity: 0, scale: 0.86, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "back.out(1.7)" }, 5.35);
       tl.to("#rollList", { y: -58, duration: 1.4, ease: "power1.inOut" }, 5.3);
@@ -796,7 +795,7 @@
       tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 9.8);
       tl.fromTo("#s4 .pinWrap", { opacity: 0, y: -26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 9.95);
       tl.fromTo("#s4 .city", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 10.15);
-      tl.to("#s4 #cta .l i", { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.05 }, 10.4);
+      tl.fromTo("#s4 #cta .l i", { yPercent: 112 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.05 }, 10.4);
       tl.fromTo("#s4 .ctaRule", { scaleX: 0 }, { scaleX: 1, duration: 0.85, ease: "power3.inOut" }, 11.0);
       tl.fromTo("#s4 .ctaSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 11.3);
       tl.fromTo("#s4 .tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.6)" }, 11.5);
