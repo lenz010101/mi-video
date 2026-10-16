@@ -133,8 +133,23 @@
         margin-bottom: 34px;
         text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
       }
-      .mask { overflow: hidden; padding: 0.06em 0; }
+      /* El padding le da aire al glow de las palabras cian: overflow:hidden
+         recorta en el borde del padding-box, asi que sin el, el neon se corta
+         en seco. Los margenes negativos devuelven el texto a su sitio. */
+      .mask { overflow: hidden; padding: 0.5em 0.2em; margin: -0.5em -0.2em; }
       .mask i { display: inline-block; font-style: normal; }
+
+      /* Palabras acento: cian de neon con el glow del video de referencia.
+         El glow va en em para que escale con el tamano del titular y nunca
+         sobresalga del padding de la mascara. */
+      .big .accent,
+      .cap b .accent,
+      .rowTitle em,
+      .ctaBig .accent {
+        color: #4fd1ff;
+        text-shadow: 0 0 0.18em rgba(79, 209, 255, 0.92), 0 0 0.42em rgba(79, 209, 255, 0.5),
+          0 0.06em 0.4em rgba(0, 0, 0, 0.75);
+      }
 
       .big {
         font-size: 138px;
@@ -196,19 +211,32 @@
         align-items: center;
       }
 
+      /* Tarjeta blanca: mismo material que la referencia — rayado diagonal muy
+         suave y sombra amplia. Es un gradiente repetido (barato de rasterizar),
+         no una imagen. */
       .icard {
-        background: #ffffff;
+        background-color: #ffffff;
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgba(23, 27, 33, 0.055) 0 1.6px,
+          rgba(23, 27, 33, 0) 1.6px 12px
+        );
         border-radius: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.48), 0 6px 18px rgba(0, 0, 0, 0.3);
         opacity: 0;
       }
       .icard svg { width: 100%; height: 100%; display: block; }
 
       .icard.lg { width: 640px; height: 640px; padding: 30px; }
-      .icard.sm { width: 292px; height: 292px; padding: 14px; border-radius: 30px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38); }
+      .icard.sm { width: 292px; height: 292px; padding: 14px; border-radius: 30px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.44); }
+
+      /* La tarjeta de Instalaciones crece hasta llenar el cuadro: con z-index
+         tapa el nombre y la descripcion (que son hermanos posteriores en el
+         DOM) en vez de quedar texto blanco sobre blanco. */
+      #cardC { position: relative; z-index: 2; }
 
       .stageName {
         margin-top: 56px;
@@ -257,10 +285,11 @@
       .cardCol .ilabel {
         margin-top: 24px;
         text-align: center;
-        font-size: 27px;
+        font-size: 32px;
         font-weight: 800;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.05em;
         color: #ffffff;
+        white-space: nowrap;
         text-shadow: 0 3px 22px rgba(0, 0, 0, 0.8);
       }
       .rowNote {
@@ -276,12 +305,24 @@
         text-shadow: 0 3px 26px rgba(0, 0, 0, 0.8);
       }
 
-      /* ---------------- escenas 6-8 · rótulo ---------------- */
+      /* ---------------- escenas 6-10 · rótulo ---------------- */
+      /* Como en la referencia: rótulo centrado sobre una placa oscura redondeada
+         y las palabras clave en cian de neon. */
       .cap {
         position: absolute;
-        left: 84px;
-        right: 84px;
-        bottom: 330px;
+        left: 60px;
+        right: 60px;
+        bottom: 296px;
+        text-align: center;
+        padding: 44px 44px 48px;
+        border-radius: 46px;
+        background: linear-gradient(
+          180deg,
+          rgba(5, 7, 10, 0.3) 0%,
+          rgba(5, 7, 10, 0.58) 100%
+        );
+        border: 1.5px solid rgba(79, 209, 255, 0.26);
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
       }
       .capK {
         display: block;
@@ -289,21 +330,23 @@
         font-weight: 800;
         letter-spacing: 0.36em;
         color: #4fd1ff;
-        margin-bottom: 22px;
-        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.75);
+        margin-bottom: 24px;
+        text-shadow: 0 0 20px rgba(79, 209, 255, 0.75), 0 2px 20px rgba(0, 0, 0, 0.75);
       }
+      /* 96px: medido con la tipografia real, la linea mas larga ("UN SOLO
+         EQUIPO") ocupa 797px de los 870px utiles. A 112px se partia en dos
+         lineas. */
       .cap b {
         display: block;
-        font-size: 112px;
+        font-size: 96px;
         font-weight: 800;
-        line-height: 0.96;
+        line-height: 0.98;
         letter-spacing: -0.015em;
         text-transform: uppercase;
         color: #ffffff;
         text-shadow: 0 6px 44px rgba(0, 0, 0, 0.78);
       }
-      .cap b em { font-style: normal; color: #4fd1ff; }
-      .cap i {
+      .cap > i {
         display: block;
         margin-top: 26px;
         font-style: normal;
@@ -334,7 +377,7 @@
         text-shadow: 0 2px 22px rgba(0, 0, 0, 0.75);
       }
       .ctaBig {
-        font-size: 128px;
+        font-size: 124px;
         font-weight: 800;
         line-height: 0.98;
         letter-spacing: -0.015em;
@@ -404,34 +447,43 @@
         preload="auto"
       ></audio>
 
-      <!-- ============ VIDEO ============ -->
+      <!-- ============ VIDEO ============
+           Once planos de 2,6 s (el hook y el cierre duran mas) para que el
+           corte llegue cada ~2,6 s, como el ritmo de la referencia.
+           data-start/data-duration = ventana en la que el plano esta visible. -->
       <div id="videos">
         <div class="vwrap" id="w1">
           <video id="v1" src="assets/video/01_hero_tiny.mp4" data-start="0" data-duration="4" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w2">
-          <video id="v2" src="assets/video/04_estructura.mp4" data-start="3.6" data-duration="4" muted playsinline preload="auto"></video>
+          <video id="v2" src="assets/video/04_estructura.mp4" data-start="3.4" data-duration="3" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w3">
-          <video id="v3" src="assets/video/07_planos.mp4" data-start="7.2" data-duration="4" muted playsinline preload="auto"></video>
+          <video id="v3" src="assets/video/05_estructura2.mp4" data-start="6" data-duration="3.2" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w4">
-          <video id="v4" src="assets/video/08_taller.mp4" data-start="10.8" data-duration="4" muted playsinline preload="auto"></video>
+          <video id="v4" src="assets/video/07_planos.mp4" data-start="8.6" data-duration="3" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w5">
-          <video id="v5" src="assets/video/06_obra.mp4" data-start="14.4" data-duration="4" muted playsinline preload="auto"></video>
+          <video id="v5" src="assets/video/08_taller.mp4" data-start="11.2" data-duration="3.4" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w6">
-          <video id="v6" src="assets/video/09_cocina.mp4" data-start="18" data-duration="4" muted playsinline preload="auto"></video>
+          <video id="v6" src="assets/video/06_obra.mp4" data-start="14.1" data-duration="3" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w7">
-          <video id="v7" src="assets/video/10_sala.mp4" data-start="21.4" data-duration="4" muted playsinline preload="auto"></video>
+          <video id="v7" src="assets/video/03_hero_black.mp4" data-start="16.7" data-duration="3" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w8">
-          <video id="v8" src="assets/video/11_pasillo.mp4" data-start="24.8" data-duration="3.33" muted playsinline preload="auto"></video>
+          <video id="v8" src="assets/video/09_cocina.mp4" data-start="19.3" data-duration="3" muted playsinline preload="auto"></video>
         </div>
         <div class="vwrap" id="w9">
-          <video id="v9" src="assets/video/02_hero_white.mp4" data-start="28.13" data-duration="3.87" muted playsinline preload="auto"></video>
+          <video id="v9" src="assets/video/10_sala.mp4" data-start="21.9" data-duration="3" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w10">
+          <video id="v10" src="assets/video/11_pasillo.mp4" data-start="24.5" data-duration="3" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w11">
+          <video id="v11" src="assets/video/02_hero_white.mp4" data-start="27.1" data-duration="4.9" muted playsinline preload="auto"></video>
         </div>
       </div>
 
@@ -486,7 +538,9 @@
       <!-- ============ ESCENA 5 · LAS TRES ETAPAS ============ -->
       <section class="ov" id="o5">
         <div class="scrim scrim-soft"></div>
-        <h2 class="rowTitle" id="rowT">TODO <em>INCLUIDO</em></h2>
+        <h2 class="rowTitle" id="rowT">
+          <span class="mask" style="display: block"><i class="cl">TODO <em>INCLUIDO</em></i></span>
+        </h2>
         <div class="cardRow">
           <div class="cardCol">
             <div class="icard sm" id="cardR1"></div>
@@ -504,38 +558,73 @@
         <p class="rowNote" id="rowN">Tres etapas, un solo equipo. Sin intermediarios.</p>
       </section>
 
-      <!-- ============ ESCENA 6 ============ -->
+      <!-- ============ ESCENA 6 · rótulo ============ -->
       <section class="ov" id="o6">
         <div class="scrim scrim-bottom"></div>
         <div class="cap">
           <span class="capK">LLAVE EN MANO</span>
-          <b>LA ENTREGAMOS<br /><em>LISTA PARA VIVIR</em></b>
+          <b>
+            <span class="mask" style="display: block"><i class="cl">ENTREGAMOS</i></span>
+            <span class="mask" style="display: block"><i class="cl accent">LA CASA LISTA</i></span>
+          </b>
           <i>Nos ocupamos de todo el proceso</i>
         </div>
       </section>
 
-      <!-- ============ ESCENA 7 ============ -->
+      <!-- ============ ESCENA 7 · rótulo ============ -->
       <section class="ov" id="o7">
         <div class="scrim scrim-bottom"></div>
         <div class="cap">
           <span class="capK">TIEMPO REAL</span>
-          <b>DÍAS DE OBRA,<br /><em>NO MESES</em></b>
+          <b>
+            <span class="mask" style="display: block"><i class="cl">DÍAS DE OBRA,</i></span>
+            <span class="mask" style="display: block"><i class="cl accent">NO MESES</i></span>
+          </b>
           <i>Menos obra húmeda, menos imprevistos</i>
         </div>
       </section>
 
-      <!-- ============ ESCENA 8 ============ -->
+      <!-- ============ ESCENA 8 · rótulo ============ -->
       <section class="ov" id="o8">
         <div class="scrim scrim-bottom"></div>
         <div class="cap">
           <span class="capK">A TU MEDIDA</span>
-          <b>AMPLIABLE<br /><em>Y TRASLADABLE</em></b>
+          <b>
+            <span class="mask" style="display: block"><i class="cl">AMPLIABLE</i></span>
+            <span class="mask" style="display: block"><i class="cl accent">Y TRASLADABLE</i></span>
+          </b>
           <i>Sumá módulos cuando los necesites</i>
         </div>
       </section>
 
-      <!-- ============ ESCENA 9 · CIERRE ============ -->
+      <!-- ============ ESCENA 9 · rótulo ============ -->
       <section class="ov" id="o9">
+        <div class="scrim scrim-bottom"></div>
+        <div class="cap">
+          <span class="capK">SIN INTERMEDIARIOS</span>
+          <b>
+            <span class="mask" style="display: block"><i class="cl">UN SOLO EQUIPO</i></span>
+            <span class="mask" style="display: block"><i class="cl accent">DE TRABAJO</i></span>
+          </b>
+          <i>Proyecto, fabricación y montaje en la misma casa</i>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 10 · rótulo ============ -->
+      <section class="ov" id="o10">
+        <div class="scrim scrim-bottom"></div>
+        <div class="cap">
+          <span class="capK">EN TALLER</span>
+          <b>
+            <span class="mask" style="display: block"><i class="cl">SE FABRICA</i></span>
+            <span class="mask" style="display: block"><i class="cl accent">Y SE MONTA</i></span>
+          </b>
+          <i>Cada módulo sale terminado del taller</i>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 11 · CIERRE ============ -->
+      <section class="ov" id="o11">
         <div class="scrim scrim-strong"></div>
         <div class="ctaWrap">
           <div class="ctaKick" data-var-text="marca">CASA MODULAR</div>
@@ -793,94 +882,108 @@
 
         var tl = gsap.timeline({ paused: true });
 
-        /* ---------- video: fundido de entrada/salida ---------- */
+        /* ---------- video: 11 planos, corte cada ~2,6 s ---------- */
         var vids = [
-          ["#w1", 0, 3.6],
-          ["#w2", 3.6, 3.6],
-          ["#w3", 7.2, 3.6],
-          ["#w4", 10.8, 3.6],
-          ["#w5", 14.4, 3.6],
-          ["#w6", 18, 3.4],
-          ["#w7", 21.4, 3.4],
-          ["#w8", 24.8, 3.33],
-          ["#w9", 28.13, 3.87]
+          ["#w1", 0, 3.4],
+          ["#w2", 3.4, 2.6],
+          ["#w3", 6, 2.6],
+          ["#w4", 8.6, 2.6],
+          ["#w5", 11.2, 2.9],
+          ["#w6", 14.1, 2.6],
+          ["#w7", 16.7, 2.6],
+          ["#w8", 19.3, 2.6],
+          ["#w9", 21.9, 2.6],
+          ["#w10", 24.5, 2.6],
+          ["#w11", 27.1, 4.9]
         ];
         vids.forEach(function (v, i) {
-          tl.fromTo(v[0], { opacity: i === 0 ? 1 : 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, v[1]);
-          tl.to(v[0], { opacity: 0, duration: 0.4, ease: "power2.in" }, v[1] + v[2] - 0.02);
+          tl.fromTo(v[0], { opacity: i === 0 ? 1 : 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, v[1]);
+          tl.to(v[0], { opacity: 0, duration: 0.2, ease: "power2.in" }, v[1] + v[2] - 0.02);
         });
 
         /* ---------- marca fija ---------- */
-        tl.fromTo("#brand", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.5);
-        tl.to("#brand", { opacity: 0, duration: 0.5 }, 27.6);
+        tl.fromTo("#brand", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.4);
+        // Se aparta mientras la tarjeta ocupa la pantalla entera (si no, quedaria
+        // texto blanco sobre blanco) y vuelve justo despues.
+        tl.to("#brand", { opacity: 0, duration: 0.3, ease: "power2.in" }, 9.9);
+        tl.to("#brand", { opacity: 1, duration: 0.5, ease: "power2.out" }, 11.45);
+        tl.to("#brand", { opacity: 0, duration: 0.5 }, 27.1);
 
         /* ---------- ESCENA 1 · GANCHO ---------- */
         tl.fromTo("#o1", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0);
-        tl.fromTo("#hKick", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.18);
-        tl.fromTo("#o1 .hl", { yPercent: 114 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.1 }, 0.34);
-        tl.fromTo("#hRule", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power3.inOut" }, 1.15);
-        tl.fromTo("#hSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 1.3);
-        tl.to("#o1", { opacity: 0, duration: 0.45, ease: "power2.in" }, 3.2);
+        tl.fromTo("#hKick", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.15);
+        tl.fromTo("#o1 .hl", { yPercent: 114 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.09 }, 0.28);
+        tl.fromTo("#hRule", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power3.inOut" }, 1.05);
+        tl.fromTo("#hSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 1.2);
+        tl.to("#o1", { opacity: 0, duration: 0.45, ease: "power2.in" }, 2.95);
 
-        /* ---------- ESCENA 2 · ESTRUCTURA ---------- */
-        tl.fromTo("#o2", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 3.6);
-        tl.fromTo("#o2 .step", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 3.72);
-        tl.fromTo("#cardA", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.75, ease: "power3.out" }, 3.78);
-        cardReveal(tl, "#cardA", 3.98, 0.014);
-        tl.fromTo("#nA", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 4.5);
-        tl.fromTo("#dA", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 4.66);
-        tl.to("#o2", { opacity: 0, duration: 0.45, ease: "power2.in" }, 6.75);
-
-        /* ---------- ESCENA 3 · ARQUITECTURA ---------- */
-        tl.fromTo("#o3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.2);
-        tl.fromTo("#o3 .step", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 7.32);
-        tl.fromTo("#cardB", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.75, ease: "power3.out" }, 7.38);
-        cardReveal(tl, "#cardB", 7.55, 0.014);
-        tl.fromTo("#nB", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 8.1);
-        tl.fromTo("#dB", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 8.26);
-        tl.to("#o3", { opacity: 0, duration: 0.45, ease: "power2.in" }, 10.35);
-
-        /* ---------- ESCENA 4 · INSTALACIONES ---------- */
-        tl.fromTo("#o4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 10.8);
-        tl.fromTo("#o4 .step", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 10.92);
-        tl.fromTo("#cardC", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.75, ease: "power3.out" }, 10.98);
-        cardReveal(tl, "#cardC", 11.15, 0.012);
-        tl.fromTo("#nC", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 11.7);
-        tl.fromTo("#dC", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 11.86);
-        tl.to("#o4", { opacity: 0, duration: 0.45, ease: "power2.in" }, 13.95);
-
-        /* ---------- ESCENA 5 · LAS TRES ETAPAS ---------- */
-        tl.fromTo("#o5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 14.4);
-        tl.fromTo("#rowT", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 14.52);
-        tl.fromTo("#o5 .icard.sm", { opacity: 0, y: 54, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out", stagger: 0.13 }, 14.78);
-        cardReveal(tl, "#cardR1", 15.0, 0.006);
-        cardReveal(tl, "#cardR2", 15.13, 0.006);
-        cardReveal(tl, "#cardR3", 15.26, 0.006);
-        tl.fromTo("#o5 .ilabel", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.13 }, 15.3);
-        tl.fromTo("#rowN", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 15.9);
-        tl.to("#o5", { opacity: 0, duration: 0.45, ease: "power2.in" }, 17.55);
-
-        /* ---------- ESCENAS 6-8 · RÓTULOS ---------- */
-        var captions = [
-          ["#o6", 18, 3.4, "#o6 .capK", "#o6 .cap b", "#o6 .cap i"],
-          ["#o7", 21.4, 3.4, "#o7 .capK", "#o7 .cap b", "#o7 .cap i"],
-          ["#o8", 24.8, 3.33, "#o8 .capK", "#o8 .cap b", "#o8 .cap i"]
+        /* ---------- ESCENAS 2-4 · la tarjeta de cada etapa ----------
+           Entrada con rebote (back.out) como en la referencia: la tarjeta salta
+           un poco hacia arriba y se endereza, y despues se traza el dibujo. */
+        var CARD_IN = { opacity: 0, scale: 0.78, y: 36, rotate: -2.5 };
+        var CARD_OUT = { opacity: 1, scale: 1, y: 0, rotate: 0, duration: 0.85, ease: "back.out(1.7)" };
+        var stages = [
+          ["#o2", "#cardA", "#nA", "#dA", 3.4],
+          ["#o3", "#cardB", "#nB", "#dB", 6],
+          ["#o4", "#cardC", "#nC", "#dC", 8.6]
         ];
-        captions.forEach(function (c) {
-          tl.fromTo(c[0], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, c[1]);
-          tl.fromTo(c[3], { opacity: 0, x: -26 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, c[1] + 0.12);
-          tl.fromTo(c[4], { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }, c[1] + 0.2);
-          tl.fromTo(c[5], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, c[1] + 0.42);
-          tl.to(c[0], { opacity: 0, duration: 0.45, ease: "power2.in" }, c[1] + c[2] - 0.45);
+        stages.forEach(function (s) {
+          var t = s[4];
+          tl.fromTo(s[0], { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, t);
+          tl.fromTo(s[0] + " .step", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t + 0.1);
+          tl.fromTo(s[1], CARD_IN, CARD_OUT, t + 0.14);
+          cardReveal(tl, s[1], t + 0.44, 0.014);
+          tl.fromTo(s[2], { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, t + 0.95);
+          tl.fromTo(s[3], { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, t + 1.1);
+          tl.to(s[0], { opacity: 0, duration: 0.4, ease: "power2.in" }, t + 2.2);
         });
 
-        /* ---------- ESCENA 9 · CIERRE ---------- */
-        tl.fromTo("#o9", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, 28.13);
-        tl.fromTo("#o9 .ctaKick", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" }, 28.35);
-        tl.fromTo("#o9 .cl", { yPercent: 114 }, { yPercent: 0, duration: 0.9, ease: "power4.out", stagger: 0.12 }, 28.5);
-        tl.fromTo("#cRule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 29.15);
-        tl.fromTo("#o9 .chip", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.65, ease: "back.out(1.7)", stagger: 0.14 }, 29.35);
-        tl.fromTo("#cNote", { opacity: 0 }, { opacity: 1, duration: 0.7 }, 29.95);
+        /* ---------- escena 4 · la tarjeta crece hasta llenar la pantalla ----------
+           El gesto estrella de la referencia: la tarjeta se come el cuadro (y el
+           rotulo y la barra de marca se apartan) para entrar en la escena 5. */
+        tl.to("#cardC", { scale: 3.05, y: 216, duration: 0.7, ease: "power3.inOut" }, 9.7);
+        tl.to(["#o4 .step", "#nC", "#dC"], { opacity: 0, duration: 0.35, ease: "power2.in" }, 10.35);
+
+        /* ---------- ESCENA 5 · LAS TRES ETAPAS ----------
+           Aqui es donde mas se nota la referencia: las tarjetas entran una
+           detras de otra (0,55 s) en vez de todas de golpe. */
+        tl.fromTo("#o5", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 11.2);
+        tl.fromTo("#rowT .cl", { yPercent: 112 }, { yPercent: 0, duration: 0.85, ease: "power4.out" }, 11.3);
+        tl.fromTo("#o5 .icard.sm", { opacity: 0, scale: 0.8, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "back.out(1.6)", stagger: 0.55 }, 11.62);
+        cardReveal(tl, "#cardR1", 11.87, 0.006);
+        cardReveal(tl, "#cardR2", 12.42, 0.006);
+        cardReveal(tl, "#cardR3", 12.97, 0.006);
+        tl.fromTo("#o5 .ilabel", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.55 }, 11.92);
+        tl.fromTo("#rowN", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 13.25);
+        tl.to("#o5", { opacity: 0, duration: 0.4, ease: "power2.in" }, 13.7);
+
+        /* ---------- ESCENAS 6-10 · RÓTULOS ----------
+           Titular centrado sobre placa, con las palabras clave en cian de neon
+           que se destapan desde abajo (mascara) como el texto grande de la
+           referencia. */
+        var captions = [
+          ["#o6", 14.1],
+          ["#o7", 16.7],
+          ["#o8", 19.3],
+          ["#o9", 21.9],
+          ["#o10", 24.5]
+        ];
+        captions.forEach(function (c) {
+          var t = c[1];
+          tl.fromTo(c[0], { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, t);
+          tl.fromTo(c[0] + " .capK", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t + 0.1);
+          tl.fromTo(c[0] + " .cl", { yPercent: 112 }, { yPercent: 0, duration: 0.8, ease: "power4.out", stagger: 0.1 }, t + 0.18);
+          tl.fromTo(c[0] + " > .cap > i", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, t + 0.62);
+          tl.to(c[0], { opacity: 0, duration: 0.4, ease: "power2.in" }, t + 2.2);
+        });
+
+        /* ---------- ESCENA 11 · CIERRE ---------- */
+        tl.fromTo("#o11", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, 27.1);
+        tl.fromTo("#o11 .ctaKick", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 27.35);
+        tl.fromTo("#o11 .cl", { yPercent: 114 }, { yPercent: 0, duration: 0.9, ease: "power4.out", stagger: 0.12 }, 27.5);
+        tl.fromTo("#cRule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 28.3);
+        tl.fromTo("#o11 .chip", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.65, ease: "back.out(1.7)", stagger: 0.14 }, 28.5);
+        tl.fromTo("#cNote", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 29.15);
 
         window.__timelines["casa-modular"] = tl;
       }
