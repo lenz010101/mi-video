@@ -1,8 +1,33 @@
-# Hola desde GitHub — HyperFrames
+# WOKIROLL — Escárcega, Campeche
 
-Vídeo hecho con **HTML + CSS + GSAP** y renderizado **100% en GitHub**.
-No hace falta instalar Node.js, FFmpeg ni Chrome en tu ordenador: el render corre
-en la nube de GitHub Actions y el MP4 aparece como *artifact* descargable.
+Vídeo promocional vertical (9:16) hecho con **HTML + CSS + GSAP** y renderizado
+**100% en GitHub**. No hace falta instalar Node.js, FFmpeg ni Chrome en tu
+ordenador: el render corre en la nube de GitHub Actions y el MP4 aparece como
+*artifact* descargable.
+
+<https://github.com/lenz010101/mi-video>
+
+---
+
+## El vídeo
+
+| Dato        | Valor                            |
+| ----------- | -------------------------------- |
+| Formato     | 1080 × 1920 (9:16 vertical)      |
+| Duración    | 17,5 s                           |
+| FPS         | 30                               |
+| Audio       | Sí (música de fondo con fundidos)|
+| Escenas     | 5                                |
+
+**Guion:**
+
+| # | Escena        | Qué se ve                                                        |
+| - | ------------- | ---------------------------------------------------------------- |
+| 1 | Logo          | Aparición letra a letra de **WOKIROLL**, "EST. 1995", brillo y sello |
+| 2 | Carta         | Tipografía cinética: ROLLS · KIMBAP · WOK · RAMEN · SUSHI · ONIGIRI |
+| 3 | Fotos         | 4 fotografías a pantalla completa con *Ken Burns* y rótulos       |
+| 4 | Diferencias   | Wok 300 °C · Preparado en vivo · Para llevar                      |
+| 5 | Invitación    | "ESCÁRCEGA, CAMPECHE" + **TE ESPERAMOS**                          |
 
 ---
 
@@ -10,18 +35,20 @@ en la nube de GitHub Actions y el MP4 aparece como *artifact* descargable.
 
 ```
 .
-├── index.html                          # La composición (el "guion" del vídeo)
-├── .github/
-│   └── workflows/
-│       ├── render.yml                  # Render en la nube de GitHub (sin cuentas)
-│       └── render-cloud.yml            # Render en la nube de HeyGen (opcional)
-├── .gitignore
+├── index.html                       # La composición (el "guion" del vídeo)
+├── assets/
+│   ├── fonts/                       # Bebas Neue + Inter (empaquetadas)
+│   ├── img/                         # Fotografías de la escena 3
+│   └── audio/
+│       └── music-source.mp3         # Pista original (el workflow la recorta)
+├── .github/workflows/
+│   ├── render.yml                   # Render en la nube de GitHub (sin cuentas)
+│   └── render-cloud.yml             # Render en la nube de HeyGen (opcional)
 └── README.md
 ```
 
-`index.html` es un vídeo de 6 segundos a 1920×1080 y 30 fps: una insignia, una
-barra de acento, un titular y un subtítulo, todos animados con una *timeline* de
-GSAP en pausa que HyperFrames recorre fotograma a fotograma.
+`index.html` contiene una *timeline* de GSAP **en pausa** que HyperFrames
+recorre fotograma a fotograma. El resultado es siempre idéntico y reproducible.
 
 ---
 
@@ -35,32 +62,12 @@ push a GitHub  ─►  GitHub Actions  ─►  Node 22 + FFmpeg  ─►  hyperfr
 
 1. Subes los cambios al repositorio.
 2. GitHub Actions arranca una máquina virtual Ubuntu, instala Node 22 y FFmpeg.
-3. Ejecuta `hyperframes lint` y después `hyperframes render`.
-4. Guarda el MP4 como *artifact* del workflow para que lo descargues.
-
----
-
-## Puesta en marcha (una sola vez)
-
-Como en tu equipo no hay `git` instalado, lo más rápido es usar la web de GitHub:
-
-1. Entra en <https://github.com/new> y crea un repositorio (por ejemplo
-   `hyperframes-github`) **público** o **privado**, sin README ni .gitignore.
-2. En el repositorio recién creado, pulsa **Add file → Upload files**.
-3. Arrastra **todo el contenido de esta carpeta**, incluida la carpeta oculta
-   `.github` (activa "ver archivos ocultos" en el explorador de Windows:
-   *Vista → Mostrar → Elementos ocultos*).
-   - `index.html`
-   - `README.md`
-   - `.gitignore`
-   - `.github/workflows/render.yml`
-   - `.github/workflows/render-cloud.yml`
-4. Escribe un mensaje de commit y pulsa **Commit changes**.
-
-> ¿Prefieres hacerlo desde la terminal? Instala las herramientas con:
-> `winget install --id Git.Git -e` y `winget install --id GitHub.cli -e`,
-> y luego `gh auth login`, `git init`, `git add .`, `git commit -m "first"`,
-> `git push`.
+3. Recorta la música: `ffmpeg` la corta a 17,5 s y le aplica fundido de
+   entrada y de salida generando `assets/audio/music.mp3`.
+4. Ejecuta `hyperframes lint` (si falla, **no** renderiza) y después
+   `hyperframes render`.
+5. Captura fotogramas de revisión y comprueba que el MP4 tenga audio.
+6. Publica dos *artifacts*: el vídeo y los fotogramas de control.
 
 ---
 
@@ -68,7 +75,7 @@ Como en tu equipo no hay `git` instalado, lo más rápido es usar la web de GitH
 
 ### Automático
 
-Cada `push` que toque `index.html` (o los workflows) lanza un render.
+Cada `push` que toque `index.html`, `assets/**` o los workflows lanza un render.
 
 ### Manual, con opciones
 
@@ -83,31 +90,71 @@ Cada `push` que toque `index.html` (o los workflows) lanza un render.
 
 ### Descargar el vídeo
 
-Cuando el workflow termina en verde, entra en esa ejecución y baja hasta
-**Artifacts** → descarga **hyperframes-video** (un `.zip` con el vídeo dentro).
+Cuando el workflow termina en verde, entra en esa ejecución, baja hasta
+**Artifacts** y descarga:
+
+- **hyperframes-video** — un `.zip` con el MP4 final.
+- **hyperframes-frames** — fotogramas sueltos + una hoja de contactos para
+  revisar el resultado de un vistazo.
 
 ---
 
 ## Editar el vídeo
 
-Todo se controla desde `index.html`:
+| Quiero cambiar…          | Dónde                                                       |
+| ------------------------ | ----------------------------------------------------------- |
+| Los textos               | Los `<h1>`, `<p>` y `<div>` dentro de `#stage`               |
+| **Los platillos**        | Las líneas `<div class="word">` de la escena `#s2`           |
+| **Las fotos**            | Sustituye los archivos de `assets/img/` (mismo nombre) o edita los `src` de `#s3` |
+| **Los rótulos de foto**  | Los `<span class="k">`, `<b>` e `<i>` dentro de `#s3 .shotCap` |
+| Los colores              | `#bg`, `#glowA`, `#glowB` y las variables de cada escena      |
+| La duración              | `data-duration` en `#stage` **y** `-t` del paso de música     |
+| El ritmo de las escenas  | Los números de tiempo de la *timeline* de GSAP                |
+| La resolución / fps      | `data-width`, `data-height` y `data-fps` en `#stage`          |
+| **La música**            | Reemplaza `assets/audio/music-source.mp3`                     |
 
-| Quiero cambiar…        | Dónde                                                            |
-| ---------------------- | ---------------------------------------------------------------- |
-| El texto               | Los `<h1>`, `<p>` y `<div>` dentro de `#stage`                    |
-| Los colores            | El `background` de `#stage` y el gradiente de `#accent`           |
-| La duración            | `data-duration="6"` en `#stage` **y** en cada `.clip`             |
-| La animación           | La *timeline* de GSAP del final del archivo                       |
-| La resolución / fps    | `data-width`, `data-height` y `data-fps` en `#stage`              |
+### Reglas rápidas de HyperFrames
 
-Reglas rápidas de HyperFrames:
-
-- Cada elemento que aparece en el tiempo lleva `class="clip"`, `data-start`,
-  `data-duration` y `data-track-index` (las pistas no deben solaparse).
 - La animación va en una timeline **en pausa** registrada en
   `window.__timelines["<data-composition-id>"]`. HyperFrames la "busca" en cada
   fotograma, así que el resultado es reproducible.
-- Nada de `setTimeout` ni animaciones dependientes del reloj real: se desincronizan.
+- Nada de `setTimeout` ni animaciones dependientes del reloj real.
+- **Ojo con GSAP + CSS:** si un elemento ya tiene `transform` en CSS, GSAP mide
+  ese valor en píxeles y los `to { xPercent/yPercent }` se vuelven inútiles.
+  Por eso los valores iniciales se fijan siempre con `fromTo`.
+- El `lint` bloquea el render. Los avisos más comunes son
+  `overlapping_gsap_tweens` (dos tweens solapados sobre lo mismo),
+  `gsap_css_transform_conflict` y `gsap_non_transform_motion`.
+
+---
+
+## Créditos y licencias
+
+### Música
+
+> **"Late Nights In Osaka"** — *YellowTree*
+> Fuente: [Freesound](https://freesound.org/s/595751/)
+> Licencia: [Creative Commons BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+> (uso comercial permitido **con atribución**)
+
+### Fotografías
+
+Imágenes de [Unsplash](https://unsplash.com), bajo la
+[Unsplash License](https://unsplash.com/license): uso comercial permitido y
+gratuito, sin necesidad de atribución.
+
+> ⚠️ Las fotos son de archivo: **no son del local de Escárcega**. Si quieres
+> sustituirlas por fotos reales del restaurante, reemplaza los archivos de
+> `assets/img/` manteniendo el mismo nombre y vuelve a lanzar el render.
+
+### Tipografías
+
+- **Bebas Neue** — SIL Open Font License 1.1
+- **Inter** — SIL Open Font License 1.1
+
+### Motor de render
+
+HyperFrames — Apache 2.0 · <https://github.com/heygen-com/hyperframes>
 
 ---
 
@@ -121,43 +168,9 @@ Si prefieres el render gestionado de **HyperFrames Cloud** (HeyGen):
    New repository secret**, nombre `HEYGEN_API_KEY`.
 3. Ve a **Actions → Render on HeyGen Cloud → Run workflow**.
 
-Ese workflow hace `hyperframes auth login --api-key` y luego
-`hyperframes cloud render`, que empaqueta, sube, espera el render y descarga el
-vídeo final.
-
----
-
-## Opcional: un diseño, muchos vídeos (variables)
-
-Puedes convertir partes del `index.html` en plantillas y renderizar variantes
-sin duplicar el diseño. Añade la declaración a la composición y enlaza el texto:
-
-```html
-<div
-  id="stage"
-  data-composition-id="hello-github"
-  data-composition-variables='[
-    {"id":"title","type":"string","label":"Titular","default":"Hola desde GitHub"}
-  ]'
->
-  <h1 id="title" class="clip" data-start="0" data-duration="6" data-track-index="3"
-      data-var-text="title">Hola desde GitHub</h1>
-</div>
-```
-
-Después, en `render.yml`, pasa los valores:
-
-```yaml
---variables '{"title":"Q4 Recap"}'
-# o, para muchas filas:
---variables-file rows.json --batch --output "renders/{name}.mp4"
-```
-
 ---
 
 ## Enlaces
 
 - Documentación: <https://hyperframes.heygen.com/introduction>
-- Render en la nube: <https://hyperframes.heygen.com/deploy/cloud>
-- Repositorio: <https://github.com/heygen-com/hyperframes>
-- Licencia: Apache 2.0
+- Repositorio del motor: <https://github.com/heygen-com/hyperframes>
