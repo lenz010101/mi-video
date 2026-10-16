@@ -1,0 +1,103 @@
+name: Comparar con el render anterior
+
+# Mide CUÁNTO cambia el diseño respecto a una ejecución anterior, comparando
+# los fotogramas de revisión con PSNR y SSIM (las métricas estándar de
+# diferencia entre imágenes). Sirve para comprobar que una optimización de
+# rendimiento no ha cambiado lo que se ve.
+#
+# Referencia: por encima de ~40 dB de PSNR y ~0,99 de SSIM la diferencia es
+# imperceptible a simple vista.
+
+on:
+  workflow_dispatch:
+    inputs:
+      reference_run:
+        description: "ID de la ejecución de la que tomar los fotogramas de referencia"
+        type: string
+        default: "38842003997"
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  HYPERFRAMES_VERSION: "0.8.162"
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Cache de HyperFrames, navegador y fuentes
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache
+          key: hf-${{ runner.os }}-${{ env.HYPERFRAMES_VERSION }}
+          restore-keys: |
+            hf-${{ runner.os }}-
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg
+
+      - name: Snapshot del diseno actual
+        run: |
+          npx --yes hyperframes@${{ env.HYPERFRAMES_VERSION }} snapshot . \
+            --frames 7 \
+            --no-browser-gpu \
+            --output new-frames
+
+      - name: Descargar los fotogramas de referencia
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ inputs.reference_run }}
+        run: |
+          curl -sSL \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/artifacts" \
+            -o artifacts.json
+          node -e 'const a = require("./artifacts.json").artifacts.find((x) => x.name === "hyperframes-frames"); if (!a) { console.error("No encontre el artefacto hyperframes-frames en esa ejecucion"); process.exit(1); } require("fs").writeFileSync("url.txt", a.archive_download_url);'
+          curl -sSL -H "Authorization: Bearer $GH_TOKEN" "$(cat url.txt)" -o reference.zip
+          mkdir -p old-frames
+          unzip -q -o reference.zip -d old-frames
+          echo "--- referencia ---"
+          ls old-frames
+          echo "--- actual ---"
+          ls new-frames
+
+      - name: Comparar (PSNR y SSIM)
+        run: |
+          echo "FOTOGRAMA                      PSNR              SSIM"
+          echo "---------------------------------------------------------"
+          for f in new-frames/frame-*.png; do
+            b=$(basename "$f")
+            if [ -f "old-frames/$b" ]; then
+              p=$(ffmpeg -hide_banner -i "old-frames/$b" -i "new-frames/$b" -lavfi psnr -f null - 2>&1 | grep -o 'average:[^ ]*' | head -1)
+              s=$(ffmpeg -hide_banner -i "old-frames/$b" -i "new-frames/$b" -lavfi ssim -f null - 2>&1 | grep -o 'All:[^ ]*' | head -1)
+              printf "%-30s %-17s %s\n" "$b" "${p:-n/a}" "${s:-n/a}"
+            else
+              printf "%-30s (sin referencia con ese nombre)\n" "$b"
+            fi
+          done
+
+      - name: Guardar los fotogramas nuevos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparacion-frames-nuevos
+          path: new-frames/
+          if-no-files-found: ignore
+          retention-days: 7
