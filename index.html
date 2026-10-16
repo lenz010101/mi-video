@@ -43,40 +43,27 @@
           linear-gradient(178deg, #101013 0%, #0a0a0e 46%, #07070a 100%);
       }
 
-      /* El difuminado va dentro del propio degradado radial, sin filter: blur().
-         Un blur() sobre algo que ya es un degradado suave obligaba a
-         recalcular el desenfoque en los 525 fotogramas. El tamaño y las
-         paradas están compensados para reproducir el mismo halo. */
       #glowA,
       #glowB {
         position: absolute;
         border-radius: 50%;
+        filter: blur(90px);
       }
 
       #glowA {
-        top: -280px;
-        left: -320px;
-        width: 1100px;
-        height: 1100px;
-        background: radial-gradient(
-          circle,
-          rgba(255, 46, 46, 0.42) 0%,
-          rgba(255, 46, 46, 0.2) 42%,
-          rgba(255, 46, 46, 0) 88%
-        );
+        top: -180px;
+        left: -220px;
+        width: 900px;
+        height: 900px;
+        background: radial-gradient(circle, rgba(255, 46, 46, 0.5), rgba(255, 46, 46, 0) 68%);
       }
 
       #glowB {
-        bottom: -335px;
-        right: -295px;
-        width: 1050px;
-        height: 1050px;
-        background: radial-gradient(
-          circle,
-          rgba(46, 230, 214, 0.3) 0%,
-          rgba(46, 230, 214, 0.15) 42%,
-          rgba(46, 230, 214, 0) 88%
-        );
+        bottom: -240px;
+        right: -200px;
+        width: 860px;
+        height: 860px;
+        background: radial-gradient(circle, rgba(46, 230, 214, 0.36), rgba(46, 230, 214, 0) 68%);
       }
 
       #grid {
@@ -97,14 +84,16 @@
         width: 70%;
         height: 170%;
         background: linear-gradient(90deg, rgba(255, 196, 71, 0), rgba(255, 196, 71, 0.13), rgba(255, 196, 71, 0));
+        filter: blur(24px);
       }
 
       #grain {
         position: absolute;
         inset: 0;
-        opacity: 0.06;
+        opacity: 0.05;
         background-image: radial-gradient(rgba(255, 255, 255, 0.9) 0.5px, transparent 0.6px);
         background-size: 3px 3px;
+        mix-blend-mode: overlay;
       }
 
       #vignette {
@@ -254,7 +243,7 @@
         position: absolute;
         top: -8%;
         left: 0;
-        width: 92px;
+        width: 84px;
         height: 116%;
         background: linear-gradient(
           90deg,
@@ -262,6 +251,8 @@
           rgba(255, 255, 255, 0.95) 50%,
           rgba(255, 255, 255, 0) 100%
         );
+        mix-blend-mode: screen;
+        filter: blur(5px);
         opacity: 0;
       }
 
