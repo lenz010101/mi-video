@@ -81,6 +81,16 @@ jobs:
             --no-browser-gpu \
             --output "renders/${FILENAME:-video.mp4}"
 
+      - name: Capture review frames
+        continue-on-error: true
+        env:
+          FPS: ${{ inputs.fps }}
+        run: |
+          npx --yes hyperframes@latest snapshot . \
+            --frames 7 \
+            --no-browser-gpu \
+            --output snapshots
+
       - name: Upload the rendered video
         uses: actions/upload-artifact@v4
         with:
@@ -88,3 +98,12 @@ jobs:
           path: renders/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Upload review frames
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-frames
+          path: snapshots/
+          if-no-files-found: ignore
+          retention-days: 14
