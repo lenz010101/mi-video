@@ -1,665 +1,392 @@
 <!DOCTYPE html>
-<html lang="es">
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"marca","type":"string","label":"Marca","default":"CASA MODULAR"},
+    {"id":"whatsapp","type":"string","label":"WhatsApp","default":"TU NÚMERO"},
+    {"id":"instagram","type":"string","label":"Instagram","default":"@TU.INSTAGRAM"}
+  ]'
+>
   <head>
     <meta charset="UTF-8" />
-    <title>WOKIROLL — Escárcega, Campeche</title>
+    <title>Casa Modular — promo vertical</title>
     <link rel="stylesheet" href="assets/fonts/fonts.css" />
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      html,
-      body {
-        background: #08080b;
-      }
+      html, body { background: #05070a; }
 
       #stage {
         position: relative;
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: #0a0a0e;
-        color: #fff7ec;
+        background: #05070a;
+        color: #ffffff;
         font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
       }
 
-      #cam {
+      /* ---------------- capa de video ---------------- */
+      /* Sin transform en el contenedor de video: un transform ANIMADO aqui
+         obliga a Chrome a rehacer el raster de los 1080x1920 enteros en cada
+         fotograma. Eso es lo que colgaba la captura. */
+      #videos {
         position: absolute;
         inset: 0;
-        transform-origin: 50% 45%;
       }
-
-      /* ---------- background ---------- */
-      #bg {
-        position: absolute;
-        inset: -6%;
-        background:
-          radial-gradient(1100px 900px at 18% 6%, rgba(255, 138, 31, 0.13), rgba(255, 138, 31, 0) 62%),
-          radial-gradient(900px 900px at 90% 96%, rgba(46, 230, 214, 0.1), rgba(46, 230, 214, 0) 64%),
-          linear-gradient(178deg, #101013 0%, #0a0a0e 46%, #07070a 100%);
-      }
-
-      #glowA,
-      #glowB {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(90px);
-      }
-
-      #glowA {
-        top: -180px;
-        left: -220px;
-        width: 900px;
-        height: 900px;
-        background: radial-gradient(circle, rgba(255, 46, 46, 0.5), rgba(255, 46, 46, 0) 68%);
-      }
-
-      #glowB {
-        bottom: -240px;
-        right: -200px;
-        width: 860px;
-        height: 860px;
-        background: radial-gradient(circle, rgba(46, 230, 214, 0.36), rgba(46, 230, 214, 0) 68%);
-      }
-
-      #grid {
-        position: absolute;
-        inset: -10% 0;
-        background-image:
-          linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-        background-size: 54px 54px;
-        mask-image: radial-gradient(70% 60% at 50% 50%, #000 20%, transparent 100%);
-        -webkit-mask-image: radial-gradient(70% 60% at 50% 50%, #000 20%, transparent 100%);
-      }
-
-      #beam {
-        position: absolute;
-        top: -30%;
-        left: -40%;
-        width: 70%;
-        height: 170%;
-        background: linear-gradient(90deg, rgba(255, 196, 71, 0), rgba(255, 196, 71, 0.13), rgba(255, 196, 71, 0));
-        filter: blur(24px);
-      }
-
-      #grain {
+      .vwrap {
         position: absolute;
         inset: 0;
-        opacity: 0.05;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.9) 0.5px, transparent 0.6px);
-        background-size: 3px 3px;
-        mix-blend-mode: overlay;
-      }
-
-      #vignette {
-        position: absolute;
-        inset: 0;
-        background:
-          radial-gradient(120% 78% at 50% 50%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, 0.72) 100%),
-          linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 14%, rgba(0, 0, 0, 0) 84%, rgba(0, 0, 0, 0.55) 100%);
-      }
-
-      /* ---------- corner frame ---------- */
-      #frame .fc {
-        position: absolute;
-        width: 62px;
-        height: 62px;
-        border: 2px solid rgba(255, 196, 71, 0.55);
-      }
-
-      #frame .fc1 {
-        left: 62px;
-        top: 62px;
-        border-right: none;
-        border-bottom: none;
-      }
-
-      #frame .fc2 {
-        right: 62px;
-        top: 62px;
-        border-left: none;
-        border-bottom: none;
-      }
-
-      #frame .fc3 {
-        left: 62px;
-        bottom: 62px;
-        border-right: none;
-        border-top: none;
-      }
-
-      #frame .fc4 {
-        right: 62px;
-        bottom: 62px;
-        border-left: none;
-        border-top: none;
-      }
-
-      /* ---------- scenes ---------- */
-      .scene {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #s1 {
-        opacity: 1;
-      }
-
-      #s2,
-      #s3,
-      #s4,
-      #s5 {
-        opacity: 0;
-      }
-
-      /* ---------- scene 1: logo ---------- */
-      .s1-top {
-        display: flex;
-        align-items: center;
-        gap: 26px;
-        margin-bottom: 46px;
-      }
-
-      .s1-top .rule {
-        display: block;
-        width: 150px;
-        height: 2px;
-        background: linear-gradient(90deg, rgba(255, 196, 71, 0), rgba(255, 196, 71, 0.85));
-      }
-
-      .s1-top .rule:last-child {
-        background: linear-gradient(90deg, rgba(255, 196, 71, 0.85), rgba(255, 196, 71, 0));
-      }
-
-      .s1-top .est {
-        font-size: 27px;
-        font-weight: 600;
-        letter-spacing: 0.42em;
-        color: #ffc247;
-        opacity: 0;
-        white-space: nowrap;
-      }
-
-      .logoWrap {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #logoGlow {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 208px;
-        letter-spacing: 0.005em;
-        color: #ff8a1f;
-        filter: blur(30px);
-        opacity: 0;
-        white-space: nowrap;
-      }
-
-      #logo {
-        position: relative;
-        display: flex;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 208px;
-        line-height: 1;
-        letter-spacing: 0.005em;
-      }
-
-      #logo .l {
-        display: inline-block;
         overflow: hidden;
-        padding: 0.05em 0;
-      }
-
-      #logo .l i,
-      .ctaMask .l i {
-        display: inline-block;
-        font-style: normal;
-      }
-
-      #logo .l i {
-        color: #fff7ec;
-        text-shadow:
-          0 0 18px rgba(255, 196, 71, 0.45),
-          0 0 62px rgba(255, 94, 31, 0.38);
-      }
-
-      #sweep1 {
-        position: absolute;
-        top: -8%;
-        left: 0;
-        width: 84px;
-        height: 116%;
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.95) 50%,
-          rgba(255, 255, 255, 0) 100%
-        );
-        mix-blend-mode: screen;
-        filter: blur(5px);
         opacity: 0;
       }
-
-      .s1-sub {
-        margin-top: 40px;
-        font-size: 30px;
-        font-weight: 600;
-        letter-spacing: 0.34em;
-        color: rgba(255, 247, 236, 0.82);
-        opacity: 0;
-        white-space: nowrap;
-      }
-
-      #s1 .seal {
-        position: absolute;
-        right: 118px;
-        top: 566px;
-        width: 172px;
-        height: 172px;
-        border-radius: 50%;
-        border: 4px solid rgba(255, 46, 46, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 82px;
-        color: #ff3b2f;
-        letter-spacing: 0.04em;
-        opacity: 0;
-        box-shadow: 0 0 40px rgba(255, 46, 46, 0.35) inset;
-      }
-
-      #s1 .sealRing {
-        position: absolute;
-        right: 118px;
-        top: 566px;
-        width: 172px;
-        height: 172px;
-        border-radius: 50%;
-        border: 3px solid rgba(255, 46, 46, 0.75);
-        opacity: 0;
-      }
-
-      /* ---------- scene 2: menu roll ---------- */
-      #rollList {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-      }
-
-      #s2 .word {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        opacity: 0;
-        overflow: hidden;
-        padding: 0.04em 0.1em;
-      }
-
-      #s2 .word em {
-        display: inline-block;
-        font-family: "Bebas Neue", sans-serif;
-        font-style: normal;
-        font-size: 118px;
-        line-height: 1;
-        letter-spacing: 0.02em;
-        color: #fff7ec;
-      }
-
-      #s2 .word .dot {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #ff2e2e;
-        box-shadow: 0 0 22px rgba(255, 46, 46, 0.9);
-        opacity: 0;
-      }
-
-      #s2 .word:nth-child(2) em {
-        color: #ffd27a;
-      }
-
-      #s2 .word:nth-child(4) em {
-        color: #ffd27a;
-      }
-
-      #tempBadge {
-        position: absolute;
-        right: 96px;
-        bottom: 232px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding: 22px 34px;
-        border: 2px solid rgba(255, 138, 31, 0.6);
-        border-radius: 999px;
-        background: rgba(255, 138, 31, 0.09);
-        opacity: 0;
-      }
-
-      #tempBadge svg {
-        width: 54px;
-        height: 54px;
-        color: #ff8a1f;
-      }
-
-      #tempBadge .tb-text {
-        display: flex;
-        flex-direction: column;
-      }
-
-      #tempBadge strong {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 56px;
-        line-height: 1;
-        letter-spacing: 0.03em;
-        color: #ffc247;
-        font-weight: 400;
-      }
-
-      #tempBadge small {
-        font-size: 20px;
-        font-weight: 600;
-        letter-spacing: 0.24em;
-        color: rgba(255, 247, 236, 0.7);
-      }
-
-      /* ---------- scene 3: photo gallery ---------- */
-      #s3 .shot {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        overflow: hidden;
-        background: #07070a;
-      }
-
-      #s3 .shot img {
+      .vwrap video {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center;
         display: block;
       }
 
-      #s3 .shotVeil {
+      /* ---------------- ambiente ---------------- */
+      /* La vineta va DEBAJO de los rotulos (z-index 5) para oscurecer solo
+         la imagen, no el texto. Una sola capa de gradiente: barata. */
+      #vig {
         position: absolute;
         inset: 0;
+        pointer-events: none;
+        z-index: 5;
+        background: radial-gradient(120% 76% at 50% 46%, rgba(0, 0, 0, 0) 42%, rgba(0, 0, 0, 0.55) 100%);
+      }
+
+      /* ---------------- escenas ---------------- */
+      .ov {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        z-index: 20;
+      }
+
+      .scrim { position: absolute; inset: 0; }
+
+      .scrim-strong {
         background: linear-gradient(
           180deg,
-          rgba(7, 7, 10, 0.9) 0%,
-          rgba(7, 7, 10, 0.34) 22%,
-          rgba(7, 7, 10, 0.1) 44%,
-          rgba(7, 7, 10, 0.68) 76%,
-          rgba(7, 7, 10, 0.96) 100%
+          rgba(5, 7, 10, 0.82) 0%,
+          rgba(5, 7, 10, 0.34) 24%,
+          rgba(5, 7, 10, 0.28) 44%,
+          rgba(5, 7, 10, 0.72) 72%,
+          rgba(5, 7, 10, 0.94) 100%
         );
       }
 
-      #s3 .shotCap {
+      .scrim-soft {
+        background: linear-gradient(
+          180deg,
+          rgba(5, 7, 10, 0.7) 0%,
+          rgba(5, 7, 10, 0.24) 28%,
+          rgba(5, 7, 10, 0.26) 50%,
+          rgba(5, 7, 10, 0.7) 78%,
+          rgba(5, 7, 10, 0.9) 100%
+        );
+      }
+
+      .scrim-bottom {
+        background: linear-gradient(
+          180deg,
+          rgba(5, 7, 10, 0.34) 0%,
+          rgba(5, 7, 10, 0.08) 30%,
+          rgba(5, 7, 10, 0.4) 62%,
+          rgba(5, 7, 10, 0.94) 100%
+        );
+      }
+
+      /* ---------------- marca fija ---------------- */
+      #brand {
         position: absolute;
-        left: 88px;
-        right: 88px;
-        bottom: 286px;
-        opacity: 0;
-      }
-
-      #s3 .shotCap .k {
-        display: block;
-        font-size: 26px;
-        font-weight: 600;
-        letter-spacing: 0.34em;
-        color: #ffc247;
-        margin-bottom: 18px;
-      }
-
-      #s3 .shotCap b {
-        display: block;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 106px;
-        font-weight: 400;
-        line-height: 0.98;
-        letter-spacing: 0.02em;
-        color: #fff7ec;
-        text-shadow: 0 4px 40px rgba(0, 0, 0, 0.75);
-      }
-
-      #s3 .shotCap i {
-        display: block;
-        margin-top: 20px;
-        font-style: normal;
-        font-size: 24px;
-        font-weight: 600;
-        letter-spacing: 0.24em;
-        color: rgba(255, 247, 236, 0.72);
-      }
-
-      #s3 .shotNum {
-        position: absolute;
-        right: 88px;
-        bottom: 306px;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 40px;
-        letter-spacing: 0.16em;
-        color: rgba(255, 247, 236, 0.5);
-        opacity: 0;
-      }
-
-      /* ---------- scene 4: features ---------- */
-      .s4-title {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 96px;
-        line-height: 1;
-        letter-spacing: 0.05em;
-        color: #fff7ec;
-        margin-bottom: 78px;
-        text-align: center;
-        opacity: 0;
-      }
-
-      .s4-title span {
-        color: #ff8a1f;
-      }
-
-      #s4 .featList {
-        display: flex;
-        flex-direction: column;
-        gap: 54px;
-        width: 830px;
-      }
-
-      #s4 .feat {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 34px;
-        padding: 26px 0 26px 40px;
-        opacity: 0;
-      }
-
-      #s4 .feat .bar {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 6px;
-        height: 100%;
-        border-radius: 4px;
-        background: linear-gradient(180deg, #ffc247, #ff2e2e);
-        transform-origin: 50% 0%;
-      }
-
-      #s4 .feat svg {
-        width: 72px;
-        height: 72px;
-        flex: none;
-        color: #ffc247;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 1.7;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        opacity: 0;
-      }
-
-      #s4 .feat .txt {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      #s4 .feat strong {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 62px;
-        font-weight: 400;
-        line-height: 1;
-        letter-spacing: 0.04em;
-        color: #fff7ec;
-      }
-
-      #s4 .feat small {
-        font-size: 22px;
-        font-weight: 600;
-        letter-spacing: 0.26em;
-        color: rgba(255, 247, 236, 0.62);
-      }
-
-      /* ---------- scene 5: call to action ---------- */
-      #s5 .pinWrap {
-        width: 108px;
-        height: 108px;
-        color: #ff8a1f;
-        opacity: 0;
-      }
-
-      #s5 .pinWrap svg {
-        width: 100%;
-        height: 100%;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2.4;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      #s5 .city {
-        margin-top: 34px;
-        font-size: 32px;
-        font-weight: 600;
-        letter-spacing: 0.36em;
-        color: #ffc247;
-        opacity: 0;
-        white-space: nowrap;
-      }
-
-      .ctaMask {
-        overflow: hidden;
-        padding: 0.06em 0.04em;
-        margin-top: 22px;
-      }
-
-      .ctaMask .l {
-        display: inline-block;
-        overflow: hidden;
-        padding: 0.05em 0;
-      }
-
-      #s5 .cta {
-        display: flex;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 168px;
-        line-height: 1;
-        letter-spacing: 0.01em;
-        color: #fff7ec;
-        text-align: center;
-      }
-
-      #s5 .cta .sp {
-        width: 0.28em;
-      }
-
-      #s5 .ctaRule {
-        margin-top: 30px;
-        width: 620px;
-        height: 5px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, rgba(255, 46, 46, 0), #ff8a1f 50%, rgba(255, 46, 46, 0));
-        box-shadow: 0 0 26px rgba(255, 138, 31, 0.7);
-      }
-
-      #s5 .ctaSub {
-        margin-top: 42px;
-        font-size: 26px;
-        font-weight: 600;
-        letter-spacing: 0.22em;
-        color: rgba(255, 247, 236, 0.78);
-        text-align: center;
-        opacity: 0;
-      }
-
-      #s5 .tag {
-        margin-top: 74px;
-        padding: 14px 30px;
-        border: 2px solid rgba(255, 247, 236, 0.22);
-        border-radius: 999px;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 44px;
-        letter-spacing: 0.22em;
-        color: #fff7ec;
-        opacity: 0;
-      }
-
-      /* ---------- persistent corner brand ---------- */
-      #corner {
-        position: absolute;
-        top: 70px;
+        top: 74px;
         left: 0;
         right: 0;
+        text-align: center;
+        z-index: 55;
+        opacity: 0;
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: 0.38em;
+        color: rgba(255, 255, 255, 0.92);
+        text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
+      }
+      #brand span { color: #4fd1ff; }
+
+      /* ---------------- escena 1 · gancho ---------------- */
+      .hookWrap {
+        position: absolute;
+        left: 84px;
+        right: 84px;
+        top: 690px;
+      }
+      .kicker {
+        font-size: 27px;
+        font-weight: 800;
+        letter-spacing: 0.4em;
+        color: #4fd1ff;
+        margin-bottom: 34px;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+      }
+      .mask { overflow: hidden; padding: 0.06em 0; }
+      .mask i { display: inline-block; font-style: normal; }
+
+      .big {
+        font-size: 138px;
+        font-weight: 800;
+        line-height: 0.98;
+        letter-spacing: -0.015em;
+        text-transform: uppercase;
+        text-shadow: 0 6px 44px rgba(0, 0, 0, 0.72);
+      }
+      .big .accent { color: #4fd1ff; }
+
+      .hookRule {
+        width: 232px;
+        height: 7px;
+        border-radius: 999px;
+        margin: 44px 0 34px;
+        background: linear-gradient(90deg, #4fd1ff, rgba(79, 209, 255, 0));
+      }
+      .hookSub {
+        font-size: 32px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.84);
+        text-shadow: 0 3px 26px rgba(0, 0, 0, 0.8);
+      }
+
+      /* ---------------- escenas 2-4 · etapa ---------------- */
+      .step {
+        position: absolute;
+        top: 152px;
+        left: 88px;
+        right: 88px;
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+      }
+      .step b {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 96px;
+        font-weight: 400;
+        line-height: 0.86;
+        color: #4fd1ff;
+        letter-spacing: 0.02em;
+      }
+      .step span {
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: 0.3em;
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .stageBody {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 424px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .icard {
+        background: #ffffff;
+        border-radius: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 16px;
-        font-size: 22px;
-        font-weight: 600;
-        letter-spacing: 0.3em;
-        color: rgba(255, 247, 236, 0.72);
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
         opacity: 0;
       }
+      .icard svg { width: 100%; height: 100%; display: block; }
 
-      #corner b {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 32px;
-        font-weight: 400;
-        letter-spacing: 0.2em;
-        color: #fff7ec;
+      .icard.lg { width: 640px; height: 640px; padding: 30px; }
+      .icard.sm { width: 292px; height: 292px; padding: 14px; border-radius: 30px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38); }
+
+      .stageName {
+        margin-top: 56px;
+        font-size: 96px;
+        font-weight: 800;
+        line-height: 0.96;
+        letter-spacing: -0.01em;
+        text-transform: uppercase;
+        text-shadow: 0 6px 40px rgba(0, 0, 0, 0.75);
+      }
+      .stageDesc {
+        margin-top: 22px;
+        font-size: 31px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: rgba(255, 255, 255, 0.82);
+        text-align: center;
+        text-shadow: 0 3px 26px rgba(0, 0, 0, 0.8);
       }
 
-      #corner i {
+      /* ---------------- escena 5 · las tres tarjetas ---------------- */
+      .rowTitle {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 372px;
+        text-align: center;
+        font-size: 84px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        text-transform: uppercase;
+        text-shadow: 0 6px 40px rgba(0, 0, 0, 0.75);
+      }
+      .rowTitle em { font-style: normal; color: #4fd1ff; }
+
+      .cardRow {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 640px;
+        display: flex;
+        justify-content: center;
+        gap: 26px;
+      }
+      .cardCol { width: 292px; }
+      .cardCol .ilabel {
+        margin-top: 24px;
+        text-align: center;
+        font-size: 27px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        color: #ffffff;
+        text-shadow: 0 3px 22px rgba(0, 0, 0, 0.8);
+      }
+      .rowNote {
+        position: absolute;
+        left: 88px;
+        right: 88px;
+        top: 1190px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 0 3px 26px rgba(0, 0, 0, 0.8);
+      }
+
+      /* ---------------- escenas 6-8 · rótulo ---------------- */
+      .cap {
+        position: absolute;
+        left: 84px;
+        right: 84px;
+        bottom: 330px;
+      }
+      .capK {
+        display: block;
+        font-size: 27px;
+        font-weight: 800;
+        letter-spacing: 0.36em;
+        color: #4fd1ff;
+        margin-bottom: 22px;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.75);
+      }
+      .cap b {
+        display: block;
+        font-size: 112px;
+        font-weight: 800;
+        line-height: 0.96;
+        letter-spacing: -0.015em;
+        text-transform: uppercase;
+        color: #ffffff;
+        text-shadow: 0 6px 44px rgba(0, 0, 0, 0.78);
+      }
+      .cap b em { font-style: normal; color: #4fd1ff; }
+      .cap i {
+        display: block;
+        margin-top: 26px;
         font-style: normal;
-        color: #ff8a1f;
+        font-size: 29px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 0 3px 26px rgba(0, 0, 0, 0.8);
+      }
+
+      /* ---------------- escena 9 · cierre ---------------- */
+      .ctaWrap {
+        position: absolute;
+        left: 84px;
+        right: 84px;
+        top: 620px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .ctaKick {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: 0.42em;
+        color: #4fd1ff;
+        margin-bottom: 40px;
+        text-shadow: 0 2px 22px rgba(0, 0, 0, 0.75);
+      }
+      .ctaBig {
+        font-size: 128px;
+        font-weight: 800;
+        line-height: 0.98;
+        letter-spacing: -0.015em;
+        text-transform: uppercase;
+        text-shadow: 0 6px 44px rgba(0, 0, 0, 0.78);
+      }
+      .ctaBig .accent { color: #4fd1ff; }
+
+      .ctaRule {
+        width: 640px;
+        height: 6px;
+        border-radius: 999px;
+        margin: 46px 0 44px;
+        background: linear-gradient(90deg, rgba(79, 209, 255, 0), #4fd1ff 50%, rgba(79, 209, 255, 0));
+        box-shadow: 0 0 30px rgba(79, 209, 255, 0.65);
+      }
+
+      .ctaContacts {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        align-items: center;
+      }
+      .chip {
+        padding: 20px 42px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 999px;
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: #ffffff;
+        background: rgba(5, 7, 10, 0.42);
+        white-space: nowrap;
+      }
+      .chip.hi { border-color: rgba(79, 209, 255, 0.85); color: #d9f4ff; }
+
+      .ctaNote {
+        margin-top: 40px;
+        font-size: 27px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.74);
+        text-shadow: 0 3px 24px rgba(0, 0, 0, 0.8);
       }
     </style>
   </head>
   <body>
     <div
       id="stage"
-      data-composition-id="wokiroll"
+      data-composition-id="casa-modular"
       data-start="0"
-      data-duration="17.5"
+      data-duration="32"
       data-width="1080"
       data-height="1920"
       data-fps="30"
@@ -667,291 +394,482 @@
       <audio
         id="music"
         data-start="0"
-        data-duration="17.5"
-        data-track-index="9"
-        data-volume="0.75"
-        src="assets/audio/music.mp3"
+        data-duration="32"
+        data-media-start="19"
+        data-track-index="8"
+        data-volume="0.8"
+        data-fade-in="1.2"
+        data-fade-out="2"
+        src="assets/audio/casa-modular.mp3"
         preload="auto"
       ></audio>
 
-      <div id="cam">
-        <div id="bg"></div>
-        <div id="glowA"></div>
-        <div id="glowB"></div>
-        <div id="grid"></div>
-
-        <!-- ===== ESCENA 1 · LOGO ===== -->
-        <section id="s1" class="scene">
-          <div class="s1-top">
-            <span class="rule"></span>
-            <span class="est">EST. 1995</span>
-            <span class="rule"></span>
-          </div>
-
-          <div class="logoWrap">
-            <div id="logoGlow" aria-hidden="true">WOKIROLL</div>
-            <h1 id="logo" aria-label="WOKIROLL">
-              <span class="l"><i>W</i></span>
-              <span class="l"><i>O</i></span>
-              <span class="l"><i>K</i></span>
-              <span class="l"><i>I</i></span>
-              <span class="l"><i>R</i></span>
-              <span class="l"><i>O</i></span>
-              <span class="l"><i>L</i></span>
-              <span class="l"><i>L</i></span>
-            </h1>
-            <div id="sweep1"></div>
-          </div>
-
-          <p class="s1-sub">SABOR ASIÁTICO AL PASO</p>
-          <div class="sealRing"></div>
-          <div class="seal">WR</div>
-        </section>
-
-        <!-- ===== ESCENA 2 · CARTA ===== -->
-        <section id="s2" class="scene">
-          <div id="rollList">
-            <div class="word"><span class="dot"></span><em>ROLLS</em></div>
-            <div class="word alt"><span class="dot"></span><em>KIMBAP</em></div>
-            <div class="word"><span class="dot"></span><em>WOK</em></div>
-            <div class="word alt"><span class="dot"></span><em>RAMEN</em></div>
-            <div class="word"><span class="dot"></span><em>SUSHI</em></div>
-            <div class="word alt"><span class="dot"></span><em>ONIGIRI</em></div>
-          </div>
-
-          <div id="tempBadge">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M12 2.5c1.6 3.4 5 4.9 5 9a5 5 0 0 1-10 0c0-1.7.7-2.9 1.6-3.9"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12 20.5a2.6 2.6 0 0 0 2.6-2.6c0-1.7-2.6-4.4-2.6-4.4s-2.6 2.7-2.6 4.4A2.6 2.6 0 0 0 12 20.5z"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-            </svg>
-            <span class="tb-text">
-              <strong>300°C</strong>
-              <small>FUEGO DIRECTO</small>
-            </span>
-          </div>
-        </section>
-
-        <!-- ===== ESCENA 3 · FOTOS ===== -->
-        <section id="s3" class="scene">
-          <div class="shot">
-            <img src="assets/img/alley.jpg" alt="Callejón nocturno con neones" />
-            <div class="shotVeil"></div>
-            <div class="shotCap">
-              <span class="k">EST. 1995</span>
-              <b>FUEGO<br />CALLEJERO</b>
-              <i>NEÓN, WOK Y SABOR DE BARRIO</i>
-            </div>
-            <span class="shotNum">01 / 04</span>
-          </div>
-
-          <div class="shot">
-            <img src="assets/img/rolls.jpg" alt="Rolls de salmón" />
-            <div class="shotVeil"></div>
-            <div class="shotCap">
-              <span class="k">ROLLS &amp; KIMBAP</span>
-              <b>ENROLLADO<br />AL MOMENTO</b>
-              <i>ARROZ SUAVE · RELLENO GENEROSO</i>
-            </div>
-            <span class="shotNum">02 / 04</span>
-          </div>
-
-          <div class="shot">
-            <img src="assets/img/ramen.jpg" alt="Tazón de ramen" />
-            <div class="shotVeil"></div>
-            <div class="shotCap">
-              <span class="k">RAMEN &amp; WOK</span>
-              <b>CALDO<br />CALIENTE</b>
-              <i>SALTEADO A 300 °C, SERVIDO AL INSTANTE</i>
-            </div>
-            <span class="shotNum">03 / 04</span>
-          </div>
-
-          <div class="shot">
-            <img src="assets/img/local.jpg" alt="Interior cálido del local" />
-            <div class="shotVeil"></div>
-            <div class="shotCap">
-              <span class="k">NUESTRO LOCAL</span>
-              <b>MESAS<br />Y LUZ CÁLIDA</b>
-              <i>VEN, SIÉNTATE Y PIDE LO TUYO</i>
-            </div>
-            <span class="shotNum">04 / 04</span>
-          </div>
-        </section>
-
-        <!-- ===== ESCENA 4 · DIFERENCIAS ===== -->
-        <section id="s4" class="scene">
-          <h2 class="s4-title">HECHO <span>AL MOMENTO</span></h2>
-
-          <div class="featList">
-            <div class="feat">
-              <span class="bar"></span>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 2.5c1.6 3.4 5 4.9 5 9a5 5 0 0 1-10 0c0-1.7.7-2.9 1.6-3.9" />
-                <path d="M12 20.5a2.6 2.6 0 0 0 2.6-2.6c0-1.7-2.6-4.4-2.6-4.4s-2.6 2.7-2.6 4.4A2.6 2.6 0 0 0 12 20.5z" />
-              </svg>
-              <span class="txt">
-                <strong>AL WOK 300°C</strong>
-                <small>FUEGO DIRECTO, SABOR CALLEJERO</small>
-              </span>
-            </div>
-
-            <div class="feat">
-              <span class="bar"></span>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z" />
-                <path d="M18.5 16.5l.8 2.4 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" />
-              </svg>
-              <span class="txt">
-                <strong>PREPARADO EN VIVO</strong>
-                <small>INGREDIENTES FRESCOS AL INSTANTE</small>
-              </span>
-            </div>
-
-            <div class="feat">
-              <span class="bar"></span>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4.5 7.5h15l-1.2 13.5H5.7z" />
-                <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5" />
-              </svg>
-              <span class="txt">
-                <strong>PARA LLEVAR</strong>
-                <small>EMPACADO KRAFT · DELIVERY Y RETIRO</small>
-              </span>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== ESCENA 5 · INVITACIÓN ===== -->
-        <section id="s5" class="scene">
-          <div class="pinWrap">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 21.5s7-6.1 7-11.2A7 7 0 0 0 5 10.3c0 5.1 7 11.2 7 11.2z" />
-              <circle cx="12" cy="10.2" r="2.7" />
-            </svg>
-          </div>
-
-          <div class="city">ESCÁRCEGA, CAMPECHE</div>
-
-          <div class="ctaMask">
-            <div id="cta" class="cta" aria-label="Te esperamos">
-              <span class="l"><i>T</i></span><span class="l"><i>E</i></span><span class="sp"></span><span class="l"><i>E</i></span><span class="l"><i>S</i></span><span class="l"><i>P</i></span><span class="l"><i>E</i></span><span class="l"><i>R</i></span><span class="l"><i>A</i></span><span class="l"><i>M</i></span><span class="l"><i>O</i></span><span class="l"><i>S</i></span>
-            </div>
-          </div>
-
-          <span class="ctaRule"></span>
-
-          <p class="ctaSub">COMIDA ASIÁTICA AL PASO · PARA LLEVAR</p>
-
-          <div class="tag">WOKIROLL</div>
-        </section>
-
-        <div id="frame">
-          <span class="fc fc1"></span>
-          <span class="fc fc2"></span>
-          <span class="fc fc3"></span>
-          <span class="fc fc4"></span>
+      <!-- ============ VIDEO ============ -->
+      <div id="videos">
+        <div class="vwrap" id="w1">
+          <video id="v1" src="assets/video/01_hero_tiny.mp4" data-start="0" data-duration="4" muted playsinline preload="auto"></video>
         </div>
-
-        <div id="beam"></div>
-        <div id="grain"></div>
-        <div id="vignette"></div>
-
-        <div id="corner">
-          <b>WOKIROLL</b>
-          <i>•</i>
-          <span>ESCÁRCEGA, CAMPECHE</span>
+        <div class="vwrap" id="w2">
+          <video id="v2" src="assets/video/04_estructura.mp4" data-start="3.6" data-duration="4" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w3">
+          <video id="v3" src="assets/video/07_planos.mp4" data-start="7.2" data-duration="4" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w4">
+          <video id="v4" src="assets/video/08_taller.mp4" data-start="10.8" data-duration="4" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w5">
+          <video id="v5" src="assets/video/06_obra.mp4" data-start="14.4" data-duration="4" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w6">
+          <video id="v6" src="assets/video/09_cocina.mp4" data-start="18" data-duration="4" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w7">
+          <video id="v7" src="assets/video/10_sala.mp4" data-start="21.4" data-duration="4" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w8">
+          <video id="v8" src="assets/video/11_pasillo.mp4" data-start="24.8" data-duration="3.33" muted playsinline preload="auto"></video>
+        </div>
+        <div class="vwrap" id="w9">
+          <video id="v9" src="assets/video/02_hero_white.mp4" data-start="28.13" data-duration="3.87" muted playsinline preload="auto"></video>
         </div>
       </div>
+
+      <!-- ============ ESCENA 1 · GANCHO ============ -->
+      <section class="ov" id="o1">
+        <div class="scrim scrim-strong"></div>
+        <div class="hookWrap">
+          <div class="kicker" id="hKick">CONSTRUCCIÓN MODULAR</div>
+          <h1 class="big" aria-label="Tu casa lista en días">
+            <span class="mask" style="display: block"><i class="hl">TU CASA</i></span>
+            <span class="mask" style="display: block"><i class="hl">LISTA EN</i></span>
+            <span class="mask" style="display: block"><i class="hl accent">DÍAS</i></span>
+          </h1>
+          <div class="hookRule" id="hRule"></div>
+          <div class="hookSub" id="hSub">Fabricada en taller · montada en obra</div>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 2 · ESTRUCTURA ============ -->
+      <section class="ov" id="o2">
+        <div class="scrim scrim-soft"></div>
+        <div class="step"><b>01</b><span>ESTRUCTURA</span></div>
+        <div class="stageBody">
+          <div class="icard lg" id="cardA"></div>
+          <h2 class="stageName" id="nA">ESTRUCTURA</h2>
+          <p class="stageDesc" id="dA">Perfilería de acero galvanizado. Sismorresistente.</p>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 3 · ARQUITECTURA ============ -->
+      <section class="ov" id="o3">
+        <div class="scrim scrim-soft"></div>
+        <div class="step"><b>02</b><span>ARQUITECTURA</span></div>
+        <div class="stageBody">
+          <div class="icard lg" id="cardB"></div>
+          <h2 class="stageName" id="nB">ARQUITECTURA</h2>
+          <p class="stageDesc" id="dB">Diseño a medida y terminaciones de primera.</p>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 4 · INSTALACIONES ============ -->
+      <section class="ov" id="o4">
+        <div class="scrim scrim-soft"></div>
+        <div class="step"><b>03</b><span>INSTALACIONES</span></div>
+        <div class="stageBody">
+          <div class="icard lg" id="cardC"></div>
+          <h2 class="stageName" id="nC">INSTALACIONES</h2>
+          <p class="stageDesc" id="dC">Eléctrica, sanitaria y climatización integradas.</p>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 5 · LAS TRES ETAPAS ============ -->
+      <section class="ov" id="o5">
+        <div class="scrim scrim-soft"></div>
+        <h2 class="rowTitle" id="rowT">TODO <em>INCLUIDO</em></h2>
+        <div class="cardRow">
+          <div class="cardCol">
+            <div class="icard sm" id="cardR1"></div>
+            <div class="ilabel">ESTRUCTURA</div>
+          </div>
+          <div class="cardCol">
+            <div class="icard sm" id="cardR2"></div>
+            <div class="ilabel">ARQUITECTURA</div>
+          </div>
+          <div class="cardCol">
+            <div class="icard sm" id="cardR3"></div>
+            <div class="ilabel">INSTALACIONES</div>
+          </div>
+        </div>
+        <p class="rowNote" id="rowN">Tres etapas, un solo equipo. Sin intermediarios.</p>
+      </section>
+
+      <!-- ============ ESCENA 6 ============ -->
+      <section class="ov" id="o6">
+        <div class="scrim scrim-bottom"></div>
+        <div class="cap">
+          <span class="capK">LLAVE EN MANO</span>
+          <b>LA ENTREGAMOS<br /><em>LISTA PARA VIVIR</em></b>
+          <i>Nos ocupamos de todo el proceso</i>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 7 ============ -->
+      <section class="ov" id="o7">
+        <div class="scrim scrim-bottom"></div>
+        <div class="cap">
+          <span class="capK">TIEMPO REAL</span>
+          <b>DÍAS DE OBRA,<br /><em>NO MESES</em></b>
+          <i>Menos obra húmeda, menos imprevistos</i>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 8 ============ -->
+      <section class="ov" id="o8">
+        <div class="scrim scrim-bottom"></div>
+        <div class="cap">
+          <span class="capK">A TU MEDIDA</span>
+          <b>AMPLIABLE<br /><em>Y TRASLADABLE</em></b>
+          <i>Sumá módulos cuando los necesites</i>
+        </div>
+      </section>
+
+      <!-- ============ ESCENA 9 · CIERRE ============ -->
+      <section class="ov" id="o9">
+        <div class="scrim scrim-strong"></div>
+        <div class="ctaWrap">
+          <div class="ctaKick" data-var-text="marca">CASA MODULAR</div>
+          <h2 class="ctaBig">
+            <span class="mask" style="display: block"><i class="cl">PEDÍ TU</i></span>
+            <span class="mask" style="display: block"><i class="cl accent">PRESUPUESTO</i></span>
+          </h2>
+          <div class="ctaRule" id="cRule"></div>
+          <div class="ctaContacts">
+            <span class="chip hi" id="cWa">WHATSAPP · <span data-var-text="whatsapp">TU NÚMERO</span></span>
+            <span class="chip" data-var-text="instagram">@TU.INSTAGRAM</span>
+          </div>
+          <p class="ctaNote" id="cNote">Sin cargo · Respondemos el mismo día</p>
+        </div>
+      </section>
+
+      <div id="brand"><span>CASA MODULAR</span> · FABRICACIÓN E INSTALACIÓN</div>
+
+      <div id="vig"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script>
-      const tl = gsap.timeline({ paused: true });
+      /* =====================================================================
+         CASA MODULAR ISOMÉTRICA — generada en SVG (determinista, sin azar)
+         ===================================================================== */
+      var ISO = (function () {
+        var C = Math.cos(Math.PI / 6);
+        var L = 3.3, D = 1.7, H = 1.32, R = 0.34, RM = D / 2;
 
-      /* ---------- cámara y ambiente (todo el vídeo) ---------- */
-      tl.fromTo("#cam", { scale: 1.075, y: 30 }, { scale: 1, y: 0, duration: 17.5, ease: "none" }, 0);
-      tl.fromTo("#glowA", { x: -70, y: -50, opacity: 0.6 }, { x: 90, y: 70, opacity: 0.95, duration: 17.5, ease: "sine.inOut" }, 0);
-      tl.fromTo("#glowB", { x: 80, y: 60, opacity: 0.55 }, { x: -80, y: -60, opacity: 0.9, duration: 17.5, ease: "sine.inOut" }, 0);
-      tl.fromTo("#grid", { y: 0 }, { y: -54, duration: 17.5, ease: "none" }, 0);
-      tl.fromTo("#beam", { xPercent: -45, rotation: 14, opacity: 0 }, { xPercent: 55, rotation: 14, opacity: 0.55, duration: 8.5, ease: "sine.inOut" }, 0);
+        var INK = "#171b21";
+        var SOFT = "#98a1af";
+        var OPEN = "#b9c1cc";
+        var PIPE = "#2b9cdb";
+        var ELEC = "#e8a838";
+        var PANEL_A = "#e6d7bc";
+        var PANEL_B = "#d6c3a3";
+        var ROOF = "#f0e7d6";
 
-      /* ---------- ESCENA 1 · LOGO ---------- */
-      tl.fromTo("#s1 .rule", { scaleX: 0 }, { scaleX: 1, duration: 0.75, ease: "power3.inOut", stagger: 0.09 }, 0.15);
-      tl.fromTo("#s1 .est", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 0.25);
-      tl.fromTo("#s1 #logo .l i", { yPercent: 112 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.055 }, 0.45);
-      tl.fromTo("#logoGlow", { opacity: 0 }, { opacity: 0.5, duration: 1.1, ease: "sine.out" }, 1.0);
-      tl.fromTo("#sweep1", { xPercent: -170, rotation: 12, opacity: 0 }, { xPercent: 190, rotation: 12, opacity: 0.9, duration: 1.15, ease: "power2.inOut" }, 1.05);
-      tl.to("#sweep1", { opacity: 0, duration: 0.2 }, 2.25);
-      tl.fromTo("#s1 .s1-sub", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.0 }, 1.35);
-      tl.fromTo("#s1 .seal", { opacity: 0, scale: 2, rotate: -34 }, { opacity: 1, scale: 1, rotate: -12, duration: 0.7, ease: "back.out(2.2)" }, 1.75);
-      tl.fromTo("#s1 .sealRing", { opacity: 0.85, scale: 0.85 }, { opacity: 0, scale: 2.05, duration: 1.0, ease: "power2.out", immediateRender: false }, 1.8);
-      tl.fromTo("#frame .fc", { opacity: 0, scale: 0.72 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.8)", stagger: 0.07 }, 2.0);
-      tl.to("#s1", { opacity: 0, scale: 1.05, duration: 0.45, ease: "power2.in" }, 3.35);
+        function P(x, y, z) {
+          return [(x - y) * C, (x + y) * 0.5 - z];
+        }
 
-      /* ---------- ESCENA 2 · CARTA ---------- */
-      tl.fromTo("#s2", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 3.6);
-      tl.to("#s2 .word", { opacity: 1, duration: 0.3, stagger: 0.145 }, 3.75);
-      tl.fromTo(
-        "#s2 .word em",
-        { xPercent: (i, el) => (el.parentElement.classList.contains("alt") ? 112 : -112) },
-        { xPercent: 0, duration: 0.75, ease: "power4.out", stagger: 0.145 },
-        3.75
-      );
-      tl.fromTo("#s2 .word .dot", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(3)", stagger: 0.145 }, 3.85);
-      tl.fromTo("#tempBadge", { opacity: 0, scale: 0.86, y: 34 }, { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "back.out(1.7)" }, 5.35);
-      tl.to("#rollList", { y: -58, duration: 1.4, ease: "power1.inOut" }, 5.3);
-      tl.to("#s2", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 6.35);
+        function build(mode) {
+          var polys = [], out = [], inn = [], opn = [], pipe = [], elec = [];
+          function poly(pts, fill) { polys.push({ p: pts, fill: fill }); }
+          function seg(list, a, b) { list.push([a, b]); }
 
-      /* ---------- ESCENA 3 · FOTOS ---------- */
-      tl.fromTo("#s3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 6.5);
+          // ---- caras
+          var wallY = [P(0, 0, 0), P(L, 0, 0), P(L, 0, H), P(0, 0, H)];
+          var wallX = [P(0, 0, 0), P(0, D, 0), P(0, D, H), P(0, 0, H)];
+          var floor = [P(0, 0, 0), P(L, 0, 0), P(L, D, 0), P(0, D, 0)];
+          var roofF = [P(0, 0, H), P(L, 0, H), P(L, RM, H + R), P(0, RM, H + R)];
+          var roofB = [P(0, RM, H + R), P(L, RM, H + R), P(L, D, H), P(0, D, H)];
+          var gableA = [P(0, 0, H), P(0, D, H), P(0, RM, H + R)];
+          var gableB = [P(L, 0, H), P(L, D, H), P(L, RM, H + R)];
 
-      const shotTimes = [6.75, 7.85, 8.95, 10.05];
-      document.querySelectorAll("#s3 .shot").forEach((shot, i) => {
-        const t = shotTimes[i];
-        tl.fromTo(shot, { opacity: 0 }, { opacity: 1, duration: 0.32, ease: "power2.out" }, t);
-        tl.to(shot, { opacity: 0, duration: 0.32, ease: "power2.in" }, t + 0.78);
-        tl.fromTo(shot.querySelector("img"), { scale: 1.05, y: 0 }, { scale: 1.17, y: -26, duration: 1.45, ease: "none" }, t);
-        tl.fromTo(shot.querySelector(".shotCap"), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, t + 0.2);
-        tl.fromTo(shot.querySelector(".shotNum"), { opacity: 0 }, { opacity: 1, duration: 0.5 }, t + 0.3);
-      });
+          if (mode === "arquitectura") {
+            poly(wallY, PANEL_A);
+            poly(wallX, PANEL_B);
+            poly(roofF, ROOF);
+            poly(roofB, "#e2d6bf");
+            poly(gableA, PANEL_B);
+            poly(gableB, PANEL_A);
+          }
 
-      tl.to("#s3", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 11.15);
+          // ---- contorno
+          seg(out, P(0, 0, 0), P(L, 0, 0));
+          seg(out, P(0, 0, 0), P(0, D, 0));
+          seg(out, P(L, 0, 0), P(L, D, 0));
+          seg(out, P(0, D, 0), P(L, D, 0));
+          seg(out, P(0, 0, 0), P(0, 0, H));
+          seg(out, P(L, 0, 0), P(L, 0, H));
+          seg(out, P(0, D, 0), P(0, D, H));
+          seg(out, P(L, D, 0), P(L, D, H));
+          seg(out, P(0, 0, H), P(0, RM, H + R));
+          seg(out, P(L, 0, H), P(L, RM, H + R));
+          seg(out, P(0, RM, H + R), P(L, RM, H + R));
+          seg(out, P(0, D, H), P(0, RM, H + R));
+          seg(out, P(L, D, H), P(L, RM, H + R));
+          seg(out, P(0, 0, H), P(L, 0, H));
+          seg(out, P(0, D, H), P(L, D, H));
 
-      /* ---------- ESCENA 4 · DIFERENCIAS ---------- */
-      tl.fromTo("#s4", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 11.3);
-      tl.fromTo("#s4 .s4-title", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 11.45);
-      tl.fromTo("#s4 .feat", { opacity: 0, y: 56 }, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out", stagger: 0.17 }, 11.65);
-      tl.fromTo("#s4 .feat .bar", { scaleY: 0 }, { scaleY: 1, duration: 0.55, ease: "power3.out", stagger: 0.17 }, 11.7);
-      tl.fromTo("#s4 .feat svg", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(2)", stagger: 0.17 }, 11.75);
-      tl.to("#s4", { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 14.1);
+          // ---- montantes
+          var st = 0.3, x, y, z;
+          for (x = st; x < L - 0.01; x += st) {
+            seg(inn, P(x, 0, 0), P(x, 0, H));
+            seg(inn, P(x, D, 0), P(x, D, H));
+          }
+          for (y = st; y < D - 0.01; y += st) {
+            seg(inn, P(0, y, 0), P(0, y, H));
+            seg(inn, P(L, y, 0), P(L, y, H));
+          }
+          // ---- travesaños
+          var rails = [H * 0.5, H];
+          for (var r = 0; r < rails.length; r++) {
+            z = rails[r];
+            seg(inn, P(0, 0, z), P(L, 0, z));
+            seg(inn, P(0, 0, z), P(0, D, z));
+            seg(inn, P(L, 0, z), P(L, D, z));
+            seg(inn, P(0, D, z), P(L, D, z));
+          }
+          // ---- correas del techo
+          for (x = st; x < L - 0.01; x += st) {
+            seg(inn, P(x, 0, H), P(x, RM, H + R));
+          }
+          // ---- solera del suelo
+          seg(inn, P(0, 0.07, 0.11), P(L, 0.07, 0.11));
+          seg(inn, P(0.07, 0, 0.11), P(0.07, D, 0.11));
 
-      /* ---------- ESCENA 5 · INVITACIÓN ---------- */
-      tl.fromTo("#s5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 14.25);
-      tl.fromTo("#s5 .pinWrap", { opacity: 0, y: -26, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(2)" }, 14.4);
-      tl.fromTo("#s5 .city", { opacity: 0 }, { opacity: 1, duration: 0.9 }, 14.6);
-      tl.fromTo("#s5 #cta .l i", { yPercent: 112 }, { yPercent: 0, duration: 0.85, ease: "power4.out", stagger: 0.05 }, 14.8);
-      tl.fromTo("#s5 .ctaRule", { scaleX: 0 }, { scaleX: 1, duration: 0.85, ease: "power3.inOut" }, 15.4);
-      tl.fromTo("#s5 .ctaSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 15.65);
-      tl.fromTo("#s5 .tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.6)" }, 15.8);
+          // ---- aberturas
+          seg(opn, P(2.15, 0, 0), P(2.15, 0, 1));
+          seg(opn, P(2.85, 0, 0), P(2.85, 0, 1));
+          seg(opn, P(2.15, 0, 1), P(2.85, 0, 1));
+          seg(opn, P(0, 0.4, 0.52), P(0, 1.15, 0.52));
+          seg(opn, P(0, 0.4, 1), P(0, 1.15, 1));
+          seg(opn, P(0, 1.15, 0.52), P(0, 1.15, 1));
+          seg(opn, P(0.55, 0.5, H + 0.13), P(1.2, 0.5, H + 0.13));
+          seg(opn, P(1.2, 0.5, H + 0.13), P(1.2, 1.15, H + 0.27));
+          seg(opn, P(0.55, 1.15, H + 0.27), P(1.2, 1.15, H + 0.27));
+          seg(opn, P(0.55, 0.5, H + 0.13), P(0.55, 1.15, H + 0.27));
 
-      /* ---------- marca de esquina ---------- */
-      tl.fromTo("#corner", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.75);
+          // ---- instalaciones
+          if (mode === "instalaciones") {
+            seg(pipe, P(1.55, 0.05, 0.07), P(1.55, 0.05, 1.2));
+            seg(pipe, P(1.55, 0.05, 1.2), P(0.3, 0.05, 1.2));
+            seg(pipe, P(0.3, 0.05, 1.2), P(0.3, 0.05, 0.55));
+            seg(pipe, P(0.3, 0.05, 0.07), P(2.6, 0.05, 0.07));
+            seg(pipe, P(2.6, 0.05, 0.07), P(2.6, 0.05, 0.82));
+            seg(pipe, P(1.0, 1.32, 0.1), P(1.0, 0.28, 0.1));
+            seg(elec, P(0.45, 0.03, 1.22), P(3.0, 0.03, 1.22));
+            seg(elec, P(2.3, 0.03, 1.22), P(2.3, 0.03, 0.76));
+          }
 
+          // ---- bbox
+          var all = [];
+          var push = function (p) { all.push(p); };
+          polys.forEach(function (q) { q.p.forEach(push); });
+          [].concat(out, inn, opn, pipe, elec).forEach(function (s) { push(s[0]); push(s[1]); });
+          var xs = all.map(function (p) { return p[0]; });
+          var ys = all.map(function (p) { return p[1]; });
+          var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+          var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+          var pad = 0.2;
+          var vb = [minX - pad, minY - pad, maxX - minX + pad * 2, maxY - minY + pad * 2].join(" ");
+
+          function fmt(p) { return p[0].toFixed(3) + "," + p[1].toFixed(3); }
+          function polyStr(p) { return p.map(fmt).join(" "); }
+          function lineStr(s, extra) {
+            return '<line x1="' + s[0][0].toFixed(3) + '" y1="' + s[0][1].toFixed(3) +
+                   '" x2="' + s[1][0].toFixed(3) + '" y2="' + s[1][1].toFixed(3) + '" ' + (extra || "") + " />";
+          }
+          function len(s) {
+            var dx = s[1][0] - s[0][0], dy = s[1][1] - s[0][1];
+            return Math.sqrt(dx * dx + dy * dy);
+          }
+          function dashLines(list, cls, color, w) {
+            return list.map(function (s) {
+              var l = len(s).toFixed(3);
+              return lineStr(s, 'class="' + cls + '" stroke="' + color + '" stroke-width="' + w +
+                '" stroke-linecap="round" data-len="' + l + '" stroke-dasharray="' + l + '" stroke-dashoffset="' + l + '"');
+            }).join("");
+          }
+          function dashPlain(list, cls, color, w) {
+            return list.map(function (s) {
+              var l = len(s).toFixed(3);
+              return lineStr(s, 'class="' + cls + '" stroke="' + color + '" stroke-width="' + w +
+                '" stroke-linecap="round" fill="none" data-len="' + l + '" stroke-dasharray="' + l + '" stroke-dashoffset="' + l + '"');
+            }).join("");
+          }
+
+          var innerW = mode === "instalaciones" ? 1.35 : 1.6;
+          var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '" preserveAspectRatio="xMidYMid meet">';
+
+          if (polys.length) {
+            svg += '<g class="iso-fill">';
+            polys.forEach(function (q) {
+              svg += '<polygon points="' + polyStr(q.p) + '" fill="' + q.fill + '" />';
+            });
+            svg += "</g>";
+          }
+
+          svg += '<g class="iso-out">' + dashLines(out, "iso-o", INK, mode === "instalaciones" ? 2.0 : 2.6) + "</g>";
+          svg += '<g class="iso-in">' + dashLines(inn, "iso-i", INK, innerW) + "</g>";
+          svg += '<g class="iso-open">' + dashLines(opn, "iso-p", OPEN, 2.0) + "</g>";
+          if (pipe.length) {
+            svg += '<g class="iso-pipe">' + dashPlain(pipe, "iso-pp", PIPE, 4.6) + "</g>";
+          }
+          if (elec.length) {
+            svg += '<g class="iso-elec">' + dashPlain(elec, "iso-ee", ELEC, 3.6) + "</g>";
+          }
+          svg += "</svg>";
+          return svg;
+        }
+
+        return { build: build };
+      })();
+
+      /* =====================================================================
+         MONTAJE
+         ===================================================================== */
       window.__timelines = window.__timelines || {};
-      window.__timelines["wokiroll"] = tl;
+
+      function mountIso() {
+        var map = {
+          cardA: "estructura",
+          cardB: "arquitectura",
+          cardC: "instalaciones",
+          cardR1: "estructura",
+          cardR2: "arquitectura",
+          cardR3: "instalaciones"
+        };
+        Object.keys(map).forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.innerHTML = ISO.build(map[id]);
+        });
+      }
+
+      function cardReveal(tl, sel, t, stagger) {
+        tl.fromTo(sel + " .iso-fill", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, t + 0.3);
+        tl.fromTo(sel + " .iso-o", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
+          { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, t);
+        tl.fromTo(sel + " .iso-p", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
+          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, t + 0.25);
+        tl.fromTo(sel + " .iso-i", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
+          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out", stagger: stagger }, t + 0.18);
+        tl.fromTo(sel + " .iso-pp", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
+          { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, t + 0.45);
+        tl.fromTo(sel + " .iso-ee", { strokeDashoffset: function (i, el) { return el.dataset.len; } },
+          { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, t + 0.6);
+      }
+
+      function build() {
+        mountIso();
+
+        var tl = gsap.timeline({ paused: true });
+
+        /* ---------- video: fundido de entrada/salida ---------- */
+        var vids = [
+          ["#w1", 0, 3.6],
+          ["#w2", 3.6, 3.6],
+          ["#w3", 7.2, 3.6],
+          ["#w4", 10.8, 3.6],
+          ["#w5", 14.4, 3.6],
+          ["#w6", 18, 3.4],
+          ["#w7", 21.4, 3.4],
+          ["#w8", 24.8, 3.33],
+          ["#w9", 28.13, 3.87]
+        ];
+        vids.forEach(function (v, i) {
+          tl.fromTo(v[0], { opacity: i === 0 ? 1 : 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, v[1]);
+          tl.to(v[0], { opacity: 0, duration: 0.4, ease: "power2.in" }, v[1] + v[2] - 0.02);
+        });
+
+        /* ---------- marca fija ---------- */
+        tl.fromTo("#brand", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 3.5);
+        tl.to("#brand", { opacity: 0, duration: 0.5 }, 27.6);
+
+        /* ---------- ESCENA 1 · GANCHO ---------- */
+        tl.fromTo("#o1", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0);
+        tl.fromTo("#hKick", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.18);
+        tl.fromTo("#o1 .hl", { yPercent: 114 }, { yPercent: 0, duration: 0.95, ease: "power4.out", stagger: 0.1 }, 0.34);
+        tl.fromTo("#hRule", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power3.inOut" }, 1.15);
+        tl.fromTo("#hSub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 1.3);
+        tl.to("#o1", { opacity: 0, duration: 0.45, ease: "power2.in" }, 3.2);
+
+        /* ---------- ESCENA 2 · ESTRUCTURA ---------- */
+        tl.fromTo("#o2", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 3.6);
+        tl.fromTo("#o2 .step", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 3.72);
+        tl.fromTo("#cardA", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.75, ease: "power3.out" }, 3.78);
+        cardReveal(tl, "#cardA", 3.98, 0.014);
+        tl.fromTo("#nA", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 4.5);
+        tl.fromTo("#dA", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 4.66);
+        tl.to("#o2", { opacity: 0, duration: 0.45, ease: "power2.in" }, 6.75);
+
+        /* ---------- ESCENA 3 · ARQUITECTURA ---------- */
+        tl.fromTo("#o3", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.2);
+        tl.fromTo("#o3 .step", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 7.32);
+        tl.fromTo("#cardB", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.75, ease: "power3.out" }, 7.38);
+        cardReveal(tl, "#cardB", 7.55, 0.014);
+        tl.fromTo("#nB", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 8.1);
+        tl.fromTo("#dB", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 8.26);
+        tl.to("#o3", { opacity: 0, duration: 0.45, ease: "power2.in" }, 10.35);
+
+        /* ---------- ESCENA 4 · INSTALACIONES ---------- */
+        tl.fromTo("#o4", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 10.8);
+        tl.fromTo("#o4 .step", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 10.92);
+        tl.fromTo("#cardC", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.75, ease: "power3.out" }, 10.98);
+        cardReveal(tl, "#cardC", 11.15, 0.012);
+        tl.fromTo("#nC", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 11.7);
+        tl.fromTo("#dC", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 11.86);
+        tl.to("#o4", { opacity: 0, duration: 0.45, ease: "power2.in" }, 13.95);
+
+        /* ---------- ESCENA 5 · LAS TRES ETAPAS ---------- */
+        tl.fromTo("#o5", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 14.4);
+        tl.fromTo("#rowT", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 14.52);
+        tl.fromTo("#o5 .icard.sm", { opacity: 0, y: 54, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out", stagger: 0.13 }, 14.78);
+        cardReveal(tl, "#cardR1", 15.0, 0.006);
+        cardReveal(tl, "#cardR2", 15.13, 0.006);
+        cardReveal(tl, "#cardR3", 15.26, 0.006);
+        tl.fromTo("#o5 .ilabel", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.13 }, 15.3);
+        tl.fromTo("#rowN", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 15.9);
+        tl.to("#o5", { opacity: 0, duration: 0.45, ease: "power2.in" }, 17.55);
+
+        /* ---------- ESCENAS 6-8 · RÓTULOS ---------- */
+        var captions = [
+          ["#o6", 18, 3.4, "#o6 .capK", "#o6 .cap b", "#o6 .cap i"],
+          ["#o7", 21.4, 3.4, "#o7 .capK", "#o7 .cap b", "#o7 .cap i"],
+          ["#o8", 24.8, 3.33, "#o8 .capK", "#o8 .cap b", "#o8 .cap i"]
+        ];
+        captions.forEach(function (c) {
+          tl.fromTo(c[0], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, c[1]);
+          tl.fromTo(c[3], { opacity: 0, x: -26 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, c[1] + 0.12);
+          tl.fromTo(c[4], { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.75, ease: "power3.out" }, c[1] + 0.2);
+          tl.fromTo(c[5], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, c[1] + 0.42);
+          tl.to(c[0], { opacity: 0, duration: 0.45, ease: "power2.in" }, c[1] + c[2] - 0.45);
+        });
+
+        /* ---------- ESCENA 9 · CIERRE ---------- */
+        tl.fromTo("#o9", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "power2.out" }, 28.13);
+        tl.fromTo("#o9 .ctaKick", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" }, 28.35);
+        tl.fromTo("#o9 .cl", { yPercent: 114 }, { yPercent: 0, duration: 0.9, ease: "power4.out", stagger: 0.12 }, 28.5);
+        tl.fromTo("#cRule", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 29.15);
+        tl.fromTo("#o9 .chip", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.65, ease: "back.out(1.7)", stagger: 0.14 }, 29.35);
+        tl.fromTo("#cNote", { opacity: 0 }, { opacity: 1, duration: 0.7 }, 29.95);
+
+        window.__timelines["casa-modular"] = tl;
+      }
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(build);
+      } else {
+        build();
+      }
     </script>
   </body>
 </html>

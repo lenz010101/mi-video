@@ -20,3 +20,8 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Ruta vieja de ffmpeg (abandonada). Los clips finales ya estan en
+# assets/video, asi que esto es solo scratch local: benchmarks, QC y
+# los clips originales. No tiene por que viajar al repositorio.
+casa-modular/
