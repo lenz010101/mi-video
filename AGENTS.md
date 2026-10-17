@@ -2,6 +2,11 @@
 
 ## Preferencias del usuario
 
+- **Nunca una hora de trabajo (regla permanente):** ni editando el vídeo ni
+  creándolo. El usuario no se queda esperando y no quiere cadenas de
+  experimentos ni investigaciones largas. Si algo no se puede comprobar en
+  minutos, **se para y se avisa**, no se sigue. Un vídeo corto se entrega en
+  una sola pasada.
 - **Entrega de vídeos (regla permanente):** cada vez que se renderice un vídeo
   (local o vía GitHub Actions), copiar el archivo final a
   `C:\Users\Admin\Desktop\` automáticamente. No hace falta que lo pida cada vez.
