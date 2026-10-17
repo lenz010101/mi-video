@@ -65,8 +65,23 @@ Effects), no con estética de plantilla web. Para cualquier composición nueva
    `data-start`/`data-duration` al milímetro.
 5. **Minimalismo corporativo:** si algo no es necesario para la composición,
    se elimina. El resultado debe parecer un video premium de agencia.
-   (Compatibilizar esto siempre con las medidas de rendimiento ya documentadas:
-   el glow y el blur de CSS cuestan captura, úsalos con moderación.)
+
+### Norma de rendimiento premium (decisión del usuario: aplicar)
+
+El look premium no sale del blur: sale del aire, la tipografía y los easings.
+El desenfoque decorativo va siempre en su versión barata y visualmente
+equivalente, porque el coste escala con los fotogramas:
+
+- **Orbes/luces de ambiente:** gradiente radial transparente (la suavidad la
+  da el gradiente) — nunca `filter: blur()`.
+- **Glow de texto:** `text-shadow` multicapa — nunca `filter: blur()`.
+- **`backdrop-filter` (cristal):** se mantiene REAL cuando hay contenido en
+  movimiento detrás (fotos/texto/vídeo); solo se evita donde el fondo detrás
+  es casi uniforme, que ahí el real y el falso se ven igual.
+
+Referencia medida: en Casa Modular los gráficos con glow eran el 42% del
+coste por fotograma; la variante barata recorta 15-25% del total sin cambio
+visual, ~1,5-3 min por render en una pieza de 60 s.
 
 ## Contexto
 
