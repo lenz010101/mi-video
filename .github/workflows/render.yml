@@ -148,11 +148,15 @@ jobs:
           # Con 1 worker HyperFrames usa "streaming encode" (los fotogramas van
           # a ffmpeg segun se capturan). Con 4 workers medidos: captura 116 s
           # + encoding aparte 55 s = 171 s, peor que 146 s en serie.
+          # --low-memory-mode fija 1 worker y captura por pantalla (lo que ya
+          # usamos) y ademas se salta la calibracion de workers, que tardaba
+          # 14-20 s. La imagen no cambia.
           npx --yes hyperframes@${{ env.HYPERFRAMES_VERSION }} render \
             --quality "${QUALITY:-standard}" \
             --fps "${FPS:-30}" \
             --format "${FORMAT:-mp4}" \
             --no-browser-gpu \
+            --low-memory-mode \
             --workers "${WORKERS:-1}" \
             --output "renders/${FILENAME:-video.mp4}"
 
