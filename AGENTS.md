@@ -10,22 +10,34 @@
 
 ## Flujo de vídeo (obligatorio)
 
-Orden pensado para que revisar un cambio no cueste una hora:
+**Todo el render va por la nube.** En local solo se mide, nunca se renderiza
+para entregar:
 
-1. **Revisar sin renderizar entero.** Para comprobar maquetación, textos o
-   animaciones: renderizar a **6 fps** (`--fps 6`, ~2 min) o medir en el
-   navegador. Nunca un render local completo solo para revisar.
-2. **El render completo lo hace la nube.** GitHub Actions tarda ~3,5 min (4
-   núcleos). El render local completo tarda ~11,5 min (HyperFrames se autolimita
-   a 1 worker y va sin GPU); solo si el usuario lo pide expresamente.
+1. **Render (final o de revisión): la nube.** GitHub Actions tarda 3,5-4,6 min
+   (varía ~50% según la máquina que toque). El render local completo tarda
+   ~11,5 min (1 worker y sin GPU) y no aporta nada: no se usa.
+2. **Para revisar, mirar el vídeo ya entregado.** Los fotogramas se sacan del
+   MP4 descargado con ffmpeg (instantáneo). No hace falta un render aparte.
 3. **La entrega se verifica en la misma sesión.** Un trabajo en segundo plano
    **no** es una entrega: hay que confirmar que el run terminó, descargar el
    artifact y comprobar que el MP4 está en el Escritorio, y decirlo. Los
    artifacts exigen autenticación: el token es el de las credenciales de git
    (`git credential fill`, vía API de GitHub).
-4. **Al matar procesos por línea de comandos, excluir el propio `$PID`:** un
-   filtro por nombre de script coincide con el comando que lo ejecuta y puede
-   matarse a sí mismo antes de terminar.
+4. **No hacer esperar:** si algo va a tardar más de ~3 minutos, avisar de cuánto
+   y por qué **antes** de lanzarlo.
+5. **Al matar procesos por línea de comandos, excluir el propio `$PID`.**
+
+### Lo que ya está medido (no repetir)
+
+- El runner varía ~50% entre ejecuciones: el mismo trabajo tardó 145,7 s y
+  215,2 s de captura. Por eso el total baila entre 3,5 y 4,6 min.
+- 4 workers sale peor que 1: se pierde el "streaming encode" (los fotogramas
+  van a ffmpeg según se capturan) y hay que codificar aparte (+55 s).
+- En la nube no hay GPU, y `--experimental-fast-capture` (2x) es solo macOS.
+- HyperFrames no renderiza rangos de tiempo, así que el render no se puede
+  trocear entre varios runners.
+- El coste por fotograma se reparte así (medido en local): captura de pantalla
+  base 38%, los 11 vídeos 20%, los gráficos (SVG + glow) 42%.
 
 ## Contexto
 
