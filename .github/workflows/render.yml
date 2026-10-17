@@ -93,16 +93,6 @@ jobs:
           restore-keys: |
             hf-${{ runner.os }}-
 
-      # Los fotogramas extraidos de los 11 clips (~490 MB de JPEG) van aparte,
-      # con clave ligada a los clips: mientras no cambien, el render se salta
-      # la extraccion (10-16 s). La cache principal tiene clave fija y no se
-      # actualiza nunca, asi que no servia para esto.
-      - name: Cache de los fotogramas extraidos
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/hyperframes-extract
-          key: extract-${{ hashFiles('assets/video/**') }}
-
       # HyperFrames llama a ffmpeg y ffprobe desde el PATH para codificar el MP4.
       # Los runners ya traen las listas de apt: se instala directo y solo se
       # actualizan si hace falta (apt-get update cuesta ~15 s de los 210 s).
@@ -141,10 +131,6 @@ jobs:
           FORMAT: ${{ inputs.format }}
           WORKERS: ${{ inputs.workers }}
         run: |
-          # Los fotogramas extraidos de los 11 clips (492 MB de JPEG) se guardan
-          # en ~/.cache, que ya esta cacheado: al no cambiar los clips, el
-          # siguiente render se salta la extraccion.
-          export HYPERFRAMES_EXTRACT_CACHE_DIR="$HOME/.cache/hyperframes-extract"
           # Con 1 worker HyperFrames usa "streaming encode" (los fotogramas van
           # a ffmpeg segun se capturan). Con 4 workers medidos: captura 116 s
           # + encoding aparte 55 s = 171 s, peor que 146 s en serie.
