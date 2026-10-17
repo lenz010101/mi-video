@@ -93,15 +93,45 @@ jobs:
           restore-keys: |
             hf-${{ runner.os }}-
 
+      # El binario estatico pesa 41 MB y no cambia entre runs: cacheado se
+      # restaura en ~1 s en vez de descargarlo cada vez.
+      - name: Cache de FFmpeg estatico
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ffmpeg-static
+          key: ffmpeg-static-johnvansickle-v1
+
       # HyperFrames llama a ffmpeg y ffprobe desde el PATH para codificar el MP4.
-      # Los runners ya traen las listas de apt: se instala directo y solo se
-      # actualizan si hace falta (apt-get update cuesta ~15 s de los 210 s).
+      # Los runners no los traen. Medido: instalarlos por apt cuesta 13-16 s por
+      # run (descarga ~50 MB + desempaquetado); el estatico ya cacheado es ~1 s.
+      # Si la descarga o el binario fallan, se cae al apt de siempre para que el
+      # render no se rompa por esto.
       - name: Install FFmpeg
         run: |
-          sudo apt-get install -y -qq --no-install-recommends ffmpeg || {
-            sudo apt-get update -qq
-            sudo apt-get install -y -qq --no-install-recommends ffmpeg
-          }
+          FF="$HOME/.cache/ffmpeg-static"
+          if [ -x "$FF/ffmpeg" ] && "$FF/ffmpeg" -version >/dev/null 2>&1; then
+            echo "Binario estatico ya en cache."
+          else
+            rm -rf "$FF"; mkdir -p "$FF"
+            if curl -fsSL --retry 3 --max-time 240 -o /tmp/ff.tar.xz \
+                 https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
+               && tar -xJf /tmp/ff.tar.xz -C "$FF" --strip-components=1 \
+               && chmod +x "$FF/ffmpeg" "$FF/ffprobe" \
+               && "$FF/ffmpeg" -version >/dev/null 2>&1; then
+              echo "Binario estatico descargado."
+            else
+              echo "::warning::Fallo el binario estatico; se instala por apt."
+              rm -rf "$FF"; mkdir -p "$FF"
+              sudo apt-get install -y -qq --no-install-recommends ffmpeg || {
+                sudo apt-get update -qq
+                sudo apt-get install -y -qq --no-install-recommends ffmpeg
+              }
+            fi
+          fi
+          if [ -x "$FF/ffmpeg" ]; then
+            export PATH="$FF:$PATH"
+            echo "$FF" >> "$GITHUB_PATH"
+          fi
           ffmpeg -version | head -1
 
       # Recorta la música a la duración del vídeo y le aplica los fundidos.
