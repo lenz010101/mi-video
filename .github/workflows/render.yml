@@ -41,9 +41,9 @@ on:
           - mov
           - gif
       workers:
-        description: "Workers en paralelo (auto = dejar que HyperFrames decida)"
+        description: "Workers en paralelo (1 = captura en serie con encoding en flujo, que es lo mas rapido aqui)"
         type: string
-        default: "4"
+        default: "1"
 
   # También se ejecuta solo al cambiar la composición.
   push:
@@ -121,15 +121,19 @@ jobs:
           FORMAT: ${{ inputs.format }}
           WORKERS: ${{ inputs.workers }}
         run: |
-          # El runner tiene 4 nucleos y 16 GB: se le dice explicitamente que
-          # reparta el trabajo. En auto, HyperFrames eligio 1 solo worker y
-          # tardo 145 s en capturar los 960 fotogramas (el 90% del render).
+          # Los fotogramas extraidos de los 11 clips (492 MB de JPEG) se guardan
+          # en ~/.cache, que ya esta cacheado: al no cambiar los clips, el
+          # siguiente render se salta la extraccion.
+          export HYPERFRAMES_EXTRACT_CACHE_DIR="$HOME/.cache/hyperframes-extract"
+          # Con 1 worker HyperFrames usa "streaming encode" (los fotogramas van
+          # a ffmpeg segun se capturan). Con 4 workers medidos: captura 116 s
+          # + encoding aparte 55 s = 171 s, peor que 146 s en serie.
           npx --yes hyperframes@${{ env.HYPERFRAMES_VERSION }} render \
             --quality "${QUALITY:-standard}" \
             --fps "${FPS:-30}" \
             --format "${FORMAT:-mp4}" \
             --no-browser-gpu \
-            --workers "${WORKERS:-4}" \
+            --workers "${WORKERS:-1}" \
             --output "renders/${FILENAME:-video.mp4}"
 
       - name: Capture review frames
