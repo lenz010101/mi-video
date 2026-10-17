@@ -44,6 +44,13 @@ on:
         description: "Workers en paralelo (1 = captura en serie con encoding en flujo, que es lo mas rapido aqui)"
         type: string
         default: "1"
+      frames:
+        description: "Subir fotogramas de revision (anade ~18 s)"
+        type: choice
+        default: "no"
+        options:
+          - "no"
+          - "si"
 
   # También se ejecuta solo al cambiar la composición.
   push:
@@ -87,11 +94,14 @@ jobs:
             hf-${{ runner.os }}-
 
       # HyperFrames llama a ffmpeg y ffprobe desde el PATH para codificar el MP4.
-      # Con --no-install-recommends se evita bajar fuentes y documentación que no usamos.
+      # Los runners ya traen las listas de apt: se instala directo y solo se
+      # actualizan si hace falta (apt-get update cuesta ~15 s de los 210 s).
       - name: Install FFmpeg
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq --no-install-recommends ffmpeg
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg || {
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq --no-install-recommends ffmpeg
+          }
           ffmpeg -version | head -1
 
       # Recorta la música a la duración del vídeo y le aplica los fundidos.
@@ -137,6 +147,9 @@ jobs:
             --output "renders/${FILENAME:-video.mp4}"
 
       - name: Capture review frames
+        # Los fotogramas de revisión cuestan ~18 s de render aparte: solo se
+        # generan si se piden a mano desde "Run workflow".
+        if: ${{ inputs.frames == 'si' }}
         continue-on-error: true
         env:
           FPS: ${{ inputs.fps }}
