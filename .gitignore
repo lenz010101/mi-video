@@ -25,3 +25,6 @@ Thumbs.db
 # assets/video, asi que esto es solo scratch local: benchmarks, QC y
 # los clips originales. No tiene por que viajar al repositorio.
 casa-modular/
+
+# QC de snapshots locales (proyecto recortado para inspeccionar frames)
+snapqc/

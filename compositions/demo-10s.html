@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MENOS, pero MEJOR · reel premium 10 s</title>
+    <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <style>
+      /* ============ SISTEMA ============
+         Paleta: base oscura premium #0B0F19, paneles #121827,
+         degradado hielo (#7DD3FC) -> violeta (#A78BFA) como único
+         acento de dos tonos. Nada más: dos colores, todo lo demás
+         son blancos con alpha. Tipografía: Inter variable, con el
+         contraste clásico — titular gigante en peso 240 y rótulos
+         diminutos en tracking amplio. Todo el aire lo da el grid,
+         no los rellenos: márgenes laterales de 90px en 1080. */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @font-face {
+        font-family: "InterV";
+        src: url("../demo/fonts/InterVariable.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: block;
+      }
+
+      html, body { background: #0b0f19; }
+
+      #stage {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background:
+          radial-gradient(130% 80% at 50% 34%, #121827 0%, #0b0f19 100%);
+        color: #f2f6fb;
+        font-family: "InterV", "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ---------- ambiente: dos orbes difuminados ---------- */
+      /* Gradiente suave de máx. dos tonos; el blur es estático, la parte
+         animada es solo transform (barato de capturar). */
+      #orbs {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+       pointer-events: none;
+      }
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(110px);
+      }
+      #orbA {
+        top: -160px; right: -180px; width: 820px; height: 820px;
+        background: rgba(125, 211, 252, 0.15);
+      }
+      #orbB {
+        bottom: -220px; left: -200px; width: 700px; height: 700px;
+        background: rgba(167, 139, 250, 0.13);
+      }
+
+      #vig {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: radial-gradient(
+          140% 92% at 50% 46%,
+          rgba(11, 15, 25, 0) 46%,
+          rgba(11, 15, 25, 0.55) 100%
+        );
+      }
+
+      /* ---------- escenas ---------- */
+      .ov {
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+        opacity: 0;
+      }
+
+      .kicker {
+        font-size: 30px;
+        font-weight: 300;
+        letter-spacing: 0.48em;
+        text-indent: 0.48em; /* reequilibra el tracking final para centrar */
+        color: rgba(233, 241, 250, 0.9);
+        text-shadow: 0 0 22px rgba(125, 211, 252, 0.35);
+      }
+
+      /* Reveal de líneas: la máscara recorta por debajo de la caja con
+         padding, para que el glow no se corte en seco. */
+      .mask { overflow: hidden; padding: 0.35em 0.25em; margin: -0.35em -0.25em; }
+      .mask i { display: inline-block; font-style: normal; will-change: transform; }
+
+      /* ================= ACTO 1 · MENOS, ================= */
+      .aWrap {
+        position: absolute;
+        left: 90px;
+        right: 90px;
+        top: 640px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      #a1 .kicker { margin-bottom: 64px; }
+
+      .thinBig {
+        font-size: 184px;
+        font-weight: 240;
+        line-height: 0.98;
+        letter-spacing: -0.012em;
+      }
+      .thinBig i { font-variation-settings: "wght" 240; }
+
+      .hairline {
+        width: 224px;
+        height: 5px;
+        border-radius: 999px;
+        margin: 52px 0 46px;
+        background: linear-gradient(90deg, #7dd3fc, rgba(125, 211, 252, 0));
+      }
+      .sub {
+        font-size: 34px;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        color: rgba(235, 242, 250, 0.78);
+        line-height: 1.4;
+      }
+
+      /* ================= ACTO 2 · panel de cristal ================= */
+      .hubBody {
+        position: absolute;
+        left: 0; right: 0;
+        top: 660px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .glass {
+        width: 740px;
+        padding: 64px 58px 72px;
+        border-radius: 46px;
+        background: rgba(18, 24, 39, 0.52);
+        backdrop-filter: blur(30px) saturate(140%);
+        -webkit-backdrop-filter: blur(30px) saturate(140%);
+        border: 1px solid rgba(148, 180, 220, 0.18);
+        box-shadow: 0 42px 96px rgba(4, 7, 15, 0.5), 0 2px 0 rgba(255, 255, 255, 0.05) inset;
+        opacity: 0;
+      }
+      .glassLabel {
+        font-size: 23px;
+        font-weight: 300;
+        letter-spacing: 0.44em;
+        color: #7dd3fc;
+        margin-bottom: 46px;
+        text-shadow: 0 0 18px rgba(125, 211, 252, 0.5);
+      }
+      .hubRow {
+        display: flex;
+        align-items: baseline;
+        gap: 26px;
+        margin-top: 42px;
+        text-align: left;
+      }
+      .hubRow:first-of-type { margin-top: 0; }
+      .hubRow b {
+        font-size: 25px;
+        font-weight: 300;
+        letter-spacing: 0.16em;
+        color: rgba(125, 211, 252, 0.85);
+        min-width: 46px;
+      }
+      .hubRow span {
+        font-size: 45px;
+        font-weight: 480;
+        letter-spacing: -0.005em;
+        color: #eef4fb;
+        white-space: nowrap;
+      }
+      .hubSub {
+        margin-top: 52px;
+        font-size: 27px;
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        color: rgba(233, 240, 249, 0.68);
+      }
+
+      /* ================= ACTO 3 · MEJOR. ================= */
+      .finWrap {
+        position: absolute;
+        left: 80px;
+        right: 80px;
+        top: 620px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      #a3 .kicker {
+        font-size: 24px;
+        color: rgba(233, 241, 250, 0.55);
+        text-shadow: none;
+        margin-bottom: 54px;
+      }
+      .finSmall {
+        font-size: 88px;
+        font-weight: 250;
+        letter-spacing: -0.008em;
+        color: rgba(238, 244, 251, 0.92);
+        line-height: 1;
+      }
+      /* El titular estrella: gradiente de dos tonos con clip de texto.
+         El glow es una copia desenfocada (estática) detrás del texto real,
+         así el desenfoque no se anima por fotograma. */
+      .finBig {
+        position: relative;
+        margin-top: 28px;
+        isolation: isolate; /* da contexto para el glow con z-index negativo */
+        font-size: 232px;
+        font-weight: 250;
+        line-height: 1.04;
+        letter-spacing: -0.015em;
+      }
+      .finBig .grad {
+        position: relative;
+        display: inline-block;
+        background: linear-gradient(103deg, #eef4ff 6%, #7dd3fc 52%, #a78bfa 94%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .finBig .glow {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: inherit;
+        justify-content: inherit;
+        color: #57c8f7;
+        filter: blur(46px);
+        opacity: 0.55;
+      }
+
+      .quoteSub { margin-top: 34px; font-size: 27px; font-weight: 300; letter-spacing: 0.08em; color: rgba(233, 240, 249, 0.62); }
+
+      .sig {
+        position: absolute;
+        left: 0; right: 0;
+        top: 1694px;
+        text-align: center;
+        z-index: 40;
+        opacity: 0;
+        font-size: 24px;
+        font-weight: 300;
+        letter-spacing: 0.5em;
+        text-indent: 0.5em;
+        color: rgba(233, 241, 250, 0.55);
+      }
+      .sig .lt { color: #7dd3fc; letter-spacing: 0.5em; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="weniger-mejor"
+      data-start="0"
+      data-duration="10"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio
+        data-start="0"
+        data-duration="10"
+        data-media-start="19"
+        data-track-index="12"
+        data-volume="0.62"
+        data-fade-in="0.9"
+        data-fade-out="1.5"
+        id="musicDemo"
+        src="../assets/audio/music-source.mp3"
+        preload="auto"
+      ></audio>
+
+      <div id="orbs">
+        <div class="orb" id="orbA"></div>
+        <div class="orb" id="orbB"></div>
+      </div>
+      <div id="vig"></div>
+
+      <!-- ============ ACTO 1 · MENOS, ============ -->
+      <section class="ov" id="a1">
+        <div class="aWrap">
+          <div class="kicker" id="aKick">DIRECCIÓN DE ARTE</div>
+          <h1 class="thinBig" aria-label="Menos">
+            <span class="mask" style="display: block"><i>M</i><i>E</i><i>N</i><i>O</i><i>S</i><i>,</i></span>
+          </h1>
+          <div class="hairline" id="aRule"></div>
+          <div class="sub" id="aSub">una pieza sobre lo esencial</div>
+        </div>
+      </section>
+
+      <!-- ============ ACTO 2 · tres decisiones ============ -->
+      <section class="ov" id="a2">
+        <div class="hubBody">
+          <div class="glass" id="glass">
+            <div class="glassLabel" id="gLabel">TRES DECISIONES</div>
+            <div class="hubRow" id="gRow1"><b>01</b><span>espacio generoso</span></div>
+            <div class="hubRow" id="gRow2"><b>02</b><span>tipografía honesta</span></div>
+            <div class="hubRow" id="gRow3"><b>03</b><span>movimiento natural</span></div>
+            <div class="hubSub" id="gSub">el resto, fuera.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ACTO 3 · MEJOR. ============ -->
+      <section class="ov" id="a3">
+        <div class="finWrap">
+          <div class="kicker" id="fKick">MANIFIESTO</div>
+          <div class="finSmall" id="fSmall">
+            <span class="mask" style="display: block"><i>MENOS,</i></span>
+          </div>
+          <h2 class="finBig" id="fBig">
+            <span class="glow" aria-hidden="true"><span>MEJOR.</span></span>
+            <span class="grad"><span>MEJOR.</span></span>
+          </h2>
+          <div class="hairline" id="fRule"></div>
+          <div class="quoteSub" id="fSub">WENIGER, ABER BESSER — DIETER RAMS</div>
+        </div>
+        <div class="sig" id="sig">REEL · <span class="lt">2026</span></div>
+      </section>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script>
+        /* Timeline única, en pausa y determinista: HyperFrames la recorre
+           fotograma a fotograma a partir de window.__timelines. */
+        window.__timelines = window.__timelines || {};
+
+        function build() {
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---------- ambiente: orbes que respiran ---------- */
+          tl.fromTo(
+            "#orbs",
+            { opacity: 0 },
+            { opacity: 1, duration: 1.1, ease: "power3.out" }, 0
+          );
+          // Deriva lenta (solo transform): 5 s ida + 5 s vuelta = exactamente 10.
+          tl.fromTo("#orbA", { x: 0, y: 0 }, { x: -46, y: 38, duration: 5, ease: "sine.inOut", repeat: 1, yoyo: true }, 0);
+          tl.fromTo("#orbB", { x: 0, y: 0 }, { x: 40, y: -34, duration: 5, ease: "sine.inOut", repeat: 1, yoyo: true }, 0);
+
+          /* ---------- ACTO 1 · MENOS, (0 a 3.2 s) ---------- */
+          tl.fromTo("#a1", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power3.out" }, 0.2);
+          tl.fromTo("#aKick", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.5);
+          tl.fromTo(
+            "#a1 .mask i",
+            { yPercent: 118 },
+            { yPercent: 0, duration: 0.85, ease: "expo.out", stagger: 0.075 }, 0.7
+          );
+          tl.fromTo("#aRule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.inOut" }, 1.5);
+          tl.fromTo("#aSub", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 1.75);
+          // Salida: el acto se aparta entero para dejar paso al cristal.
+          tl.to("#a1", { opacity: 0, duration: 0.45, ease: "power3.in" }, 2.95);
+
+          /* ---------- ACTO 2 · cristal (3.4 a 6.0 s) ---------- */
+          tl.fromTo("#a2", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" }, 3.45);
+          tl.fromTo(
+            "#glass",
+            { opacity: 0, scale: 0.9, y: 44 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: "expo.out" }, 3.55
+          );
+          tl.fromTo("#gLabel", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.95);
+          tl.fromTo("#gRow1", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 4.2);
+          tl.fromTo("#gRow2", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 4.55);
+          tl.fromTo("#gRow3", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 4.9);
+          tl.fromTo("#gSub", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power3.out" }, 5.35);
+          tl.to("#a2", { opacity: 0, duration: 0.42, ease: "power3.in" }, 5.8);
+
+          /* ---------- ACTO 3 · MEJOR. (6.05 a 10 s) ---------- */
+          tl.fromTo("#a3", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power3.out" }, 6.1);
+          tl.fromTo("#fKick", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 6.3);
+          tl.fromTo("#fSmall i", { yPercent: 116 }, { yPercent: 0, duration: 0.7, ease: "expo.out" }, 6.55);
+          tl.fromTo("#fBig", { opacity: 0, y: 60, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "expo.out" }, 6.85);
+          tl.fromTo("#fRule", { scaleX: 0 }, { scaleX: 1, duration: 0.65, ease: "power3.inOut" }, 7.9);
+          tl.fromTo("#fSub", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 8.15);
+          tl.fromTo("#sig", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 8.7);
+          // Fundido final a negro; la música baja con fade-out propio (1.5 s).
+          tl.to("#a3", { opacity: 0, duration: 0.7, ease: "power3.in" }, 9.2);
+          tl.to("#orbs", { opacity: 0, duration: 0.7, ease: "power3.in" }, 9.25);
+
+          window.__timelines["weniger-mejor"] = tl;
+        }
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(build);
+        } else {
+          build();
+        }
+      </script>
+    </div>
+  </body>
+</html>

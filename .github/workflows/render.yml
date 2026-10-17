@@ -51,6 +51,10 @@ on:
         options:
           - "no"
           - "si"
+      composition:
+        description: "Archivo de composicion a renderizar (vacio = index.html del proyecto)"
+        type: string
+        default: ""
 
   # También se ejecuta solo al cambiar la composición.
   push:
@@ -160,6 +164,7 @@ jobs:
           FILENAME: ${{ inputs.filename }}
           FORMAT: ${{ inputs.format }}
           WORKERS: ${{ inputs.workers }}
+          COMPOSITION: ${{ inputs.composition }}
         run: |
           # Con 1 worker HyperFrames usa "streaming encode" (los fotogramas van
           # a ffmpeg segun se capturan). Con 4 workers medidos: captura 116 s
@@ -167,7 +172,14 @@ jobs:
           # --low-memory-mode fija 1 worker y captura por pantalla (lo que ya
           # usamos) y ademas se salta la calibracion de workers, que tardaba
           # 14-20 s. La imagen no cambia.
+          # --composition permite renderizar otra pieza distinta de index.html
+          # (p. ej. una demo) sin tocar la composicion principal.
+          COMPOSITION_ARGS=""
+          if [ -n "${COMPOSITION:-}" ]; then
+            COMPOSITION_ARGS="--composition ${COMPOSITION}"
+          fi
           npx --yes hyperframes@${{ env.HYPERFRAMES_VERSION }} render \
+            $COMPOSITION_ARGS \
             --quality "${QUALITY:-standard}" \
             --fps "${FPS:-30}" \
             --format "${FORMAT:-mp4}" \

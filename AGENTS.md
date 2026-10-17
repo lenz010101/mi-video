@@ -44,6 +44,30 @@ para entregar:
 - El coste por fotograma se reparte así (medido en local): captura de pantalla
   base 38%, los 11 vídeos 20%, los gráficos (SVG + glow) 42%.
 
+## Dirección de arte de vídeos (reglas permanentes del usuario)
+
+El usuario quiere los próximos vídeos con nivel "agencia premium" (After
+Effects), no con estética de plantilla web. Para cualquier composición nueva
+(**no se rediseña la promo Casa Modular existente, esa queda como está**):
+
+1. **Regla de oro de espaciado:** nunca márgenes/paddings por defecto. Layouts
+   con aire abundante (generoso, flexbox/grid equilibrados). Los elementos
+   nunca rozan los bordes del vídeo.
+2. **Tipografía cinematográfica:** sans-serif limpias; contraste masivo de
+   escala (títulos muy grandes y delgados vs. subtítulos pequeños y legibles);
+   cuidar `line-height` para no amontonar texto.
+3. **Paletas de alto nivel:** nada de colores planos saturados. Modos oscuros
+   premium (#0B0F19, #121827), acentos de neón con desenfoque (blur CSS),
+   gradientes suaves de máx. dos tonos complementarios, transparencias
+   elegantes (`backdrop-filter: blur`).
+4. **Movimiento fluido (GSAP):** curvas naturales (`power3.out`, `expo.out`).
+   Transiciones de texto letra por letra o palabra por palabra, orgánicas, con
+   `data-start`/`data-duration` al milímetro.
+5. **Minimalismo corporativo:** si algo no es necesario para la composición,
+   se elimina. El resultado debe parecer un video premium de agencia.
+   (Compatibilizar esto siempre con las medidas de rendimiento ya documentadas:
+   el glow y el blur de CSS cuestan captura, úsalos con moderación.)
+
 ## Contexto
 
 - Proyecto HyperFrames en este directorio: `index.html` es la composición.
