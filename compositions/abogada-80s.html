@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Abogada 80 s · réplica de edición</title>
+    <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #000; }
+      #stage {
+        position: relative; width: 1080px; height: 1920px;
+        overflow: hidden; background: #000;
+        font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      #vids, .vwrap { position: absolute; inset: 0; }
+      .vwrap { overflow: hidden; opacity: 0; }
+      .vwrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .hookTop { inset: 0 0 50% 0; opacity: 1; }
+      .hookBottom { inset: 60% 0 0 0; opacity: 1; }
+      .bw video { filter: grayscale(1) contrast(1.05); }
+
+      /* caption principal: Inter ExtraBold blanco, sombra suave, y~52% */
+      .cap {
+        position: absolute; left: 40px; right: 40px; top: 968px;
+        text-align: center; z-index: 30; opacity: 0;
+        font-size: 62px; font-weight: 800; line-height: 1.16;
+        color: #fff; letter-spacing: 0.002em;
+        text-shadow: 0 3px 14px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 0, 0, 0.55);
+      }
+      .cap-red { color: #ff2f2f; }
+      .cap-yellow { color: #ffd60a; }
+
+      /* grandes títulos del hook y del remate central */
+      .bigRow {
+        position: absolute; left: 70px; right: 70px; z-index: 34; opacity: 0;
+        text-align: center; font-weight: 800; color: #fff;
+        text-shadow: 0 4px 18px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 0, 0, 0.5);
+      }
+      #hookTitle { top: 430px; font-size: 96px; line-height: 1.02; }
+      #hookSub { top: 1240px; font-size: 88px; line-height: 1.08; }
+      #hookSub .rx { color: #ff2f2f; }
+      #explain { top: 760px; font-size: 92px; line-height: 1.06; }
+      #explain span { color: #ffd60a; }
+      .rowYellow { top: 700px; font-size: 86px; letter-spacing: -0.01em; }
+      .rowYellow .r1 { color: #fff; display: block; }
+      .rowYellow .r2 { color: #ffd60a; display: block; }
+      .rowYellow .r3 { color: #fff; display: block; }
+
+      /* flecha roja final (SVG, deterministic bounce) */
+      #arrow {
+        position: absolute; left: 50%; margin-left: -90px; top: 1240px;
+        z-index: 40; opacity: 0; width: 180px;
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="abogada-80s"
+      data-start="0"
+      data-duration="80.48"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio
+        id="voiceTrack"
+        data-start="0"
+        data-duration="80.48"
+        data-media-start="0"
+        data-track-index="3"
+        data-volume="1"
+        src="../assets/audio/abogada-original.mp3"
+        preload="auto"
+      ></audio>
+
+      <div id="vids">
+        <div id="vids"><video id="master" src="../demo2/cut/master.mp4" data-start="0" data-duration="80.48" muted playsinline preload="auto"></video></div>
+      </div>
+
+<div class="cap" id="c4_48">audiencia que va</div>
+  <div class="cap" id="c5_38">a pasar dentro</div>
+  <div class="cap" id="c6_00">de 48 horas</div>
+  <div class="cap" id="c7_14">y cada hora</div>
+  <div class="cap" id="c7_60">que pase está</div>
+  <div class="cap" id="c8_50">más cerca que</div>
+  <div class="cap" id="c9_02">un juez de</div>
+  <div class="cap" id="c9_60">cine sin internamiento</div>
+  <div class="cap" id="c10_34">a un penal</div>
+  <div class="cap" id="c12_78">explicar lo que</div>
+  <div class="cap" id="c13_68">pasa en esa</div>
+  <div class="cap" id="c14_54">audiencia porque en</div>
+  <div class="cap" id="c15_42">la Comisaría nadie</div>
+  <div class="cap" id="c16_68">te lo va</div>
+  <div class="cap" id="c17_08">a decir. Cuando</div>
+  <div class="cap" id="c17_66">un familiar pasa</div>
+  <div class="cap" id="c18_38">la noche en</div>
+  <div class="cap" id="c18_96">la Comisaría, los</div>
+  <div class="cap" id="c19_78">más peligrosos no</div>
+  <div class="cap" id="c20_76">es eso. Los</div>
+  <div class="cap" id="c21_28">peligrosos es la</div>
+  <div class="cap" id="c22_36">audiencia que viene</div>
+  <div class="cap" id="c23_20">en 48 horas.</div>
+  <div class="cap" id="c24_50">Cada hora está</div>
+  <div class="cap" id="c25_14">más cerca que</div>
+  <div class="cap" id="c25_84">un juez ordene</div>
+  <div class="cap" id="c26_72">su prisión preventiva.</div>
+  <div class="cap" id="c27_88">La fiscalía le</div>
+  <div class="cap" id="c28_66">requerirá un juez</div>
+  <div class="cap" id="c29_50">que durante esa</div>
+  <div class="cap" id="c30_18">investigación, familia</div>
+  <div class="cap" id="c31_40">tenga la prisión</div>
+  <div class="cap" id="c32_42">preventiva. Lo que</div>
+  <div class="cap" id="c33_38">nadie te dice</div>
+  <div class="cap" id="c34_12">es que esa</div>
+  <div class="cap" id="c34_96">investigación puede durar</div>
+  <div class="cap" id="c36_22">meses y hasta</div>
+  <div class="cap" id="c37_30">años. El juez</div>
+  <div class="cap" id="c38_30">mirará estas tres</div>
+  <div class="cap" id="c39_44">cosas. ¿Qué tan</div>
+  <div class="cap" id="c40_34">graves son los</div>
+  <div class="cap" id="c41_14">medios de prueba</div>
+  <div class="cap" id="c41_58">de la fiscalía,</div>
+  <div class="cap" id="c42_52">el riesgo de</div>
+  <div class="cap" id="c43_08">suave y la</div>
+  <div class="cap" id="c43_74">pena? Con que</div>
+  <div class="cap" id="c44_36">estrategia le da</div>
+  <div class="cap" id="c45_12">a llevar la</div>
+  <div class="cap" id="c50_40">fiscalía tiene armado</div>
+  <div class="cap" id="c51_56">un requerimiento de</div>
+  <div class="cap" id="c52_42">prisión preventiva. ¿Qué</div>
+  <div class="cap" id="c53_40">pasa cuando se</div>
+  <div class="cap" id="c54_12">arma anticipadamente una</div>
+  <div class="cap" id="c55_36">estrategia en la</div>
+  <div class="cap" id="c56_02">hora? Esa requerimiento</div>
+  <div class="cap" id="c56_90">de prisión preventiva</div>
+  <div class="cap" id="c58_28">que ha sido</div>
+  <div class="cap" id="c58_54">necesitado la fiscalía</div>
+  <div class="cap" id="c59_54">que no había</div>
+  <div class="cap" id="c60_00">habla. Yo me</div>
+  <div class="cap" id="c60_92">entargo de que</div>
+  <div class="cap" id="c61_72">estemos preparados para</div>
+  <div class="cap" id="c62_94">las vías y</div>
+  <div class="cap" id="c63_68">que pues no</div>
+  <div class="cap" id="c64_34">solo tenga una</div>
+  <div class="cap" id="c65_40">sola versión, no</div>
+  <div class="cap" id="c66_20">las go. Cada</div>
+  <div class="cap" id="c67_06">hora que pasa</div>
+  <div class="cap" id="c67_76">la fiscalía tiene</div>
+  <div class="cap" id="c68_62">la oportunidad de</div>
+  <div class="cap" id="c69_88">mejorar su requerimiento.</div>
+  <div class="cap" id="c70_92">Y mientras ves</div>
+  <div class="cap" id="c71_50">que las que</div>
+  <div class="cap" id="c72_02">manesca tu familia</div>
+  <div class="cap" id="c72_90">tiene menos</div>
+  <div class="cap" id="c74_12">horas para que</div>
+  <div class="cap" id="c74_62">encuentre una de</div>
+  <div class="cap" id="c75_48">tus tocan botón</div>
+  <div class="cap" id="c76_40">de abajo y</div>
+  <div class="cap" id="c77_02">escribe la palabra</div>
+  <div class="cap" id="c77_80">audiencia. Yo te</div>
+  <div class="cap" id="c78_84">diren si aún</div>
+
+      <div class="bigRow" id="hookTitle"><span>Tu familiar</span><br /><span>va a pasar</span></div>
+      <div class="bigRow" id="hookSub">ESTA NOCHE<br /><b class="rx">¿En la comisaría?</b></div>
+      <div class="bigRow" id="explain">Te voy a explicar<br /><span>lo que pasa</span></div>
+      <div class="bigRow rowYellow" id="rowY">
+        <span class="r1">Qué pasa</span><span class="r2">cuando se arma</span><span class="r3">anticipadamente</span>
+      </div>
+
+      <svg id="arrow" viewBox="0 0 180 220" xmlns="http://www.w3.org/2000/svg">
+        <path d="M90 12 L90 150 M40 110 L90 165 L140 110" fill="none" stroke="#e5341f" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        function build() {
+          var tl = gsap.timeline({ paused: true });
+tl.set("#master", { filter: "grayscale(1) contrast(1.06)" }, 10.967);
+tl.set("#master", { filter: "grayscale(0)" }, 11.967);
+tl.set("#c4_48", { opacity: 1 }, 4.480); tl.set("#c4_48", { opacity: 0 }, 5.440);
+tl.set("#c5_38", { opacity: 1 }, 5.380); tl.set("#c5_38", { opacity: 0 }, 6.060);
+tl.set("#c6_00", { opacity: 1 }, 6.000); tl.set("#c6_00", { opacity: 0 }, 7.020);
+tl.set("#c7_14", { opacity: 1 }, 7.140); tl.set("#c7_14", { opacity: 0 }, 7.660);
+tl.set("#c7_60", { opacity: 1 }, 7.600); tl.set("#c7_60", { opacity: 0 }, 8.560);
+tl.set("#c8_50", { opacity: 1 }, 8.500); tl.set("#c8_50", { opacity: 0 }, 9.080);
+tl.set("#c9_02", { opacity: 1 }, 9.020); tl.set("#c9_02", { opacity: 0 }, 9.660);
+tl.set("#c9_60", { opacity: 1 }, 9.600); tl.set("#c9_60", { opacity: 0 }, 10.400);
+tl.set("#c10_34", { opacity: 1 }, 10.340); tl.set("#c10_34", { opacity: 0 }, 11.220);
+tl.set("#c12_78", { opacity: 1 }, 12.780); tl.set("#c12_78", { opacity: 0 }, 13.740);
+tl.set("#c13_68", { opacity: 1 }, 13.680); tl.set("#c13_68", { opacity: 0 }, 14.600);
+tl.set("#c14_54", { opacity: 1 }, 14.540); tl.set("#c14_54", { opacity: 0 }, 15.480);
+tl.set("#c15_42", { opacity: 1 }, 15.420); tl.set("#c15_42", { opacity: 0 }, 16.740);
+tl.set("#c16_68", { opacity: 1 }, 16.680); tl.set("#c16_68", { opacity: 0 }, 17.140);
+tl.set("#c17_08", { opacity: 1 }, 17.080); tl.set("#c17_08", { opacity: 0 }, 17.720);
+tl.set("#c17_66", { opacity: 1 }, 17.660); tl.set("#c17_66", { opacity: 0 }, 18.440);
+tl.set("#c18_38", { opacity: 1 }, 18.380); tl.set("#c18_38", { opacity: 0 }, 19.020);
+tl.set("#c18_96", { opacity: 1 }, 18.960); tl.set("#c18_96", { opacity: 0 }, 19.840);
+tl.set("#c19_78", { opacity: 1 }, 19.780); tl.set("#c19_78", { opacity: 0 }, 20.820);
+tl.set("#c20_76", { opacity: 1 }, 20.760); tl.set("#c20_76", { opacity: 0 }, 21.340);
+tl.set("#c21_28", { opacity: 1 }, 21.280); tl.set("#c21_28", { opacity: 0 }, 22.420);
+tl.set("#c22_36", { opacity: 1 }, 22.360); tl.set("#c22_36", { opacity: 0 }, 23.260);
+tl.set("#c23_20", { opacity: 1 }, 23.200); tl.set("#c23_20", { opacity: 0 }, 24.560);
+tl.set("#c24_50", { opacity: 1 }, 24.500); tl.set("#c24_50", { opacity: 0 }, 25.200);
+tl.set("#c25_14", { opacity: 1 }, 25.140); tl.set("#c25_14", { opacity: 0 }, 25.900);
+tl.set("#c25_84", { opacity: 1 }, 25.840); tl.set("#c25_84", { opacity: 0 }, 26.780);
+tl.set("#c26_72", { opacity: 1 }, 26.720); tl.set("#c26_72", { opacity: 0 }, 27.880);
+tl.set("#c27_88", { opacity: 1 }, 27.880); tl.set("#c27_88", { opacity: 0 }, 28.720);
+tl.set("#c28_66", { opacity: 1 }, 28.660); tl.set("#c28_66", { opacity: 0 }, 29.560);
+tl.set("#c29_50", { opacity: 1 }, 29.500); tl.set("#c29_50", { opacity: 0 }, 30.240);
+tl.set("#c30_18", { opacity: 1 }, 30.180); tl.set("#c30_18", { opacity: 0 }, 31.460);
+tl.set("#c31_40", { opacity: 1 }, 31.400); tl.set("#c31_40", { opacity: 0 }, 32.480);
+tl.set("#c32_42", { opacity: 1 }, 32.420); tl.set("#c32_42", { opacity: 0 }, 33.440);
+tl.set("#c33_38", { opacity: 1 }, 33.380); tl.set("#c33_38", { opacity: 0 }, 34.180);
+tl.set("#c34_12", { opacity: 1 }, 34.120); tl.set("#c34_12", { opacity: 0 }, 35.020);
+tl.set("#c34_96", { opacity: 1 }, 34.960); tl.set("#c34_96", { opacity: 0 }, 36.280);
+tl.set("#c36_22", { opacity: 1 }, 36.220); tl.set("#c36_22", { opacity: 0 }, 37.360);
+tl.set("#c37_30", { opacity: 1 }, 37.300); tl.set("#c37_30", { opacity: 0 }, 38.360);
+tl.set("#c38_30", { opacity: 1 }, 38.300); tl.set("#c38_30", { opacity: 0 }, 39.500);
+tl.set("#c39_44", { opacity: 1 }, 39.440); tl.set("#c39_44", { opacity: 0 }, 40.400);
+tl.set("#c40_34", { opacity: 1 }, 40.340); tl.set("#c40_34", { opacity: 0 }, 41.200);
+tl.set("#c41_14", { opacity: 1 }, 41.140); tl.set("#c41_14", { opacity: 0 }, 41.640);
+tl.set("#c41_58", { opacity: 1 }, 41.580); tl.set("#c41_58", { opacity: 0 }, 42.560);
+tl.set("#c42_52", { opacity: 1 }, 42.520); tl.set("#c42_52", { opacity: 0 }, 43.140);
+tl.set("#c43_08", { opacity: 1 }, 43.080); tl.set("#c43_08", { opacity: 0 }, 43.800);
+tl.set("#c43_74", { opacity: 1 }, 43.740); tl.set("#c43_74", { opacity: 0 }, 44.420);
+tl.set("#c44_36", { opacity: 1 }, 44.360); tl.set("#c44_36", { opacity: 0 }, 45.180);
+tl.set("#c45_12", { opacity: 1 }, 45.120); tl.set("#c45_12", { opacity: 0 }, 45.560);
+tl.set("#c50_40", { opacity: 1 }, 50.400); tl.set("#c50_40", { opacity: 0 }, 51.620);
+tl.set("#c51_56", { opacity: 1 }, 51.560); tl.set("#c51_56", { opacity: 0 }, 52.480);
+tl.set("#c52_42", { opacity: 1 }, 52.420); tl.set("#c52_42", { opacity: 0 }, 53.460);
+tl.set("#c53_40", { opacity: 1 }, 53.400); tl.set("#c53_40", { opacity: 0 }, 54.180);
+tl.set("#c54_12", { opacity: 1 }, 54.120); tl.set("#c54_12", { opacity: 0 }, 55.420);
+tl.set("#c55_36", { opacity: 1 }, 55.360); tl.set("#c55_36", { opacity: 0 }, 56.080);
+tl.set("#c56_02", { opacity: 1 }, 56.020); tl.set("#c56_02", { opacity: 0 }, 56.960);
+tl.set("#c56_90", { opacity: 1 }, 56.900); tl.set("#c56_90", { opacity: 0 }, 58.200);
+tl.set("#c58_28", { opacity: 1 }, 58.280); tl.set("#c58_28", { opacity: 0 }, 58.600);
+tl.set("#c58_54", { opacity: 1 }, 58.540); tl.set("#c58_54", { opacity: 0 }, 59.600);
+tl.set("#c59_54", { opacity: 1 }, 59.540); tl.set("#c59_54", { opacity: 0 }, 60.060);
+tl.set("#c60_00", { opacity: 1 }, 60.000); tl.set("#c60_00", { opacity: 0 }, 60.980);
+tl.set("#c60_92", { opacity: 1 }, 60.920); tl.set("#c60_92", { opacity: 0 }, 61.780);
+tl.set("#c61_72", { opacity: 1 }, 61.720); tl.set("#c61_72", { opacity: 0 }, 63.000);
+tl.set("#c62_94", { opacity: 1 }, 62.940); tl.set("#c62_94", { opacity: 0 }, 63.740);
+tl.set("#c63_68", { opacity: 1 }, 63.680); tl.set("#c63_68", { opacity: 0 }, 64.400);
+tl.set("#c64_34", { opacity: 1 }, 64.340); tl.set("#c64_34", { opacity: 0 }, 65.460);
+tl.set("#c65_40", { opacity: 1 }, 65.400); tl.set("#c65_40", { opacity: 0 }, 66.260);
+tl.set("#c66_20", { opacity: 1 }, 66.200); tl.set("#c66_20", { opacity: 0 }, 67.120);
+tl.set("#c67_06", { opacity: 1 }, 67.060); tl.set("#c67_06", { opacity: 0 }, 67.820);
+tl.set("#c67_76", { opacity: 1 }, 67.760); tl.set("#c67_76", { opacity: 0 }, 68.680);
+tl.set("#c68_62", { opacity: 1 }, 68.620); tl.set("#c68_62", { opacity: 0 }, 69.700);
+tl.set("#c69_88", { opacity: 1 }, 69.880); tl.set("#c69_88", { opacity: 0 }, 70.980);
+tl.set("#c70_92", { opacity: 1 }, 70.920); tl.set("#c70_92", { opacity: 0 }, 71.560);
+tl.set("#c71_50", { opacity: 1 }, 71.500); tl.set("#c71_50", { opacity: 0 }, 72.080);
+tl.set("#c72_02", { opacity: 1 }, 72.020); tl.set("#c72_02", { opacity: 0 }, 72.960);
+tl.set("#c72_90", { opacity: 1 }, 72.900); tl.set("#c72_90", { opacity: 0 }, 73.800);
+tl.set("#c74_12", { opacity: 1 }, 74.120); tl.set("#c74_12", { opacity: 0 }, 74.680);
+tl.set("#c74_62", { opacity: 1 }, 74.620); tl.set("#c74_62", { opacity: 0 }, 75.540);
+tl.set("#c75_48", { opacity: 1 }, 75.480); tl.set("#c75_48", { opacity: 0 }, 76.460);
+tl.set("#c76_40", { opacity: 1 }, 76.400); tl.set("#c76_40", { opacity: 0 }, 77.080);
+tl.set("#c77_02", { opacity: 1 }, 77.020); tl.set("#c77_02", { opacity: 0 }, 77.860);
+tl.set("#c77_80", { opacity: 1 }, 77.800); tl.set("#c77_80", { opacity: 0 }, 78.900);
+tl.set("#c78_84", { opacity: 1 }, 78.840); tl.set("#c78_84", { opacity: 0 }, 79.620);
+          /* grandes títulos */
+          tl.set("#hookTitle", { opacity: 1 }, 0.15);
+          tl.set("#hookTitle", { opacity: 0 }, 2.4);
+          tl.set("#hookSub", { opacity: 1 }, 0.75);
+          tl.set("#hookSub", { opacity: 0 }, 2.4);
+          tl.set("#rowY", { opacity: 1 }, 46.1);
+          tl.set("#rowY", { opacity: 0 }, 50.1);
+          tl.set("#explain", { opacity: 1 }, 11.0);
+          tl.set("#explain", { opacity: 0 }, 12.5);
+          /* flecha roja con rebote sutil (solo transform) */
+          tl.set("#arrow", { opacity: 1 }, 70.95);
+          tl.fromTo("#arrow", { y: -26 }, { y: 0, duration: 0.45, ease: "power3.out" }, 70.95);
+          tl.fromTo("#arrow", { y: 0 }, { y: -16, duration: 0.35, ease: "power2.inOut", repeat: 5, yoyo: true }, 71.5);
+          tl.set("#arrow", { opacity: 0 }, 75.8);
+          window.__timelines["abogada-80s"] = tl;
+        }
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+      </script>
+    </div>
+  </body>
+</html>
