@@ -95,10 +95,11 @@
 
       /* ══ E2 · 1.02 – 5.44 · poster del motel ═════════════════════ */
       #e2 { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 30%; }
-      /* el neón VELUXE sobre el letrero: crece como bloque (medido), no letra a letra */
+      /* el neón VELUXE va DENTRO de #e2: así lo empuja la cámara, igual
+         que en el original (donde el rótulo es parte de la foto) */
       #neon {
-        position: absolute; left: 0; right: 0; top: 150px; z-index: 8; text-align: center;
-        will-change: transform, opacity; opacity: 0;
+        position: absolute; left: 0; right: 0; top: -30px; z-index: 8; text-align: center;
+        will-change: transform;
       }
       #neon .row {
         display: inline-flex; gap: 22px; padding: 24px 38px 30px; position: relative;
@@ -317,9 +318,13 @@
              push-in al primer plano 4.76 -> 5.38. */
           tl.set("#band2", { opacity: 1 }, 1.02);
           tl.set("#band1", { opacity: 0 }, 1.03);
-          tl.fromTo("#e2", { scale: 1.0, x: 0, y: 0 }, { scale: 1.0, x: 0, y: 0, duration: 0.7, ease: "none" }, 1.02);
-          /* el bloque del neón se revela 1.05 -> 1.72 (medido: crece, no letra a letra) */
-          tl.fromTo("#neon", { opacity: 0, scale: 0.62 }, { opacity: 1, scale: 1, duration: 0.66, ease: "power2.out" }, 1.05);
+          /* Curva de cámara medida en el original (E2):
+             1.05 -> 2.20  tirón atrás (el rótulo se asienta y entra entero)
+             2.20 -> 4.40  empuje lento hacia el primer plano
+             4.40 -> 4.70  quieto
+             4.76 -> 5.38  push-in fuerte al primer plano */
+          tl.fromTo("#e2", { scale: 1.0, x: 0, y: 0 }, { scale: 0.9, x: 0, y: 18, duration: 1.15, ease: "power1.inOut", immediateRender: false }, 1.05);
+          tl.fromTo("#e2", { scale: 0.9, x: 0, y: 18 }, { scale: 1.0, x: 0, y: 0, duration: 2.2, ease: "power1.inOut", immediateRender: false }, 2.20);
           tl.fromTo("#stkBurger", { opacity: 0, scale: 0.25, rotation: -22 }, { opacity: 1, scale: 1, rotation: -7, duration: 0.3, ease: "back.out(2.4)" }, 1.72);
           tl.fromTo("#stkSpray", { opacity: 0, scale: 0.25, rotation: 20 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.3, ease: "back.out(2.4)" }, 2.35);
           tl.fromTo("#stkAlien", { opacity: 0, scale: 0.25, rotation: -18 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.3, ease: "back.out(2.4)" }, 2.80);
@@ -328,9 +333,9 @@
           tl.set("#blood2", { opacity: .68 }, 3.05);
           tl.set("#blood2", { opacity: .52 }, 3.25);
           tl.set("#blood2", { opacity: .66 }, 3.75);
-          /* 3.40 -> 4.70: el plano se queda QUIETO */
-          tl.set("#e2", { transformOrigin: "50% 30%" }, 4.70);
-          tl.fromTo("#e2", { scale: 1.0, x: 0, y: 0 }, { scale: 1.42, x: 0, y: 0, duration: 0.62, ease: "power2.in", immediateRender: false }, 4.76);
+          /* 3.40 -> 4.70: el plano se queda QUIETO (medido) */
+          tl.set("#e2", { transformOrigin: "50% 30%" }, 4.40);
+          tl.fromTo("#e2", { scale: 1.0, x: 0, y: 0 }, { scale: 1.55, x: 0, y: 0, duration: 0.62, ease: "power2.in", immediateRender: false }, 4.76);
 
           /* ══ FIESTA · 5.44 – 9.37 ══════════════════════════════════
              Medido en el original: corte seco 5.44 · fogonazo azul 5.50 ·
