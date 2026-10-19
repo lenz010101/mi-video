@@ -198,6 +198,16 @@ El PC del usuario es lento ("una tostadora"). **El tiempo de trabajo se cuenta c
   tardar y por qué. Si son > 3 min → avisar antes de lanzarlo.
 - No encadenar XT (leer bundle + medir + render + render). Cada paso se
   justifica con un dato que falte.
+- **No buscar assets externos si ya hay un asset local o del propio material.**
+  Hoy se perdieron ~20 min descargando personajes de Wikimedia cuando el
+  material del proyecto ya traía lo necesario. Regla: antes de descargar
+  nada, listar lo que YA existe en `demo2/new/` y en el repo.
+- **Los `snapshot` locales son el mayor coste**: cada uno arranca Chrome
+  (~40-90 s). Máximo **1** por tarea, y sólo si hay un bug real que
+  verificar. Para revisar un render, extraer fotogramas del MP4 con ffmpeg
+  (instantáneo).
+- No descargar imágenes para "mejorar" un resultado: si el material ya está,
+  se usa.
 
 ## Contexto
 
