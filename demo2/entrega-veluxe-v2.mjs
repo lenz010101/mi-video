@@ -10,7 +10,7 @@ import path from 'node:path';
 
 const REPO = 'lenz010101/mi-video';
 const BRANCH = 'demo-premium';
-const FILENAME = 'veluxe.mp4';
+const FILENAME = 'veluxe2.mp4';
 const DESKTOP = 'C:/Users/Admin/Desktop';
 
 const cred = execFileSync('git', ['credential', 'fill'], {
