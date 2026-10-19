@@ -47,11 +47,29 @@
       .rowYellow .r2 { color: #ffd60a; display: block; }
       .rowYellow .r3 { color: #fff; display: block; }
 
-      /* flecha roja final (SVG, deterministic bounce) */
+      /* seam del hook: mezcla suave como el original (gradiente barato) */
+      #seamTop, #seamBot { position: absolute; left: 0; right: 0; z-index: 20; opacity: 0; pointer-events: none; }
+      #seamTop { top: 620px; height: 360px; background: linear-gradient(to bottom, rgba(207,227,224,0) 0%, rgba(207,227,224,0.85) 85%); }
+      #seamBot { top: 980px; height: 280px; background: linear-gradient(to bottom, rgba(207,227,224,0.8) 0%, rgba(207,227,224,0) 60%); }
+
+      /* glow celeste-verde del estudio original, solo en segmentos de presentadora */
+      #glow { position: absolute; inset: 0; z-index: 18; opacity: 0; pointer-events: none;
+        background: radial-gradient(circle at 30% 55%, rgba(85, 225, 150, 0.32), rgba(120, 210, 230, 0.10) 38%, transparent 62%); }
+
+      /* remate final: AUDIENCIA dorada serif con comillas (como el original) */
+      #audRow { position: absolute; left: 60px; right: 60px; top: 1080px; z-index: 34; opacity: 0;
+        text-align: center; font-family: "Times New Roman", Georgia, serif; font-weight: 700;
+        font-size: 132px; letter-spacing: 0.02em; white-space: nowrap;
+        background: linear-gradient(#ffe98a 8%, #f7c600 52%, #b8860b 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        filter: drop-shadow(0 3px 2px rgba(60, 40, 0, 0.55));
+      }
+
+      /* flecha final: blanca con borde rojo, como el original */
       #arrow {
-        position: absolute; left: 50%; margin-left: -90px; top: 1240px;
-        z-index: 40; opacity: 0; width: 180px;
-        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+        position: absolute; left: 50%; margin-left: -95px; top: 1150px;
+        z-index: 40; opacity: 0; width: 190px;
+        filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.45));
       }
     </style>
   </head>
@@ -169,9 +187,13 @@
       <div class="bigRow rowYellow" id="rowY">
         <span class="r1">Qué pasa</span><span class="r2">cuando se arma</span><span class="r3">anticipadamente</span>
       </div>
+      <div id="audRow">"AUDIENCIA"</div>
+      <div id="glow"></div>
+      <div id="seamTop"></div>
+      <div id="seamBot"></div>
 
       <svg id="arrow" viewBox="0 0 180 220" xmlns="http://www.w3.org/2000/svg">
-        <path d="M90 12 L90 150 M40 110 L90 165 L140 110" fill="none" stroke="#e5341f" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M58 14 L122 14 L122 118 L152 118 L90 206 L28 118 L58 118 Z" fill="#ffffff" stroke="#e5341f" stroke-width="9" stroke-linejoin="round"/>
       </svg>
 
       <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
@@ -272,7 +294,32 @@ tl.set("#c78_84", { opacity: 1 }, 78.840); tl.set("#c78_84", { opacity: 0 }, 79.
           tl.set("#rowY", { opacity: 0 }, 50.1);
           tl.set("#explain", { opacity: 1 }, 11.0);
           tl.set("#explain", { opacity: 0 }, 12.5);
-          /* flecha roja con rebote sutil (solo transform) */
+          /* remate dorado (flash original) */
+          tl.set("#audRow", { opacity: 1 }, 78.18);
+          tl.set("#audRow", { opacity: 0 }, 78.62);
+          /* seams del hook (mezcla celeste) */
+          tl.set("#seamTop", { opacity: 1 }, 0);
+          tl.set("#seamBot", { opacity: 1 }, 0);
+          tl.set("#seamTop", { opacity: 0 }, 2.43);
+          tl.set("#seamBot", { opacity: 0 }, 2.43);
+          tl.set("#glow", { opacity: 1 }, 3.467); tl.set("#glow", { opacity: 0 }, 3.900);
+          tl.set("#glow", { opacity: 1 }, 3.900); tl.set("#glow", { opacity: 0 }, 4.200);
+          tl.set("#glow", { opacity: 1 }, 4.200); tl.set("#glow", { opacity: 0 }, 7.100);
+          tl.set("#glow", { opacity: 1 }, 10.967); tl.set("#glow", { opacity: 0 }, 11.967);
+          tl.set("#glow", { opacity: 1 }, 11.967); tl.set("#glow", { opacity: 0 }, 12.500);
+          tl.set("#glow", { opacity: 1 }, 12.500); tl.set("#glow", { opacity: 0 }, 15.100);
+          tl.set("#glow", { opacity: 1 }, 17.467); tl.set("#glow", { opacity: 0 }, 21.067);
+          tl.set("#glow", { opacity: 1 }, 24.500); tl.set("#glow", { opacity: 0 }, 27.767);
+          tl.set("#glow", { opacity: 1 }, 33.000); tl.set("#glow", { opacity: 0 }, 37.833);
+          tl.set("#glow", { opacity: 1 }, 40.067); tl.set("#glow", { opacity: 0 }, 42.433);
+          tl.set("#glow", { opacity: 1 }, 44.067); tl.set("#glow", { opacity: 0 }, 46.067);
+          tl.set("#glow", { opacity: 1 }, 46.067); tl.set("#glow", { opacity: 0 }, 49.933);
+          tl.set("#glow", { opacity: 1 }, 56.167); tl.set("#glow", { opacity: 0 }, 60.633);
+          tl.set("#glow", { opacity: 1 }, 69.300); tl.set("#glow", { opacity: 0 }, 70.867);
+          tl.set("#glow", { opacity: 1 }, 70.867); tl.set("#glow", { opacity: 0 }, 75.833);
+          tl.set("#glow", { opacity: 1 }, 75.833); tl.set("#glow", { opacity: 0 }, 80.480);
+
+          /* flecha blanca con borde rojo + rebote */
           tl.set("#arrow", { opacity: 1 }, 70.95);
           tl.fromTo("#arrow", { y: -26 }, { y: 0, duration: 0.45, ease: "power3.out" }, 70.95);
           tl.fromTo("#arrow", { y: 0 }, { y: -16, duration: 0.35, ease: "power2.inOut", repeat: 5, yoyo: true }, 71.5);
