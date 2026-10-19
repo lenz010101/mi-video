@@ -30,9 +30,15 @@
         overflow: hidden; background: transparent;
       }
       .band img, .band video { width: 100%; height: 100%; object-fit: cover; display: block; }
-      #band1 { z-index: 1; }
-      #band2 { z-index: 2; }
-      #band3 { z-index: 3; }
+      /* el fondo de E1 es más ancho que la banda: al desplazarlo entra
+         escena nueva por la derecha (el travelling del original) */
+      #e1bg {
+        position: absolute; left: 0; top: 0; width: 1500px; height: 1520px;
+        object-fit: cover; will-change: transform;
+      }
+      #band1 { z-index: 1; opacity: 1; }
+      #band2 { z-index: 2; opacity: 0; }
+      #band3 { z-index: 3; opacity: 0; }
 
       /* ══ E1 · 0.00 – 1.02 · cartel en el muro ═════════════════════ */
       #e1 { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 50%; }
@@ -82,9 +88,10 @@
 
       /* ══ E2 · 1.02 – 5.44 · poster del motel ═════════════════════ */
       #e2 { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 30%; }
+      /* el neón VELUXE sobre el letrero: crece como bloque (medido), no letra a letra */
       #neon {
-        position: absolute; left: 0; right: 0; top: 60px; z-index: 8; text-align: center;
-        will-change: transform;
+        position: absolute; left: 0; right: 0; top: 150px; z-index: 8; text-align: center;
+        will-change: transform, opacity; opacity: 0;
       }
       #neon .row {
         display: inline-flex; gap: 22px; padding: 24px 38px 30px; position: relative;
@@ -92,14 +99,9 @@
         box-shadow: 0 18px 50px rgba(0,0,0,.65), 0 0 0 3px rgba(90,8,12,.5), inset 0 0 60px rgba(0,0,0,.5);
       }
       .lt {
-        position: relative; font-size: 132px; font-weight: 800; color: #f0b9b9; line-height: 1;
-        text-shadow: 0 4px 0 rgba(120,10,16,.9); padding: 0 5px;
-      }
-      #neonLit { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
-      #neonLit .row { background: transparent; box-shadow: none; }
-      #neonLit .lt {
-        color: #ffe3e3;
+        position: relative; font-size: 132px; font-weight: 800; color: #ffe3e3; line-height: 1;
         text-shadow: 0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 0 70px rgba(255,20,40,.5), 0 4px 0 rgba(140,10,16,.9);
+        padding: 0 5px;
       }
 
       .stk {
@@ -112,12 +114,12 @@
       #stkChamp  { left: 110px; top: 1180px; width: 220px; transform: rotate(12deg); }
 
       /* ══ FIESTA · 5.44 – 9.37 · original ═════════════════════════ */
-      #partyWin { position: absolute; inset: 0; z-index: 2; opacity: 0; }
+      #partyWin { position: absolute; inset: 0; z-index: 2; opacity: 1; }
       #party { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 
       /* ══ TIPOGRAFÍA (recortada del original, con alfa) ═════════════ */
       #dateTxt {
-        position: absolute; left: 0; top: 200px; width: 1080px; height: 120px;
+        position: absolute; left: 0; top: 212px; width: 1080px; height: 90px;
         object-fit: cover; z-index: 20; pointer-events: none;
       }
       #footTxt {
@@ -142,7 +144,7 @@
       <!-- E1 -->
       <div class="band" id="band1">
         <div id="e1">
-          <img class="wall" src="../demo2/new/e1_wide.jpg" alt="" data-var-src="e1Src" />
+          <img id="e1bg" src="../demo2/new/e1_wide.jpg" alt="" data-var-src="e1Src" />
           <div class="blood" id="blood1"></div>
           <div id="paper">
             <div class="p1">SAVE THIS DATE</div>
@@ -164,12 +166,6 @@
             <div class="row">
               <span class="lt">V</span><span class="lt">E</span><span class="lt">L</span>
               <span class="lt">U</span><span class="lt">X</span><span class="lt">E</span>
-            </div>
-            <div id="neonLit">
-              <div class="row">
-                <span class="lt">V</span><span class="lt">E</span><span class="lt">L</span>
-                <span class="lt">U</span><span class="lt">X</span><span class="lt">E</span>
-              </div>
             </div>
           </div>
           <svg class="stk" id="stkAlien" viewBox="0 0 120 120">
@@ -251,8 +247,11 @@
           tl.set("#blood1", { opacity: .8 }, 0.55);
           tl.set("#ghost", { opacity: 1 }, 0.18);
           tl.set("#ghost", { opacity: 0 }, 0.86);
-          /* travelling: el cartel se va a la izquierda y la escena entra */
-          tl.fromTo("#e1", { x: 0, scale: 1.0 }, { x: -260, scale: 0.92, duration: 1.02, ease: "power1.in" }, 0);
+          /* travelling: el fondo se desplaza y el cartel sale por la izquierda */
+          tl.fromTo("#e1bg", { x: 0 }, { x: -420, duration: 1.02, ease: "power1.in" }, 0);
+          tl.fromTo("#paper", { x: 0 }, { x: -190, duration: 1.02, ease: "power1.in" }, 0);
+          tl.fromTo("#tickets", { x: 0 }, { x: -190, duration: 1.02, ease: "power1.in" }, 0);
+          tl.fromTo("#ghost", { x: 0 }, { x: -190, duration: 1.02, ease: "power1.in" }, 0);
 
           /* ══ E2 · 1.02 – 5.44 ══════════════════════════════════════
              Medido: el bloque del neon se revela 1.05 -> 1.72 (no letra a
@@ -261,7 +260,8 @@
           tl.set("#band2", { opacity: 1 }, 1.02);
           tl.set("#band1", { opacity: 0 }, 1.03);
           tl.fromTo("#e2", { scale: 1.0, x: 0, y: 0 }, { scale: 1.0, x: 0, y: 0, duration: 0.7, ease: "none" }, 1.02);
-          tl.fromTo("#neonLit", { opacity: 0 }, { opacity: 1, duration: 0.66, ease: "power1.inOut" }, 1.06);
+          /* el bloque del neón se revela 1.05 -> 1.72 (medido: crece, no letra a letra) */
+          tl.fromTo("#neon", { opacity: 0, scale: 0.62 }, { opacity: 1, scale: 1, duration: 0.66, ease: "power2.out" }, 1.05);
           tl.fromTo("#stkBurger", { opacity: 0, scale: 0.25, rotation: -22 }, { opacity: 1, scale: 1, rotation: -7, duration: 0.3, ease: "back.out(2.4)" }, 1.72);
           tl.fromTo("#stkSpray", { opacity: 0, scale: 0.25, rotation: 20 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.3, ease: "back.out(2.4)" }, 2.35);
           tl.fromTo("#stkAlien", { opacity: 0, scale: 0.25, rotation: -18 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.3, ease: "back.out(2.4)" }, 2.80);
