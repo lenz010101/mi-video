@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>VELUXE · edición estilo motel/neón</title>
+    <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #000; }
+      #stage {
+        position: relative; width: 1080px; height: 1920px;
+        overflow: hidden; background: #060306;
+        font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .scene { position: absolute; inset: 0; background: #060306; }
+      .scene img, .scene video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+      /* capas de salpicadura roja (gradientes, sin blur) */
+      .blood {
+        position: absolute; inset: 0; opacity: .85; pointer-events: none; z-index: 3;
+        background:
+          radial-gradient(circle 26px at 62% 20%, rgba(220,20,30,.75) 0 45%, transparent 60%),
+          radial-gradient(circle 14px at 74% 27%, rgba(220,20,30,.6) 0 45%, transparent 60%),
+          radial-gradient(circle 9px  at 57% 33%, rgba(190,10,20,.7) 0 45%, transparent 60%),
+          radial-gradient(circle 18px at 38% 47%, rgba(220,20,30,.55) 0 45%, transparent 65%),
+          radial-gradient(circle 10px at 70% 55%, rgba(190,10,20,.6) 0 45%, transparent 60%),
+          radial-gradient(circle 6px  at 45% 13%, rgba(220,20,30,.45) 0 45%, transparent 60%),
+          radial-gradient(circle 13px at 82% 44%, rgba(220,20,30,.5) 0 45%, transparent 60%),
+          radial-gradient(circle 7px  at 27% 30%, rgba(190,10,20,.45) 0 45%, transparent 60%),
+          radial-gradient(circle 11px at 66% 78%, rgba(220,20,30,.4) 0 45%, transparent 62%),
+          radial-gradient(circle 5px  at 52% 88%, rgba(220,20,30,.35) 0 45%, transparent 60%);
+      }
+
+      /* E1: muro de motel + cartel papel */
+      #paper {
+        position: absolute; left: 150px; top: 560px; width: 460px; z-index: 6;
+        background: #f4f0e6; padding: 34px 30px 20px; transform: rotate(-1.6deg);
+        box-shadow: 0 14px 34px rgba(0,0,0,.6);
+        clip-path: polygon(0 0, 100% 0, 100% 92%, 86% 100%, 62% 93%, 40% 100%, 22% 94%, 0 100%);
+      }
+      #paper::before { /* cinta adhesiva */
+        content: ""; position: absolute; top: -16px; left: 50%; margin-left: -60px;
+        width: 120px; height: 32px; background: rgba(222,215,196,.85); transform: rotate(1deg);
+      }
+      #paper .p1 { font-size: 20px; font-weight: 800; letter-spacing: .28em; color: #2a2a2a; text-align: center; }
+      #paper .p2 { font-size: 46px; font-weight: 800; color: #222; text-align: center; margin: 2px 0 10px; }
+      #paper .p3 { font-size: 88px; font-weight: 800; color: #d8232a; text-align: center; line-height: .95; }
+      #paper .p4 { font-size: 18px; font-weight: 700; letter-spacing: .5em; color: #9a958a; text-align: center; margin-top: 4px; }
+      #tickets { position: absolute; left: 380px; top: 970px; width: 230px; z-index: 5; display: flex; gap: 8px; }
+      #tickets i {
+        flex: 1; height: 74px; background: #f4f0e6;
+        clip-path: polygon(0 0, 100% 0, 100% 96%, 50% 100%, 0 96%);
+        background-image: repeating-linear-gradient(#39302a 0 7px, transparent 7px 16px),
+          linear-gradient(#f4f0e6 55%, #f4f0e6 55%);
+        background-size: 62% 44%, 100% 100%; background-position: 50% 96%, 0 0; background-repeat: no-repeat;
+        box-shadow: 0 8px 18px rgba(0,0,0,.5);
+      }
+      #ghost {
+        position: absolute; left: 0; right: 0; top: 900px; z-index: 7; text-align: center;
+        font-size: 96px; font-weight: 800; color: rgba(255,255,255,.28); letter-spacing: .01em;
+        text-shadow: 0 6px 30px rgba(255,255,255,.25); opacity: 0;
+      }
+
+      /* E2: marquesina VELUXE sobre la foto de hotel */
+      #marquee { position: absolute; left: 0; right: 0; top: 430px; z-index: 8; text-align: center; }
+      #marquee .row { display: inline-flex; gap: 26px; padding: 30px 42px 38px;
+        background: linear-gradient(#1b0406, #120205); border-radius: 14px;
+        box-shadow: 0 18px 50px rgba(0,0,0,.65), 0 0 0 3px rgba(90,8,12,.5), inset 0 0 60px rgba(0,0,0,.5); }
+      .lt {
+        position: relative; font-size: 150px; font-weight: 800; color: #f6cfcf; line-height: 1;
+        text-shadow: 0 0 22px rgba(255,60,70,0), 0 4px 0 rgba(120,10,16,.9);
+        opacity: .38; transition: none; padding: 0 6px;
+      }
+      .lt::after { /* bombilla del borde */
+        content: ""; position: absolute; inset: 12px 10px auto 10px; height: 10px;
+        border-radius: 10px; background: radial-gradient(circle at 30% 40%, rgba(255,140,150,0), transparent);
+      }
+      #marqueeLit .lt { color: #ffe3e3; text-shadow: 0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 0 70px rgba(255,20,40,.5), 0 4px 0 rgba(140,10,16,.9); }
+
+      /* stickers die-cut propios */
+      .stk { position: absolute; z-index: 14; opacity: 0;
+        filter: drop-shadow(0 10px 12px rgba(0,0,0,.55)); }
+      #stkAlien   { left: 100px; top: 760px; width: 240px; transform: rotate(-10deg); }
+      #stkSpray   { right: 90px;  top: 640px; width: 180px; transform: rotate(9deg); }
+      #stkBurger  { right: 150px; top: 980px; width: 260px; transform: rotate(-7deg); }
+      #stkChamp   { left: 130px;  top: 1000px; width: 210px; transform: rotate(12deg); }
+
+      /* persistentes */
+      #dateLine {
+        position: absolute; left: 0; right: 0; top: 100px; z-index: 20; text-align: center;
+        font-size: 30px; font-weight: 700; letter-spacing: .34em; color: #efe8e8;
+        text-shadow: 0 3px 14px rgba(0,0,0,.9);
+      }
+      #footer {
+        position: absolute; left: 40px; right: 40px; bottom: 130px; z-index: 20; text-align: center;
+      }
+      #ooo {
+        font-size: 92px; font-weight: 800; color: #fff; letter-spacing: -0.025em; line-height: 1;
+        text-shadow: 0 5px 22px rgba(0,0,0,.92), 0 0 44px rgba(0,0,0,.6);
+        white-space: nowrap;
+      }
+      #lineup { margin-top: 46px; font-size: 30px; font-weight: 700; letter-spacing: .3em; color: #f2eaea;
+        text-shadow: 0 3px 12px rgba(0,0,0,.9); }
+      #access { margin-top: 22px; font-size: 28px; font-weight: 700; letter-spacing: .26em; color: #eae2e2;
+        text-shadow: 0 3px 12px rgba(0,0,0,.9); }
+      #dobel { margin-top: 18px; font-size: 20px; font-weight: 700; letter-spacing: .18em; color: #cfc6c6;
+        text-shadow: 0 2px 8px rgba(0,0,0,.85); }
+      #dobel b { display: block; font-size: 26px; letter-spacing: .22em; color: #fff; }
+
+      /* flash de corte */
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 40; pointer-events: none; }
+
+      /* viders: video visible tras el corte de la fiesta */
+      #vidWrap { position: absolute; inset: 0; opacity: 0; overflow: hidden; }
+      #vidWrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+      #nide { position: absolute; inset: 0; background: rgba(60,0,8,.18); z-index: 2; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="veluxe-v2"
+      data-start="0"
+      data-duration="9.37"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio id="track" data-start="0" data-duration="9.37" data-media-start="0"
+        data-track-index="3" data-volume="1" src="../demo2/new/audio.m4a" preload="auto"></audio>
+
+      <div class="scene" id="s1">
+        <img src="../demo2/new/scene1.jpg" alt="" />
+        <div class="blood"></div>
+        <div id="paper">
+          <div class="p1">SAVE THIS DATE</div>
+          <div class="p2">11/07/2026</div>
+          <div class="p3">VELUXE</div>
+          <div class="p4">PARTY</div>
+        </div>
+        <div id="tickets"><i></i><i></i><i></i><i></i></div>
+        <div id="ghost">VELUXE V3</div>
+      </div>
+
+      <div class="scene" id="s2">
+        <img src="../demo2/new/scene2.jpg" alt="" />
+        <div class="blood" style="opacity:.6"></div>
+        <div id="marquee"><div class="row"><span class="lt">V</span><span class="lt">E</span><span class="lt">L</span><span class="lt">U</span><span class="lt">X</span><span class="lt">E</span></div></div>
+        <svg class="stk" id="stkAlien" viewBox="0 0 120 120">
+          <g stroke="#fff" stroke-width="5" stroke-linecap="round">
+            <path d="M45 30 C 40 18, 30 14, 28 8" fill="none"/><circle cx="27" cy="7" r="6" fill="#6fd356"/>
+            <path d="M75 30 C 80 18, 90 14, 92 8" fill="none"/><circle cx="93" cy="7" r="6" fill="#6fd356"/>
+            <ellipse cx="60" cy="70" rx="34" ry="38" fill="#9ee87a"/>
+            <ellipse cx="47" cy="62" rx="10" ry="14" fill="#fff"/><circle cx="49" cy="66" r="5" fill="#222"/>
+            <ellipse cx="74" cy="62" rx="10" ry="14" fill="#fff"/><circle cx="71" cy="66" r="5" fill="#222"/>
+            <path d="M40 92 Q 60 104 80 92" fill="none"/>
+          </g>
+        </svg>
+        <svg class="stk" id="stkSpray" viewBox="0 0 110 160">
+          <g stroke="#fff" stroke-width="5" stroke-linejoin="round" fill="none">
+            <rect x="60" y="8" width="34" height="20" rx="4" fill="#7fb6e8"/>
+            <rect x="30" y="10" width="30" height="16" rx="4" fill="#5a8fc7"/>
+            <path d="M34 12 L 22 40 L 34 44 Z" fill="#5a8fc7"/>
+            <rect x="34" y="34" width="42" height="22" fill="#8fd0f0"/>
+            <path d="M30 56 h50 c8 0 12 8 12 16 v70 c0 10 -6 14 -14 14 h-46 c-8 0 -14 -4 -14 -14 v-70 c0 -8 4 -16 12 -16 z" fill="#7ec9ea"/>
+            <path d="M92 150 L108 150" stroke-width="9"/>
+          </g>
+        </svg>
+        <svg class="stk" id="stkBurger" viewBox="0 0 150 130">
+          <g stroke="#fff" stroke-width="5" stroke-linejoin="round">
+            <path d="M18 52 a57 40 0 0 1 114 0 z" fill="#f2a24b"/>
+            <circle cx="45" cy="30" r="4" fill="#fff"/><circle cx="75" cy="22" r="4" fill="#fff"/><circle cx="105" cy="32" r="4" fill="#fff"/>
+            <path d="M14 54 q 12 -8 24 0 t 24 0 t 24 0 t 24 0 t 24 0 v4 q 0 8 -8 8 H 22 q -8 0 -8 -8 z" fill="#71c14f"/>
+            <rect x="16" y="66" width="118" height="16" rx="8" fill="#7a4326"/>
+            <path d="M12 88 q 20 14 40 0 t 40 0 t 40 0 l -6 20 h -108 z" fill="#ffd23e"/>
+            <rect x="16" y="102" width="118" height="22" rx="11" fill="#f2a24b"/>
+          </g>
+        </svg>
+        <svg class="stk" id="stkChamp" viewBox="0 0 110 170">
+          <g stroke="#fff" stroke-width="5" fill="none" stroke-linejoin="round">
+            <rect x="14" y="6" width="22" height="30" rx="4" fill="#e8b62f"/> <!-- botón palo -->
+            <rect x="34" y="6" width="22" height="30" rx="4" fill="#e8b62f"/>
+            <rect x="14" y="44" width="42" height="34" rx="6" fill="#caa02a"/>
+            <rect x="12" y="86" width="44" height="24" fill="#caa02a"/> <!-- etiqueta -->
+            <rect x="12" y="86" width="44" height="24" fill="none"/>
+            <rect x="14" y="110" width="42" height="52" rx="10" fill="#caa02a"/>
+            <path d="M60 6 c 8 30 8 60 0 88 l 0 66 h -10 l 0 -66 c -8 -28 -8 -58 0 -88 z" fill="#caa02a"/> <!-- botella -->
+          </g>
+        </svg>
+      </div>
+
+      <div id="vidWrap" class="scene">
+        <video id="club" src="../demo2/new/club_a.mp4" data-start="0" data-duration="9.37" data-media-start="0" muted playsinline preload="auto"></video>
+        <div id="nide"></div>
+      </div>
+
+      <div class="blood" style="opacity:.35; z-index:12"></div>
+      <div id="dateLine">METEPEC, SÁBADO 11 DE JULIO</div>
+      <div id="footer">
+        <div id="ooo">out of the ordinary</div>
+        <div id="lineup">REGGAETON &amp; HOUSE · OPEN BAR</div>
+        <div id="access">ACCESS 7:30 PM</div>
+        <div id="dobel">MAESTRO<b>DOBEL</b></div>
+      </div>
+      <div id="flash"></div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+        function build() {
+          var tl = gsap.timeline({ paused: true });
+          /* E1: flicker de encendido + cartel + tickets + fantasma */
+          tl.set("#s1", { opacity: 1 }, 0);
+          tl.fromTo("#s1 img", { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "steps(3)" }, 0);
+          tl.fromTo("#paper", { y: 26 }, { y: 0, duration: 0.7, ease: "power3.out" }, 0.12);
+          tl.set("#tickets", { opacity: 1 }, 0.3);
+          tl.set("#ghost", { opacity: 1 }, 0.55);
+          tl.set("#ghost", { opacity: 0 }, 1.05);
+          /* flash → E2: marquesina encendida letra a letra */
+          tl.set("#flash", { opacity: 1 }, 1.22); tl.set("#flash", { opacity: 0 }, 1.34);
+          tl.set("#s2", { opacity: 1 }, 1.24);
+          tl.set("#s2 #marquee .lt", { opacity: 0.38 }, 1.24);
+          tl.set("#s2 .lt:nth-child(1)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 1.55);
+          tl.set("#s2 .lt:nth-child(2)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 1.75);
+          tl.set("#s2 .lt:nth-child(3)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 1.95);
+          tl.set("#s2 .lt:nth-child(4)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 2.15);
+          tl.set("#s2 .lt:nth-child(5)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 2.35);
+          tl.set("#s2 .lt:nth-child(6)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 2.55);
+          /* stickers pop por beats */
+          tl.fromTo("#stkAlien", { opacity: 0, scale: 0.4, rotation: -18 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.3, ease: "back.out(2.2)" }, 2.85);
+          tl.fromTo("#stkSpray", { opacity: 0, scale: 0.4, rotation: 16 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.3, ease: "back.out(2.2)" }, 3.45);
+          tl.fromTo("#stkBurger", { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -7, duration: 0.3, ease: "back.out(2.2)" }, 4.05);
+          /* flash → E3: fiesta + punch-in */
+          tl.set("#flash", { opacity: 1 }, 4.88); tl.set("#flash", { opacity: 0 }, 5.0);
+          tl.set("#vidWrap", { opacity: 1 }, 4.9);
+          tl.set("#s2", { opacity: 0 }, 4.92);
+          tl.fromTo("#vidWrap", { scale: 1.14 }, { scale: 1.0, duration: 0.5, ease: "power3.out" }, 4.9);
+          tl.set("#s1", { opacity: 0 }, 4.92);
+          tl.fromTo("#stkChamp", { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 12, duration: 0.34, ease: "back.out(2.2)" }, 5.35);
+          /* micro-zooms al ritmo */
+          tl.set("#vidWrap", { scale: 1.06 }, 6.5);
+          tl.to("#vidWrap", { scale: 1.0, duration: 0.4, ease: "power2.out" }, 6.5);
+          tl.set("#vidWrap", { scale: 1.05 }, 7.7);
+          tl.to("#vidWrap", { scale: 1.02, duration: 0.4, ease: "power2.out" }, 7.7);
+          /* punch final al último golpe */
+          tl.set("#vidWrap", { scale: 1.08 }, 8.8);
+          tl.to("#vidWrap", { scale: 1.03, duration: 0.5, ease: "power2.out" }, 8.8);
+          window.__timelines["veluxe-v2"] = tl;
+        }
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+      </script>
+    </div>
+  </body>
+</html>
