@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  data-composition-variables='[{"id":"hookQ","type":"string","label":"Pregunta inicial","default":"¿Todavía agendás turnos por WhatsApp?"},{"id":"brand","type":"string","label":"Marca","default":"Auto agenda"},{"id":"tagline","type":"string","label":"Bajada","default":"Tus pacientes reservan solos."},{"id":"ch1Name","type":"string","label":"Chat 1 nombre","default":"Martina"},{"id":"ch1Msg","type":"string","label":"Chat 1 mensaje","default":"Hola, ¿tenés turno mañana?"},{"id":"ch2Name","type":"string","label":"Chat 2 nombre","default":"Lucas"},{"id":"ch2Msg","type":"string","label":"Chat 2 mensaje","default":"¿A qué hora hay lugar?"},{"id":"c1Title","type":"string","label":"Titulo 1","default":"¿Se agenda directo o lo probás vos?"},{"id":"c2Title","type":"string","label":"Titulo 2","default":"Con cuánta anticipación y hasta cuándo."},{"id":"c3Title","type":"string","label":"Titulo 3","default":"Qué profesionales se ofrecen."},{"id":"c4Title","type":"string","label":"Titulo 4","default":"Compartí tu link."},{"id":"c5Title","type":"string","label":"Titulo 5","default":"Le llega en un mensaje."},{"id":"c6Title","type":"string","label":"Titulo 6","default":"Elige el día."},{"id":"c7Title","type":"string","label":"Titulo 7","default":"Elige el horario."},{"id":"c8Title","type":"string","label":"Titulo 8","default":"Carga sus datos."},{"id":"c9Title","type":"string","label":"Titulo 9","default":"Confirma con un código."},{"id":"c10Title","type":"string","label":"Titulo 10","default":"Listo. Solicitud enviada."},{"id":"c11Title","type":"string","label":"Titulo 11","default":"¿Y después? Depende de tu regla."},{"id":"c12Title","type":"string","label":"Titulo 12","default":"Te llega la solicitud."},{"id":"c13Title","type":"string","label":"Titulo 13","default":"La aceptás con un clic."},{"id":"c14Title","type":"string","label":"Titulo 14","default":"Queda agendado."},{"id":"c15Title","type":"string","label":"Titulo 15","default":"Y tu paciente se entera al toque."},{"id":"c16Title","type":"string","label":"Titulo 16","default":"Solo horarios libres."},{"id":"c1Titlea","type":"string","label":"c1Titlea","default":"¿Se agenda"},{"id":"c1Titleb","type":"string","label":"c1Titleb","default":"directo"},{"id":"c1Titlec","type":"string","label":"c1Titlec","default":"o lo probás vos?"},{"id":"c2Titlea","type":"string","label":"c2Titlea","default":"Con cuánta anticipación y hasta cuándo."},{"id":"c3Titlea","type":"string","label":"c3Titlea","default":"Qué profesionales"},{"id":"c3Titleb","type":"string","label":"c3Titleb","default":"se ofrecen."},{"id":"c4Titlea","type":"string","label":"c4Titlea","default":"Compartí"},{"id":"c4Titleb","type":"string","label":"c4Titleb","default":"tu link."},{"id":"c5Titlea","type":"string","label":"c5Titlea","default":"Le llega"},{"id":"c5Titleb","type":"string","label":"c5Titleb","default":"en un mensaje."},{"id":"c6Titlea","type":"string","label":"c6Titlea","default":"Elige"},{"id":"c6Titleb","type":"string","label":"c6Titleb","default":"el día."},{"id":"c7Titlea","type":"string","label":"c7Titlea","default":"Elige"},{"id":"c7Titleb","type":"string","label":"c7Titleb","default":"el horario."},{"id":"c8Titlea","type":"string","label":"c8Titlea","default":"Carga"},{"id":"c8Titleb","type":"string","label":"c8Titleb","default":"sus datos."},{"id":"c9Titlea","type":"string","label":"c9Titlea","default":"Confirma"},{"id":"c9Titleb","type":"string","label":"c9Titleb","default":"con un código."},{"id":"c10Titlea","type":"string","label":"c10Titlea","default":"Listo."},{"id":"c10Titleb","type":"string","label":"c10Titleb","default":"Solicitud enviada."},{"id":"c11Titlea","type":"string","label":"c11Titlea","default":"¿Y después?"},{"id":"c11Titleb","type":"string","label":"c11Titleb","default":"Depende de tu regla."},{"id":"c12Titlea","type":"string","label":"c12Titlea","default":"Te llega"},{"id":"c12Titleb","type":"string","label":"c12Titleb","default":"la solicitud."},{"id":"c13Titlea","type":"string","label":"c13Titlea","default":"La aceptás"},{"id":"c13Titleb","type":"string","label":"c13Titleb","default":"con un clic."},{"id":"c14Titlea","type":"string","label":"c14Titlea","default":"Queda"},{"id":"c14Titleb","type":"string","label":"c14Titleb","default":"agendado."},{"id":"c15Titlea","type":"string","label":"c15Titlea","default":"Y tu paciente"},{"id":"c15Titleb","type":"string","label":"c15Titleb","default":"se entera al toque."},{"id":"c16Titlea","type":"string","label":"c16Titlea","default":"Solo horarios"},{"id":"c16Titleb","type":"string","label":"c16Titleb","default":"libres."},{"id":"tituloExtra1","type":"string","label":"tituloExtra1","default":"Links"},{"id":"tituloExtra2","type":"string","label":"tituloExtra2","default":"Solicitudes"},{"id":"tituloExtra3","type":"string","label":"tituloExtra3","default":"Profesionales"},{"id":"tituloExtra4","type":"string","label":"tituloExtra4","default":"Solicitudes"},{"id":"tituloExtra5","type":"string","label":"tituloExtra5","default":"Profesionales"},{"id":"tituloExtra6","type":"string","label":"tituloExtra6","default":"Reglas"},{"id":"tituloExtra7","type":"string","label":"tituloExtra7","default":"Links"},{"id":"tituloExtra8","type":"string","label":"tituloExtra8","default":"Solicitudes"},{"id":"tituloExtra9","type":"string","label":"tituloExtra9","default":"Reglas"},{"id":"tituloExtra10","type":"string","label":"tituloExtra10","default":"9:41"},{"id":"tituloExtra11","type":"string","label":"tituloExtra11","default":"OCLÜ"},{"id":"tituloExtra12","type":"string","label":"tituloExtra12","default":"1:54"},{"id":"tituloExtra13","type":"string","label":"tituloExtra13","default":"OCLÜ"},{"id":"tituloExtra14","type":"string","label":"tituloExtra14","default":"1:55"},{"id":"tituloExtra15","type":"string","label":"tituloExtra15","default":"OCLÜ"},{"id":"tituloExtra16","type":"string","label":"tituloExtra16","default":"1:56"},{"id":"tituloExtra17","type":"string","label":"tituloExtra17","default":"OCLÜ"},{"id":"tituloExtra18","type":"string","label":"tituloExtra18","default":"1:57"},{"id":"tituloExtra19","type":"string","label":"tituloExtra19","default":"OCLÜ"},{"id":"tituloExtra20","type":"string","label":"tituloExtra20","default":"1:58"},{"id":"tituloExtra21","type":"string","label":"tituloExtra21","default":"OCLÜ"},{"id":"tituloExtra22","type":"string","label":"tituloExtra22","default":"2:35"},{"id":"tituloExtra23","type":"string","label":"tituloExtra23","default":"OCLÜ"},{"id":"tituloExtra24","type":"string","label":"tituloExtra24","default":"2:35"},{"id":"tituloExtra25","type":"string","label":"tituloExtra25","default":"OCLÜ"}]'
+  >
+  <head>
+    <meta charset="UTF-8" />
+    <title>OCLÜ · Auto agenda (rec)</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #000; }
+      #stage {
+        position: relative; width: 1080px; height: 1920px; overflow: hidden;
+        background: #000; font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .scene { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+      .light { background: #f4f4f2; }
+      .dark  { background: #05060a; }
+
+      /* badge de capítulo */
+      .badge {
+        position: absolute; left: 64px; top: 96px; z-index: 20;
+        display: inline-flex; align-items: center; gap: 12px;
+        font-size: 27px; font-weight: 700; letter-spacing: .01em;
+        color: #101114; opacity: 0; will-change: transform, opacity;
+      }
+      .badge b {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 46px; height: 46px; border-radius: 50%;
+        background: #101114; color: #f4f4f2; font-size: 21px; font-weight: 800;
+      }
+      .dark .badge { color: #f2f3f5; }
+      .dark .badge b { background: #f2f3f5; color: #101114; }
+
+      /* titular */
+      .title {
+        position: absolute; left: 64px; top: 190px; right: 64px; z-index: 20;
+        font-size: 66px; font-weight: 800; line-height: 1.06; letter-spacing: -.028em;
+        color: #101114; opacity: 0; will-change: transform, opacity;
+      }
+      .title .dim { color: #8e9096; }
+      .dark .title { color: #f4f4f2; }
+      .dark .title .dim { color: #7e838d; }
+
+      /* ── mockups ───────────────────────────────────────────────── */
+      .ui {
+        position: absolute; z-index: 10; background: #fff; border-radius: 22px;
+        box-shadow: 0 30px 70px rgba(0,0,0,.16), 0 2px 0 rgba(0,0,0,.05);
+        overflow: hidden; opacity: 0; will-change: transform, opacity;
+      }
+      .ui-pad { padding: 30px 34px 34px; }
+      .ui-title { font-size: 25px; font-weight: 700; color: #15161a; }
+      .ui-sub { font-size: 19px; color: #8b8f98; margin-top: 6px; }
+      .tabs { display: flex; gap: 26px; margin: 22px 0 18px; }
+      .tabs span { font-size: 20px; color: #9a9ea6; }
+      .tabs span.on { color: #15161a; font-weight: 700; border-bottom: 3px solid #15161a; padding-bottom: 6px; }
+      .row2 { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+      .chip {
+        font-size: 20px; padding: 12px 18px; border-radius: 12px; background: #f1f1f0; color: #4b4e55;
+      }
+      .chip.on { background: #15161a; color: #fff; font-weight: 700; }
+      .toggle { width: 62px; height: 34px; border-radius: 20px; background: #d7d9dd; position: relative; }
+      .toggle i { position: absolute; top: 4px; left: 4px; width: 26px; height: 26px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+      .toggle.on { background: #15161a; }
+      .toggle.on i { left: 32px; }
+      .pro { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-top: 1px solid #eee; }
+      .pro .av { width: 46px; height: 46px; border-radius: 50%; background: #dfe3e8; }
+      .pro .nm { font-size: 21px; font-weight: 600; color: #24262b; }
+      .pro .rl { font-size: 17px; color: #969aa2; }
+      .pro .ac { margin-left: auto; font-size: 18px; color: #7f848d; }
+
+      /* móvil */
+      .phone {
+        position: absolute; z-index: 10; width: 430px; height: 880px; border-radius: 54px;
+        background: #14161c; padding: 16px; box-shadow: 0 40px 90px rgba(0,0,0,.5);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .screen { position: relative; width: 100%; height: 100%; border-radius: 40px; background: #0b0d12; overflow: hidden; color: #eef0f4; }
+      .notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 24px; border-radius: 14px; background: #05060a; }
+      .sbar { position: absolute; top: 18px; left: 24px; right: 24px; display: flex; justify-content: space-between; font-size: 15px; color: #cfd3da; }
+      .sbody { position: absolute; top: 62px; left: 22px; right: 22px; bottom: 22px; }
+      .s-title { font-size: 26px; font-weight: 700; }
+      .s-sub { font-size: 15px; color: #8d939e; margin-top: 6px; }
+      .field { background: #171a21; border-radius: 12px; padding: 13px 15px; font-size: 16px; color: #aeb4bf; margin-top: 11px; }
+      .field.on { background: #232733; color: #eef0f4; }
+      .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 16px; }
+      .cal i { height: 42px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #7f858f; border-radius: 10px; font-style: normal; }
+      .cal i.on { background: #15161a; color: #fff; font-weight: 700; }
+      .code { display: flex; gap: 12px; margin-top: 26px; }
+      .code i { width: 52px; height: 60px; border-radius: 12px; border: 2px solid #2b2f39; font-style: normal; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 700; }
+      .code i.on { border-color: #e9ecf2; color: #fff; }
+      .btn { margin-top: 22px; background: #eef0f4; color: #101218; border-radius: 999px; text-align: center; padding: 16px; font-size: 19px; font-weight: 700; }
+      .btn.g { background: #1f7a4d; color: #fff; }
+      .sfoot { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; font-size: 13px; letter-spacing: .22em; color: #555b66; }
+      .wa { background: #1f8f4e; }
+      .ig { background: linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7); }
+
+      /* logo */
+      .logo { position: absolute; z-index: 20; opacity: 0; will-change: transform, opacity; }
+      .logo .mark {
+        width: 74px; height: 74px; border-radius: 50%; background: #f2f3f5; color: #101114;
+        display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800;
+      }
+      .logo .word { font-size: 76px; font-weight: 800; letter-spacing: -.03em; line-height: 1.02; color: #f2f3f5; }
+      .logo .word small { display: block; font-size: 26px; font-weight: 500; color: #9aa0aa; letter-spacing: .02em; margin-top: 14px; }
+
+      /* QR */
+      .qr { width: 240px; height: 240px; background: #fff; padding: 14px; border-radius: 14px; }
+      .qr i { display: block; width: 100%; height: 100%; background:
+        repeating-conic-gradient(#101114 0% 25%, #fff 0% 50%) 0 0 / 26px 26px; }
+      .qrwrap { position: absolute; z-index: 10; background: #fff; border-radius: 20px; padding: 26px;
+        box-shadow: 0 30px 70px rgba(0,0,0,.2); opacity: 0; will-change: transform, opacity; }
+      .chatb { position: absolute; z-index: 10; border-radius: 16px; padding: 18px 22px; font-size: 21px;
+        box-shadow: 0 20px 50px rgba(0,0,0,.25); opacity: 0; will-change: transform, opacity; }
+      .chatb .nm { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+      .chatb .tm { font-size: 14px; opacity: .6; float: right; margin-left: 18px; }
+    </style>
+  </head>
+  <body>
+    <div id="stage" data-composition-id="oclu" data-start="0" data-duration="60"
+      data-width="1080" data-height="1920" data-fps="30">
+      <audio id="track" data-start="0" data-duration="60" data-media-start="0"
+        data-track-index="1" data-volume="1" src="../assets/audio/casa-modular.mp3" preload="auto"></audio>
+
+      <!-- ══ 1 · HOOK 0 – 2.7 ══ -->
+      <div class="scene dark" id="s1" data-start="0" data-duration="2.7">
+        <div class="title" id="hookT" style="top:120px; font-size:72px;">¿Todavía agendás turnos por WhatsApp?</div>
+        <div class="chatb" id="chat1" style="left:64px; top:520px; width:640px; background:#1c1f27; color:#eef0f4;">
+          <div class="tm">09:41</div><div class="nm" style="color:#5ec98a;">Martina</div>Hola, ¿tenés turno mañana?
+        </div>
+        <div class="chatb" id="chat2" style="left:64px; top:680px; width:600px; background:#1c1f27; color:#eef0f4;">
+          <div class="tm">09:42</div><div class="nm" style="color:#c9a0e8;">Lucas</div>¿A qué hora hay lugar?
+        </div>
+        <div class="logo" id="logo1" style="left:64px; top:900px;">
+          <div class="mark">◷</div>
+          <div class="word" style="margin-top:26px;" data-var-text="brand">Auto agenda</div>
+          <div class="word" style="font-size:30px; font-weight:500; color:#9aa0aa; margin-top:16px;" data-var-text="tagline">Tus pacientes reservan solos.</div>
+        </div>
+      </div>
+
+      <!-- ══ 2 · 01 TUS REGLAS · 2.7 – 10.5 ══ -->
+      <div class="scene light" id="s2" data-start="2.7" data-duration="7.8">
+        <div class="badge" id="b2"><b>01</b> Tus reglas</div>
+        <div class="title" id="t2"><span data-var-text="c1Titlea">¿Se agenda</span> <span class="dim" data-var-text="c1Titleb">directo</span> <span data-var-text="c1Titlec">o lo probás vos?</span></div>
+        <div class="ui" id="ui2" style="left:64px; top:520px; width:952px; height:470px;">
+          <div class="ui-pad">
+            <div class="ui-sub">Tus pacientes pueden reservar desde los links activos</div>
+            <div class="tabs"><span data-var-text="tituloExtra1">Links</span><span data-var-text="tituloExtra2">Solicitudes</span><span data-var-text="tituloExtra3">Profesionales</span><span class="on">Reglas</span></div>
+            <div class="ui-title" style="margin-top:8px;">Cómo queda el turno</div>
+            <div class="row2" style="margin-top:20px;">
+              <div class="chip on">Se agenda directo</div><div class="chip">La clínica lo aprueba</div>
+            </div>
+            <div class="ui-sub" style="margin-top:22px;">Si el turno queda en la agenda, el paciente ingresa el código de OCLÜ</div>
+            <div class="row2" style="margin-top:16px;">
+              <div class="ui-title" style="font-size:20px; font-weight:600;">Pendiente</div><div class="toggle"><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene light" id="s3" data-start="6.6" data-duration="3.9">
+        <div class="badge" id="b3"><b>01</b> Tus reglas</div>
+        <div class="title" id="t3"><span data-var-text="c2Titlea">Con cuánta anticipación y hasta cuándo.</span></div>
+        <div class="ui" id="ui3" style="left:64px; top:520px; width:952px; height:420px;">
+          <div class="ui-pad">
+            <div class="tabs"><span class="on">Links</span><span data-var-text="tituloExtra4">Solicitudes</span><span data-var-text="tituloExtra5">Profesionales</span><span data-var-text="tituloExtra6">Reglas</span></div>
+            <div class="ui-sub" style="letter-spacing:.14em; font-size:15px;">ANTICIPACIÓN MÍNIMA</div>
+            <div class="row2" style="margin-top:14px;">
+              <div class="chip">Sin mín.</div><div class="chip on">1 h</div><div class="chip">2 h</div><div class="chip">12 h</div><div class="chip">24 h</div>
+            </div>
+            <div class="ui-sub" style="letter-spacing:.14em; font-size:15px; margin-top:30px;">HASTA CUÁNTOS DÍAS ADELANTE</div>
+            <div class="row2" style="margin-top:14px;">
+              <div class="chip">7 días</div><div class="chip">14 días</div><div class="chip on">30 días</div><div class="chip">60 días</div><div class="chip">90 días</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene light" id="s4" data-start="10.0" data-duration="4.0">
+        <div class="badge" id="b4"><b>01</b> Tus reglas</div>
+        <div class="title" id="t4"><span data-var-text="c3Titlea">Qué profesionales</span> <span class="dim" data-var-text="c3Titleb">se ofrecen.</span></div>
+        <div class="ui" id="ui4" style="left:64px; top:520px; width:952px; height:560px;">
+          <div class="ui-pad">
+            <div class="row2"><div class="ui-title">Recibir reservas online en OCLÜ</div><div class="toggle on"><i></i></div></div>
+            <div class="tabs" style="margin-top:20px;"><span data-var-text="tituloExtra7">Links</span><span data-var-text="tituloExtra8">Solicitudes</span><span class="on">Profesionales</span><span data-var-text="tituloExtra9">Reglas</span></div>
+            <div class="pro"><div class="av"></div><div><div class="nm">CKM OCLÜ</div><div class="rl">Odontología</div></div><div class="ac">Recepcionar ▾</div></div>
+            <div class="pro"><div class="av"></div><div><div class="nm">Dra. Daniela Paz</div><div class="rl">Ortodoncia</div></div><div class="ac">Recepcionar ▾</div></div>
+            <div class="pro"><div class="av"></div><div><div class="nm">Enzo Suel M</div><div class="rl">Endodoncia</div></div><div class="ac">Recepcionar ▾</div></div>
+            <div class="pro"><div class="av"></div><div><div class="nm">Paula Natalia</div><div class="rl">Odontología</div></div><div class="ac">Recepcionar ▾</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 3 · 02 COMPARTIR · 10.5 – 16.5 ══ -->
+      <div class="scene light" id="s5" data-start="13.0" data-duration="3.6">
+        <div class="badge" id="b5"><b>02</b> Compartir</div>
+        <div class="title" id="t5"><span data-var-text="c4Titlea">Compartí</span> <span class="dim" data-var-text="c4Titleb">tu link.</span></div>
+        <div class="qrwrap" id="qr1" style="left:120px; top:640px;">
+          <div class="row2" style="margin-bottom:20px;">
+            <div class="chip wa" style="color:#fff;">WhatsApp</div><div class="chip ig" style="color:#fff;">Instagram</div>
+          </div>
+          <div class="qr"><i></i></div>
+          <div class="ui-sub" style="margin-top:20px;">ENVIAR EL LINK POR CUALQUIER CANAL</div>
+        </div>
+      </div>
+
+      <div class="scene dark" id="s6" data-start="16.5" data-duration="3.6">
+        <div class="badge" id="b6"><b>02</b> Compartir</div>
+        <div class="title" id="t6"><span data-var-text="c5Titlea">Le llega</span> <span class="dim" data-var-text="c5Titleb">en un mensaje.</span></div>
+        <div class="phone" id="ph1" style="left:330px; top:600px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra10">9:41</span><span data-var-text="tituloExtra11">OCLÜ</span></div>
+            <div class="sbody">
+              <div class="s-title">Hola Juana</div>
+              <div class="s-sub">clínica.oclü.com.ar/turnos</div>
+              <div class="field" style="margin-top:28px;">¡Hola! Quiero sacar un turno para consulta.</div>
+              <div class="field on" style="margin-top:12px;">¡Perfecto! Te paso el link para reservar 👇<br>clinica.oclü.com.ar/OCLU/8d/07</div>
+            </div>
+            <div class="sfoot">RESERVAR CON OCLÜ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 4 · 03 TU PACIENTE · 16.5 – 35.5 ══ -->
+      <div class="scene dark" id="s7" data-start="19.6" data-duration="3.7">
+        <div class="badge" id="b7"><b>03</b> Tu paciente</div>
+        <div class="title" id="t7"><span data-var-text="c6Titlea">Elige</span> <span class="dim" data-var-text="c6Titleb">el día.</span></div>
+        <div class="phone" id="ph2" style="left:330px; top:600px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra12">1:54</span><span data-var-text="tituloExtra13">OCLÜ</span></div>
+            <div class="sbody">
+              <div class="s-title">OCLÜ</div>
+              <div class="s-sub">clínica.oclü.com.ar</div>
+              <div class="field on" style="margin-top:22px;">Elige un día</div>
+              <div class="cal">
+                <i>28</i><i>29</i><i class="on">30</i><i>1</i><i>2</i><i>3</i><i>4</i>
+                <i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i>10</i><i>11</i><i>12</i>
+                <i>13</i><i>14</i><i>15</i><i>16</i><i>17</i><i>18</i><i>19</i>
+              </div>
+            </div>
+            <div class="sfoot">RESERVAR CON OCLÜ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene dark" id="s8" data-start="23.0" data-duration="3.7">
+        <div class="badge" id="b8"><b>03</b> Tu paciente</div>
+        <div class="title" id="t8"><span data-var-text="c7Titlea">Elige</span> <span class="dim" data-var-text="c7Titleb">el horario.</span></div>
+        <div class="phone" id="ph3" style="left:330px; top:600px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra14">1:55</span><span data-var-text="tituloExtra15">OCLÜ</span></div>
+            <div class="sbody">
+              <div class="s-title">OCLÜ</div>
+              <div class="field on" style="margin-top:22px;">Elige un horario</div>
+              <div class="row2" style="margin-top:18px;">
+                <div class="chip on" style="background:#232733; color:#eef0f4;">Mañana 4 ▾</div><div class="chip" style="background:#232733; color:#eef0f4;">Tarde 4 ▾</div>
+              </div>
+              <div class="row2" style="margin-top:22px;">
+                <div class="chip on" style="background:#232733; color:#eef0f4;">09:00</div><div class="chip" style="background:#232733; color:#eef0f4;">09:30</div><div class="chip" style="background:#232733; color:#eef0f4;">10:00</div>
+              </div>
+            </div>
+            <div class="sfoot">RESERVAR CON OCLÜ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene dark" id="s9" data-start="26.4" data-duration="3.7">
+        <div class="badge" id="b9"><b>03</b> Tu paciente</div>
+        <div class="title" id="t9"><span data-var-text="c8Titlea">Carga</span> <span class="dim" data-var-text="c8Titleb">sus datos.</span></div>
+        <div class="phone" id="ph4" style="left:330px; top:600px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra16">1:56</span><span data-var-text="tituloExtra17">OCLÜ</span></div>
+            <div class="sbody">
+              <div class="s-title">OCLÜ</div>
+              <div class="field on" style="margin-top:22px;">Tus datos</div>
+              <div class="field" style="margin-top:14px;">Nombre y apellido</div>
+              <div class="field" style="margin-top:12px;">+54 9 11 1234 5678</div>
+              <div class="field" style="margin-top:12px;">Email</div>
+              <div class="field" style="margin-top:12px;">¿Aceptás que te enviemos recordatorios?</div>
+              <div class="btn">Enviar código</div>
+            </div>
+            <div class="sfoot">RESERVAR CON OCLÜ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene dark" id="s10" data-start="30.0" data-duration="3.6">
+        <div class="badge" id="b10"><b>03</b> Tu paciente</div>
+        <div class="title" id="t10"><span data-var-text="c9Titlea">Confirma</span> <span class="dim" data-var-text="c9Titleb">con un código.</span></div>
+        <div class="phone" id="ph5" style="left:330px; top:600px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra18">1:57</span><span data-var-text="tituloExtra19">OCLÜ</span></div>
+            <div class="sbody">
+              <div class="s-title">Ingresá el código</div>
+              <div class="s-sub">Te enviamos un código por mensaje</div>
+              <div class="code"><i class="on">7</i><i class="on">6</i><i class="on">2</i><i class="on">5</i><i></i></div>
+              <div class="s-sub" style="margin-top:22px;">El código vence en 2:59</div>
+            </div>
+            <div class="sfoot">RESERVAR CON OCLÜ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene dark" id="s11" data-start="33.4" data-duration="3.6">
+        <div class="badge" id="b11"><b>03</b> Tu paciente</div>
+        <div class="title" id="t11"><span data-var-text="c10Titlea">Listo.</span> <span class="dim" data-var-text="c10Titleb">Solicitud enviada.</span></div>
+        <div class="phone" id="ph6" style="left:330px; top:600px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra20">1:58</span><span data-var-text="tituloExtra21">OCLÜ</span></div>
+            <div class="sbody">
+              <div class="s-title">OCLÜ</div>
+              <div class="s-title" style="margin-top:20px;">La clínica tiene que aprobar tu turno</div>
+              <div class="s-sub" style="margin-top:12px;">Te avisamos apenas lo revisen</div>
+              <div class="field" style="margin-top:24px;">ESPERANDO</div>
+              <div class="field" style="margin-top:12px;">Turno solicitado para el 30/09</div>
+              <div class="field" style="margin-top:12px;">CKM OCLÜ · Jue 01 Oct 2026</div>
+            </div>
+            <div class="sfoot" style="color:#e0645c;">CANCELAR SOLICITUD</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 5 · ¿Y DESPUÉS? · 35.5 – 38.5 ══ -->
+      <div class="scene light" id="s12" data-start="36.2" data-duration="3.4">
+        <div class="title" id="t12"><span data-var-text="c11Titlea">¿Y después?</span> <span class="dim" data-var-text="c11Titleb">Depende de tu regla.</span></div>
+        <div class="ui" id="ui12a" style="left:64px; top:520px; width:440px; height:260px;">
+          <div class="ui-pad">
+            <div class="ui-sub">Si agendás directo</div>
+            <div class="ui-title" style="margin-top:12px; color:#a8adb6;">Se agenda directo</div>
+            <div class="ui-sub" style="margin-top:8px;">Entra a la agenda al instante</div>
+          </div>
+        </div>
+        <div class="ui" id="ui12b" style="left:576px; top:520px; width:440px; height:260px; border: 3px solid #15161a;">
+          <div class="ui-pad">
+            <div class="ui-title" style="color:#c0563f;">✕</div>
+            <div class="ui-title" style="margin-top:12px;">La clínica lo aprueba</div>
+            <div class="ui-sub" style="margin-top:8px;">Llega como solicitud y el horario queda reservado</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 6 · 04 EN LA CLÍNICA · 38.5 – 50.5 ══ -->
+      <div class="scene light" id="s13" data-start="39.6" data-duration="3.8">
+        <div class="badge" id="b13"><b>04</b> En la clínica</div>
+        <div class="title" id="t13"><span data-var-text="c12Titlea">Te llega</span> <span class="dim" data-var-text="c12Titleb">la solicitud.</span></div>
+        <div class="ui" id="ui13" style="left:64px; top:520px; width:952px; height:560px;">
+          <div class="ui-pad">
+            <div class="row2" style="border-bottom:1px solid #eee; padding-bottom:16px;">
+              <div class="ui-title">Reservas online</div><div class="ui-sub">Turnos que el paciente pide desde un link</div>
+            </div>
+            <div class="row2" style="margin-top:18px;">
+              <div class="chip">Sin solicitudes</div><div class="chip on">4 ⌄</div><div class="chip">Link de reservas ▾</div>
+            </div>
+            <div class="ui-sub" style="letter-spacing:.14em; font-size:15px; margin-top:26px;">JUEVES 1 DE OCTUBRE</div>
+            <div class="pro"><div class="av"></div><div><div class="nm">Mariel Gómez · Control</div></div><div class="ac" style="color:#2f7d55;">✓ Aceptar</div></div>
+            <div class="pro"><div class="av"></div><div><div class="nm">Laura Pérez · Endodoncia</div></div><div class="ac" style="color:#2f7d55;">✓ Aceptar</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene light" id="s14" data-start="43.2" data-duration="3.6">
+        <div class="badge" id="b14"><b>04</b> En la clínica</div>
+        <div class="title" id="t14"><span data-var-text="c13Titlea">La aceptás</span> <span class="dim" data-var-text="c13Titleb">con un clic.</span></div>
+        <div class="ui" id="ui14" style="left:64px; top:520px; width:952px; height:560px;">
+          <div class="ui-pad">
+            <div class="row2" style="border-bottom:1px solid #eee; padding-bottom:16px;">
+              <div class="ui-title">Agenda</div><div class="ui-sub">Notificaciones</div>
+            </div>
+            <div style="background:#fbfbf9; border-radius:14px; padding:24px; margin-top:22px;">
+              <div class="row2"><div><div class="ui-title">Solicitud de reserva online</div><div class="ui-sub">Juana S. pidió un turno para el jueves 1 de octubre</div></div>
+                <div class="row2" style="gap:12px;"><div class="chip on" style="color:#fff; background:#15161a;">✓ Aceptar</div><div class="chip" style="color:#c0563f;">✕ Rechazar</div><div class="chip">👁 Ver</div></div>
+              </div>
+            </div>
+            <div class="ui-sub" style="margin-top:26px;">JUEVES 1 DE OCTUBRE</div>
+            <div class="pro"><div class="av"></div><div><div class="nm">08:30</div><div class="rl">Mariana Ruiz · Control</div></div><div class="ac">Cerrar</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene light" id="s15" data-start="46.6" data-duration="3.6">
+        <div class="badge" id="b15"><b>04</b> En la clínica</div>
+        <div class="title" id="t15"><span data-var-text="c14Titlea">Queda</span> <span class="dim" data-var-text="c14Titleb">agendado.</span></div>
+        <div class="ui" id="ui15" style="left:64px; top:520px; width:952px; height:560px;">
+          <div class="ui-pad">
+            <div class="row2" style="border-bottom:1px solid #eee; padding-bottom:16px;">
+              <div class="ui-title">Reservas online</div>
+              <div class="chip g" style="color:#fff; background:#1f7a4d;">✓ Turno confirmado</div>
+            </div>
+            <div class="ui-sub" style="letter-spacing:.14em; font-size:15px; margin-top:24px;">JUEVES 1 DE OCTUBRE</div>
+            <div class="pro"><div class="av"></div><div><div class="nm" style="color:#2f7d55;">✓ Juana S. · Control</div><div class="rl">08:30 — CKM OCLÜ</div></div></div>
+            <div class="pro"><div class="av"></div><div><div class="nm">Laura Pérez · Endodoncia</div></div><div class="ac">1 turno hoy</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 7 · CIERRE · 50.5 – 60 ══ -->
+      <div class="scene dark" id="s16" data-start="50.4" data-duration="3.8">
+        <div class="title" id="t16"><span data-var-text="c15Titlea">Y tu paciente</span> <span class="dim" data-var-text="c15Titleb">se entera al toque.</span></div>
+        <div class="phone" id="ph7" style="left:330px; top:640px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra22">2:35</span><span data-var-text="tituloExtra23">OCLÜ</span></div>
+            <div class="sbody">
+              <div style="font-size:74px; font-weight:300; color:#eef0f4; margin-top:40px;">2:35</div>
+              <div class="s-sub">miércoles, 30 de septiembre</div>
+            </div>
+            <div class="sfoot">OCLÜ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene dark" id="s17" data-start="54.0" data-duration="3.2">
+        <div class="phone" id="ph8" style="left:250px; top:600px;">
+          <div class="screen">
+            <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra24">2:35</span><span data-var-text="tituloExtra25">OCLÜ</span></div>
+            <div class="sbody">
+              <div class="s-sub">Tu cita fue confirmada — Jue 01/10 08:30</div>
+              <div class="s-title" style="margin-top:12px;">Juana</div>
+              <div class="field on" style="margin-top:20px;">DETALLES DE LA CITA</div>
+              <div class="field">Profesional: CKM OCLÜ</div>
+              <div class="field">Dirección: Av. Chile 2277</div>
+              <div class="field">Mensaje de OCLÜ</div>
+              <div class="sfoot" style="color:#e0645c;">CANCELAR CITA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene dark" id="s18" data-start="57.0" data-duration="3.0">
+        <div class="title" id="t18" style="left:64px; right:64px; top:760px; font-size:88px;"><span data-var-text="c16Titlea">Solo horarios</span> <span class="dim" data-var-text="c16Titleb">libres.</span></div>
+        <div class="logo" id="logo2" style="left:64px; top:1080px;">
+          <div class="mark">◷</div>
+          <div class="word" style="margin-top:26px;" data-var-text="brand">Auto agenda</div>
+          <div class="word" style="font-size:22px; font-weight:500; color:#8d939e; letter-spacing:.32em; margin-top:18px;">NUEVO EN OCLÜ</div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+
+        function build() {
+          var V = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+          document.querySelectorAll("[data-var-text]").forEach(function (el) {
+            var k = el.getAttribute("data-var-text");
+            if (typeof V[k] === "string" && V[k] !== "" && el.childElementCount === 0) el.textContent = V[k];
+          });
+
+          var tl = gsap.timeline({ paused: true });
+
+          /* Cada escena: entra la capa y sus elementos con un escalonado suave.
+             Los tiempos siguen la estructura medida del original. */
+          var inAt = function (t, scene, parts, dur) {
+            tl.set(scene, { opacity: 1 }, t);
+            parts.forEach(function (p, i) {
+              tl.fromTo(p, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, t + i * 0.07);
+            });
+            tl.to(scene, { opacity: 0, duration: 0.32, ease: "power2.in" }, t + dur - 0.32);
+          };
+
+          inAt(0.10, "#s1", ["#hookT"], 2.45);
+          inAt(0.55, "#s1", ["#chat1"], 2.45);
+          inAt(0.95, "#s1", ["#chat2"], 2.45);
+          inAt(1.45, "#s1", ["#logo1"], 2.45);
+
+          inAt(2.80, "#s2", ["#b2", "#t2", "#ui2"], 3.6);
+          inAt(6.70, "#s3", ["#b3", "#t3", "#ui3"], 3.7);
+          inAt(10.10, "#s4", ["#b4", "#t4", "#ui4"], 3.8);
+
+          inAt(13.10, "#s5", ["#b5", "#t5", "#qr1"], 3.4);
+          inAt(16.60, "#s6", ["#b6", "#t6", "#ph1"], 3.5);
+
+          inAt(19.70, "#s7", ["#b7", "#t7", "#ph2"], 3.5);
+          inAt(23.10, "#s8", ["#b8", "#t8", "#ph3"], 3.5);
+          inAt(26.50, "#s9", ["#b9", "#t9", "#ph4"], 3.4);
+          inAt(30.10, "#s10", ["#b10", "#t10", "#ph5"], 3.4);
+          inAt(33.50, "#s11", ["#b11", "#t11", "#ph6"], 3.3);
+
+          inAt(36.30, "#s12", ["#t12", "#ui12a", "#ui12b"], 3.2);
+
+          inAt(39.70, "#s13", ["#b13", "#t13", "#ui13"], 3.6);
+          inAt(43.30, "#s14", ["#b14", "#t14", "#ui14"], 3.4);
+          inAt(46.70, "#s15", ["#b15", "#t15", "#ui15"], 3.4);
+
+          inAt(50.50, "#s16", ["#t16", "#ph7"], 3.6);
+          inAt(54.10, "#s17", ["#ph8"], 3.0);
+          inAt(57.10, "#s18", ["#t18", "#logo2"], 2.9);
+
+          window.__timelines["oclu"] = tl;
+        }
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+      </script>
+    </div>
+  </body>
+</html>
