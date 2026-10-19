@@ -4,8 +4,15 @@
   data-composition-variables='[
     {"id":"e1Src","type":"image","label":"Fondo escena 1","default":"../demo2/new/e1_wide.jpg"},
     {"id":"e2Src","type":"image","label":"Fondo escena 2","default":"../demo2/new/e2_wide.jpg"},
-    {"id":"partySrc","type":"image","label":"Fiesta original","default":"../demo2/new/party_orig.mp4"},
-    {"id":"dateLine","type":"string","label":"Fecha","default":"METEPEC, SÁBADO 11 DE JULIO"}
+    {"id":"partySrc","type":"image","label":"B-roll de fiesta","default":"../demo2/new/party_v.mp4"},
+    {"id":"charASrc","type":"image","label":"Personaje A","default":"../demo2/new/char_popeye.png"},
+    {"id":"charBSrc","type":"image","label":"Personaje B","default":"../demo2/new/char_betty.png"},
+    {"id":"dateLine","type":"string","label":"Fecha","default":"METEPEC, SÁBADO 11 DE JULIO"},
+    {"id":"title","type":"string","label":"Titulo","default":"out of the ordinary"},
+    {"id":"lineUp","type":"string","label":"Lineup","default":"REGGAETON & HOUSE · OPEN BAR"},
+    {"id":"access","type":"string","label":"Acceso","default":"ACCESS 7:30 PM"},
+    {"id":"djTitle","type":"string","label":"DJ prefijo","default":"MAESTRO"},
+    {"id":"djName","type":"string","label":"DJ nombre","default":"DOBEL"}
   ]'
 >
   <head>
@@ -113,19 +120,55 @@
       #stkBurger { right: 120px; top: 1150px; width: 270px; transform: rotate(-7deg); }
       #stkChamp  { left: 110px; top: 1180px; width: 220px; transform: rotate(12deg); }
 
-      /* ══ FIESTA · 5.44 – 9.37 · original ═════════════════════════ */
+      /* ══ FIESTA · 5.44 – 9.37 · material nuestro ════════════════ */
       #partyWin { position: absolute; inset: 0; z-index: 2; opacity: 1; }
       #party { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #nide { position: absolute; inset: 0; background: rgba(58,0,10,.22); z-index: 2; }
+      #vig {
+        position: absolute; inset: 0; z-index: 3; pointer-events: none;
+        background: radial-gradient(ellipse 72% 56% at 50% 45%, transparent 38%, rgba(0,0,0,.6) 100%);
+      }
+      /* personajes cartoon de dominio público, die-cut con contorno blanco */
+      .char {
+        position: absolute; z-index: 12; opacity: 0; will-change: transform, opacity;
+        filter: drop-shadow(0 14px 22px rgba(0,0,0,.6));
+      }
+      #charA { left: 30px;  top: 250px; height: 1010px; width: auto; }
+      #charB { right: 20px; top: 300px; height: 930px; width: auto; }
 
-      /* ══ TIPOGRAFÍA (recortada del original, con alfa) ═════════════ */
-      #dateTxt {
-        position: absolute; left: 0; top: 212px; width: 1080px; height: 90px;
-        object-fit: cover; z-index: 20; pointer-events: none;
+      /* fogonazos de transición */
+      #flashBlue { position: absolute; inset: 0; background: #e8f2ff; opacity: 0; z-index: 39; pointer-events: none; will-change: opacity; }
+      #flashPink { position: absolute; inset: 0; background: #ff4fd8; opacity: 0; z-index: 39; pointer-events: none; will-change: opacity; }
+
+      /* ══ TIPOGRAFÍA · 100% NUESTRA (nada recortado de la referencia) ══
+         Mismos textos y misma posición que el original, pero compuestos
+         con la tipografía del proyecto. */
+      #dateLine {
+        position: absolute; left: 0; right: 0; top: 224px; z-index: 20; text-align: center;
+        font-size: 25px; font-weight: 700; letter-spacing: .34em; color: #e8e2e2;
+        text-shadow: 0 2px 12px rgba(0,0,0,.85);
       }
-      #footTxt {
-        position: absolute; left: 0; top: 1410px; width: 1080px; height: 310px;
-        object-fit: cover; z-index: 20; pointer-events: none;
+      #footer {
+        position: absolute; left: 40px; right: 40px; bottom: 258px; z-index: 20; text-align: center;
       }
+      #ooo {
+        font-size: 86px; font-weight: 800; color: #fff; letter-spacing: -0.028em; line-height: 1;
+        text-shadow: 0 5px 22px rgba(0,0,0,.92), 0 0 44px rgba(0,0,0,.55);
+        white-space: nowrap;
+      }
+      #lineup {
+        margin-top: 44px; font-size: 27px; font-weight: 700; letter-spacing: .30em; color: #efeaea;
+        text-shadow: 0 3px 12px rgba(0,0,0,.9);
+      }
+      #access {
+        margin-top: 16px; font-size: 26px; font-weight: 700; letter-spacing: .26em; color: #e6e0e0;
+        text-shadow: 0 3px 12px rgba(0,0,0,.9);
+      }
+      #dobel {
+        margin-top: 14px; font-size: 19px; font-weight: 700; letter-spacing: .18em; color: #cbc3c3;
+        text-shadow: 0 2px 8px rgba(0,0,0,.85);
+      }
+      #dobel b { display: block; font-size: 25px; letter-spacing: .22em; color: #fff; margin-top: 2px; }
     </style>
   </head>
   <body>
@@ -211,18 +254,33 @@
         </div>
       </div>
 
-      <!-- FIESTA: el original, tal cual -->
+      <!-- FIESTA: material NUESTRO (nada de la referencia).
+           B-roll de club + personajes cartoon de dominio público,
+           con la coreografía medida del original. -->
       <div class="band" id="band3">
         <div id="partyWin">
-          <video id="party" class="clip" src="../demo2/new/party_orig.mp4" data-var-src="partySrc"
-            data-start="5.47" data-duration="3.87" data-media-start="0" data-hf-media-start-basis="global"
+          <video id="party" class="clip" src="../demo2/new/party_v.mp4" data-var-src="partySrc"
+            data-start="5.44" data-duration="3.93" data-media-start="0" data-hf-media-start-basis="global"
             muted playsinline preload="auto"></video>
+          <div id="nide"></div>
+          <div id="vig"></div>
+          <img class="char" id="charA" src="../demo2/new/char_popeye.png" alt="" data-var-src="charASrc" />
+          <img class="char" id="charB" src="../demo2/new/char_betty.png" alt="" data-var-src="charBSrc" />
         </div>
       </div>
 
-      <!-- tipografía del original (con alfa) -->
-      <img id="dateTxt" src="../demo2/new/date_txt.png" alt="" />
-      <img id="footTxt" src="../demo2/new/foot_txt.png" alt="" />
+      <!-- tipografía propia -->
+      <div id="dateLine" data-var-text="dateLine">METEPEC, SÁBADO 11 DE JULIO</div>
+      <div id="footer">
+        <div id="ooo" data-var-text="title">out of the ordinary</div>
+        <div id="lineup" data-var-text="lineUp">REGGAETON &amp; HOUSE · OPEN BAR</div>
+        <div id="access" data-var-text="access">ACCESS 7:30 PM</div>
+        <div id="dobel"><span data-var-text="djTitle">MAESTRO</span><b data-var-text="djName">DOBEL</b></div>
+      </div>
+
+      <!-- fogonazos de transición (medidos en el original: azul 5.50 · magenta 9.00) -->
+      <div id="flashBlue"></div>
+      <div id="flashPink"></div>
 
       <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
       <script>
@@ -274,13 +332,31 @@
           tl.set("#e2", { transformOrigin: "50% 30%" }, 4.70);
           tl.fromTo("#e2", { scale: 1.0, x: 0, y: 0 }, { scale: 1.42, x: 0, y: 0, duration: 0.62, ease: "power2.in", immediateRender: false }, 4.76);
 
-          /* ══ FIESTA · 5.44 – 9.37 ═════════════════════════════════
-             El original departy: ya trae su propio corte, su fogonazo
-             azul, los personajes y el fogonazo magenta. */
+          /* ══ FIESTA · 5.44 – 9.37 ══════════════════════════════════
+             Medido en el original: corte seco 5.44 · fogonazo azul 5.50 ·
+             personaje gigante 5.62 · cambio 7.45 · cambio 8.15 ·
+             pop final 8.90 · fogonazo magenta 9.00. */
           tl.set("#band3", { opacity: 1 }, 5.44);
           tl.set("#band2", { opacity: 0 }, 5.45);
-          tl.set("#dateTxt", { opacity: 0 }, 5.44);
-          tl.set("#footTxt", { opacity: 0 }, 5.44);
+
+          tl.fromTo("#flashBlue", { opacity: 0 }, { opacity: .95, duration: 0.04, ease: "none" }, 5.50);
+          tl.to("#flashBlue", { opacity: 0, duration: 0.12, ease: "none" }, 5.54);
+
+          tl.fromTo("#charA", { opacity: 0, scale: 0.25, rotation: -12 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.34, ease: "back.out(2.2)" }, 5.62);
+          tl.to("#charA", { y: 22, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 3 }, 6.0);
+
+          tl.to("#charA", { opacity: 0, scale: 0.65, duration: 0.16, ease: "power2.in" }, 7.38);
+          tl.fromTo("#charB", { opacity: 0, scale: 0.25, rotation: 12 }, { opacity: 1, scale: 1, rotation: 5, duration: 0.34, ease: "back.out(2.2)" }, 7.45);
+          tl.to("#charB", { y: -18, duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: 1 }, 7.85);
+
+          tl.to("#charB", { opacity: 0, scale: 0.65, duration: 0.16, ease: "power2.in" }, 8.08);
+          tl.fromTo("#charA", { opacity: 0, scale: 0.25, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.34, ease: "back.out(2.2)" }, 8.15);
+          tl.to("#charA", { y: 18, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 1 }, 8.5);
+
+          tl.to("#charA", { opacity: 0, scale: 0.65, duration: 0.14, ease: "power2.in" }, 8.88);
+          tl.fromTo("#charB", { opacity: 0, scale: 0.3, rotation: 10 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.3, ease: "back.out(2.2)" }, 8.90);
+          tl.fromTo("#flashPink", { opacity: 0 }, { opacity: .92, duration: 0.05, ease: "none" }, 9.00);
+          tl.to("#flashPink", { opacity: 0, duration: 0.14, ease: "none" }, 9.05);
 
           window.__timelines["veluxe-v5"] = tl;
         }
