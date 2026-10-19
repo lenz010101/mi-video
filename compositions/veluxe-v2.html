@@ -61,6 +61,11 @@
         font-size: 96px; font-weight: 800; color: rgba(255,255,255,.28); letter-spacing: .01em;
         text-shadow: 0 6px 30px rgba(255,255,255,.25); opacity: 0;
       }
+      #vMark, #vMark2 {
+        position: absolute; left: 0; right: 0; top: 128px; z-index: 9; text-align: center;
+        font-size: 88px; font-weight: 700; color: rgba(255,255,255,.16); letter-spacing: .04em;
+        opacity: 0; pointer-events: none;
+      }
 
       /* E2: marquesina VELUXE sobre la foto de hotel */
       #marquee { position: absolute; left: 0; right: 0; top: 430px; z-index: 8; text-align: center; }
@@ -142,6 +147,7 @@
           <div class="p4">PARTY</div>
         </div>
         <div id="tickets"><i></i><i></i><i></i><i></i></div>
+        <div id="vMark">veluxe</div>
         <div id="ghost">VELUXE V3</div>
       </div>
 
@@ -149,6 +155,7 @@
         <img src="../demo2/new/scene2.jpg" alt="" />
         <div class="blood" style="opacity:.6"></div>
         <div id="marquee"><div class="row"><span class="lt">V</span><span class="lt">E</span><span class="lt">L</span><span class="lt">U</span><span class="lt">X</span><span class="lt">E</span></div></div>
+        <div id="vMark2">veluxe</div>
         <svg class="stk" id="stkAlien" viewBox="0 0 120 120">
           <g stroke="#fff" stroke-width="5" stroke-linecap="round">
             <path d="M45 30 C 40 18, 30 14, 28 8" fill="none"/><circle cx="27" cy="7" r="6" fill="#6fd356"/>
@@ -209,6 +216,27 @@
         </g>
       </svg>
 
+      <svg class="stk" id="stkAlien2" style="left: 80px; top: 820px; width: 300px;" viewBox="0 0 120 120">
+        <g stroke="#fff" stroke-width="5" stroke-linecap="round">
+          <path d="M45 30 C 40 18, 30 14, 28 8" fill="none"/><circle cx="27" cy="7" r="6" fill="#6fd356"/>
+          <path d="M75 30 C 80 18, 90 14, 92 8" fill="none"/><circle cx="93" cy="7" r="6" fill="#6fd356"/>
+          <ellipse cx="60" cy="70" rx="34" ry="38" fill="#9ee87a"/>
+          <ellipse cx="47" cy="62" rx="10" ry="14" fill="#fff"/><circle cx="49" cy="66" r="5" fill="#222"/>
+          <ellipse cx="74" cy="62" rx="10" ry="14" fill="#fff"/><circle cx="71" cy="66" r="5" fill="#222"/>
+          <path d="M40 92 Q 60 104 80 92" fill="none"/>
+        </g>
+      </svg>
+
+      <svg class="stk" id="stkSpray2" style="right: 100px; top: 760px; width: 230px;" viewBox="0 0 110 160">
+        <g stroke="#fff" stroke-width="5" stroke-linejoin="round" fill="none">
+          <rect x="60" y="8" width="34" height="20" rx="4" fill="#7fb6e8"/>
+          <rect x="30" y="10" width="30" height="16" rx="4" fill="#5a8fc7"/>
+          <path d="M34 12 L 22 40 L 34 44 Z" fill="#5a8fc7"/>
+          <rect x="34" y="34" width="42" height="22" fill="#8fd0f0"/>
+          <path d="M30 56 h50 c8 0 12 8 12 16 v70 c0 10 -6 14 -14 14 h-46 c-8 0 -14 -4 -14 -14 v-70 c0 -8 4 -16 12 -16 z" fill="#7ec9ea"/>
+        </g>
+      </svg>
+
       <div class="blood" style="opacity:.35; z-index:12"></div>
       <div id="dateLine">METEPEC, SÁBADO 11 DE JULIO</div>
       <div id="footer">
@@ -227,13 +255,18 @@
           /* E1: flicker de encendido + cartel + tickets + fantasma */
           tl.set("#s1", { opacity: 1 }, 0);
           tl.fromTo("#s1 img", { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "steps(3)" }, 0);
+          tl.set("#vMark", { opacity: 1 }, 0.0);
+          tl.set("#vMark", { opacity: 0 }, 1.2);
           tl.fromTo("#paper", { y: 26 }, { y: 0, duration: 0.7, ease: "power3.out" }, 0.12);
           tl.set("#tickets", { opacity: 1 }, 0.3);
           tl.set("#ghost", { opacity: 1 }, 0.55);
           tl.set("#ghost", { opacity: 0 }, 1.05);
-          /* flash → E2. Encendido letra a letra 1.35→2.15 (paso 0.16, como el original) */
-          tl.set("#flash", { opacity: 1 }, 1.22); tl.set("#flash", { opacity: 0 }, 1.34);
+          /* flash → E2. Flash fuerte del original + punch-out del plano entrante */
+          tl.set("#flash", { opacity: 1 }, 1.22); tl.set("#flash", { opacity: 0 }, 1.30);
           tl.set("#s2", { opacity: 1 }, 1.24);
+          tl.fromTo("#s2", { scale: 1.09 }, { scale: 1.0, duration: 0.34, ease: "power3.out" }, 1.24);
+          tl.set("#vMark2", { opacity: 1 }, 1.24);
+          tl.set("#vMark2", { opacity: 0 }, 2.3);
           tl.set("#s2 #marquee .lt", { opacity: 0.38 }, 1.24);
           const lit = "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 0 70px rgba(255,20,40,.5), 0 4px 0 rgba(140,10,16,.9)";
           [["#s2 .lt:nth-child(1)", 1.35], ["#s2 .lt:nth-child(2)", 1.51], ["#s2 .lt:nth-child(3)", 1.67],
@@ -253,19 +286,32 @@
           /* splatter en dos olas */
           tl.set("#s1 .blood", { opacity: .45 }, 0.25);
           tl.set("#s1 .blood", { opacity: .85 }, 0.6);
+          /* sangue s2: entra tarde + latidos (como el original) */
+          tl.set("#s2 .blood", { opacity: 0 }, 1.24);
+          tl.set("#s2 .blood", { opacity: .5 }, 1.7);
+          tl.set("#s2 .blood", { opacity: .62 }, 2.9);
+          tl.set("#s2 .blood", { opacity: .45 }, 3.1);
+          tl.set("#s2 .blood", { opacity: .62 }, 3.75);
+          /* flicker de bombillas de la marquesina (parpadeos del original) */
+          tl.set("#s2 #marquee", { opacity: .82 }, 2.62); tl.set("#s2 #marquee", { opacity: 1 }, 2.70);
+          tl.set("#s2 #marquee", { opacity: .85 }, 3.18); tl.set("#s2 #marquee", { opacity: 1 }, 3.26);
+          tl.set("#s2 #marquee", { opacity: .82 }, 3.74); tl.set("#s2 #marquee", { opacity: 1 }, 3.82);
           /* CUPLAJE closer a 4.82 (plano completo → primer plano, como el original) */
-          tl.set("#flash", { opacity: 1 }, 4.82); tl.set("#flash", { opacity: 0 }, 4.94);
+          tl.set("#flash", { opacity: 1 }, 4.82); tl.set("#flash", { opacity: 0 }, 4.90);
           tl.set("#s2", { scale: 1.34, y: 60, transformOrigin: "50% 22%" }, 4.84);
           tl.fromTo("#s2", { scale: 1.34, y: 60 }, { scale: 1.38, y: 80, duration: 0.9, ease: "none" }, 4.85);
-          /* flash → E3: fiesta 5.72 + churn de stickers */
-          tl.set("#flash", { opacity: 1 }, 5.72); tl.set("#flash", { opacity: 0 }, 5.84);
+          /* flash → E3: fiesta 5.72 + punch-out + churn con punch por pop */
+          tl.set("#flash", { opacity: 1 }, 5.72); tl.set("#flash", { opacity: 0 }, 5.80);
           tl.set("#vidWrap", { opacity: 1 }, 5.74);
           tl.set("#s2", { opacity: 0 }, 5.76);
           tl.fromTo("#vidWrap", { scale: 1.14 }, { scale: 1.0, duration: 0.5, ease: "power3.out" }, 5.74);
           tl.set("#s1", { opacity: 0 }, 5.76);
           tl.fromTo("#stkChamp", { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 12, duration: 0.34, ease: "back.out(2.2)" }, 6.15);
-          /* burger XL re-pop al beat de la fiesta */
           tl.fromTo("#stkBurger2", { opacity: 0, scale: 0.35, rotation: -22 }, { opacity: 1, scale: 1, rotation: 8, duration: 0.32, ease: "back.out(2.2)" }, 6.85);
+          tl.fromTo("#stkAlien2", { opacity: 0, scale: 0.35, rotation: -16 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.32, ease: "back.out(2.2)" }, 7.55);
+          tl.to("#stkAlien2", { y: 10, duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: 2 }, 7.9);
+          tl.fromTo("#stkSpray2", { opacity: 0, scale: 0.35, rotation: 20 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.32, ease: "back.out(2.2)" }, 8.3);
+          tl.to("#stkSpray2", { y: -9, duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: 1 }, 8.7);
           /* micro-zooms al ritmo */
           tl.set("#vidWrap", { scale: 1.06 }, 6.9);
           tl.to("#vidWrap", { scale: 1.0, duration: 0.4, ease: "power2.out" }, 6.9);
