@@ -231,41 +231,46 @@
           tl.set("#tickets", { opacity: 1 }, 0.3);
           tl.set("#ghost", { opacity: 1 }, 0.55);
           tl.set("#ghost", { opacity: 0 }, 1.05);
-          /* flash → E2: marquesina encendida letra a letra */
+          /* flash → E2. Encendido letra a letra 1.35→2.15 (paso 0.16, como el original) */
           tl.set("#flash", { opacity: 1 }, 1.22); tl.set("#flash", { opacity: 0 }, 1.34);
           tl.set("#s2", { opacity: 1 }, 1.24);
           tl.set("#s2 #marquee .lt", { opacity: 0.38 }, 1.24);
-          tl.set("#s2 .lt:nth-child(1)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 1.55);
-          tl.set("#s2 .lt:nth-child(2)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 1.75);
-          tl.set("#s2 .lt:nth-child(3)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 1.95);
-          tl.set("#s2 .lt:nth-child(4)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 2.15);
-          tl.set("#s2 .lt:nth-child(5)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 2.35);
-          tl.set("#s2 .lt:nth-child(6)", { opacity: 1, color: "#ffe3e3", textShadow: "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 4px 0 rgba(140,10,16,.9)" }, 2.55);
+          const lit = "0 0 12px rgba(255,90,100,.9), 0 0 34px rgba(255,40,55,.65), 0 0 70px rgba(255,20,40,.5), 0 4px 0 rgba(140,10,16,.9)";
+          [["#s2 .lt:nth-child(1)", 1.35], ["#s2 .lt:nth-child(2)", 1.51], ["#s2 .lt:nth-child(3)", 1.67],
+           ["#s2 .lt:nth-child(4)", 1.83], ["#s2 .lt:nth-child(5)", 1.99], ["#s2 .lt:nth-child(6)", 2.15]].forEach(([q, t]) => {
+            tl.set(q, { opacity: 1, color: "#ffe3e3", textShadow: lit }, t);
+          });
           /* drift hand-held orgánico sobre las stills (como el original) */
           tl.fromTo("#s1 img", { x: -14, y: 8 }, { x: 14, y: -8, duration: 5.0, ease: "none" }, 0);
           tl.fromTo("#s2 img", { x: 12, y: -7 }, { x: -12, y: 7, duration: 3.7, ease: "none" }, 1.25);
-          /* stickers pop por beats */
-          tl.fromTo("#stkAlien", { opacity: 0, scale: 0.4, rotation: -18 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.3, ease: "back.out(2.2)" }, 2.85);
-          tl.fromTo("#stkSpray", { opacity: 0, scale: 0.4, rotation: 16 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.3, ease: "back.out(2.2)" }, 3.45);
-          tl.fromTo("#stkBurger", { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -7, duration: 0.3, ease: "back.out(2.2)" }, 4.05);
-          /* punch-ins de cámara al mismo beat (ritmo del original) */
-          tl.set("#marquee", { scale: 1.06 }, 2.85); tl.to("#marquee", { scale: 1.0, duration: 0.35, ease: "power2.out" }, 2.85);
-          tl.set("#marquee", { scale: 1.05 }, 3.45); tl.to("#marquee", { scale: 1.0, duration: 0.35, ease: "power2.out" }, 3.45);
-          tl.set("#marquee", { scale: 1.07 }, 4.05); tl.to("#marquee", { scale: 1.0, duration: 0.35, ease: "power2.out" }, 4.05);
-          /* flash → E3: fiesta + punch-in */
-          tl.set("#flash", { opacity: 1 }, 4.88); tl.set("#flash", { opacity: 0 }, 5.0);
-          tl.set("#vidWrap", { opacity: 1 }, 4.9);
-          tl.set("#s2", { opacity: 0 }, 4.92);
-          tl.fromTo("#vidWrap", { scale: 1.14 }, { scale: 1.0, duration: 0.5, ease: "power3.out" }, 4.9);
-          tl.set("#s1", { opacity: 0 }, 4.92);
-          tl.fromTo("#stkChamp", { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 12, duration: 0.34, ease: "back.out(2.2)" }, 5.35);
+          /* ola de stickers 1.7→2.4 (como el original) + float suave */
+          tl.fromTo("#stkAlien", { opacity: 0, scale: 0.4, rotation: -18 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.3, ease: "back.out(2.2)" }, 1.72);
+          tl.to("#stkAlien", { y: 10, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 4 }, 2.05);
+          tl.fromTo("#stkSpray", { opacity: 0, scale: 0.4, rotation: 16 }, { opacity: 1, scale: 1, rotation: 9, duration: 0.3, ease: "back.out(2.2)" }, 1.93);
+          tl.to("#stkSpray", { y: -9, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 4 }, 2.25);
+          tl.fromTo("#stkBurger", { opacity: 0, scale: 0.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -7, duration: 0.3, ease: "back.out(2.2)" }, 2.03);
+          tl.to("#stkBurger", { y: 8, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 4 }, 2.35);
+          /* splatter en dos olas */
+          tl.set("#s1 .blood", { opacity: .45 }, 0.25);
+          tl.set("#s1 .blood", { opacity: .85 }, 0.6);
+          /* CUPLAJE closer a 4.82 (plano completo → primer plano, como el original) */
+          tl.set("#flash", { opacity: 1 }, 4.82); tl.set("#flash", { opacity: 0 }, 4.94);
+          tl.set("#s2", { scale: 1.34, y: 60, transformOrigin: "50% 22%" }, 4.84);
+          tl.fromTo("#s2", { scale: 1.34, y: 60 }, { scale: 1.38, y: 80, duration: 0.9, ease: "none" }, 4.85);
+          /* flash → E3: fiesta 5.72 + churn de stickers */
+          tl.set("#flash", { opacity: 1 }, 5.72); tl.set("#flash", { opacity: 0 }, 5.84);
+          tl.set("#vidWrap", { opacity: 1 }, 5.74);
+          tl.set("#s2", { opacity: 0 }, 5.76);
+          tl.fromTo("#vidWrap", { scale: 1.14 }, { scale: 1.0, duration: 0.5, ease: "power3.out" }, 5.74);
+          tl.set("#s1", { opacity: 0 }, 5.76);
+          tl.fromTo("#stkChamp", { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 12, duration: 0.34, ease: "back.out(2.2)" }, 6.15);
           /* burger XL re-pop al beat de la fiesta */
-          tl.fromTo("#stkBurger2", { opacity: 0, scale: 0.35, rotation: -22 }, { opacity: 1, scale: 1, rotation: 8, duration: 0.32, ease: "back.out(2.2)" }, 5.95);
+          tl.fromTo("#stkBurger2", { opacity: 0, scale: 0.35, rotation: -22 }, { opacity: 1, scale: 1, rotation: 8, duration: 0.32, ease: "back.out(2.2)" }, 6.85);
           /* micro-zooms al ritmo */
-          tl.set("#vidWrap", { scale: 1.06 }, 6.5);
-          tl.to("#vidWrap", { scale: 1.0, duration: 0.4, ease: "power2.out" }, 6.5);
-          tl.set("#vidWrap", { scale: 1.05 }, 7.7);
-          tl.to("#vidWrap", { scale: 1.02, duration: 0.4, ease: "power2.out" }, 7.7);
+          tl.set("#vidWrap", { scale: 1.06 }, 6.9);
+          tl.to("#vidWrap", { scale: 1.0, duration: 0.4, ease: "power2.out" }, 6.9);
+          tl.set("#vidWrap", { scale: 1.05 }, 7.8);
+          tl.to("#vidWrap", { scale: 1.02, duration: 0.4, ease: "power2.out" }, 7.8);
           /* punch final al último golpe */
           tl.set("#vidWrap", { scale: 1.08 }, 8.8);
           tl.to("#vidWrap", { scale: 1.03, duration: 0.5, ease: "power2.out" }, 8.8);
