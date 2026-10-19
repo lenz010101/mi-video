@@ -146,6 +146,59 @@ runtime. Verificado en el paquete `hyperframes` (0.8.162/0.8.172):
 - Los MP4 fuente deben ser H.264 **Constrained Baseline** para que Chrome
   headless los decodifique: `-profile:v baseline -level 3.1`.
 
+## Coreografía medida del promo VELUXE (referencia, no repetir la medición)
+
+Medido sobre la **banda limpia del v1** (`demo2/new/master.mp4`, 1080×1520) con
+diferencias por frame (`tblend=difference` + `signalstats`) y con detección de
+cajas por color. No volver a medir: estos son los tiempos reales.
+
+| t (s) | qué hace el original |
+|---|---|
+| 0.00–1.02 | travelling **continuo**: el cartel sale por la izquierda mientras entra la puerta. NO hay corte ni flash. |
+| 1.02–1.60 | sigue el travelling; el neon VELUXE entra por arriba y **crece** (el bloque de letras pasa de ~250 a ~290 px de ancho) |
+| 1.60–2.30 | el neon sigue creciendo; el resto del cuadro, quieto |
+| 2.30–3.20 | los stickers del póster entran escalonados (picos de movimiento ~10–12) |
+| 3.40–4.60 | **calma total** (movimiento < 1.5): el plano se queda quieto |
+| 4.60–5.38 | empuje rápido al primer plano de los dos chicos |
+| 5.44 | **corte seco** a la fiesta (movimiento 31–40: es un cambio de plano, no un fundido) |
+| 5.50 | fogonazo azul de un frame |
+| 5.62–9.37 | fiesta: personaje gigante 5.62, cambio 7.45, cambio 8.15, pop 8.90 |
+| 9.00 | fogonazo magenta (último fotograma) |
+
+Consecuencias para cualquier recreación:
+
+- **No inventar flashes blancos** en los cambios de escena: el original sólo
+  tiene el fogonazo azul (5.50) y el magenta (9.00).
+- **No inventar encendido letra a letra** del neon: crece el bloque entero.
+- La escena del póster **no hace drift**: entre 3.40 y 4.60 está quieta.
+- El travelling inicial es un movimiento de cámara continuo, no dos planos.
+
+Herramientas de medición (ya escritas, reutilizar):
+`demo2/measure-zoom.mjs`, `demo2/measure-band-zoom.mjs`, `demo2/parse-motion.mjs`,
+`demo2/peek.mjs` (busca en el bundle minificado de HyperFrames sin volcarlo).
+
+## REGLA ANTI-TARDANZA (máxima prioridad)
+
+El PC del usuario es lento ("una tostadora"). **El tiempo de trabajo se cuenta como coste real.**
+
+- **NUNCA renderizar en local.** Ni `hyperframes render`, ni `snapshot`, ni
+  captura de frames para verificar. Todo render va a GitHub Actions.
+  Un `snapshot` local = arranque de Chrome = ~40-90 s por tanda. Prohibido.
+- **NUNCA analizar vídeo frame a frame en local** (ffmpeg sobre el original,
+  scripts de medición). Solo si es imprescindible, y con un presupuesto
+  explícito de **2 minutos**; si no cabe, se decide con lo que ya se sabe.
+- **NUNCA bucear en el bundle minificado** de HyperFrames para descubrir la
+  API: `npx hyperframes docs` y `npx hyperframes lint` dan la spec en segundos.
+  Si aun así hay que mirar, `demo2/peek.mjs` con un patrón **puntual**.
+- **Una entrega = un ciclo**: medir → construir → render en nube → verificar
+  con fotogramas del MP4 **descargado** (ffmpeg, instantáneo) → entregar.
+  Máximo **2 renders en nube** por tarea; si el 2º no cuadra, parar, avisar y
+  entregar lo mejor.
+- **Antes de arrancar cualquier herramienta**: decir en una línea cuánto va a
+  tardar y por qué. Si son > 3 min → avisar antes de lanzarlo.
+- No encadenar XT (leer bundle + medir + render + render). Cada paso se
+  justifica con un dato que falte.
+
 ## Contexto
 
 - Proyecto HyperFrames en este directorio: `index.html` es la composición.
