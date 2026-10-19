@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"dateLine","type":"string","label":"Fecha","default":"METEPEC, SÁBADO 11 DE JULIO"},
+    {"id":"title","type":"string","label":"Titulo principal","default":"out of the ordinary"},
+    {"id":"lineUp","type":"string","label":"Lineup","default":"REGGAETON & HOUSE · OPEN BAR"},
+    {"id":"access","type":"string","label":"Acceso","default":"ACCESS 7:30 PM"},
+    {"id":"djTitle","type":"string","label":"DJ prefijo","default":"MAESTRO"},
+    {"id":"djName","type":"string","label":"DJ nombre","default":"DOBEL"},
+    {"id":"clubSrc","type":"image","label":"Clip de fiesta","default":"../demo2/new/club_a_red.mp4"},
+    {"id":"partyTint","type":"color","label":"Tinte de la fiesta","default":"#e8f2ff"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>VELUXE V3 · promo motel/neón (v3 · coreografía medida)</title>
+    <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #000; }
+      #stage {
+        position: relative; width: 1080px; height: 1920px;
+        overflow: hidden; background: #060306;
+        font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── banda del póster (0.00 – 5.44) ──────────────────────────
+         Es el plano del original: travelling del cartel a la puerta y
+         empuje final al primer plano. Va recortado para dejar fuera el
+         texto grabado (se recompone vivo abajo con variables).       */
+      #bandWin {
+        position: absolute; left: 0; top: 270px; width: 1080px; height: 1070px;
+        overflow: hidden; z-index: 1;
+      }
+      #bandScale { position: absolute; left: 0; top: -70px; width: 1080px; height: 1520px; will-change: transform; }
+      #band { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; display: block; }
+      #fadeTop {
+        position: absolute; left: 0; top: 270px; width: 1080px; height: 90px;
+        background: linear-gradient(to bottom, rgba(6,3,6,.96), rgba(6,3,6,0) 78%);
+        z-index: 8; pointer-events: none;
+      }
+      #fadeBot {
+        position: absolute; left: 0; top: 1240px; width: 1080px; height: 100px;
+        background: linear-gradient(to top, rgba(6,3,6,.92), rgba(6,3,6,0) 70%);
+        z-index: 8; pointer-events: none;
+      }
+
+      /* ── fiesta (5.44 – 9.37) ──────────────────────────────────── */
+      #partyWin { position: absolute; inset: 0; z-index: 2; opacity: 0; }
+      #club { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #nide { position: absolute; inset: 0; background: rgba(60,0,8,.18); z-index: 2; }
+      .stk {
+        position: absolute; z-index: 14; opacity: 0; will-change: transform, opacity;
+        filter: drop-shadow(0 10px 12px rgba(0,0,0,.55));
+      }
+      #stkAlienBig { left: 40px;  top: 430px; width: 980px;  transform: rotate(-8deg); }
+      #stkMonster  { right: 20px; top: 330px; width: 1040px; transform: rotate(7deg); }
+      #stkSprayBig { left: 120px; top: 620px; width: 780px;  transform: rotate(-12deg); }
+      #stkChampBig { right: 90px; top: 780px; width: 620px;  transform: rotate(10deg); }
+
+      /* ── texto persistente ───────────────────────────────────────── */
+      #dateLine {
+        position: absolute; left: 0; right: 0; top: 208px; z-index: 20; text-align: center;
+        font-size: 26px; font-weight: 700; letter-spacing: .34em; color: #efe8e8;
+        text-shadow: 0 3px 14px rgba(0,0,0,.9);
+      }
+      #footer {
+        position: absolute; left: 40px; right: 40px; bottom: 150px; z-index: 20; text-align: center;
+      }
+      #ooo {
+        font-size: 92px; font-weight: 800; color: #fff; letter-spacing: -0.025em; line-height: 1;
+        text-shadow: 0 5px 22px rgba(0,0,0,.92), 0 0 44px rgba(0,0,0,.6);
+        white-space: nowrap;
+      }
+      #lineup { margin-top: 46px; font-size: 30px; font-weight: 700; letter-spacing: .3em; color: #f2eaea;
+        text-shadow: 0 3px 12px rgba(0,0,0,.9); }
+      #access { margin-top: 22px; font-size: 28px; font-weight: 700; letter-spacing: .26em; color: #eae2e2;
+        text-shadow: 0 3px 12px rgba(0,0,0,.9); }
+      #dobel { margin-top: 18px; font-size: 20px; font-weight: 700; letter-spacing: .18em; color: #cfc6c6;
+        text-shadow: 0 2px 8px rgba(0,0,0,.85); }
+      #dobel b { display: block; font-size: 26px; letter-spacing: .22em; color: #fff; }
+
+      /* fogonazos medidos: azul 5.50 · magenta 9.00 */
+      #flashBlue { position: absolute; inset: 0; background: #e8f2ff; opacity: 0; z-index: 39; pointer-events: none; will-change: opacity; }
+      #flashPink { position: absolute; inset: 0; background: #ff4fd8; opacity: 0; z-index: 39; pointer-events: none; will-change: opacity; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="veluxe-v3"
+      data-start="0"
+      data-duration="9.37"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio id="track" data-start="0" data-duration="9.37" data-media-start="0"
+        data-track-index="1" data-volume="1" src="../demo2/new/audio.m4a" preload="auto"></audio>
+
+      <!-- banda del póster: es un travelling continuo, sin cortes -->
+      <div id="bandWin">
+        <div id="bandScale">
+          <video id="band" class="clip" src="../demo2/new/master.mp4"
+            data-start="0" data-duration="5.44" data-media-start="0"
+            muted playsinline preload="auto"></video>
+        </div>
+      </div>
+      <div id="fadeTop"></div>
+      <div id="fadeBot"></div>
+
+      <!-- fiesta -->
+      <video id="club" class="clip" src="../demo2/new/club_a_red.mp4" data-var-src="clubSrc"
+        data-start="5.44" data-duration="3.93" data-media-start="0" data-hf-media-start-basis="global"
+        muted playsinline preload="auto"></video>
+      <div id="partyWin">
+        <div id="nide"></div>
+
+        <svg class="stk" id="stkAlienBig" viewBox="0 0 120 120">
+          <g stroke="#fff" stroke-width="5" stroke-linecap="round">
+            <path d="M45 30 C 40 18, 30 14, 28 8" fill="none"/><circle cx="27" cy="7" r="6" fill="#6fd356"/>
+            <path d="M75 30 C 80 18, 90 14, 92 8" fill="none"/><circle cx="93" cy="7" r="6" fill="#6fd356"/>
+            <ellipse cx="60" cy="70" rx="34" ry="38" fill="#9ee87a"/>
+            <ellipse cx="47" cy="62" rx="10" ry="14" fill="#fff"/><circle cx="49" cy="66" r="5" fill="#222"/>
+            <ellipse cx="74" cy="62" rx="10" ry="14" fill="#fff"/><circle cx="71" cy="66" r="5" fill="#222"/>
+            <path d="M40 92 Q 60 104 80 92" fill="none"/>
+          </g>
+        </svg>
+
+        <svg class="stk" id="stkMonster" viewBox="0 0 200 200">
+          <g stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M60 120 C 20 140, 10 190, 30 205" fill="none" stroke="#6fb8e8"/>
+            <path d="M140 120 C 180 140, 190 190, 170 205" fill="none" stroke="#6fb8e8"/>
+            <path d="M78 140 C 60 175, 70 200, 100 196" fill="none" stroke="#8fd0f0"/>
+            <path d="M122 140 C 140 175, 130 200, 100 196" fill="none" stroke="#8fd0f0"/>
+            <ellipse cx="100" cy="88" rx="56" ry="48" fill="#7ec9ea"/>
+            <ellipse cx="82" cy="76" rx="13" ry="17" fill="#fff"/><circle cx="84" cy="80" r="6" fill="#222"/>
+            <ellipse cx="118" cy="76" rx="13" ry="17" fill="#fff"/><circle cx="116" cy="80" r="6" fill="#222"/>
+            <path d="M78 104 Q 100 122 122 104" fill="none"/>
+          </g>
+        </svg>
+
+        <svg class="stk" id="stkSprayBig" viewBox="0 0 110 160">
+          <g stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <rect x="60" y="8" width="34" height="20" rx="4" fill="#7fb6e8"/>
+            <rect x="30" y="10" width="30" height="16" rx="4" fill="#5a8fc7"/>
+            <path d="M34 12 L 22 40 L 34 44 Z" fill="#5a8fc7"/>
+            <rect x="34" y="34" width="42" height="22" fill="#8fd0f0"/>
+            <path d="M30 56 h50 c8 0 12 8 12 16 v70 c0 10 -6 14 -14 14 h-46 c-8 0 -14 -4 -14 -14 v-70 c0 -8 4 -16 12 -16 z" fill="#7ec9ea"/>
+          </g>
+        </svg>
+
+        <svg class="stk" id="stkChampBig" viewBox="0 0 110 170">
+          <g stroke="#fff" stroke-width="5" fill="none" stroke-linejoin="round">
+            <rect x="14" y="6" width="22" height="30" rx="4" fill="#e8b62f"/>
+            <rect x="34" y="6" width="22" height="30" rx="4" fill="#e8b62f"/>
+            <rect x="14" y="44" width="42" height="34" rx="6" fill="#caa02a"/>
+            <rect x="12" y="86" width="44" height="24" fill="#caa02a"/>
+            <rect x="14" y="110" width="42" height="52" rx="10" fill="#caa02a"/>
+            <path d="M60 6 c 8 30 8 60 0 88 l 0 66 h -10 l 0 -66 c -8 -28 -8 -58 0 -88 z" fill="#caa02a"/>
+          </g>
+        </svg>
+      </div>
+
+      <div id="dateLine" data-var-text="dateLine">METEPEC, SÁBADO 11 DE JULIO</div>
+      <div id="footer">
+        <div id="ooo" data-var-text="title">out of the ordinary</div>
+        <div id="lineup" data-var-text="lineUp">REGGAETON &amp; HOUSE · OPEN BAR</div>
+        <div id="access" data-var-text="access">ACCESS 7:30 PM</div>
+        <div id="dobel"><span data-var-text="djTitle">MAESTRO</span><b data-var-text="djName">DOBEL</b></div>
+      </div>
+
+      <div id="flashBlue"></div>
+      <div id="flashPink"></div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+
+        function build() {
+          /* variables en render-time (defaults -> overrides del host -> --variables de CLI).
+             El runtime inyecta data-var-text / data-var-src; aquí sólo se fija el
+             texto y el tinte por si el runtime no está presente. */
+          var V = (window.__hyperframes && window.__hyperframes.getVariables)
+            ? window.__hyperframes.getVariables()
+            : {};
+          ["dateLine", "title", "lineUp", "access", "djTitle", "djName"].forEach(function (k) {
+            var el = document.querySelector('[data-var-text="' + k + '"]');
+            if (el && el.childElementCount === 0 && typeof V[k] === "string" && V[k] !== "") {
+              el.textContent = V[k];
+            }
+          });
+          if (typeof V.partyTint === "string" && V.partyTint !== "") {
+            document.getElementById("flashBlue").style.background = V.partyTint;
+          }
+
+          var tl = gsap.timeline({ paused: true });
+
+          /* ══ 0.00 – 5.44 · banda del póster ═══════════════════════
+             Medido en el v1: es UN plano continuo (travelling del cartel
+             a la puerta). No hay cortes ni flashes. El empuje al primer
+             plano ocurre 4.76 -> 5.38. */
+          tl.fromTo("#bandScale", { scale: 1.0 }, { scale: 1.022, duration: 5.44, ease: "none" }, 0);
+
+          /* ══ 5.44 – 9.37 · fiesta ══════════════════════════════════
+             Medido: corte seco a 5.44 · fogonazo azul 5.50 · personaje
+             gigante 5.62 · cambio 7.45 · cambio 8.15 · pop final 8.90 ·
+             fogonazo magenta 9.00 (que es el último fotograma). */
+          tl.set("#partyWin", { opacity: 1 }, 5.44);
+          tl.fromTo("#flashBlue", { opacity: 0 }, { opacity: .95, duration: 0.04, ease: "none" }, 5.50);
+          tl.to("#flashBlue", { opacity: 0, duration: 0.12, ease: "none" }, 5.54);
+
+          tl.fromTo("#stkAlienBig", { opacity: 0, scale: 0.3, rotation: -26 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.34, ease: "back.out(2.2)" }, 5.62);
+          tl.to("#stkAlienBig", { y: 16, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 3 }, 6.0);
+
+          tl.to("#stkAlienBig", { opacity: 0, scale: 0.7, duration: 0.16, ease: "power2.in" }, 7.38);
+          tl.fromTo("#stkMonster", { opacity: 0, scale: 0.3, rotation: 24 }, { opacity: 1, scale: 1, rotation: 7, duration: 0.34, ease: "back.out(2.2)" }, 7.45);
+          tl.to("#stkMonster", { y: -14, duration: 0.85, ease: "sine.inOut", yoyo: true, repeat: 1 }, 7.85);
+
+          tl.to("#stkMonster", { opacity: 0, scale: 0.7, duration: 0.16, ease: "power2.in" }, 8.08);
+          tl.fromTo("#stkSprayBig", { opacity: 0, scale: 0.3, rotation: -22 }, { opacity: 1, scale: 1, rotation: -12, duration: 0.34, ease: "back.out(2.2)" }, 8.15);
+          tl.to("#stkSprayBig", { y: 12, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 1 }, 8.5);
+
+          tl.to("#stkSprayBig", { opacity: 0, scale: 0.7, duration: 0.14, ease: "power2.in" }, 8.88);
+          tl.fromTo("#stkChampBig", { opacity: 0, scale: 0.3, rotation: 20 }, { opacity: 1, scale: 1, rotation: 10, duration: 0.3, ease: "back.out(2.2)" }, 8.90);
+          tl.fromTo("#flashPink", { opacity: 0 }, { opacity: .9, duration: 0.05, ease: "none" }, 9.00);
+          tl.to("#flashPink", { opacity: 0, duration: 0.14, ease: "none" }, 9.05);
+
+          window.__timelines["veluxe-v3"] = tl;
+        }
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+      </script>
+    </div>
+  </body>
+</html>

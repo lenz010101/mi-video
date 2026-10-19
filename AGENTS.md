@@ -83,6 +83,69 @@ Referencia medida: en Casa Modular los gráficos con glow eran el 42% del
 coste por fotograma; la variante barata recorta 15-25% del total sin cambio
 visual, ~1,5-3 min por render en una pieza de 60 s.
 
+## Reglas de control de HyperFrames (norma permanente del usuario)
+
+Aplica a **toda** composición nueva o modificada de este repo. Objetivo:
+render fluido (sin fotogramas congelados) y automatización escalable.
+
+### 1. Prohibido
+
+- `transition: all 0.3s ease` o cualquier transición CSS: HyperFrames no puede
+  calcular el tiempo exacto por frame. **Ni `transition: none`**: no se escribe
+  la propiedad `transition` en el CSS de las composiciones.
+- `requestAnimationFrame`, `setTimeout`, `setInterval` en el JS de la composición.
+- Embeber imágenes en Base64 o vídeos locales pesados dentro del HTML: los
+  assets van como archivos referenciados por `src` y se commitean al repo
+  (el CI falla con `missing_local_asset` si no están).
+
+### 2. Animaciones deterministas
+
+- Sólo **keyframes CSS** con `animation-play-state: paused` (el renderizador
+  controla el progreso) **o** timeline **GSAP** registrada en
+  `window.__timelines[<composition-id>]`, creada con `{ paused: true }`.
+  - En GSAP el 3.er argumento es el **tiempo absoluto** en segundos.
+  - Propiedades soportadas por el runtime: `opacity, x, y, scale, scaleX, scaleY,
+    rotation, width, height, visibility`. Para cualquier otra propiedad
+    (color, text-shadow, filter…) se cambia una **clase CSS** con `tl.set()`
+    sobre `className`, o se hace cross-fade entre dos elementos.
+- Todo elemento animado lleva `will-change` con la propiedad que va a mutar
+  (`transform`, `opacity`).
+- Cada escena va en un contenedor con duración explícita:
+  `<div class="scene" data-start="0" data-duration="3.6">`.
+
+### 3. Variables en render-time (API real de HyperFrames 0.8.x)
+
+La spec del usuario se implementa con los atributos que **existen** en el
+runtime. Verificado en el paquete `hyperframes` (0.8.162/0.8.172):
+
+- `data-composition-variables` va en `<html>` y es un **array JSON** de
+  declaraciones, no un objeto:
+  ```html
+  <html data-composition-variables='[
+    {"id":"title","type":"string","label":"Título","default":"Texto Base"},
+    {"id":"logoUrl","type":"image","label":"Logo","default":"default.png"},
+    {"id":"primaryColor","type":"color","label":"Color","default":"#000"}
+  ]'>
+  ```
+  Tipos válidos: `string, number, color, boolean, enum, font, image`.
+- Binding a un elemento: **`data-var-text="id"`** (texto) y
+  **`data-var-src="id"`** (imagen). **No existen** `data-variable`,
+  `data-variable-src` ni `data-variable-style-background`: no usarlos.
+- Valores por instancia de sub-composición: `data-variable-values='{"title":"Pro"}'`
+  en el elemento host.
+- En JS: `window.__hyperframes.getVariables()` devuelve el merge
+  (defaults → overrides del host → `--variables` de CLI).
+- El linter avisa (`unknown_variable_binding`) si un `data-var-*` apunta a un
+  id no declarado, y falla si la declaración no es un array JSON válido.
+
+### 4. Verificación antes de renderizar
+
+- `npx hyperframes lint .` en local **y** el CI lintea con 0.8.162: si el
+  local (0.8.172) da 0 errores, el CI puede marcar `missing_local_asset` si
+  un asset referenciado no está commiteado. `git add` siempre los assets.
+- Los MP4 fuente deben ser H.264 **Constrained Baseline** para que Chrome
+  headless los decodifique: `-profile:v baseline -level 3.1`.
+
 ## Contexto
 
 - Proyecto HyperFrames en este directorio: `index.html` es la composición.
