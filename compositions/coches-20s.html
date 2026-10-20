@@ -157,9 +157,20 @@
 
 
       /* ══════════ TEXTO PLANO (segundo plano, sin efectos) ══════════ */
+      /* contorno: relleno transparente + borde del color (como el original) */
+      .outline {
+        position: absolute; left: 30px; right: 30px; top: 1110px; z-index: 30; text-align: center;
+        font-family: "Anton", sans-serif; font-size: 96px; line-height: 1.05;
+        color: transparent; opacity: 0;
+        -webkit-text-stroke: 3px #fff;
+        text-shadow: 0 6px 26px rgba(0,0,0,.85);
+        will-change: transform, opacity;
+      }
+      .outline.brand { -webkit-text-stroke: 4px var(--bc); }
+      /* palabras sueltas en blanco plano */
       .plain {
-        position: absolute; left: 40px; right: 40px; top: 1120px; z-index: 30; text-align: center;
-        font-size: 60px; font-weight: 800; color: #fff; opacity: 0; line-height: 1.12;
+        position: absolute; left: 40px; right: 40px; top: 1150px; z-index: 30; text-align: center;
+        font-size: 54px; font-weight: 800; color: #fff; opacity: 0; line-height: 1.12;
         text-shadow: 0 4px 20px rgba(0,0,0,.95), 0 0 40px rgba(0,0,0,.6);
         will-change: transform, opacity;
       }
@@ -264,26 +275,26 @@
 
       <!-- ══ TEXTO NEON ══ -->
       <div class="neon" id="n1" style="font-size:62px;" data-var-text="n1">Toyota, Honda, BMW, Mercedes...</div>
-      <div class="plain" id="n2" style="font-size:60px;" data-var-text="n2">cuál compraría yo</div>
-      <div class="plain" id="n3" style="font-size:54px;" data-var-text="n3">no existe una marca perfecta</div>
+      <div class="outline" id="n2" style="font-size:74px;" data-var-text="n2">cuál compraría yo</div>
+      <div class="outline" id="n3" style="font-size:62px;" data-var-text="n3">no existe una marca perfecta</div>
       <div class="neon" id="n4" style="font-size:88px;" data-var-text="n4">todo depende de...</div>
       <div class="plain" id="n5" style="font-size:60px;" data-var-text="n5">de la ciudad</div>
       <div class="plain" id="n6" style="font-size:60px;" data-var-text="n6">del presupuesto</div>
       <div class="plain" id="n7" style="font-size:60px;" data-var-text="n7">de tus viajes</div>
       <div class="neon" id="n8" style="font-size:72px;" data-var-text="n8">siempre recomiendo mezclar</div>
-      <div class="plain" id="n9" style="font-size:60px;" data-var-text="n9">y confiabilidad</div>
-      <div class="plain" id="n10" style="font-size:66px;" data-var-text="n10">y si tú</div>
-      <div class="plain" id="n11" style="font-size:60px;" data-var-text="n11">tus pagos</div>
-      <div class="plain" id="n12" style="font-size:60px;" data-var-text="n12">intereses</div>
-      <div class="plain" id="n13" style="font-size:66px;" data-var-text="n13">tu caso</div>
-      <div class="plain" id="n14" style="font-size:54px;" data-var-text="n14">y te daremos los mejores</div>
+      <div class="outline" id="n9" style="font-size:66px;" data-var-text="n9">y confiabilidad</div>
+      <div class="outline" id="n10" style="font-size:74px;" data-var-text="n10">y si tú</div>
+      <div class="outline" id="n11" style="font-size:66px;" data-var-text="n11">tus pagos</div>
+      <div class="outline" id="n12" style="font-size:66px;" data-var-text="n12">intereses</div>
+      <div class="outline" id="n13" style="font-size:74px;" data-var-text="n13">tu caso</div>
+      <div class="outline" id="n14" style="font-size:56px;" data-var-text="n14">y te daremos los mejores</div>
 
       <!-- ══ STICKERS DE PAPEL RASGADO ══ -->
-      <div class="sticker" id="st1"><div class="paper"></div><span class="txt" data-var-text="s1">TOYOTA</span></div>
-      <div class="sticker" id="st2"><div class="paper"></div><span class="txt" data-var-text="s2">HONDA</span></div>
-      <div class="sticker" id="st3"><div class="paper"></div><span class="txt" data-var-text="s3">BMW</span></div>
-      <div class="sticker" id="st4"><div class="paper"></div><span class="txt" data-var-text="s4">MERCEDES</span></div>
-      <div class="sticker" id="st5"><div class="paper"></div><span class="txt" data-var-text="s5">PORSCHE</span></div>
+      <div class="outline brand" id="st1" style="--bc:var(--toyota);" data-var-text="s1">TOYOTA</div>TOYOTA</span></div>
+      <div class="outline brand" id="st2" style="--bc:var(--honda);" data-var-text="s2">HONDA</div>HONDA</span></div>
+      <div class="outline brand" id="st3" style="--bc:var(--bmw);" data-var-text="s3">BMW</div>BMW</span></div>
+      <div class="outline brand" id="st4" style="--bc:var(--mercedes);" data-var-text="s4">MERCEDES</div>MERCEDES</span></div>
+      <div class="outline brand" id="st5" style="--bc:var(--porsche);" data-var-text="s5">PORSCHE</div>PORSCHE</span></div>
       <div class="sticker" id="st6"><div class="paper"></div><span class="txt" data-var-text="s6">NISSAN</span></div>
 
       <!-- ══ CIERRE ══ -->
