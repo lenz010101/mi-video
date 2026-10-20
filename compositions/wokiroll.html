@@ -1023,6 +1023,9 @@
       setLetters("#s1 #logo", V.brand);
       setLetters("#s5 #cta", V.ctaText);
 
+      /* Ticker a la cadencia de captura (data-fps): el renderizador
+         recorre la timeline fotograma a fotograma. */
+      if (gsap.ticker) gsap.ticker.fps(30);
       const tl = gsap.timeline({ paused: true });
 
       /* ---------- cámara y ambiente (todo el vídeo) ---------- */

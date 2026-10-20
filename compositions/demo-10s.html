@@ -415,6 +415,9 @@
           setMask("#a1 .mask", V.headline);
           setMask("#fSmall .mask", V.manifestoSmall);
 
+          /* Ticker a la cadencia de captura (data-fps): el renderizador
+             recorre la timeline fotograma a fotograma. */
+          if (gsap.ticker) gsap.ticker.fps(30);
           var tl = gsap.timeline({ paused: true });
 
           /* ---------- ambiente: orbes que respiran ---------- */
@@ -469,11 +472,7 @@
           window.__timelines["weniger-mejor"] = tl;
         }
 
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(build);
-        } else {
-          build();
-        }
+        build();   /* build sincrono: la timeline existe antes del primer fotograma */
       </script>
     </div>
   </body>

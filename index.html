@@ -900,6 +900,9 @@
       function build() {
         mountIso();
 
+        /* Ticker a la cadencia de captura (data-fps): el renderizador
+           recorre la timeline fotograma a fotograma. */
+        if (gsap.ticker) gsap.ticker.fps(30);
         var tl = gsap.timeline({ paused: true });
 
         /* ---------- video: 11 planos, corte cada ~2,6 s ---------- */
@@ -1008,11 +1011,7 @@
         window.__timelines["casa-modular"] = tl;
       }
 
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(build);
-      } else {
-        build();
-      }
+      build();   /* build sincrono: la timeline existe antes del primer fotograma */
     </script>
   </body>
 </html>

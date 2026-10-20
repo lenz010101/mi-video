@@ -14,8 +14,32 @@ import { PROPS, esc, hit, parseHtml, matchChain, animatedTargets } from './hf-au
 
 const ROOT = process.cwd();
 const args = process.argv.slice(2);
+
+const rel = abs => {
+  const r = path.relative(ROOT, abs);
+  return (r || abs).replace(/\\/g, '/');
+};
+
+/* Acepta ficheros y/o carpetas. Sin argumentos: index.html + compositions/*.html */
+function collect(targets) {
+  const out = [];
+  for (const t of targets) {
+    const abs = path.resolve(ROOT, t);
+    if (!fs.existsSync(abs)) { console.log(`  (no existe: ${t})`); continue; }
+    const st = fs.statSync(abs);
+    if (st.isDirectory()) {
+      for (const f of fs.readdirSync(abs)) {
+        if (f.endsWith('.html')) out.push(rel(path.join(abs, f)));
+      }
+    } else {
+      out.push(rel(abs));
+    }
+  }
+  return out;
+}
+
 const files = args.length
-  ? args
+  ? collect(args)
   : ['index.html', ...fs.readdirSync(path.join(ROOT, 'compositions'))
       .filter(f => f.endsWith('.html'))
       .map(f => path.join('compositions', f))];
@@ -120,6 +144,25 @@ function audit(file) {
   /* ── 6. base64 embebido ── */
   for (const m of src.matchAll(/data:[a-z/+-]+;base64,[A-Za-z0-9+/=]{200,}/gi)) {
     problems.push('HTML  recurso embebido en base64 (prohibido): ' + m[0].slice(0, 40) + '...');
+  }
+
+  /* ── 7. determinismo del render: ticker, timeline y build sincrono ── */
+  const fps = (src.match(/data-fps="(\d+)"/) || [])[1];
+  const cid = (src.match(/data-composition-id="([^"]+)"/) || [])[1];
+  if (inlineJs.includes('gsap.timeline')) {
+    if (!fps) {
+      problems.push('HTML  falta data-fps en la escena (el ticker no se puede sincronizar)');
+    } else {
+      const t = inlineJs.match(/gsap\.ticker\.fps\((\d+)\)/);
+      if (!t) problems.push(`JS    falta gsap.ticker.fps(): la cadencia no sigue a data-fps="${fps}"`);
+      else if (t[1] !== fps) problems.push(`JS    gsap.ticker.fps(${t[1]}) != data-fps="${fps}"`);
+    }
+    if (cid && !inlineJs.includes(`window.__timelines["${cid}"]`)) {
+      problems.push(`JS    la timeline no se registra como window.__timelines["${cid}"]`);
+    }
+    if (/fonts\.ready/.test(inlineJs) || /\.then\s*\(/.test(inlineJs)) {
+      problems.push('JS    build asincrono (fonts.ready/promesas): la timeline puede no existir en el primer fotograma');
+    }
   }
 
   return { file, problems, notes };

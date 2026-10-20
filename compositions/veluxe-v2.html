@@ -322,6 +322,9 @@
             });
           }
 
+          /* Ticker a la cadencia de captura (data-fps): el renderizador
+             recorre la timeline fotograma a fotograma. */
+          if (gsap.ticker) gsap.ticker.fps(30);
           var tl = gsap.timeline({ paused: true });
           /* E1: flicker de encendido + cartel + tickets + fantasma */
           tl.set("#s1", { opacity: 1 }, 0);
@@ -393,7 +396,7 @@
           tl.to("#vidWrap", { scale: 1.03, duration: 0.5, ease: "power2.out" }, 8.8);
           window.__timelines["veluxe-v2"] = tl;
         }
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+        build();   /* build sincrono: la timeline existe antes del primer fotograma */
       </script>
     </div>
   </body>

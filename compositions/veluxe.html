@@ -74,12 +74,15 @@
       <script>
         window.__timelines = window.__timelines || {};
         function build() {
+          /* Ticker a la cadencia de captura (data-fps): el renderizador
+             recorre la timeline fotograma a fotograma. */
+          if (gsap.ticker) gsap.ticker.fps(30);
           var tl = gsap.timeline({ paused: true });
           /* vida sutil: push-in ligado a la banda completa (barato, solo transform) */
           tl.fromTo("#kicker", { scale: 1.0 }, { scale: 1.022, duration: 9.37, ease: "none" }, 0);
           window.__timelines["veluxe"] = tl;
         }
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+        build();   /* build sincrono: la timeline existe antes del primer fotograma */
       </script>
     </div>
   </body>

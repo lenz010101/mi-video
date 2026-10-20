@@ -219,6 +219,9 @@
       <script>
         window.__timelines = window.__timelines || {};
         function build() {
+          /* Ticker a la cadencia de captura (data-fps): el renderizador
+             recorre la timeline fotograma a fotograma. */
+          if (gsap.ticker) gsap.ticker.fps(30);
           var tl = gsap.timeline({ paused: true });
 tl.set("#master", { filter: "grayscale(1) contrast(1.06)" }, 10.967);
 tl.set("#master", { filter: "grayscale(0)" }, 11.967);
@@ -345,7 +348,7 @@ tl.set("#c78_84", { opacity: 1 }, 78.840); tl.set("#c78_84", { opacity: 0 }, 79.
           tl.set("#arrow", { opacity: 0 }, 75.8);
           window.__timelines["abogada-80s"] = tl;
         }
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+        build();   /* build sincrono: la timeline existe antes del primer fotograma */
       </script>
     </div>
   </body>

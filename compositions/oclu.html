@@ -509,6 +509,9 @@
             if (typeof V[k] === "string" && V[k] !== "" && el.childElementCount === 0) el.textContent = V[k];
           });
 
+          /* Ticker a la cadencia de captura (data-fps): el renderizador
+             recorre la timeline fotograma a fotograma. */
+          if (gsap.ticker) gsap.ticker.fps(30);
           var tl = gsap.timeline({ paused: true });
 
           /* ══ HOOK 0.00 – 2.70 ══
@@ -585,7 +588,7 @@
 
           window.__timelines["oclu"] = tl;
         }
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+        build();   /* build sincrono: la timeline existe antes del primer fotograma */
       </script>
     </div>
   </body>

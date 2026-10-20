@@ -199,6 +199,9 @@
             document.getElementById("flashBlue").style.background = V.partyTint;
           }
 
+          /* Ticker a la cadencia de captura (data-fps): el renderizador
+             recorre la timeline fotograma a fotograma. */
+          if (gsap.ticker) gsap.ticker.fps(30);
           var tl = gsap.timeline({ paused: true });
 
           /* ══ 0.00 – 5.44 · banda del póster ═══════════════════════
@@ -233,7 +236,7 @@
 
           window.__timelines["veluxe-v3"] = tl;
         }
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+        build();   /* build sincrono: la timeline existe antes del primer fotograma */
       </script>
     </div>
   </body>
