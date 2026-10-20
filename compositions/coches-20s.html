@@ -13,7 +13,7 @@
     {"id":"nissanSrc","type":"image","label":"Logo Nissan","default":"../assets/logos/nissan.png"},
     {"id":"talkerSrc","type":"image","label":"Clip del presentador","default":"../assets/clips/talker.mp4"},
     {"id":"n1","type":"string","label":"Neon 1","default":"Toyota, Honda, BMW, Mercedes..."},
-    {"id":"n2","type":"string","label":"Neon 2","default":"cual compraria yo"},
+    {"id":"n2","type":"string","label":"Neon 2","default":"cuál compraría yo"},
     {"id":"n3","type":"string","label":"Neon 3","default":"no existe una marca perfecta"},
     {"id":"n4","type":"string","label":"Neon 4","default":"todo depende de..."},
     {"id":"n5","type":"string","label":"Neon 5","default":"de la ciudad"},
@@ -21,7 +21,7 @@
     {"id":"n7","type":"string","label":"Neon 7","default":"de tus viajes"},
     {"id":"n8","type":"string","label":"Neon 8","default":"siempre recomiendo mezclar"},
     {"id":"n9","type":"string","label":"Neon 9","default":"y confiabilidad"},
-    {"id":"n10","type":"string","label":"Neon 10","default":"y si tu"},
+    {"id":"n10","type":"string","label":"Neon 10","default":"y si tú"},
     {"id":"n11","type":"string","label":"Neon 11","default":"tus pagos"},
     {"id":"n12","type":"string","label":"Neon 12","default":"intereses"},
     {"id":"n13","type":"string","label":"Neon 13","default":"tu caso"},
@@ -32,7 +32,7 @@
     {"id":"s4","type":"string","label":"Sticker 4","default":"MERCEDES"},
     {"id":"s5","type":"string","label":"Sticker 5","default":"PORSCHE"},
     {"id":"s6","type":"string","label":"Sticker 6","default":"NISSAN"},
-    {"id":"closeTitle","type":"string","label":"Cierre","default":"ELIGE SEGUN TU VIDA"},
+    {"id":"closeTitle","type":"string","label":"Cierre","default":"ELIGE SEGÚN TU VIDA"},
     {"id":"cta","type":"string","label":"CTA","default":"@TUUSUARIO"},
     {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/audio/music-source.mp3"}
   ]'
@@ -77,7 +77,7 @@
 
       /* ══════════ COLUMNAS LED + APODOS EN NEON ══════════ */
       #cols { position: absolute; left: 0; right: 0; top: 0; height: 760px; z-index: 20; overflow: hidden; will-change: transform, opacity; }
-      .col { position: absolute; top: 0; width: 360px; height: 760px; }
+      .col { position: absolute; top: 0; width: 350px; height: 760px; }
       .col .band {
         position: absolute; left: 0; right: 0; top: 0; height: 700px; opacity: .30;
         background: linear-gradient(180deg, var(--c) 0%, rgba(0,0,0,0) 92%);
@@ -91,7 +91,7 @@
       .col .strip.r { right: 0; }
       .col .tier {
         position: absolute; top: 46px; left: 24px; right: 24px; text-align: center;
-        font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 44px;
+        font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 38px;
         letter-spacing: .1em; color: var(--c); text-transform: uppercase;
         text-shadow: 0 0 10px var(--c), 0 0 26px var(--c), 0 0 58px var(--c);
         will-change: opacity, transform;
@@ -128,8 +128,8 @@
         text-align: center; opacity: 0; will-change: transform, opacity;
       }
       .sticker .paper {
-        position: absolute; left: 50%; top: 50%; width: 660px; height: 150px;
-        margin-left: -330px; margin-top: -75px; background: #f3f1ea;
+        position: absolute; left: 50%; top: 50%; width: 760px; height: 160px;
+        margin-left: -380px; margin-top: -80px; background: #f3f1ea;
         filter: url(#torn); will-change: transform;
       }
       .sticker .txt {
@@ -203,7 +203,7 @@
       <svg width="0" height="0" style="position:absolute" aria-hidden="true">
         <filter id="torn">
           <feTurbulence type="fractalNoise" baseFrequency="0.03 0.05" numOctaves="3" seed="7" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="26" xChannelSelector="R" yChannelSelector="G" />
         </filter>
       </svg>
 
@@ -221,7 +221,7 @@
             <img id="lgHonda" src="../assets/logos/honda.png" data-var-src="hondaSrc" alt="" style="top: 150px;" />
           </div>
         </div>
-        <div class="col" id="col2" style="--c: var(--t2); left: 360px;">
+        <div class="col" id="col2" style="--c: var(--t2); left: 350px;">
           <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
           <div class="tier" data-var-text="tier2">RICO</div>
           <div class="lgs">
@@ -229,7 +229,7 @@
             <img id="lgMercedes" src="../assets/logos/mercedes.png" data-var-src="mercedesSrc" alt="" style="top: 150px;" />
           </div>
         </div>
-        <div class="col" id="col3" style="--c: var(--t3); left: 720px;">
+        <div class="col" id="col3" style="--c: var(--t3); left: 700px;">
           <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
           <div class="tier" data-var-text="tier3">MILLONARIO</div>
           <div class="lgs">
@@ -240,20 +240,20 @@
       </div>
 
       <!-- ══ TEXTO NEON ══ -->
-      <div class="neon" id="n1" data-var-text="n1">Toyota, Honda, BMW, Mercedes...</div>
-      <div class="neon" id="n2" data-var-text="n2">cual compraria yo</div>
-      <div class="neon" id="n3" data-var-text="n3">no existe una marca perfecta</div>
-      <div class="neon" id="n4" data-var-text="n4">todo depende de...</div>
-      <div class="neon sm" id="n5" data-var-text="n5">de la ciudad</div>
-      <div class="neon sm" id="n6" data-var-text="n6">del presupuesto</div>
-      <div class="neon sm" id="n7" data-var-text="n7">de tus viajes</div>
-      <div class="neon" id="n8" data-var-text="n8">siempre recomiendo mezclar</div>
-      <div class="neon sm" id="n9" data-var-text="n9">y confiabilidad</div>
-      <div class="neon sm" id="n10" data-var-text="n10">y si tu</div>
-      <div class="neon sm" id="n11" data-var-text="n11">tus pagos</div>
-      <div class="neon sm" id="n12" data-var-text="n12">intereses</div>
-      <div class="neon sm" id="n13" data-var-text="n13">tu caso</div>
-      <div class="neon sm" id="n14" data-var-text="n14">y te daremos los mejores</div>
+      <div class="neon" id="n1" style="font-size:62px;" data-var-text="n1">Toyota, Honda, BMW, Mercedes...</div>
+      <div class="neon" id="n2" style="font-size:92px;" data-var-text="n2">cuál compraría yo</div>
+      <div class="neon" id="n3" style="font-size:66px;" data-var-text="n3">no existe una marca perfecta</div>
+      <div class="neon" id="n4" style="font-size:88px;" data-var-text="n4">todo depende de...</div>
+      <div class="neon" id="n5" style="font-size:76px;" data-var-text="n5">de la ciudad</div>
+      <div class="neon" id="n6" style="font-size:76px;" data-var-text="n6">del presupuesto</div>
+      <div class="neon" id="n7" style="font-size:76px;" data-var-text="n7">de tus viajes</div>
+      <div class="neon" id="n8" style="font-size:72px;" data-var-text="n8">siempre recomiendo mezclar</div>
+      <div class="neon" id="n9" style="font-size:78px;" data-var-text="n9">y confiabilidad</div>
+      <div class="neon" id="n10" style="font-size:94px;" data-var-text="n10">y si tú</div>
+      <div class="neon" id="n11" style="font-size:86px;" data-var-text="n11">tus pagos</div>
+      <div class="neon" id="n12" style="font-size:86px;" data-var-text="n12">intereses</div>
+      <div class="neon" id="n13" style="font-size:94px;" data-var-text="n13">tu caso</div>
+      <div class="neon" id="n14" style="font-size:74px;" data-var-text="n14">y te daremos los mejores</div>
 
       <!-- ══ STICKERS DE PAPEL RASGADO ══ -->
       <div class="sticker" id="st1"><div class="paper"></div><span class="txt" data-var-text="s1">TOYOTA</span></div>
@@ -265,7 +265,7 @@
 
       <!-- ══ CIERRE ══ -->
       <div id="outro">
-        <div id="closeTitle" data-var-text="closeTitle">ELIGE SEGUN TU VIDA</div>
+        <div id="closeTitle" data-var-text="closeTitle">ELIGE SEGÚN TU VIDA</div>
         <div id="ctaBox"></div>
         <div id="ctaText" data-var-text="cta">@TUUSUARIO</div>
       </div>
@@ -301,7 +301,7 @@
 
           /* ══════════ CAMARA: casi estatica, como el original ══════════ */
           tl.fromTo("#talker", { scale: 1.005 }, { scale: 1.045, duration: 15.59, ease: "none" }, 0);
-          tl.fromTo("#cols", { x: 0 }, { x: -46, duration: 20, ease: "none" }, 0);
+          tl.fromTo("#cols", { x: 0 }, { x: -24, duration: 20, ease: "none" }, 0);
 
           /* ══════════ APODOS EN NEON: entrada con parpadeo de tubo ══════════ */
           tl.fromTo("#col1 .tier", { opacity: 0, scale: .9 },
@@ -318,8 +318,8 @@
 
           /* ══════════ LOGOS QUE APARECEN BAJO SU APODO ══════════ */
           var LOGOS = [
-            ["#lgToyota", 0.35], ["#lgHonda", 1.05], ["#lgBmw", 1.75], ["#lgMercedes", 2.45],
-            ["#lgPorsche", 10.20], ["#lgNissan", 11.20]
+            ["#lgToyota", 1.30], ["#lgHonda", 2.05], ["#lgBmw", 2.80], ["#lgMercedes", 3.55],
+            ["#lgPorsche", 11.60], ["#lgNissan", 13.30]
           ];
           for (i = 0; i < LOGOS.length; i++) {
             tl.fromTo(LOGOS[i][0], { opacity: 0, scale: .7, y: -14 },
@@ -328,11 +328,11 @@
 
           /* ══════════ TEXTO NEON: entra con flash, sale fundido ══════════ */
           var NEON = [
-            ["#n1", 0.30, 1.25], ["#n2", 1.40, 2.90], ["#n3", 3.20, 5.00],
-            ["#n4", 5.20, 6.30], ["#n5", 6.45, 7.25], ["#n6", 7.30, 8.10],
-            ["#n7", 8.15, 8.95], ["#n8", 9.10, 10.30], ["#n9", 10.40, 11.30],
-            ["#n10", 11.60, 12.35], ["#n11", 12.40, 13.15], ["#n12", 13.20, 13.95],
-            ["#n13", 14.05, 14.80], ["#n14", 14.85, 15.60]
+            ["#n1", 0.15, 1.20], ["#n2", 4.35, 5.30], ["#n3", 5.40, 6.90],
+            ["#n4", 7.00, 8.00], ["#n5", 8.10, 8.80], ["#n6", 8.85, 9.55],
+            ["#n7", 9.60, 10.30], ["#n8", 10.40, 11.50], ["#n9", 12.40, 13.20],
+            ["#n10", 14.10, 14.75], ["#n11", 14.80, 15.45], ["#n12", 15.50, 16.15],
+            ["#n13", 16.20, 16.85], ["#n14", 16.90, 17.60]
           ];
           for (i = 0; i < NEON.length; i++) {
             tl.fromTo(NEON[i][0], { opacity: 0, scale: .94, y: 18 },
@@ -342,8 +342,8 @@
 
           /* ══════════ STICKERS DE PAPEL: entran de golpe con rotacion ══════════ */
           var STK = [
-            ["#st1", 0.20, 0.90, -2.5], ["#st2", 0.95, 1.65, 1.8], ["#st3", 1.70, 2.40, -1.6],
-            ["#st4", 2.45, 3.30, 2.2], ["#st5", 10.00, 10.90, -2.0], ["#st6", 11.00, 11.90, 1.5]
+            ["#st1", 1.30, 2.00, -2.5], ["#st2", 2.05, 2.75, 1.8], ["#st3", 2.80, 3.50, -1.6],
+            ["#st4", 3.55, 4.25, 2.2], ["#st5", 11.60, 12.30, -2.0], ["#st6", 13.30, 14.00, 1.5]
           ];
           for (i = 0; i < STK.length; i++) {
             tl.fromTo(STK[i][0], { opacity: 0, scale: 1.22, rotation: STK[i][3] },
@@ -357,15 +357,16 @@
 
           /* ══════════ CIERRE: zoom out a negro (como el original) ══════════ */
           tl.fromTo("#talker", { scale: 1.045, y: 0, opacity: 1 },
-            { scale: .74, y: 120, opacity: .25, duration: 2.4, ease: "power2.inOut" }, 15.6);
-          tl.to("#cols", { opacity: 0, duration: 1.2, ease: "power2.in" }, 15.6);
-          tl.to("#veil", { opacity: 1, duration: 1.6, ease: "power2.in" }, 15.6);
+            { scale: .74, y: 120, opacity: 0, duration: 1.6, ease: "power2.inOut" }, 17.70);
+          tl.to("#cols", { opacity: 0, duration: 1.1, ease: "power2.in" }, 17.70);
+          tl.to("#veil", { opacity: 1, duration: 1.1, ease: "power2.in" }, 17.70);
+          tl.fromTo("#fade", { opacity: 0 }, { opacity: 1, duration: 1.5, ease: "power2.inOut" }, 17.75);
           tl.fromTo("#closeTitle", { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: .6, ease: "expo.out" }, 16.6);
+            { opacity: 1, y: 0, duration: .6, ease: "expo.out" }, 18.40);
           tl.fromTo("#ctaBox", { opacity: 0, scale: .85 },
-            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 17.1);
+            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 18.85);
           tl.fromTo("#ctaText", { opacity: 0, scale: .92 },
-            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 17.2);
+            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 18.95);
           tl.to("#grain", { x: 14, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
           tl.to("#grain", { y: 10, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
 
