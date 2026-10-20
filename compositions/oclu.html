@@ -512,7 +512,7 @@
           tl.fromTo("#hookT", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none" }, 0.08);
           tl.fromTo('[data-var-text="hookA"]', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.10);
           tl.fromTo('[data-var-text="hookB"]', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.95);
-          [[0.37, "#chat1"], [0.70, "#chat2"], [1.03, "#chat3"], [1.40, "#chat4"], [1.77, "#chat5"]].forEach(function (c) {
+          [[0.40, "#chat1"], [1.05, "#chat2"], [1.45, "#chat3"], [1.95, "#chat4"], [2.30, "#chat5"]].forEach(function (c) {
             tl.fromTo(c[1], { opacity: 0, x: -46 }, { opacity: 1, x: 0, duration: 0.32, ease: "power2.out" }, c[0]);
           });
           ["#chat1", "#chat2", "#chat3", "#chat4", "#chat5"].forEach(function (b) {
@@ -522,9 +522,9 @@
 
           /* ══ LOGO 2.70 – 4.60: zoom-out de grande/centrado a chico ══ */
           tl.set("#s1b", { opacity: 1 }, 2.45);
-          tl.fromTo("#logo1", { opacity: 0, scale: 1.60, y: -190 },
-                                { opacity: 1, scale: 1.60, y: -190, duration: 0.3, ease: "none" }, 2.45);
-          tl.to("#logo1", { scale: 1.0, x: 0, y: 0, duration: 1.55, ease: "power3.inOut" }, 2.80);
+          tl.fromTo("#logo1", { opacity: 0, scale: 2.0, y: -250 },
+                                { opacity: 1, scale: 2.0, y: -250, duration: 0.3, ease: "none" }, 2.45);
+          tl.to("#logo1", { scale: 1.0, x: 0, y: 0, duration: 1.40, ease: "power3.inOut" }, 3.10);
           tl.to("#s1b", { opacity: 0, duration: 0.25, ease: "power2.in" }, 4.35);
 
           /* ══ el resto: entrada lateral + cursor que hace clic + enfoque ══ */
