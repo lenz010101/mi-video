@@ -1,6 +1,6 @@
 # Proyecto nuevo (plantilla HyperFrames)
 
-Composición vertical **1080×1920 · 30 fps · 12 s** con tres escenas: gancho,
+Composición vertical **1080×1920 · 30 fps · 14 s** con tres escenas: gancho,
 contenido y cierre. Es un proyecto **autocontenido**: fuentes, GSAP y música
 viven dentro de `assets/`, así que no depende de nada de fuera de esta carpeta.
 
@@ -36,9 +36,9 @@ Estructura de tiempos (en **segundos**, `data-duration`):
 
 | escena | inicio | dura | qué entra |
 |---|---|---|---|
-| 1 · gancho | 0 | 4,5 | antetítulo, titular palabra a palabra, línea de acento |
-| 2 · contenido | 4,5 | 4,05 | tres líneas escalonadas al beat |
-| 3 · cierre | 8,55 | 3,45 | botón con el check y el usuario |
+| 1 · gancho | 0 | 5 | antetítulo, titular palabra a palabra, línea de acento |
+| 2 · contenido | 4,9 | 5,3 | tres líneas escalonadas al beat |
+| 3 · cierre | 10,2 | 3,8 | botón con el check y el usuario |
 
 Todo el metraje lleva un zoom de cámara lento (1 → 1,03) y orbes de luz en
 movimiento: **ningún fotograma se queda quieto**.

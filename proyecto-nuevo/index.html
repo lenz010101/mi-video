@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es"
   data-composition-variables='[
-    {"id":"kicker","type":"string","label":"Antetítulo","default":"NUEVO PROYECTO"},
-    {"id":"title","type":"string","label":"Titular","default":"AQUÍ VA TU TITULAR"},
-    {"id":"b1","type":"string","label":"Línea 1","default":"Primera idea que quieras contar"},
-    {"id":"b2","type":"string","label":"Línea 2","default":"Segunda idea, más corta"},
-    {"id":"b3","type":"string","label":"Línea 3","default":"Y la que remata"},
+    {"id":"kicker","type":"string","label":"Antetítulo","default":"COCHES · 3 CLAVES"},
+    {"id":"title","type":"string","label":"Titular","default":"NO COMPRES UN CARRO SIN ESTO"},
+    {"id":"b1","type":"string","label":"Línea 1","default":"El mantenimiento pesa más que la marca"},
+    {"id":"b2","type":"string","label":"Línea 2","default":"Prueba el mismo modelo en dos talleres"},
+    {"id":"b3","type":"string","label":"Línea 3","default":"Y nunca firmes el mismo día"},
     {"id":"cta","type":"string","label":"Botón","default":"SÍGUEME"},
-    {"id":"handle","type":"string","label":"Usuario","default":"@TUUSUARIO"},
+    {"id":"handle","type":"string","label":"Usuario","default":"@elgaraje"},
     {"id":"accent","type":"color","label":"Color de acento","default":"#FFC63B"},
     {"id":"bg","type":"color","label":"Fondo","default":"#0B0F19"},
     {"id":"musicSrc","type":"image","label":"Música","default":"assets/audio/music-source.mp3"}
@@ -108,7 +108,7 @@
       id="stage"
       data-composition-id="proyecto-nuevo"
       data-start="0"
-      data-duration="12"
+      data-duration="14"
       data-width="1080"
       data-height="1920"
       data-fps="30"
@@ -116,7 +116,7 @@
       <audio
         id="track"
         data-start="0"
-        data-duration="12"
+        data-duration="14"
         data-media-start="0"
         data-track-index="1"
         data-volume="0.8"
@@ -129,24 +129,25 @@
       <div class="orb" id="orb2"></div>
 
       <!-- ══ ESCENA 1 · gancho ══ -->
-      <section class="scene" id="s1" data-start="0" data-duration="4.5">
-        <div class="kicker" id="kicker" data-var-text="kicker">NUEVO PROYECTO</div>
+      <section class="scene" id="s1" data-start="0" data-duration="5">
+        <div class="kicker" id="kicker" data-var-text="kicker">COCHES · 3 CLAVES</div>
         <div id="title">
-          <span class="word">AQUÍ</span> <span class="word">VA</span>
-          <span class="word">TU</span> <span class="word">TITULAR</span>
+          <span class="word">NO</span> <span class="word">COMPRES</span>
+          <span class="word">UN</span> <span class="word">CARRO</span>
+          <span class="word">SIN</span> <span class="word">ESTO</span>
         </div>
         <div class="rule" id="rule"></div>
       </section>
 
       <!-- ══ ESCENA 2 · contenido ══ -->
-      <section class="scene" id="s2" data-start="4.5" data-duration="4.05">
-        <div class="b" id="b1" data-var-text="b1">Primera idea que quieras contar</div>
-        <div class="b" id="b2" data-var-text="b2">Segunda idea, más corta</div>
-        <div class="b accent" id="b3" data-var-text="b3">Y la que remata</div>
+      <section class="scene" id="s2" data-start="4.9" data-duration="5.3">
+        <div class="b" id="b1" data-var-text="b1">El mantenimiento pesa más que la marca</div>
+        <div class="b" id="b2" data-var-text="b2">Prueba el mismo modelo en dos talleres</div>
+        <div class="b accent" id="b3" data-var-text="b3">Y nunca firmes el mismo día</div>
       </section>
 
       <!-- ══ ESCENA 3 · cierre ══ -->
-      <section class="scene" id="s3" data-start="8.55" data-duration="3.45">
+      <section class="scene" id="s3" data-start="10.2" data-duration="3.8">
         <div class="pill" id="pill" data-var-text="cta">SÍGUEME</div>
         <div class="handle" id="handle">
           <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
@@ -154,7 +155,7 @@
             <path d="M7 12.4l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.4"
               stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
-          <span data-var-text="handle">@TUUSUARIO</span>
+          <span data-var-text="handle">@elgaraje</span>
         </div>
       </section>
 
@@ -202,7 +203,7 @@
           }
 
           /* el titular se reconstruye palabra a palabra desde la variable:
-             una <span> por palabra (si no, el binding se comeria el salto) */
+             una <span> por palabra (el binding plano se comeria el salto) */
           var titleEl = document.getElementById("title");
           var raw = (typeof V.title === "string" && V.title !== "")
             ? V.title
@@ -218,37 +219,40 @@
           var tl = gsap.timeline({ paused: true });
 
           /* zoom de camara continuo: no hay ni un fotograma quieto */
-          tl.fromTo("#stage", { scale: 1 }, { scale: 1.03, duration: 12, ease: "none" }, 0);
+          tl.fromTo("#stage", { scale: 1 }, { scale: 1.03, duration: 14, ease: "none" }, 0);
 
           /* ambiente */
           tl.fromTo("#orb1", { scale: .92, opacity: 0 },
-            { scale: 1.1, opacity: .2, duration: 5.6, ease: "power1.out" }, 0);
-          tl.to("#orb1", { scale: 1.2, opacity: .15, duration: 6.4, ease: "none" }, 5.6);
+            { scale: 1.1, opacity: .2, duration: 6.5, ease: "power1.out" }, 0);
+          tl.to("#orb1", { scale: 1.2, opacity: .15, duration: 7.5, ease: "none" }, 6.5);
           tl.fromTo("#orb2", { scale: 1.04, opacity: 0 },
-            { scale: 1.22, opacity: .14, duration: 12, ease: "none" }, 0);
+            { scale: 1.22, opacity: .14, duration: 14, ease: "none" }, 0);
 
-          /* escena 1: palabras escalonadas con curva expo */
+          /* escena 1: gancho, palabras escalonadas con curva expo */
+          tl.fromTo("#s1", { y: 0 }, { y: -18, duration: 5, ease: "none" }, 0);
           tl.fromTo(".kicker", { opacity: 0, y: 26 },
             { opacity: 1, y: 0, duration: .55, ease: "power3.out" }, .12);
           tl.fromTo(".word", { opacity: 0, y: 64 },
             { opacity: 1, y: 0, duration: .8, ease: "expo.out", stagger: .085 }, .3);
           tl.fromTo(".rule", { opacity: 0, scaleX: 0 },
             { opacity: 1, scaleX: 1, duration: .7, ease: "power3.out" }, 1.1);
-          tl.to("#s1", { opacity: 0, duration: .42, ease: "power2.in" }, 4.08);
+          tl.to("#s1", { opacity: 0, duration: .45, ease: "power2.in" }, 4.55);
 
-          /* escena 2: lineas al beat */
-          tl.to("#s2", { opacity: 1, duration: .35, ease: "power1.out" }, 4.5);
+          /* escena 2: tres claves al beat + deriva lenta para que no se pare */
+          tl.to("#s2", { opacity: 1, duration: .35, ease: "power1.out" }, 4.9);
+          tl.fromTo("#s2", { y: 0 }, { y: -16, duration: 5, ease: "none" }, 5.2);
           tl.fromTo(".b", { opacity: 0, y: 44 },
-            { opacity: 1, y: 0, duration: .62, ease: "power3.out", stagger: .16 }, 4.62);
-          tl.to("#s2", { opacity: 0, duration: .4, ease: "power2.in" }, 8.14);
+            { opacity: 1, y: 0, duration: .62, ease: "power3.out", stagger: .18 }, 5.05);
+          tl.to("#s2", { opacity: 0, duration: .4, ease: "power2.in" }, 9.85);
 
-          /* escena 3: cierre */
-          tl.to("#s3", { opacity: 1, duration: .4, ease: "power1.out" }, 8.55);
+          /* escena 3: cierre con respiracion hasta el ultimo fotograma */
+          tl.to("#s3", { opacity: 1, duration: .4, ease: "power1.out" }, 10.2);
+          tl.fromTo("#s3", { y: 0 }, { y: -10, duration: 3.8, ease: "none" }, 10.2);
           tl.fromTo(".pill", { opacity: 0, scale: .9, y: 30 },
-            { opacity: 1, scale: 1, y: 0, duration: .7, ease: "back.out(1.7)" }, 8.7);
+            { opacity: 1, scale: 1, y: 0, duration: .7, ease: "back.out(1.7)" }, 10.35);
           tl.fromTo(".handle", { opacity: 0, y: 26 },
-            { opacity: 1, y: 0, duration: .6, ease: "power3.out" }, 9.15);
-          tl.to(".pill", { scale: 1.02, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.8);
+            { opacity: 1, y: 0, duration: .6, ease: "power3.out" }, 10.85);
+          tl.to(".pill", { scale: 1.02, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 11.6);
 
           window.__timelines["proyecto-nuevo"] = tl;
         }
