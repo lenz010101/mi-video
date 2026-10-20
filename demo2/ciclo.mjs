@@ -71,12 +71,33 @@ const mp4 = path.join(DESKTOP, FILENAME);
 if (!fs.existsSync(mp4)) throw new Error('MP4 no encontrado tras expandir');
 console.log(`3) MP4: ${mp4} (${(fs.statSync(mp4).size / 1e6).toFixed(1)} MB)`);
 
-/* la hoja de contactos llega desde el artifact de QC */
-const qc = path.join(DESKTOP, 'renders', 'qc', 'hoja-de-contactos.png');
-if (fs.existsSync(qc)) {
-  fs.copyFileSync(qc, path.join(DESKTOP, 'hoja-de-contactos.png'));
-  console.log('4) hoja de contactos en el Escritorio');
-} else {
-  console.log('4) (sin hoja de contactos en el artifact)');
+/* En el Escritorio solo queda lo que sirve: el MP4 y las hojas.
+   Los fotogramas clave (40 KB cada uno) van a una subcarpeta. */
+function findAll(root, re, depth) {
+  depth = depth || 0;
+  if (depth > 4 || !fs.existsSync(root)) return [];
+  const out = [];
+  for (const e of fs.readdirSync(root, { withFileTypes: true })) {
+    const p = path.join(root, e.name);
+    if (e.isDirectory()) out.push(...findAll(p, re, depth + 1));
+    else if (re.test(e.name)) out.push(p);
+  }
+  return out;
 }
+const sheets = findAll(DESKTOP, /^hoja-de-contactos.*\.png$/i);
+const frames = findAll(DESKTOP, /^f_[\d.]+\.(jpg|png)$/i);
+const strip = findAll(DESKTOP, /^filmstrip\.png$/i);
+for (const s of [...sheets, ...strip]) {
+  fs.copyFileSync(s, path.join(DESKTOP, path.basename(s)));
+  console.log('   ' + path.basename(s));
+}
+if (frames.length) {
+  const dst = path.join(DESKTOP, 'qc', 'frames');
+  fs.rmSync(path.join(DESKTOP, 'qc'), { recursive: true, force: true });
+  fs.mkdirSync(dst, { recursive: true });
+  for (const f of frames) fs.copyFileSync(f, path.join(dst, path.basename(f)));
+  console.log('   ' + frames.length + ' fotogramas clave en Desktop/qc/frames');
+}
+/* se borra la carpeta intermedia que deja la descompresion del artifact */
+fs.rmSync(path.join(DESKTOP, 'renders'), { recursive: true, force: true });
 console.log('\nLISTO. Todo el trabajo pesado se ha hecho en la nube.');

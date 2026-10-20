@@ -36,21 +36,34 @@ const withoutText = [`fps=${fps}`, 'scale=190:338', 'tile=6x5'].join(',');
 
 /* El ffmpeg estatico del CI no trae drawtext (sin libfreetype). Si falla, se
    reintenta con el ffmpeg de apt (si esta) y, si tampoco, se hace la hoja
-   sin timecodes en vez de romper el pipeline. */
+   sin timecodes en vez de romper el pipeline.
+   Se generan DOS hojas: la completa (2 fps, todo el metraje) y la grande
+   (1 fps, un frame por segundo, mas grande para revisar). */
 const FFMPEG_CANDIDATES = ['ffmpeg', '/usr/bin/ffmpeg', '/usr/local/bin/ffmpeg'];
-function tryFfmpeg(bin, vf) {
-  execFileSync(bin, ['-y', '-v', 'error', '-i', mp4, '-vf', vf, '-frames:v', '1', out]);
-}
-let done = false;
-for (const bin of FFMPEG_CANDIDATES) {
-  try { tryFfmpeg(bin, withText); done = true; break; }
-  catch (e) {
-    const msg = String(e.stderr || e.message || '');
-    if (!/drawtext|No such filter|not found|ENOENT/i.test(msg)) throw e;
+const sheets = [
+  { out: out, fps, scale: '190:338', tile: '8x5' },
+  { out: out.replace(/\.png$/i, '') + '-grande.png', fps: '1', scale: '250:444', tile: '5x4' },
+];
+for (const sh of sheets) {
+  const withText = [
+    `fps=${sh.fps}`,
+    `drawtext=fontfile='${font}':text='%{pts\\:hms}':x=8:y=8:fontsize=26:fontcolor=white:box=1:boxcolor=black@0.65:boxborderw=6`,
+    `scale=${sh.scale}`,
+    `tile=${sh.tile}`,
+  ].join(',');
+  const withoutText = [`fps=${sh.fps}`, `scale=${sh.scale}`, `tile=${sh.tile}`].join(',');
+  let done = false;
+  for (const bin of FFMPEG_CANDIDATES) {
+    try { execFileSync(bin, ['-y', '-v', 'error', '-i', mp4, '-vf', withText, '-frames:v', '1', sh.out]); done = true; break; }
+    catch (e) {
+      const msg = String(e.stderr || e.message || '');
+      if (!/drawtext|No such filter|not found|ENOENT/i.test(msg)) throw e;
+    }
   }
-}
-if (!done) {
-  console.log('aviso: ningun ffmpeg trae drawtext; la hoja sale sin timecodes.');
-  tryFfmpeg(FFMPEG_CANDIDATES[0], withoutText);
+  if (!done) {
+    console.log('aviso: ningun ffmpeg trae drawtext; la hoja sale sin timecodes.');
+    execFileSync(FFMPEG_CANDIDATES[0], ['-y', '-v', 'error', '-i', mp4, '-vf', withoutText, '-frames:v', '1', sh.out]);
+  }
+  console.log('  hoja: ' + sh.out);
 }
 console.log('hoja de contactos: ' + out);
