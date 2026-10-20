@@ -28,3 +28,6 @@ casa-modular/
 
 # QC de snapshots locales (proyecto recortado para inspeccionar frames)
 snapqc/
+
+# clips candidatos de stock (descarga temporal, no se versionan)
+assets/clips/candidates/
