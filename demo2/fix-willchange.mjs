@@ -100,6 +100,12 @@ for (const file of files) {
     /* ediciones (de derecha a izquierda) */
     for (const e of [...b.edits].sort((x, y) => y.start - x.start)) {
       const chunk = css.slice(e.start, e.end);
+      /* guarda: el trozo debe contener el cuerpo esperado. Si el parseo se
+         descoloca (llaves dentro de cadenas o comentarios) no se toca nada. */
+      if (!chunk.includes(e.old)) {
+        console.log(`  ?? ${file}: edicion descartada (offsets no cuadran) en "${e.old.slice(0, 40)}"`);
+        continue;
+      }
       const newChunk = chunk.replace(e.old, e.new);
       css = css.slice(0, e.start) + newChunk + css.slice(e.end);
     }

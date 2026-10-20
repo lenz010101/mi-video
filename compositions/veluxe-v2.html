@@ -142,29 +142,24 @@
       #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 40; pointer-events: none; }
 
       /* viders: video visible tras el corte de la fiesta */
-      #s1
-    
-      
-      #paper, #tickets, #vMark, #ghost { will-change: transform, opacity; } inset: 0; opacity: 0; overflow: hidden; z-index: 3; }
+      #s1 { z-index: 1; }
+      #s2 { z-index: 2; }
+      #vidWrap { position: absolute; inset: 0; opacity: 0; overflow: hidden; z-index: 3; }
       #vidWrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
       #nide { position: absolute; inset: 0; background: rgba(60,0,8,.18); z-index: 2; }
-    
-      /* will-change: elementos animados por GSAP */
-      #paper, #tickets, #vMark, #ghost { will-change: transform; }
-      #marquee, #vMark2, #stkAlien, #stkSpray, #stkBurger { will-change: transform; }
-      #stkAlien { will-change: transform; }
-      #stkSpray { will-change: transform; }
-      #stkBurger { will-change: transform; }
-      #s2 { will-change: transform, opacity; }
-      #stkChamp { will-change: transform; }
-      #stkBurger2 { will-change: transform, opacity; }
-      #stkAlien2 { will-change: transform, opacity; }
-      #stkSpray2 { will-change: transform, opacity; }
 
       /* will-change: elementos animados por GSAP */
+      #s1 { will-change: opacity; }
+      #paper, #tickets, #vMark, #ghost { will-change: opacity, transform; }
+      #vMark { will-change: opacity; }
+      #paper { will-change: transform; }
+      #tickets { will-change: opacity; }
+      #ghost { will-change: opacity; }
       #flash { will-change: opacity; }
+      #s2 { will-change: opacity, transform; }
       #vMark2 { will-change: opacity; }
       #s2 #marquee .lt { will-change: opacity; }
+      #marquee, #vMark2, #stkAlien, #stkSpray, #stkBurger { will-change: transform; }
       #stkAlien { will-change: opacity, transform; }
       #stkSpray { will-change: opacity, transform; }
       #stkBurger { will-change: opacity, transform; }
@@ -173,6 +168,9 @@
       #marquee { will-change: opacity; }
       #vidWrap { will-change: opacity, transform; }
       #stkChamp { will-change: opacity, transform; }
+      #stkBurger2 { will-change: opacity, transform; }
+      #stkAlien2 { will-change: opacity, transform; }
+      #stkSpray2 { will-change: opacity, transform; }
     </style>
   </head>
   <body>

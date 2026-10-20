@@ -239,8 +239,8 @@
          así el desenfoque no se anima por fotograma. */
       .finBig {
         position: relative;
-        margi
-      #aKick { will-change: transform, opacity; }/* da contexto para el glow con z-index negativo */
+        margin-top: 28px;
+        isolation: isolate; /* da contexto para el glow con z-index negativo */
         font-size: 232px;
         font-weight: 250;
         line-height: 1.04;
@@ -281,34 +281,29 @@
         color: rgba(233, 241, 250, 0.55);
       }
       .sig .lt { color: #7dd3fc; letter-spacing: 0.5em; }
-    
-      /* will-change: elementos animados por GSAP */
-      #orbA { will-change: transform; }
-      #orbB { will-change: transform; }
-      #aKick { will-change: transform; }
-      #aSub { will-change: transform, opacity; }
-      #glass { will-change: transform, opacity; }
-      #gLabel { will-change: transform, opacity; }
-      #gRow1 { will-change: transform, opacity; }
-      #gRow2 { will-change: transform, opacity; }
-      #gRow3 { will-change: transform, opacity; }
-      #fKick { will-change: transform; }
-      #fBig { will-change: transform, opacity; }
-      #fSub { will-change: transform, opacity; }
-      #sig { will-change: transform, opacity; }
 
       /* will-change: elementos animados por GSAP */
       #orbs { will-change: opacity; }
+      #orbA { will-change: transform; }
+      #orbB { will-change: transform; }
       #a1 { will-change: opacity; }
+      #aKick { will-change: opacity, transform; }
+      #a1 .mask i { will-change: transform; }
       #aRule { will-change: transform; }
+      #aSub { will-change: opacity, transform; }
       #a2 { will-change: opacity; }
+      #glass { will-change: opacity, transform; }
+      #gLabel { will-change: opacity, transform; }
+      #gRow1 { will-change: opacity, transform; }
+      #gRow2 { will-change: opacity, transform; }
+      #gRow3 { will-change: opacity, transform; }
       #gSub { will-change: opacity; }
       #a3 { will-change: opacity; }
       #fKick { will-change: opacity, transform; }
+      #fBig { will-change: opacity, transform; }
       #fRule { will-change: transform; }
-
-      /* will-change: elementos animados por GSAP */
-      #a1 .mask i { will-change: transform; }
+      #fSub { will-change: opacity, transform; }
+      #sig { will-change: opacity, transform; }
     </style>
   </head>
   <body>

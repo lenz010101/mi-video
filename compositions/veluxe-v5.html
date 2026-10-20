@@ -82,18 +82,19 @@
       #paper .p2 { font-size: 42px; font-weight: 800; color: #222; text-align: center; margin: 2px 0 8px; }
       #paper .p3 { font-size: 82px; font-weight: 800; color: #d8232a; text-align: center; line-height: .95; }
       #paper .p4 { font-size: 17px; font-weight: 700; letter-spacing: .5em; color: #9a958a; text-align: center; margin-top: 4px; }
-      #tickets { position: absolute; left: 230px; top: 790px; width: 200px; z-index: 5; display: flex; gap: 7px;
-      #ghost {
-        position: absolute; left: 0; right: 0; top: 760px; z-index: 7; text-align: center;
-        font-size: 92px; font-weight: 800; color: rgba(255,255,255,.28); letter-spacing: .01em;
-        text-shadow: 0 6px 30px rgba(255,255,255,.25); opacity: 0; will-change: opacity, transform;
-      }ound-size: 62% 44%, 100% 100%; background-position: 50% 96%, 0 0; background-repeat: no-repeat;
+      #tickets { position: absolute; left: 230px; top: 790px; width: 200px; z-index: 5; display: flex; gap: 7px; }
+      #tickets i {
+        flex: 1; height: 68px; background: #f4f0e6;
+        clip-path: polygon(0 0, 100% 0, 100% 96%, 50% 100%, 0 96%);
+        background-image: repeating-linear-gradient(#39302a 0 6px, transparent 6px 14px),
+          linear-gradient(#f4f0e6 55%, #f4f0e6 55%);
+        background-size: 62% 44%, 100% 100%; background-position: 50% 96%, 0 0; background-repeat: no-repeat;
         box-shadow: 0 8px 18px rgba(0,0,0,.5);
       }
       #ghost {
         position: absolute; left: 0; right: 0; top: 760px; z-index: 7; text-align: center;
         font-size: 92px; font-weight: 800; color: rgba(255,255,255,.28); letter-spacing: .01em;
-        text-shadow: 0 6px 30px rgba(255,255,255,.25); opacity: 0; will-change: opacity;
+        text-shadow: 0 6px 30px rgba(255,255,255,.25); opacity: 0; will-change: opacity, transform;
       }
 
       /* ══ E2 · 1.02 – 5.44 · poster del motel ═════════════════════ */
@@ -191,13 +192,11 @@
 
       /* will-change: elementos animados por GSAP */
       #band1 { will-change: opacity; }
+      #tickets { will-change: opacity, transform; }
       #blood1 { will-change: opacity; }
       #band2 { will-change: opacity; }
       #blood2 { will-change: opacity; }
       #band3 { will-change: opacity; }
-
-      /* will-change: elementos animados por GSAP */
-      #tickets { will-change: opacity, transform; }
     </style>
   </head>
   <body>
