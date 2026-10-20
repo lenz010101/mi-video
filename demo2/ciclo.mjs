@@ -90,16 +90,26 @@ const strip = findAll(DESKTOP, /^filmstrip\.png$/i);
 /* Todo lo que no sea el MP4 va a Desktop/qc: el Escritorio queda limpio. */
 const qcDir = path.join(DESKTOP, 'qc');
 fs.mkdirSync(qcDir, { recursive: true });
+function copyRetry(src, dst, tries) {
+  tries = tries || 5;
+  for (let i = 0; i < tries; i++) {
+    try { fs.copyFileSync(src, dst); return true; }
+    catch (e) { /* Windows bloquea el fichero un instante */ }
+  }
+  return false;
+}
 for (const s of [...sheets, ...strip]) {
-  fs.copyFileSync(s, path.join(qcDir, path.basename(s)));
-  console.log('   qc/' + path.basename(s));
+  const base = path.basename(s);
+  if (path.resolve(s) === path.resolve(path.join(qcDir, base))) { console.log('   qc/' + base + ' (ya estaba)'); continue; }
+  if (copyRetry(s, path.join(qcDir, base))) console.log('   qc/' + base);
+  else console.log('   (bloqueado: ' + base + ')');
 }
 if (frames.length) {
   const dst = path.join(qcDir, 'frames');
   fs.mkdirSync(dst, { recursive: true });
   for (const f of frames) {
     if (path.resolve(f) === path.resolve(path.join(dst, path.basename(f)))) continue;
-    fs.copyFileSync(f, path.join(dst, path.basename(f)));
+    copyRetry(f, path.join(dst, path.basename(f)));
   }
   console.log('   qc/frames: ' + frames.length + ' fotogramas clave');
 }
