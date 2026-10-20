@@ -209,6 +209,52 @@ El PC del usuario es lento ("una tostadora"). **El tiempo de trabajo se cuenta c
 - No descargar imágenes para "mejorar" un resultado: si el material ya está,
   se usa.
 
+## Brief del promo VELUXE (leído bien, no al revés)
+
+- **Los primeros ~5,4 s (el póster) se hacen con material NUEVO.**
+  La **fiesta (5,44 – 9,37 s) va ORIGINAL**, tal cual (trae su corte, su
+  fogonazo azul, sus personajes y el fogonazo magenta ya dentro del clip).
+- El material nuevo del póster son fotos nuestras (`e1_wide.jpg` = calle con
+  neón, `e2_wide.jpg` = cartel vertical de hotel) + el cartel de papel, el
+  neón "VELUXE" y los stickers die-cut en SVG.
+- La coreografía del póster es la **medida** (ver tabla arriba): travelling
+  0–1,02 · neón que crece 1,05–1,72 · stickers 1,72/2,35/2,80/3,20 · calma
+  3,40–4,70 · push-in 4,76–5,38 · corte seco a 5,44.
+- La tipografía ("out of the ordinary", lineup, ACCESS, DOBEL) va **recortada
+  del original con alfa** (`foot_txt.png` / `date_txt.png`), no reescrita: así
+  es idéntica píxel a píxel. Para extraer alfa con ffmpeg, el orden correcto
+  es `[mascara][color]alphamerge` (la máscara va primero).
+- Marco: la banda del reel es 1080×1520 centrada en 1080×1920 (200 px de
+  negro arriba y abajo), igual que el v1. Las tres bandas van apiladas con
+  `z-index` 1/2/3 o la última tapa a las demás.
+
+## Cómo clonar el montaje de un vídeo de referencia (método)
+
+1. **Medir, no suponer.** El perfil de movimiento por frame (`tblend=difference`
+   + `signalstats` + `metadata=print`) da los cortes reales y los "tiempos de
+   aire" (hueco entre cambios). Un `filmstrip` (frames cada 0,3-0,5 s en una
+   tira) se lee como secuencia y delata lo que los frames sueltos no Teachen
+   (revelados por palabras, entradas escalonadas, cursor, zoom-outs).
+2. **Una sola tabla de verdad** para escenas + timeline + cursor. Si los tiempos
+   viven en dos sitios, se desincronizan. Hoy estaba en un script aparte y por
+   eso el "hook" se quedó con el titular invisible.
+3. **El `<video>` de referencia solo se mira, nunca se copia.** El material
+   recreado es propio: fotos de stock, mockups reconstruidos en HTML/SVG y
+   tipografía compuesta con variables de render-time.
+4. **Verificar con fotogramas del MP4 descargado**, no con `snapshot`: el
+   snapshot captura antes de que cargue la webfont (se ve serif) y a 145 px no
+   se aprecia un título ausente. Un frame a resolución completa del MP4 sí.
+5. **Cuidado con la codificación**: leer/escribir el HTML como `latin1` rompe
+   los acentos. Siempre UTF-8 explícito, y comprobar con
+   `node demo2/chk3.mjs` (busca doble codificación `Ã¡`).
+
+### Lo que hay que mirar en un render (checklist de 30 s)
+
+- ¿Sale el titular? (los `div.title`/`div.badge` llevan `opacity: 0` en CSS:
+  si animas los `<span>` hijos en vez del padre, el padre se queda invisible)
+- ¿Las tarjetas/mockups llenan el frame como en la referencia?
+- ¿Los tiempos de corte coinciden con la tabla medida?
+
 ## Contexto
 
 - Proyecto HyperFrames en este directorio: `index.html` es la composición.
