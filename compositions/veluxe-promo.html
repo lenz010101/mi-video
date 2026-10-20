@@ -124,18 +124,45 @@
         filter: drop-shadow(20px 0 rgba(255, 0, 70, .95)) drop-shadow(-20px 0 rgba(0, 225, 255, .9));
       }
       #group { position: absolute; inset: 0; opacity: 0; will-change: transform, opacity; }
-      #group img { position: absolute; width: 520px; height: 520px; object-fit: contain; }
+      #group img { position: absolute; width: 520px; height: 520px; object-fit: contain; will-change: transform, opacity; }
 
       /* ══════════ FLASHES ══════════ */
       #flashA, #flashB { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 40; will-change: opacity; }
 
       /* ══════════ TARJETA FINAL ══════════ */
       #endCard { position: absolute; inset: 0; opacity: 0; z-index: 50; }
-      #endLogo { position: absolute; left: 0; right: 0; top: 700px; margin: 0 auto; width: 220px; height: 220px; }
+      #endLogo {
+        position: absolute; left: 0; right: 0; top: 690px; margin: 0 auto; width: 260px; height: 260px;
+        filter: drop-shadow(0 18px 46px rgba(255, 40, 30, .45));
+      }
       #endTxt {
         position: absolute; left: 0; right: 0; top: 980px; text-align: center;
-        font-size: 40px; font-weight: 800; letter-spacing: .22em; color: #fff;
-        text-shadow: 0 4px 26px rgba(0,0,0,.9);
+        font-size: 52px; font-weight: 800; letter-spacing: .22em; color: #fff;
+        text-shadow: 0 4px 26px rgba(0,0,0,.9), 0 0 60px rgba(255, 40, 30, .35);
+      }
+
+      /* ══════════ DIRECCION DE ARTE ══════════ */
+      /* Barrido de luz sobre el cartel: da vida al plano de apertura. */
+      #gloss {
+        position: absolute; left: 170px; top: 480px; width: 740px; height: 925px;
+        overflow: hidden; pointer-events: none; opacity: 0; will-change: opacity, transform;
+      }
+      #gloss .streak {
+        position: absolute; top: -35%; left: -150%; width: 64%; height: 170%;
+        background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.26) 45%, rgba(255,255,255,0) 100%);
+        transform: skewX(-14deg); will-change: transform;
+      }
+      /* Halo y filete de la tarjeta de cierre. */
+      #endGlow {
+        position: absolute; left: 50%; top: 620px; width: 940px; height: 940px;
+        margin-left: -470px; border-radius: 50%; pointer-events: none; opacity: 0;
+        background: radial-gradient(circle, rgba(255,60,50,.32) 0%, rgba(255,40,40,.13) 45%, rgba(255,40,40,0) 70%);
+        will-change: opacity, transform;
+      }
+      #endRule {
+        position: absolute; left: 50%; top: 986px; width: 280px; height: 2px; margin-left: -140px;
+        background: linear-gradient(90deg, rgba(255,255,255,0), #fff, rgba(255,255,255,0));
+        transform: scaleX(0); will-change: transform;
       }
 
       /* ══════════ OVERLAY PERSISTENTE ══════════ */
@@ -217,6 +244,7 @@
           <div id="s1bg"></div>
           <img id="flyer" src="../assets/flyer.png" alt="" data-var-src="flyerSrc" />
           <img id="flyerBlur" src="../assets/flyer.png" data-var-src="flyerSrc" alt="" />
+          <div id="gloss"><span class="streak"></span></div>
           <div id="dust">
             <i style="left:80px;  top:1320px; width:9px;  height:9px;"></i>
             <i style="left:150px; top:980px;  width:6px;  height:6px;"></i>
@@ -291,7 +319,9 @@
         <div class="scene" id="s6" data-start="11.5" data-duration="1.2">
           <div id="flashB"></div>
           <div id="endCard">
+            <div id="endGlow"></div>
             <img id="endLogo" src="../assets/logo.png" alt="" data-var-src="logoSrc" />
+            <div id="endRule"></div>
             <div id="endTxt" data-var-text="endTxt">11/07 · METEPEC</div>
           </div>
         </div>
@@ -363,7 +393,13 @@
           tl.set("#s1", { opacity: 1 }, 0);
           tl.fromTo("#flyer", { opacity: 0, scale: 1.03, x: 0 },
             { opacity: 1, scale: 1.03, x: 0, duration: 0.35, ease: "power2.out" }, 0);
-          tl.to("#flyer", { scale: 1.12, duration: 1.25, ease: "power1.out" }, 0.15);
+          tl.to("#flyer", { scale: 1.18, y: -28, duration: 1.25, ease: "power1.out" }, 0.15);
+          /* barrido de luz sobre el cartel (0.55 - 1.50 s) */
+          tl.fromTo("#gloss", { opacity: 0, scale: 1.03 },
+            { opacity: 1, scale: 1.18, duration: 0.95, ease: "power1.out" }, 0.55);
+          tl.fromTo("#gloss .streak", { x: 0 },
+            { x: 1700, duration: 0.95, ease: "power2.inOut" }, 0.55);
+          tl.to("#gloss", { opacity: 0, duration: 0.25, ease: "none" }, 1.25);
 
           var dust = document.querySelectorAll("#dust i");
           for (i = 0; i < dust.length; i++) {
@@ -373,8 +409,8 @@
 
           /* WHIP-PAN con motion blur: 0.25 s de translacion rapida + copia desenfocada */
           tl.to("#flyer", { x: -1900, duration: 0.25, ease: "expo.in" }, 1.55);
-          tl.fromTo("#flyerBlur", { opacity: 0, x: 0, scaleX: 1 },
-            { opacity: 0.9, x: -1900, scaleX: 1.7, duration: 0.25, ease: "expo.in" }, 1.55);
+          tl.fromTo("#flyerBlur", { opacity: 0, x: 0, y: -28, scaleX: 1, scaleY: 1.18 },
+            { opacity: 0.9, x: -1900, y: -28, scaleX: 1.7, scaleY: 1.18, duration: 0.25, ease: "expo.in" }, 1.55);
           tl.to("#flyerBlur", { opacity: 0, duration: 0.14, ease: "power2.in" }, 1.7);
           tl.set("#s1", { opacity: 0 }, 1.98);
 
@@ -425,16 +461,33 @@
           tl.set("#crowdScene", { opacity: 1 }, 5.25);
           tl.fromTo("#crowdWrap", { scale: 1.04 }, { scale: 1.12, duration: 6.25, ease: "power1.out" }, 5.25);
 
+          /* Encuadres: cada plano aterriza en una escala/posicion distinta, para
+             que 10 cortes no parezcan el mismo plano repetido.
+             s = escala final · x/y = desplazamiento · r = rotacion · d = entrada. */
+          var shots = [
+            { s: 1.00, x:    0, y:    0, r:   3.5, d:  1 },
+            { s: 0.66, x: -230, y:   90, r:  -6.0, d: -1 },
+            { s: 1.32, x:   60, y:  -80, r:   2.2, d:  1 },
+            { s: 0.44, x:  -50, y:  230, r:  -3.0, d:  0 },
+            { s: 1.18, x: -140, y:  -60, r:   5.0, d: -1 },
+            { s: 0.78, x:  210, y:   50, r:  -2.4, d:  1 },
+            { s: 1.38, x:  100, y:  -40, r:   3.8, d: -1 },
+            { s: 0.50, x:  -80, y:  170, r:  -5.2, d:  0 },
+            { s: 1.08, x:    0, y:  -30, r:   2.0, d:  1 },
+            { s: 0.88, x: -180, y:   80, r:  -3.6, d: -1 }
+          ];
+
           var cuts4 = [5.25, 5.85, 6.45, 7.05];
           var boxes4 = ["#chb1", "#chb2", "#chb3", "#chb4"];
           var glitch4 = ["#chg1", "#chg2", "#chg3", "#chg4"];
           var shake4 = [[-8, 6], [8, -7], [-6, -8], [7, 8]];
-          var rot4 = [3.5, -3.5, 2.6, -2.6];
           for (i = 0; i < cuts4.length; i++) {
             t = cuts4[i];
+            var sh = shots[i];
             tl.set(boxes4[i], { opacity: 1 }, t);
-            tl.fromTo(boxes4[i], { scale: 1.4, rotation: rot4[i], x: 34 },
-              { scale: 1.0, rotation: 0, x: 0, duration: 0.36, ease: "expo.out" }, t);
+            tl.fromTo(boxes4[i],
+              { scale: sh.s * 1.38, rotation: sh.r * 2.4, x: sh.x + sh.d * 110, y: sh.y - 60 },
+              { scale: sh.s, rotation: sh.r, x: sh.x, y: sh.y, duration: 0.34, ease: "expo.out" }, t);
             if (i > 0) tl.set(boxes4[i - 1], { opacity: 0 }, t);
             /* split RGB en el corte */
             tl.set(glitch4[i], { opacity: 1 }, t);
@@ -442,22 +495,25 @@
             /* sacudida de 8 px */
             tl.fromTo("#content", { x: shake4[i][0], y: shake4[i][1] },
               { x: 0, y: 0, duration: 0.18, ease: "power3.out" }, t);
-            /* pulso de compas dentro del plano (tras el punch) */
-            tl.to(boxes4[i], { scale: 1.012, duration: 0.07, ease: "power2.out", yoyo: true, repeat: 1 }, t + 0.4);
+            /* pulso de compas dentro del plano (relativo a su encuadre) */
+            tl.to(boxes4[i], { scale: sh.s * 1.014, duration: 0.07, ease: "power2.out", yoyo: true, repeat: 1 }, t + 0.4);
           }
           tl.set("#s4", { opacity: 0 }, 7.64);
 
           /* ══════════ E5 · 7.65 – 11.50 · CORTE CADA 0.50 s ══════════ */
           tl.set("#s5", { opacity: 1 }, 7.65);
           var cuts5 = [7.65, 8.15, 8.65, 9.15, 9.65, 10.15];
-          var boxes5 = ["#chb5", "#chb6", "#chb7", "#chb8", "#chb5", "#chb6"];
-          var glitch5 = ["#chg5", "#chg6", "#chg7", "#chg8", "#chg5", "#chg6"];
+          /* Orden sin personaje repetido seguido (char3, char1, char4, char2, char3, char1) */
+          var boxes5 = ["#chb8", "#chb7", "#chb6", "#chb5", "#chb8", "#chb7"];
+          var glitch5 = ["#chg8", "#chg7", "#chg6", "#chg5", "#chg8", "#chg7"];
           var shake5 = [[8, 7], [-8, -6], [7, -8], [-7, 6], [-8, 7], [8, -6]];
           for (i = 0; i < cuts5.length; i++) {
             t = cuts5[i];
+            var sh5 = shots[i + 4];
             tl.set(boxes5[i], { opacity: 1 }, t);
-            tl.fromTo(boxes5[i], { scale: 1.42, rotation: -rot4[i % 4], x: -30 },
-              { scale: 1.0, rotation: 0, x: 0, duration: 0.36, ease: "expo.out" }, t);
+            tl.fromTo(boxes5[i],
+              { scale: sh5.s * 1.42, rotation: sh5.r * 2.4, x: sh5.x - sh5.d * 110, y: sh5.y - 60 },
+              { scale: sh5.s, rotation: sh5.r, x: sh5.x, y: sh5.y, duration: 0.34, ease: "expo.out" }, t);
             if (i > 0) tl.set(boxes5[i - 1], { opacity: 0 }, t);
             tl.set(glitch5[i], { opacity: 1 }, t);
             tl.set(glitch5[i], { opacity: 0 }, t + 0.09);
@@ -468,6 +524,9 @@
           tl.set("#s5b", { opacity: 1 }, 10.65);
           tl.set("#group", { opacity: 1 }, 10.65);
           tl.fromTo("#group", { scale: 1.12 }, { scale: 1.0, duration: 0.85, ease: "expo.out" }, 10.65);
+          /* entrada escalonada de los 4 del grupo */
+          tl.fromTo("#group img", { scale: 0.84, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.7)", stagger: 0.08 }, 10.68);
           tl.set("#s5", { opacity: 0 }, 10.64);
 
           /* ══════════ CIERRE · 11.50 · FLASH + LOGO (1 s de hold) ══════════ */
@@ -478,6 +537,11 @@
           tl.to("#flashB", { opacity: 0, duration: 0.14, ease: "none" }, 11.55);
           tl.fromTo("#endCard", { opacity: 0, scale: 1.18 },
             { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" }, 11.62);
+          /* halo detrás del logo + filete que crece: el cierre deja de ser plano */
+          tl.fromTo("#endGlow", { opacity: 0, scale: 0.72 },
+            { opacity: 1, scale: 1, duration: 0.75, ease: "power3.out" }, 11.62);
+          tl.fromTo("#endRule", { scaleX: 0 },
+            { scaleX: 1, duration: 0.55, ease: "expo.out" }, 11.80);
           tl.set("#s6", { opacity: 0 }, 12.69);
 
           /* ══════════ GRANO ══════════ */
