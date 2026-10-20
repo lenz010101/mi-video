@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"topLine","type":"string","label":"Linea superior","default":"METEPEC, SÁBADO 11 DE JULIO"},
+    {"id":"slogan","type":"string","label":"Claim","default":"out of the ordinary"},
+    {"id":"sub1","type":"string","label":"Linea 1","default":"REGGAETON & HOUSE • OPEN BAR"},
+    {"id":"sub2","type":"string","label":"Linea 2","default":"ACCESS 7:30 PM"},
+    {"id":"neonText","type":"string","label":"Texto del neon","default":"VELUXE"},
+    {"id":"endText","type":"string","label":"Cierre","default":"VELUXE"},
+    {"id":"flyerSrc","type":"image","label":"Cartel","default":"../assets/placeholders/flyer.svg"},
+    {"id":"entranceSrc","type":"image","label":"Entrada del club","default":"../assets/placeholders/entrance.svg"},
+    {"id":"peopleSrc","type":"image","label":"Dos personas (chaquetas amarillas)","default":"../assets/placeholders/people.svg"},
+    {"id":"crowdSrc","type":"image","label":"Multitud","default":"../assets/placeholders/crowd.svg"},
+    {"id":"char1Src","type":"image","label":"Personaje 1","default":"../assets/placeholders/char1.svg"},
+    {"id":"char2Src","type":"image","label":"Personaje 2","default":"../assets/placeholders/char2.svg"},
+    {"id":"char3Src","type":"image","label":"Personaje 3","default":"../assets/placeholders/char3.svg"},
+    {"id":"char4Src","type":"image","label":"Personaje 4","default":"../assets/placeholders/char4.svg"},
+    {"id":"monsterSrc","type":"image","label":"Monstruo","default":"../assets/placeholders/monster.svg"},
+    {"id":"logoSrc","type":"image","label":"Logo","default":"../assets/placeholders/logo.svg"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>VELUXE V3 — promo vertical 9:16 (12 s)</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #000; }
+      #stage {
+        position: relative; width: 1080px; height: 1920px; overflow: hidden;
+        background: #050406; font-family: "Inter", "Helvetica Neue", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      img { display: block; }
+      .scene { position: absolute; inset: 0; opacity: 0; }
+      #content { position: absolute; inset: 0; will-change: transform; }
+      /* split RGB de los cortes (se activa por className desde GSAP) */
+      #content.glitch {
+        filter: drop-shadow(11px 0 rgba(255, 0, 64, .95)) drop-shadow(-11px 0 rgba(0, 228, 255, .9));
+      }
+
+      /* ══════════ ESCENA 1 · CARTEL DE PAPEL (0.00 – 2.00) ══════════ */
+      #s1bg {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(circle 700px at 50% 42%, #171216 0%, #0a0809 58%, #050405 100%);
+      }
+      #flyer {
+        position: absolute; left: 220px; top: 520px; width: 640px; height: 800px;
+        object-fit: contain; will-change: transform, opacity;
+        filter: drop-shadow(0 34px 60px rgba(0, 0, 0, .8));
+      }
+      #dust { position: absolute; inset: 0; }
+      #dust i {
+        position: absolute; display: block; border-radius: 50%;
+        background: radial-gradient(circle, #ff5a4a 0%, rgba(255, 60, 40, .55) 45%, rgba(255, 40, 30, 0) 72%);
+        will-change: transform, opacity;
+      }
+      #whip {
+        position: absolute; inset: 0; opacity: 0; transform-origin: 50% 50%;
+        background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(255, 70, 60, .22) 38%, rgba(255, 140, 70, .16) 56%, rgba(0,0,0,0) 100%);
+        will-change: transform, opacity;
+      }
+
+      /* ══════════ ESCENA 2 · ENTRADA DEL CLUB (2.00 – 5.00) ══════════ */
+      #entrance {
+        position: absolute; left: -40px; top: -60px; width: 1160px; height: 2040px;
+        object-fit: cover; will-change: transform;
+      }
+      #s2grade {
+        position: absolute; inset: 0; pointer-events: none;
+        background:
+          radial-gradient(circle 620px at 50% 22%, rgba(255, 40, 30, .20) 0%, rgba(255, 30, 20, 0) 70%),
+          linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 26%, rgba(0,0,0,0) 58%, rgba(0,0,0,.82) 100%);
+      }
+      #neonPlate {
+        position: absolute; left: 250px; top: 250px; width: 580px; height: 178px;
+        border-radius: 14px; background: #0b0808; border: 5px solid #3a1518;
+        box-shadow: 0 26px 60px rgba(0,0,0,.7);
+      }
+      #neonText {
+        position: absolute; left: 0; top: 262px; width: 1080px; text-align: center;
+        font-size: 128px; font-weight: 800; letter-spacing: 9px; color: #ff4d4d;
+        text-shadow: 0 0 8px #ff6a6a, 0 0 26px #ff2020, 0 0 64px rgba(255, 0, 40, .75), 0 0 130px rgba(255, 0, 40, .45);
+        will-change: transform, opacity; z-index: 3;
+      }
+      #bulbs { position: absolute; left: 262px; top: 238px; width: 556px; height: 22px; z-index: 4; }
+      #bulbs i {
+        position: absolute; top: 0; width: 20px; height: 20px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 32%, #fffdf2 0%, #ffdca0 40%, #ff9c3c 72%, #b04a10 100%);
+        box-shadow: 0 0 12px rgba(255, 190, 110, .95), 0 0 30px rgba(255, 140, 50, .55);
+        will-change: opacity;
+      }
+      #people {
+        position: absolute; left: 310px; top: 980px; width: 460px; height: 676px;
+        object-fit: contain; will-change: transform, opacity;
+        filter: drop-shadow(0 26px 44px rgba(0, 0, 0, .75));
+      }
+      .caution { position: absolute; bottom: 190px; width: 200px; height: 260px; will-change: transform, opacity; }
+      #cautionL { left: 60px; transform: rotate(-5deg); }
+      #cautionR { right: 60px; transform: rotate(4deg); }
+      #floaters { position: absolute; inset: 0; }
+      #floaters img { position: absolute; will-change: transform, opacity; filter: drop-shadow(0 18px 30px rgba(0,0,0,.6)); }
+
+      /* ══════════ ESCENA 4 · PERSONAJES (5.20 – 8.00) ══════════ */
+      #crowd {
+        position: absolute; left: -30px; top: -30px; width: 1140px; height: 1980px;
+        object-fit: cover; will-change: transform;
+      }
+      #s4grade {
+        position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(circle 900px at 50% 46%, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.85) 100%);
+      }
+      .chr {
+        position: absolute; inset: -40px; width: 1160px; height: 2000px;
+        object-fit: cover; opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══════════ ESCENA 5 · MONSTRUO (8.00 – 12.00) ══════════ */
+      #s5bg {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(circle 760px at 50% 36%, #4b2a8f 0%, rgba(75, 42, 143, .55) 38%, rgba(20, 10, 44, 0) 70%),
+          radial-gradient(circle 900px at 18% 78%, #1d3fa8 0%, rgba(29, 63, 168, .40) 42%, rgba(13, 12, 40, 0) 74%),
+          radial-gradient(circle 700px at 86% 22%, #7a2b9c 0%, rgba(122, 43, 156, .35) 44%, rgba(13, 12, 40, 0) 76%),
+          linear-gradient(180deg, #140b28 0%, #0b0819 58%, #07060f 100%);
+      }
+      #monster {
+        position: absolute; left: 40px; top: 430px; width: 1000px; height: 1000px;
+        object-fit: contain; will-change: transform, opacity;
+        filter: drop-shadow(0 30px 48px rgba(0, 0, 0, .8));
+      }
+      #mFloat { position: absolute; inset: 0; }
+      #mFloat img { position: absolute; will-change: transform, opacity; filter: drop-shadow(0 16px 26px rgba(0,0,0,.6)); }
+      #endMark {
+        position: absolute; left: 0; top: 720px; width: 1080px; text-align: center;
+        font-size: 168px; font-weight: 800; letter-spacing: 6px; color: #fff; opacity: 0;
+        text-shadow: 0 0 40px rgba(190, 160, 255, .75), 0 0 110px rgba(120, 70, 220, .55);
+        will-change: transform, opacity;
+      }
+      #endSub {
+        position: absolute; left: 0; top: 950px; width: 1080px; text-align: center;
+        font-size: 26px; font-weight: 600; letter-spacing: .44em; color: rgba(255,255,255,.72);
+        opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══════════ FLASHES DE TRANSICIÓN ══════════ */
+      #flashA, #flashB {
+        position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 40;
+        will-change: opacity;
+      }
+
+      /* ══════════ OVERLAY PERSISTENTE ══════════ */
+      #hud { position: absolute; inset: 0; z-index: 60; pointer-events: none; }
+      #topLine {
+        position: absolute; left: 0; right: 0; top: 74px; text-align: center;
+        font-size: 24px; font-weight: 600; letter-spacing: .26em; color: #c6c6cc;
+        text-transform: uppercase; text-shadow: 0 2px 18px rgba(0,0,0,.85);
+      }
+      #botBlock { position: absolute; left: 0; right: 0; bottom: 132px; text-align: center; }
+      #slogan {
+        font-size: 94px; font-weight: 800; letter-spacing: -.035em; line-height: .96;
+        color: #fff; text-shadow: 0 6px 34px rgba(0,0,0,.85), 0 1px 3px rgba(0,0,0,.9);
+      }
+      #sub1 {
+        margin-top: 26px; font-size: 21px; font-weight: 600; letter-spacing: .28em;
+        color: rgba(255,255,255,.84); text-shadow: 0 2px 16px rgba(0,0,0,.9);
+      }
+      #sub2 {
+        margin-top: 10px; font-size: 21px; font-weight: 600; letter-spacing: .28em;
+        color: rgba(255,255,255,.84); text-shadow: 0 2px 16px rgba(0,0,0,.9);
+      }
+      #logoMark {
+        position: absolute; left: 0; right: 0; bottom: 56px; margin: 0 auto;
+        width: 38px; height: 38px; opacity: .6;
+      }
+
+      /* ══════════ GRANO + VIÑETA ══════════ */
+      #grain {
+        position: absolute; inset: -40px; z-index: 70; pointer-events: none;
+        background-image: url(../assets/placeholders/grain.png);
+        background-repeat: repeat; background-size: 256px 256px;
+        opacity: .075; will-change: transform;
+      }
+      #vignette {
+        position: absolute; inset: 0; z-index: 80; pointer-events: none;
+        background: radial-gradient(ellipse 78% 62% at 50% 46%, rgba(0,0,0,0) 42%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.92) 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="veluxe-promo"
+      data-start="0"
+      data-duration="12"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio id="track" data-start="0" data-duration="12" data-media-start="0"
+        data-track-index="1" data-volume="1" src="../assets/music.mp3" preload="auto"></audio>
+
+      <!-- ══ CAPA DE ESCENAS (se agita en los cortes) ══ -->
+      <div id="content">
+
+        <!-- E1 · 0.00 – 2.00 · cartel de papel -->
+        <div class="scene" id="s1" data-start="0" data-duration="2.0">
+          <div id="s1bg"></div>
+          <img id="flyer" src="../assets/placeholders/flyer.svg" alt="" data-var-src="flyerSrc" />
+          <div id="dust">
+            <i style="left:80px;  top:1320px; width:9px;  height:9px;"></i>
+            <i style="left:150px; top:980px;  width:6px;  height:6px;"></i>
+            <i style="left:235px; top:1480px; width:11px; height:11px;"></i>
+            <i style="left:320px; top:760px;  width:7px;  height:7px;"></i>
+            <i style="left:415px; top:1180px; width:5px;  height:5px;"></i>
+            <i style="left:505px; top:1420px; width:10px; height:10px;"></i>
+            <i style="left:600px; top:880px;  width:8px;  height:8px;"></i>
+            <i style="left:680px; top:1290px; width:6px;  height:6px;"></i>
+            <i style="left:760px; top:1040px; width:12px; height:12px;"></i>
+            <i style="left:850px; top:1500px; width:7px;  height:7px;"></i>
+            <i style="left:915px; top:900px;  width:5px;  height:5px;"></i>
+            <i style="left:975px; top:1330px; width:9px;  height:9px;"></i>
+            <i style="left:120px; top:1600px; width:13px; height:13px;"></i>
+            <i style="left:700px; top:1660px; width:8px;  height:8px;"></i>
+            <i style="left:470px; top:620px;  width:5px;  height:5px;"></i>
+            <i style="left:880px; top:620px;  width:6px;  height:6px;"></i>
+          </div>
+          <div id="whip"></div>
+        </div>
+
+        <!-- E2 · 2.00 – 5.00 · entrada del club -->
+        <div class="scene" id="s2" data-start="2.0" data-duration="3.0">
+          <img id="entrance" src="../assets/placeholders/entrance.svg" alt="" data-var-src="entranceSrc" />
+          <div id="neonPlate"></div>
+          <div id="neonText" data-var-text="neonText">VELUXE</div>
+          <div id="bulbs">
+            <i style="left:6px;"></i><i style="left:72px;"></i><i style="left:138px;"></i><i style="left:204px;"></i>
+            <i style="left:270px;"></i><i style="left:336px;"></i><i style="left:402px;"></i><i style="left:468px;"></i>
+            <i style="left:534px;"></i>
+          </div>
+          <img id="people" src="../assets/placeholders/people.svg" alt="" data-var-src="peopleSrc" />
+          <svg class="caution" id="cautionL" viewBox="0 0 200 260">
+            <polygon points="100,10 195,150 5,150" fill="#e9b31c" stroke="#111" stroke-width="5"/>
+            <polygon points="100,40 166,142 34,142" fill="#12100c"/>
+            <text x="100" y="128" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="54" fill="#e9b31c">!</text>
+            <rect x="5" y="152" width="190" height="84" fill="#e9b31c" stroke="#111" stroke-width="5"/>
+            <text x="100" y="188" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="25" fill="#12100c">CAUTION</text>
+            <text x="100" y="220" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="21" fill="#12100c">WET FLOOR</text>
+          </svg>
+          <svg class="caution" id="cautionR" viewBox="0 0 200 260">
+            <polygon points="100,10 195,150 5,150" fill="#e9b31c" stroke="#111" stroke-width="5"/>
+            <polygon points="100,40 166,142 34,142" fill="#12100c"/>
+            <text x="100" y="128" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="54" fill="#e9b31c">!</text>
+            <rect x="5" y="152" width="190" height="84" fill="#e9b31c" stroke="#111" stroke-width="5"/>
+            <text x="100" y="188" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="25" fill="#12100c">CAUTION</text>
+            <text x="100" y="220" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="21" fill="#12100c">WET FLOOR</text>
+          </svg>
+          <div id="floaters">
+            <img id="fl1" src="../assets/placeholders/bottle.svg" alt="" style="left:-180px; top:420px; width:96px; height:208px;" />
+            <img id="fl2" src="../assets/placeholders/burger.svg" alt="" style="left:940px; top:1180px; width:190px; height:138px;" />
+            <img id="fl3" src="../assets/placeholders/bottle.svg" alt="" style="left:60px; top:1560px; width:70px; height:152px;" />
+            <img id="fl4" src="../assets/placeholders/burger.svg" alt="" style="left:820px; top:300px; width:140px; height:102px;" />
+          </div>
+          <div id="s2grade"></div>
+        </div>
+
+        <!-- E4 · 5.20 – 8.00 · personajes (4 cortes de 0.70 s) -->
+        <div class="scene" id="s4" data-start="5.2" data-duration="2.8">
+          <img id="crowd" src="../assets/placeholders/crowd.svg" alt="" data-var-src="crowdSrc" />
+          <img class="chr" id="ch1" src="../assets/placeholders/char1.svg" alt="" data-var-src="char1Src" />
+          <img class="chr" id="ch2" src="../assets/placeholders/char2.svg" alt="" data-var-src="char2Src" />
+          <img class="chr" id="ch3" src="../assets/placeholders/char3.svg" alt="" data-var-src="char3Src" />
+          <img class="chr" id="ch4" src="../assets/placeholders/char4.svg" alt="" data-var-src="char4Src" />
+          <div id="s4grade"></div>
+        </div>
+
+        <!-- E5 · 8.00 – 12.00 · monstruo -->
+        <div class="scene" id="s5" data-start="8.0" data-duration="4.0">
+          <div id="s5bg"></div>
+          <img id="monster" src="../assets/placeholders/monster.svg" alt="" data-var-src="monsterSrc" />
+          <div id="mFloat">
+            <img id="mb1" src="../assets/placeholders/bottle.svg" alt="" style="left:-160px; top:520px; width:104px; height:225px;" />
+            <img id="mb2" src="../assets/placeholders/burger.svg" alt="" style="left:900px; top:960px; width:200px; height:145px;" />
+            <img id="mb3" src="../assets/placeholders/bottle.svg" alt="" style="left:120px; top:1420px; width:78px; height:170px;" />
+            <img id="mb4" src="../assets/placeholders/burger.svg" alt="" style="left:780px; top:360px; width:150px; height:110px;" />
+            <img id="mb5" src="../assets/placeholders/bottle.svg" alt="" style="left:60px; top:900px; width:88px; height:190px;" />
+          </div>
+          <div id="endMark" data-var-text="endText">VELUXE</div>
+          <div id="endSub">11 DE JULIO · METEPEC</div>
+        </div>
+      </div>
+
+      <!-- ══ FLASH DE TRANSICIÓN (5.00 – 5.20) ══ -->
+      <div class="scene" id="s3" data-start="5.0" data-duration="0.2">
+        <div id="flashA"></div>
+      </div>
+
+      <!-- ══ FLASH FINAL (11.45 – 12.00) ══ -->
+      <div class="scene" id="s6" data-start="11.45" data-duration="0.55">
+        <div id="flashB"></div>
+      </div>
+
+      <!-- ══ OVERLAY PERSISTENTE ══ -->
+      <div id="hud">
+        <div id="topLine" data-var-text="topLine">METEPEC, SÁBADO 11 DE JULIO</div>
+        <div id="botBlock">
+          <div id="slogan" data-var-text="slogan">out of the ordinary</div>
+          <div id="sub1" data-var-text="sub1">REGGAETON &amp; HOUSE • OPEN BAR</div>
+          <div id="sub2" data-var-text="sub2">ACCESS 7:30 PM</div>
+        </div>
+        <img id="logoMark" src="../assets/placeholders/logo.svg" alt="" data-var-src="logoSrc" />
+      </div>
+
+      <div id="grain"></div>
+      <div id="vignette"></div>
+
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+
+        function build() {
+          var tl = gsap.timeline({ paused: true });
+
+          /* ───────── ESCENA 1 · 0.00 – 2.00 · CARTEL ─────────
+             Push-in lento (0.00 → 1.20) y whip-pan a la derecha
+             (1.50 → 1.95). Corte seco a los 2.00. */
+          tl.set("#s1", { opacity: 1 }, 0);
+          tl.set("#s2", { opacity: 0 }, 0);
+          tl.set("#s4", { opacity: 0 }, 0);
+          tl.set("#s5", { opacity: 0 }, 0);
+
+          tl.fromTo("#flyer", { opacity: 0, scale: 1.02, rotation: -1.6, x: 0 },
+            { opacity: 1, scale: 1.02, rotation: -1.6, x: 0, duration: 0.35, ease: "power2.out" }, 0);
+          tl.to("#flyer", { scale: 1.12, duration: 1.2, ease: "power1.out" }, 0.15);
+
+          /* polvo rojo flotando (posiciones fijas: render determinista) */
+          var dust = document.querySelectorAll("#dust i");
+          for (var i = 0; i < dust.length; i++) {
+            tl.fromTo(dust[i], { opacity: 0, y: 90, x: 0 },
+              { opacity: 0.85, y: -260, x: (i % 2 ? 26 : -22), duration: 2.3, ease: "none",
+                repeat: 2, yoyo: true }, 0.05 + i * 0.11);
+          }
+
+          /* whip-pan: el cartel sale disparado y entra un streak rojo */
+          tl.to("#flyer", { x: -2100, duration: 0.42, ease: "expo.in" }, 1.52);
+          tl.fromTo("#whip", { opacity: 0, scaleX: 0.2, x: -420 },
+            { opacity: 1, scaleX: 1, x: 260, duration: 0.34, ease: "power3.out" }, 1.55);
+          tl.to("#whip", { opacity: 0, duration: 0.2, ease: "power2.in" }, 1.82);
+          tl.set("#s1", { opacity: 0 }, 1.98);
+
+          /* ───────── ESCENA 2 · 2.00 – 5.00 · ENTRADA ─────────
+             Zoom-in lento (2.00 → 5.00) + parpadeo del neon. */
+          tl.set("#s2", { opacity: 1 }, 2.0);
+          tl.fromTo("#entrance", { scale: 1.0, x: 0 },
+            { scale: 1.12, x: -18, duration: 3.0, ease: "power1.out" }, 2.0);
+          tl.fromTo("#neonPlate", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 2.02);
+          tl.fromTo("#neonText", { opacity: 0, scale: 0.92 },
+            { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, 2.06);
+          tl.fromTo("#bulbs", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 2.1);
+
+          /* parpadeo del neon: tres caidas cortas, como un tubo viejo */
+          var flick = [[2.86, 0.06], [3.52, 0.05], [4.41, 0.07]];
+          for (var f = 0; f < flick.length; f++) {
+            var t0 = flick[f][0];
+            tl.to("#neonText", { opacity: 0.18, duration: 0.03, ease: "none" }, t0);
+            tl.to("#bulbs", { opacity: 0.25, duration: 0.03, ease: "none" }, t0);
+            tl.to("#neonText", { opacity: 1, duration: flick[f][1], ease: "none" }, t0 + 0.03);
+            tl.to("#bulbs", { opacity: 1, duration: flick[f][1], ease: "none" }, t0 + 0.03);
+          }
+
+          tl.fromTo("#people", { opacity: 0, y: 60, scale: 0.96 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, 2.12);
+          tl.fromTo("#cautionL", { opacity: 0, y: 70, rotation: -12 },
+            { opacity: 1, y: 0, rotation: -5, duration: 0.45, ease: "back.out(1.8)" }, 2.35);
+          tl.fromTo("#cautionR", { opacity: 0, y: 70, rotation: 12 },
+            { opacity: 1, y: 0, rotation: 4, duration: 0.45, ease: "back.out(1.8)" }, 2.48);
+
+          /* objetos flotando en dos planos (parallax) */
+          tl.fromTo("#fl1", { opacity: 0, x: -260, y: 0, rotation: -24 },
+            { opacity: 1, x: 1240, y: -60, rotation: 210, duration: 3.1, ease: "none" }, 2.05);
+          tl.fromTo("#fl2", { opacity: 0, x: 220, y: 40, rotation: 18 },
+            { opacity: 1, x: -1080, y: -120, rotation: -190, duration: 3.4, ease: "none" }, 2.25);
+          tl.fromTo("#fl3", { opacity: 0, x: -160, y: 0, rotation: 16 },
+            { opacity: 1, x: 1120, y: 70, rotation: -170, duration: 2.8, ease: "none" }, 2.4);
+          tl.fromTo("#fl4", { opacity: 0, x: 140, y: 0, rotation: -12 },
+            { opacity: 1, x: -1180, y: 90, rotation: 200, duration: 3.0, ease: "none" }, 2.6);
+
+          /* ───────── TRANSICIÓN · 5.00 – 5.20 · FLASH + GLITCH ───────── */
+          tl.set("#s2", { opacity: 0 }, 5.0);
+          tl.set("#s3", { opacity: 1 }, 5.0);
+          tl.set("#s3", { opacity: 0 }, 5.2);
+          tl.fromTo("#flashA", { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "none" }, 5.0);
+          tl.to("#flashA", { opacity: 0, duration: 0.13, ease: "none" }, 5.05);
+          /* split RGB en tres ráfagas + sacudida de cámara */
+          var gs = [5.0, 5.06, 5.12];
+          for (var g = 0; g < gs.length; g++) {
+            tl.set("#content", { className: "+glitch" }, gs[g]);
+            tl.set("#content", { className: "-glitch" }, gs[g] + 0.04);
+          }
+          tl.fromTo("#content", { x: -14, y: 8 }, { x: 0, y: 0, duration: 0.2, ease: "power3.out" }, 5.0);
+
+          /* ───────── ESCENA 4 · 5.20 – 8.00 · PERSONAJES ─────────
+             4 cortes de 0.70 s con zoom-punch, shake y split RGB. */
+          tl.set("#s4", { opacity: 1 }, 5.2);
+          tl.fromTo("#crowd", { scale: 1.06, x: 0 }, { scale: 1.14, x: -14, duration: 2.8, ease: "power1.out" }, 5.2);
+
+          var cuts = [5.2, 5.9, 6.6, 7.3];
+          var chars = ["#ch1", "#ch2", "#ch3", "#ch4"];
+          var rots = [3.5, -3.5, 2.5, -2.5];
+          for (var c = 0; c < cuts.length; c++) {
+            var t = cuts[c];
+            tl.set(chars[c], { opacity: 1 }, t);
+            tl.fromTo(chars[c], { scale: 1.28, rotation: rots[c], x: 30 },
+              { scale: 0.97, rotation: 0, x: 0, duration: 0.46, ease: "expo.out" }, t);
+            if (c > 0) tl.to(chars[c - 1], { opacity: 0, duration: 0.06, ease: "none" }, t);
+            /* shake */
+            tl.fromTo("#content", { x: c % 2 ? 16 : -16, y: c % 2 ? -10 : 10 },
+              { x: 0, y: 0, duration: 0.18, ease: "power3.out" }, t);
+            /* split RGB */
+            tl.set("#content", { className: "+glitch" }, t);
+            tl.set("#content", { className: "-glitch" }, t + 0.05);
+            /* pulso de compás (120 BPM) dentro del plano */
+            tl.to(chars[c], { scale: 1.015, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, t + 0.34);
+            tl.to(chars[c], { scale: 1.015, duration: 0.09, ease: "power2.out", yoyo: true, repeat: 1 }, t + 0.84);
+          }
+          tl.set("#s4", { opacity: 0 }, 7.99);
+
+          /* ───────── ESCENA 5 · 8.00 – 12.00 · MONSTRUO ───────── */
+          tl.set("#s5", { opacity: 1 }, 8.0);
+          tl.fromTo("#monster", { opacity: 0, scale: 0.86, y: 60, rotation: -2.5 },
+            { opacity: 1, scale: 1, y: 0, rotation: 0, duration: 0.85, ease: "expo.out" }, 8.0);
+          tl.to("#monster", { scale: 1.08, y: -34, rotation: 1.6, duration: 2.0, ease: "sine.inOut", yoyo: true, repeat: 1 }, 8.9);
+
+          tl.fromTo("#mb1", { opacity: 0, x: -220, y: 0, rotation: -20 },
+            { opacity: 1, x: 1180, y: -80, rotation: 200, duration: 3.9, ease: "none" }, 8.05);
+          tl.fromTo("#mb2", { opacity: 0, x: 260, y: 30, rotation: 16 },
+            { opacity: 1, x: -1120, y: -100, rotation: -190, duration: 3.6, ease: "none" }, 8.2);
+          tl.fromTo("#mb3", { opacity: 0, x: -180, y: 0, rotation: 14 },
+            { opacity: 1, x: 1140, y: 60, rotation: -180, duration: 3.4, ease: "none" }, 8.35);
+          tl.fromTo("#mb4", { opacity: 0, x: 200, y: 0, rotation: -14 },
+            { opacity: 1, x: -1200, y: 70, rotation: 200, duration: 3.7, ease: "none" }, 8.5);
+          tl.fromTo("#mb5", { opacity: 0, x: -140, y: 0, rotation: 10 },
+            { opacity: 1, x: 1080, y: -40, rotation: -160, duration: 3.2, ease: "none" }, 8.7);
+
+          /* ───────── CIERRE · 11.45 · FLASH AL LOGO ───────── */
+          tl.set("#s6", { opacity: 1 }, 11.44);
+          tl.fromTo("#flashB", { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "none" }, 11.45);
+          tl.to("#flashB", { opacity: 0, duration: 0.12, ease: "none" }, 11.5);
+          tl.set("#content", { className: "+glitch" }, 11.45);
+          tl.set("#content", { className: "-glitch" }, 11.5);
+          tl.fromTo("#endMark", { opacity: 0, scale: 1.34 },
+            { opacity: 1, scale: 1, duration: 0.55, ease: "expo.out" }, 11.55);
+          tl.fromTo("#endSub", { opacity: 0, y: 26 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 11.66);
+          tl.to("#monster", { opacity: 0.22, duration: 0.4, ease: "power2.in" }, 11.62);
+          tl.to("#mFloat", { opacity: 0.18, duration: 0.4, ease: "power2.in" }, 11.62);
+          tl.set("#s6", { opacity: 0 }, 11.92);
+
+          /* ───────── GRANO: vibración de película (salto cada 0.08 s) ───────── */
+          tl.to("#grain", { x: 14, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 149 }, 0);
+          tl.to("#grain", { y: 10, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 149 }, 0);
+
+          window.__timelines["veluxe-promo"] = tl;
+        }
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build); else build();
+      </script>
+    </div>
+  </body>
+</html>
