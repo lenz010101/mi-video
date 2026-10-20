@@ -26,12 +26,22 @@ for (const f of FONT_CANDIDATES) {
   const p = f.replace(/\\:/g, ':').replace(/\\/g, '/');
   if (fsx.existsSync(p)) { font = f; break; }
 }
-const vf = [
+const withText = [
   `fps=${fps}`,
   `drawtext=fontfile='${font}':text='%{pts\\:hms}':x=8:y=8:fontsize=26:fontcolor=white:box=1:boxcolor=black@0.65:boxborderw=6`,
   'scale=190:338',
   'tile=6x5',
 ].join(',');
+const withoutText = [`fps=${fps}`, 'scale=190:338', 'tile=6x5'].join(',');
 
-execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', mp4, '-vf', vf, '-frames:v', '1', out]);
+/* El ffmpeg estatico del CI no trae drawtext (sin libfreetype). Si falla, se
+   hace la hoja sin timecodes en vez de romper el pipeline. */
+try {
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', mp4, '-vf', withText, '-frames:v', '1', out]);
+} catch (e) {
+  const msg = String(e.stderr || e.message || '');
+  if (!/drawtext|No such filter/i.test(msg)) throw e;
+  console.log('aviso: este ffmpeg no trae drawtext; la hoja sale sin timecodes.');
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', mp4, '-vf', withoutText, '-frames:v', '1', out]);
+}
 console.log('hoja de contactos: ' + out);
