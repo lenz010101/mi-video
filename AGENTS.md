@@ -216,8 +216,22 @@ runtime. Verificado en el paquete `hyperframes` (0.8.162/0.8.172):
 
 ### 4.1 Verificación del MP4 entregado (el "9.9 visual")
 
+**Todo esto corre en la nube (el PC del usuario solo descarga):**
+
+| Paso | Dónde |
+|---|---|
+| Descarga de logos/fotos de marca (si faltan) | CI, paso "Prepare the brand assets" |
+| Lint de la composición | CI (0.8.162) |
+| Render del MP4 | CI |
+| Perfil de movimiento + fotogramas congelados | CI, paso "Verify the MP4" |
+| Hoja de contactos con timecodes | CI, artifact `hyperframes-qc` |
+| Descarga a `C:\Users\Admin\Desktop\` | local, **sin análisis** (solo ficheros) |
+
+En local (solo si hace falta y es barato):
+
 ```bash
 node demo2/verify-render.mjs "C:/Users/Admin/Desktop/<video>.mp4" demo2/qc9
+node demo2/contact-sheet.mjs "C:/Users/Admin/Desktop/<video>.mp4" salida.png
 ```
 
 - Perfil de movimiento por frame (`tblend=difference` + `signalstats`):
@@ -227,6 +241,20 @@ node demo2/verify-render.mjs "C:/Users/Admin/Desktop/<video>.mp4" demo2/qc9
 - Filmstrip (2 fps) + 8 fotogramas clave (540 px) para la revisión visual.
 - Es la única fuente de verdad: se revisa el MP4 entregado, no capturas
   intermedias. Es barato (ffmpeg sobre 12 s = segundos).
+- **Ojo**: el ffmpeg estático del CI no trae `drawtext`; para la hoja con
+  timecodes el CI instala el ffmpeg de apt. `contact-sheet.mjs` cae a una hoja
+  sin timecodes si no lo encuentra.
+
+### 4.2 Reels de marca (barra de logos + fotos)
+
+- Logos: `demo2/get-logos.mjs` (Wikidata P154 → Commons, con validación por
+  alfa para que no cuele una foto de edificio). Créditos en
+  `assets/logos/CREDITOS.md`.
+- Fotos de coches: `demo2/get-fotos-coche.mjs` (imagen principal del artículo
+  del modelo, 1600 px). Créditos en `assets/coches/CREDITOS.md`.
+- Estructura de la réplica de edición: barra de marcas arriba (logo + nombre en
+  su color, paneando), foto del coche a sangre con push lento, nombre de
+  marca grande al centro, pies de foto blancos al beat, cierre a negro con CTA.
 
 ## Coreografía medida del promo VELUXE (referencia, no repetir la medición)
 
