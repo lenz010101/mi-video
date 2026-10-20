@@ -116,6 +116,25 @@ function audit(file) {
     }
   }
 
+  /* ── 4b. HTML bien formado: etiquetas balanceadas ──
+     Un parche mal aplicado deja cierres colgando y el parser se come
+     elementos (los rotulos desaparecen sin avisar).
+     Se cuentan sobre el HTML sin el bloque <style> ni comentarios: un
+     comentario CSS puede mencionar "<span>" y daria un falso positivo. */
+  const sinCss = htmlOnlyAll
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '');
+  for (const tag of ['div', 'span']) {
+    const open = (sinCss.match(new RegExp(`<${tag}\\b`, 'gi')) || []).length;
+    const close = (sinCss.match(new RegExp(`</${tag}>`, 'gi')) || []).length;
+    if (open !== close) {
+      problems.push(`HTML  etiquetas <${tag}> desbalanceadas: ${open} abiertas / ${close} cerradas`);
+    }
+  }
+  if (/<\/div>\s*<\/(span|b|i|em)>/i.test(sinCss) || /<\/div>[A-Za-zÁÉÍÓÚÑáéíóúñ]{2,}<\/span>/i.test(sinCss)) {
+    problems.push('HTML  hay cierres colgando tras un </div> (contenido duplicado o mal cerrado)');
+  }
+
   /* ── 5. bindings de variables (solo HTML, no el JS inline) ── */
   const htmlOnly = htmlOnlyAll;
   const declMatch = src.match(/data-composition-variables\s*=\s*'([\s\S]*?)'/i) || src.match(/data-composition-variables\s*=\s*"([\s\S]*?)"/i);
@@ -146,8 +165,7 @@ function audit(file) {
     problems.push('HTML  recurso embebido en base64 (prohibido): ' + m[0].slice(0, 40) + '...');
   }
 
-  /* ── 7. determinismo del render: ticker, timeline y build sincrono ── */
-  const fps = (src.match(/data-fps="(\d+)"/) || [])[1];
+  /* ── 7. determinismo del render: ticker, timeline y build sincrono ── */  const fps = (src.match(/data-fps="(\d+)"/) || [])[1];
   const cid = (src.match(/data-composition-id="([^"]+)"/) || [])[1];
   if (inlineJs.includes('gsap.timeline')) {
     if (!fps) {

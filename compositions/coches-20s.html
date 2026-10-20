@@ -161,12 +161,16 @@
       .outline {
         position: absolute; left: 30px; right: 30px; top: 1110px; z-index: 30; text-align: center;
         font-family: "Anton", sans-serif; font-size: 96px; line-height: 1.05;
-        color: transparent; opacity: 0;
+        color: rgba(255,255,255,.10); opacity: 0;
         -webkit-text-stroke: 3px #fff;
-        text-shadow: 0 6px 26px rgba(0,0,0,.85);
+        text-shadow: 0 0 30px rgba(150,210,255,.75), 0 6px 26px rgba(0,0,0,.85);
         will-change: transform, opacity;
       }
-      .outline.brand { -webkit-text-stroke: 4px var(--bc); }
+      .outline.brand {
+        -webkit-text-stroke: 4px var(--bc);
+        color: color-mix(in srgb, var(--bc) 14%, transparent);
+        text-shadow: 0 0 34px var(--bc), 0 6px 26px rgba(0,0,0,.85);
+      }
       /* palabras sueltas en blanco plano */
       .plain {
         position: absolute; left: 40px; right: 40px; top: 1150px; z-index: 30; text-align: center;
@@ -290,11 +294,11 @@
       <div class="outline" id="n14" style="font-size:56px;" data-var-text="n14">y te daremos los mejores</div>
 
       <!-- ══ STICKERS DE PAPEL RASGADO ══ -->
-      <div class="outline brand" id="st1" style="--bc:var(--toyota);" data-var-text="s1">TOYOTA</div>TOYOTA</span></div>
-      <div class="outline brand" id="st2" style="--bc:var(--honda);" data-var-text="s2">HONDA</div>HONDA</span></div>
-      <div class="outline brand" id="st3" style="--bc:var(--bmw);" data-var-text="s3">BMW</div>BMW</span></div>
-      <div class="outline brand" id="st4" style="--bc:var(--mercedes);" data-var-text="s4">MERCEDES</div>MERCEDES</span></div>
-      <div class="outline brand" id="st5" style="--bc:var(--porsche);" data-var-text="s5">PORSCHE</div>PORSCHE</span></div>
+      <div class="outline brand" id="st1" style="--bc:var(--toyota);" data-var-text="s1">TOYOTA</div>
+      <div class="outline brand" id="st2" style="--bc:var(--honda);" data-var-text="s2">HONDA</div>
+      <div class="outline brand" id="st3" style="--bc:var(--bmw);" data-var-text="s3">BMW</div>
+      <div class="outline brand" id="st4" style="--bc:var(--mercedes);" data-var-text="s4">MERCEDES</div>
+      <div class="outline brand" id="st5" style="--bc:var(--porsche);" data-var-text="s5">PORSCHE</div>
       <div class="sticker" id="st6"><div class="paper"></div><span class="txt" data-var-text="s6">NISSAN</span></div>
 
       <!-- ══ CIERRE ══ -->
