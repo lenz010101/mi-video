@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Réplica coches 31 s (referencia como base)</title>
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; background: #000; }
+    #stage {
+      position: relative; width: 1080px; height: 1920px;
+      overflow: hidden; background: #000;
+    }
+    /* el material de base ocupa todo el lienzo: 720x1280 -> 1080x1920 es
+       una escala exacta de 1,5x, sin distorsion ni bandas */
+    #vid {
+      position: absolute; top: 0; left: 0;
+      width: 1080px; height: 1920px; object-fit: fill;
+      will-change: transform, opacity;
+    }
+  </style>
+</head>
+<body>
+  <div
+    id="stage"
+    data-composition-id="replica-coches"
+    data-start="0"
+    data-duration="31.2"
+    data-width="1080"
+    data-height="1920"
+    data-fps="30"
+  >
+    <!-- ══ LA VOZ ORIGINAL, como pista explicita y determinista ══ -->
+    <audio id="track" src="../assets/ref/ref-coches-audio.mp3"
+      data-start="0" data-duration="31.2" data-media-start="0"
+      data-track-index="1" preload="auto"></audio>
+
+    <!-- ══ MATERIAL DE BASE: el video de referencia tal cual (graficos incluidos).
+         Su ventana coincide EXACTA con la del stage: 0 - 31.2 en ambos ══ -->
+    <video id="vid" class="clip" src="../assets/ref/ref-coches.mp4"
+      data-start="0" data-duration="31.2" data-media-start="0"
+      muted playsinline preload="auto"></video>
+
+  </div>
+
+  <script>
+    /* build sincrono: la timeline existe en el primer fotograma, aunque no
+       anime nada (el movimiento viene de la reproduccion del video) */
+    (function build() {
+      var tl = gsap.timeline({ paused: true });
+      window.__timelines["replica-coches"] = tl;
+      gsap.ticker.fps(30);
+    })();
+  </script>
+</body>
+</html>
