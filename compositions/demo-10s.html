@@ -1,5 +1,24 @@
 <!DOCTYPE html>
-<html lang="es">
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"headline","type":"string","label":"Titular","default":"MENOS,"},
+    {"id":"kicker","type":"string","label":"Antetitulo","default":"DIRECCIÓN DE ARTE"},
+    {"id":"lead","type":"string","label":"Bajada","default":"una pieza sobre lo esencial"},
+    {"id":"hubLabel","type":"string","label":"Titulo del cristal","default":"TRES DECISIONES"},
+    {"id":"hubRow1","type":"string","label":"Decision 1","default":"espacio generoso"},
+    {"id":"hubRow2","type":"string","label":"Decision 2","default":"tipografía honesta"},
+    {"id":"hubRow3","type":"string","label":"Decision 3","default":"movimiento natural"},
+    {"id":"hubSub","type":"string","label":"Cierre del cristal","default":"el resto, fuera."},
+    {"id":"manifesto","type":"string","label":"Antetitulo final","default":"MANIFIESTO"},
+    {"id":"manifestoSmall","type":"string","label":"Linea pequeña","default":"MENOS,"},
+    {"id":"manifestoBig","type":"string","label":"Linea grande","default":"MEJOR."},
+    {"id":"quote","type":"string","label":"Cita","default":"WENIGER, ABER BESSER — DIETER RAMS"},
+    {"id":"sigLabel","type":"string","label":"Firma","default":"REEL ·"},
+    {"id":"sigYear","type":"string","label":"Año","default":"2026"},
+    {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/audio/music-source.mp3"}
+  ]'
+>
   <head>
     <meta charset="UTF-8" />
     <title>MENOS, pero MEJOR · reel premium 10 s</title>
@@ -216,8 +235,8 @@
          así el desenfoque no se anima por fotograma. */
       .finBig {
         position: relative;
-        margin-top: 28px;
-        isolation: isolate; /* da contexto para el glow con z-index negativo */
+        margi
+      #aKick { will-change: transform, opacity; }/* da contexto para el glow con z-index negativo */
         font-size: 232px;
         font-weight: 250;
         line-height: 1.04;
@@ -258,6 +277,34 @@
         color: rgba(233, 241, 250, 0.55);
       }
       .sig .lt { color: #7dd3fc; letter-spacing: 0.5em; }
+    
+      /* will-change: elementos animados por GSAP */
+      #orbA { will-change: transform; }
+      #orbB { will-change: transform; }
+      #aKick { will-change: transform; }
+      #aSub { will-change: transform, opacity; }
+      #glass { will-change: transform, opacity; }
+      #gLabel { will-change: transform, opacity; }
+      #gRow1 { will-change: transform, opacity; }
+      #gRow2 { will-change: transform, opacity; }
+      #gRow3 { will-change: transform, opacity; }
+      #fKick { will-change: transform; }
+      #fBig { will-change: transform, opacity; }
+      #fSub { will-change: transform, opacity; }
+      #sig { will-change: transform, opacity; }
+
+      /* will-change: elementos animados por GSAP */
+      #orbs { will-change: opacity; }
+      #a1 { will-change: opacity; }
+      #aRule { will-change: transform; }
+      #a2 { will-change: opacity; }
+      #gSub { will-change: opacity; }
+      #a3 { will-change: opacity; }
+      #fKick { will-change: opacity, transform; }
+      #fRule { will-change: transform; }
+
+      /* will-change: elementos animados por GSAP */
+      #a1 .mask i { will-change: transform; }
     </style>
   </head>
   <body>
@@ -280,6 +327,7 @@
         data-fade-out="1.5"
         id="musicDemo"
         src="../assets/audio/music-source.mp3"
+        data-var-src="musicSrc"
         preload="auto"
       ></audio>
 
@@ -292,12 +340,12 @@
       <!-- ============ ACTO 1 · MENOS, ============ -->
       <section class="ov" id="a1">
         <div class="aWrap">
-          <div class="kicker" id="aKick">DIRECCIÓN DE ARTE</div>
+          <div class="kicker" id="aKick" data-var-text="kicker">DIRECCIÓN DE ARTE</div>
           <h1 class="thinBig" aria-label="Menos">
             <span class="mask" style="display: block"><i>M</i><i>E</i><i>N</i><i>O</i><i>S</i><i>,</i></span>
           </h1>
           <div class="hairline" id="aRule"></div>
-          <div class="sub" id="aSub">una pieza sobre lo esencial</div>
+          <div class="sub" id="aSub" data-var-text="lead">una pieza sobre lo esencial</div>
         </div>
       </section>
 
@@ -305,11 +353,11 @@
       <section class="ov" id="a2">
         <div class="hubBody">
           <div class="glass" id="glass">
-            <div class="glassLabel" id="gLabel">TRES DECISIONES</div>
-            <div class="hubRow" id="gRow1"><b>01</b><span>espacio generoso</span></div>
-            <div class="hubRow" id="gRow2"><b>02</b><span>tipografía honesta</span></div>
-            <div class="hubRow" id="gRow3"><b>03</b><span>movimiento natural</span></div>
-            <div class="hubSub" id="gSub">el resto, fuera.</div>
+            <div class="glassLabel" id="gLabel" data-var-text="hubLabel">TRES DECISIONES</div>
+            <div class="hubRow" id="gRow1"><b>01</b><span data-var-text="hubRow1">espacio generoso</span></div>
+            <div class="hubRow" id="gRow2"><b>02</b><span data-var-text="hubRow2">tipografía honesta</span></div>
+            <div class="hubRow" id="gRow3"><b>03</b><span data-var-text="hubRow3">movimiento natural</span></div>
+            <div class="hubSub" id="gSub" data-var-text="hubSub">el resto, fuera.</div>
           </div>
         </div>
       </section>
@@ -317,27 +365,56 @@
       <!-- ============ ACTO 3 · MEJOR. ============ -->
       <section class="ov" id="a3">
         <div class="finWrap">
-          <div class="kicker" id="fKick">MANIFIESTO</div>
+          <div class="kicker" id="fKick" data-var-text="manifesto">MANIFIESTO</div>
           <div class="finSmall" id="fSmall">
             <span class="mask" style="display: block"><i>MENOS,</i></span>
           </div>
           <h2 class="finBig" id="fBig">
-            <span class="glow" aria-hidden="true"><span>MEJOR.</span></span>
-            <span class="grad"><span>MEJOR.</span></span>
+            <span class="glow" aria-hidden="true"><span data-var-text="manifestoBig">MEJOR.</span></span>
+            <span class="grad"><span data-var-text="manifestoBig">MEJOR.</span></span>
           </h2>
           <div class="hairline" id="fRule"></div>
-          <div class="quoteSub" id="fSub">WENIGER, ABER BESSER — DIETER RAMS</div>
+          <div class="quoteSub" id="fSub" data-var-text="quote">WENIGER, ABER BESSER — DIETER RAMS</div>
         </div>
-        <div class="sig" id="sig">REEL · <span class="lt">2026</span></div>
+        <div class="sig" id="sig"><span data-var-text="sigLabel">REEL ·</span> <span class="lt" data-var-text="sigYear">2026</span></div>
       </section>
 
-      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script src="../assets/vendor/gsap.min.js"></script>
       <script>
         /* Timeline única, en pausa y determinista: HyperFrames la recorre
            fotograma a fotograma a partir de window.__timelines. */
         window.__timelines = window.__timelines || {};
 
         function build() {
+          /* ---------- variables en render-time ----------
+             El runtime inyecta data-var-text / data-var-src. Aqui se aplican
+             como respaldo (defaults -> overrides del host -> --variables CLI)
+             y se reconstruyen los titulares con mascara. */
+          var V = (window.__hyperframes && window.__hyperframes.getVariables)
+            ? window.__hyperframes.getVariables()
+            : {};
+          ["kicker", "lead", "hubLabel", "hubRow1", "hubRow2", "hubRow3", "hubSub",
+            "manifesto", "manifestoBig", "quote", "sigLabel", "sigYear"].forEach(function (k) {
+            var el = document.querySelector('[data-var-text="' + k + '"]');
+            if (el && el.childElementCount === 0 && typeof V[k] === "string" && V[k] !== "") {
+              el.textContent = V[k];
+            }
+          });
+
+          /* Titulares con mascara: una <i> por letra, generada desde la variable. */
+          function setMask(sel, text) {
+            var el = document.querySelector(sel);
+            if (!el || typeof text !== "string" || text === "") return;
+            el.innerHTML = "";
+            text.split("").forEach(function (ch) {
+              var i = document.createElement("i");
+              i.textContent = ch;
+              el.appendChild(i);
+            });
+          }
+          setMask("#a1 .mask", V.headline);
+          setMask("#fSmall .mask", V.manifestoSmall);
+
           var tl = gsap.timeline({ paused: true });
 
           /* ---------- ambiente: orbes que respiran ---------- */

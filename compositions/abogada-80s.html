@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"videoSrc","type":"image","label":"Video principal","default":"../demo2/cut/master.mp4"},
+    {"id":"audioSrc","type":"image","label":"Audio original","default":"../assets/audio/abogada-original.mp3"}
+  ]'
+>
   <head>
     <meta charset="UTF-8" />
     <title>Abogada 80 s · réplica de edición</title>
@@ -27,7 +33,7 @@
         font-size: 62px; font-weight: 800; line-height: 1.16;
         color: #fff; letter-spacing: 0.002em;
         text-shadow: 0 3px 14px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 0, 0, 0.55);
-      }
+        will-change: opacity;}
       .cap-red { color: #ff2f2f; }
       .cap-yellow { color: #ffd60a; }
 
@@ -71,6 +77,18 @@
         z-index: 40; opacity: 0; width: 190px;
         filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.45));
       }
+    
+      /* will-change: elementos animados por GSAP */
+
+      #hookTitle { will-change: opacity; }
+      #hookSub { will-change: opacity; }
+      #rowY { will-change: opacity; }
+      #explain { will-change: opacity; }
+      #audRow { will-change: opacity; }
+      #seamTop { will-change: opacity; }
+      #seamBot { will-change: opacity; }
+      #glow { will-change: opacity; }
+      #arrow { will-change: opacity, transform; }
     </style>
   </head>
   <body>
@@ -91,11 +109,12 @@
         data-track-index="3"
         data-volume="1"
         src="../assets/audio/abogada-original.mp3"
+        data-var-src="audioSrc"
         preload="auto"
       ></audio>
 
       <div id="vids">
-        <div id="vids"><video id="master" src="../demo2/cut/master.mp4" data-start="0" data-duration="80.48" muted playsinline preload="auto"></video></div>
+        <div id="vids"><video id="master" src="../demo2/cut/master.mp4" data-var-src="videoSrc" data-start="0" data-duration="80.48" muted playsinline preload="auto"></video></div>
       </div>
 
 <div class="cap" id="c4_48">audiencia que va</div>
@@ -196,7 +215,7 @@
         <path d="M58 14 L122 14 L122 118 L152 118 L90 206 L28 118 L58 118 Z" fill="#ffffff" stroke="#e5341f" stroke-width="9" stroke-linejoin="round"/>
       </svg>
 
-      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script src="../assets/vendor/gsap.min.js"></script>
       <script>
         window.__timelines = window.__timelines || {};
         function build() {

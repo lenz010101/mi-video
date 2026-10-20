@@ -112,6 +112,15 @@ render fluido (sin fotogramas congelados) y automatización escalable.
   (`transform`, `opacity`).
 - Cada escena va en un contenedor con duración explícita:
   `<div class="scene" data-start="0" data-duration="3.6">`.
+  - `data-duration` va en **segundos** (3.6 = 3,6 s), no en milisegundos.
+- El **build de la timeline es síncrono**: se llama `build()` directamente, sin
+  `document.fonts.ready.then(...)` ni promesas. Si la línea de tiempo no está
+  registrada cuando el renderizador pide el primer fotograma, el MP4 sale
+  congelado. Con `gsap.ticker.fps(30)` sincronizado con `data-fps`.
+- **GSAP se carga en local** desde `assets/vendor/gsap.min.js` (vendorizado,
+  3.12.5). Nada de CDN: si jsdelivr falla, no hay timeline y el vídeo sale
+  congelado. Ruta: `assets/vendor/gsap.min.js` (root) o
+  `../assets/vendor/gsap.min.js` (dentro de `compositions/`).
 
 ### 3. Variables en render-time (API real de HyperFrames 0.8.x)
 
@@ -131,15 +140,41 @@ runtime. Verificado en el paquete `hyperframes` (0.8.162/0.8.172):
 - Binding a un elemento: **`data-var-text="id"`** (texto) y
   **`data-var-src="id"`** (imagen). **No existen** `data-variable`,
   `data-variable-src` ni `data-variable-style-background`: no usarlos.
+  - Ojo: la spec del usuario en texto plano menciona `data-variable`,
+    `data-variable-src` y `data-variable-style-background`; esos nombres
+    **no existen** en HyperFrames 0.8.x y el linter los marca como obsoletos.
+    Se usan los equivalents reales (`data-var-text`, `data-var-src`).
+  - Para **fondos/colores** no hay atributo: se declara una variable de tipo
+    `color` y se aplica en JS sobre una custom property CSS
+    (`--primary`, `--primary-soft`…) leyendo `getVariables()`.
 - Valores por instancia de sub-composición: `data-variable-values='{"title":"Pro"}'`
   en el elemento host.
 - En JS: `window.__hyperframes.getVariables()` devuelve el merge
   (defaults → overrides del host → `--variables` de CLI).
 - El linter avisa (`unknown_variable_binding`) si un `data-var-*` apunta a un
   id no declarado, y falla si la declaración no es un array JSON válido.
+- **Convenciones propias** (el runtime no las inyecta; se aplican en el JS de
+  la composición leyendo `getVariables()`):
+  - `data-var-lines="id"` para títulos con salto de línea (`\n` → `<br />`),
+    porque `data-var-text` reemplaza el contenido y se comería el `<br />`.
+  - Los titulares letra a letra (`.mask i`, `.l i`) se **reconstruyen** desde
+    la variable en JS: una `<i>` por carácter.
+  - Cada composición declara sus variables y las aplica: texto con
+    `data-var-text`, imágenes/vídeos/audio con `data-var-src`.
 
 ### 4. Verificación antes de renderizar
 
+- **Auditor de reglas (obligatorio, sin arrancar Chrome):**
+  `node demo2/audit-rules.mjs` revisa todas las composiciones (`index.html` +
+  `compositions/*.html`) y debe dar **0 problemas**:
+  - no `transition:` en el CSS, ni `requestAnimationFrame`/`setTimeout`/
+    `setInterval` en el JS de la composición,
+  - `will-change` con la propiedad correcta en todo elemento animado,
+  - `data-duration` en todo contenedor con `data-start`,
+  - `data-var-*` siempre apuntando a una variable declarada, sin atributos
+    obsoletos, y sin recursos embebidos en base64.
+  - `node demo2/fix-willchange.mjs [--write]` añade el `will-change` que falte
+    (reglas por id, para no tocar clases compartidas).
 - `npx hyperframes lint .` en local **y** el CI lintea con 0.8.162: si el
   local (0.8.172) da 0 errores, el CI puede marcar `missing_local_asset` si
   un asset referenciado no está commiteado. `git add` siempre los assets.

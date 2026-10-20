@@ -1,5 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"saveTitle","type":"string","label":"Titulo del cartel","default":"SAVE THIS DATE"},
+    {"id":"saveDate","type":"string","label":"Fecha del cartel","default":"11/07/2026"},
+    {"id":"brandName","type":"string","label":"Marca 1","default":"VELUXE"},
+    {"id":"brandName2","type":"string","label":"Marca 2","default":"PARTY"},
+    {"id":"vMark","type":"string","label":"Marca en papel","default":"veluxe"},
+    {"id":"ghostText","type":"string","label":"Marca fantasma","default":"VELUXE V3"},
+    {"id":"marqueeText","type":"string","label":"Marquesina","default":"VELUXE"},
+    {"id":"dateLine","type":"string","label":"Fecha","default":"METEPEC, SÁBADO 11 DE JULIO"},
+    {"id":"slogan","type":"string","label":"Claim","default":"out of the ordinary"},
+    {"id":"lineUp","type":"string","label":"Lineup","default":"REGGAETON & HOUSE · OPEN BAR"},
+    {"id":"access","type":"string","label":"Acceso","default":"ACCESS 7:30 PM"},
+    {"id":"djTitle","type":"string","label":"Titulo del DJ","default":"MAESTRO"},
+    {"id":"djName","type":"string","label":"DJ","default":"DOBEL"},
+    {"id":"scene1Src","type":"image","label":"Escena 1","default":"../demo2/new/scene1.jpg"},
+    {"id":"scene2Src","type":"image","label":"Escena 2","default":"../demo2/new/scene2.jpg"},
+    {"id":"clubSrc","type":"image","label":"Clip del club","default":"../demo2/new/club_a_red.mp4"},
+    {"id":"audioSrc","type":"image","label":"Audio","default":"../demo2/new/audio.m4a"}
+  ]'
+>
   <head>
     <meta charset="UTF-8" />
     <title>VELUXE · edición estilo motel/neón</title>
@@ -75,7 +96,7 @@
       .lt {
         position: relative; font-size: 150px; font-weight: 800; color: #f6cfcf; line-height: 1;
         text-shadow: 0 0 22px rgba(255,60,70,0), 0 4px 0 rgba(120,10,16,.9);
-        opacity: .38; transition: none; padding: 0 6px;
+        opacity: .38; padding: 0 6px;
       }
       .lt::after { /* bombilla del borde */
         content: ""; position: absolute; inset: 12px 10px auto 10px; height: 10px;
@@ -117,11 +138,37 @@
       #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 40; pointer-events: none; }
 
       /* viders: video visible tras el corte de la fiesta */
-      #s1 { z-index: 1; }
-      #s2 { z-index: 2; }
-      #vidWrap { position: absolute; inset: 0; opacity: 0; overflow: hidden; z-index: 3; }
+      #s1
+    
+      
+      #paper, #tickets, #vMark, #ghost { will-change: transform, opacity; } inset: 0; opacity: 0; overflow: hidden; z-index: 3; }
       #vidWrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
       #nide { position: absolute; inset: 0; background: rgba(60,0,8,.18); z-index: 2; }
+    
+      /* will-change: elementos animados por GSAP */
+      #paper, #tickets, #vMark, #ghost { will-change: transform; }
+      #marquee, #vMark2, #stkAlien, #stkSpray, #stkBurger { will-change: transform; }
+      #stkAlien { will-change: transform; }
+      #stkSpray { will-change: transform; }
+      #stkBurger { will-change: transform; }
+      #s2 { will-change: transform, opacity; }
+      #stkChamp { will-change: transform; }
+      #stkBurger2 { will-change: transform, opacity; }
+      #stkAlien2 { will-change: transform, opacity; }
+      #stkSpray2 { will-change: transform, opacity; }
+
+      /* will-change: elementos animados por GSAP */
+      #flash { will-change: opacity; }
+      #vMark2 { will-change: opacity; }
+      #s2 #marquee .lt { will-change: opacity; }
+      #stkAlien { will-change: opacity, transform; }
+      #stkSpray { will-change: opacity, transform; }
+      #stkBurger { will-change: opacity, transform; }
+      #s1 .blood { will-change: opacity; }
+      #s2 .blood { will-change: opacity; }
+      #marquee { will-change: opacity; }
+      #vidWrap { will-change: opacity, transform; }
+      #stkChamp { will-change: opacity, transform; }
     </style>
   </head>
   <body>
@@ -135,27 +182,27 @@
       data-fps="30"
     >
       <audio id="track" data-start="0" data-duration="9.37" data-media-start="0"
-        data-track-index="1" data-volume="1" src="../demo2/new/audio.m4a" preload="auto"></audio>
+        data-track-index="1" data-volume="1" src="../demo2/new/audio.m4a" data-var-src="audioSrc" preload="auto"></audio>
 
       <div class="scene" id="s1">
-        <img src="../demo2/new/scene1.jpg" alt="" />
+        <img src="../demo2/new/scene1.jpg" data-var-src="scene1Src" alt="" />
         <div class="blood"></div>
         <div id="paper">
-          <div class="p1">SAVE THIS DATE</div>
-          <div class="p2">11/07/2026</div>
-          <div class="p3">VELUXE</div>
-          <div class="p4">PARTY</div>
+          <div class="p1" data-var-text="saveTitle">SAVE THIS DATE</div>
+          <div class="p2" data-var-text="saveDate">11/07/2026</div>
+          <div class="p3" data-var-text="brandName">VELUXE</div>
+          <div class="p4" data-var-text="brandName2">PARTY</div>
         </div>
         <div id="tickets"><i></i><i></i><i></i><i></i></div>
-        <div id="vMark">veluxe</div>
-        <div id="ghost">VELUXE V3</div>
+        <div id="vMark" data-var-text="vMark">veluxe</div>
+        <div id="ghost" data-var-text="ghostText">VELUXE V3</div>
       </div>
 
       <div class="scene" id="s2">
-        <img src="../demo2/new/scene2.jpg" alt="" />
+        <img src="../demo2/new/scene2.jpg" data-var-src="scene2Src" alt="" />
         <div class="blood" style="opacity:.6"></div>
         <div id="marquee"><div class="row"><span class="lt">V</span><span class="lt">E</span><span class="lt">L</span><span class="lt">U</span><span class="lt">X</span><span class="lt">E</span></div></div>
-        <div id="vMark2">veluxe</div>
+        <div id="vMark2" data-var-text="vMark">veluxe</div>
         <svg class="stk" id="stkAlien" viewBox="0 0 120 120">
           <g stroke="#fff" stroke-width="5" stroke-linecap="round">
             <path d="M45 30 C 40 18, 30 14, 28 8" fill="none"/><circle cx="27" cy="7" r="6" fill="#6fd356"/>
@@ -238,19 +285,43 @@
       </svg>
 
       <div class="blood" style="opacity:.35; z-index:12"></div>
-      <div id="dateLine">METEPEC, SÁBADO 11 DE JULIO</div>
+      <div id="dateLine" data-var-text="dateLine">METEPEC, SÁBADO 11 DE JULIO</div>
       <div id="footer">
-        <div id="ooo">out of the ordinary</div>
-        <div id="lineup">REGGAETON &amp; HOUSE · OPEN BAR</div>
-        <div id="access">ACCESS 7:30 PM</div>
-        <div id="dobel">MAESTRO<b>DOBEL</b></div>
+        <div id="ooo" data-var-text="slogan">out of the ordinary</div>
+        <div id="lineup" data-var-text="lineUp">REGGAETON &amp; HOUSE · OPEN BAR</div>
+        <div id="access" data-var-text="access">ACCESS 7:30 PM</div>
+        <div id="dobel"><span data-var-text="djTitle">MAESTRO</span><b data-var-text="djName">DOBEL</b></div>
       </div>
       <div id="flash"></div>
 
-      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script src="../assets/vendor/gsap.min.js"></script>
       <script>
         window.__timelines = window.__timelines || {};
         function build() {
+          /* Variables en render-time (defaults -> overrides del host -> --variables CLI).
+             El runtime inyecta data-var-text / data-var-src; aqui se aplican como
+             respaldo y se reconstruye la marquesina letra a letra. */
+          var V = (window.__hyperframes && window.__hyperframes.getVariables)
+            ? window.__hyperframes.getVariables()
+            : {};
+          ["saveTitle", "saveDate", "brandName", "brandName2", "vMark", "ghostText",
+            "dateLine", "slogan", "lineUp", "access", "djTitle", "djName"].forEach(function (k) {
+            var el = document.querySelector('[data-var-text="' + k + '"]');
+            if (el && el.childElementCount === 0 && typeof V[k] === "string" && V[k] !== "") {
+              el.textContent = V[k];
+            }
+          });
+          var marquee = document.querySelector("#marquee .row");
+          if (marquee && typeof V.marqueeText === "string" && V.marqueeText !== "") {
+            marquee.innerHTML = "";
+            V.marqueeText.split("").forEach(function (ch) {
+              var s = document.createElement("span");
+              s.className = "lt";
+              s.textContent = ch;
+              marquee.appendChild(s);
+            });
+          }
+
           var tl = gsap.timeline({ paused: true });
           /* E1: flicker de encendido + cartel + tickets + fantasma */
           tl.set("#s1", { opacity: 1 }, 0);

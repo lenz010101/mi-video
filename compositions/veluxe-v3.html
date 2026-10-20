@@ -85,6 +85,9 @@
       /* fogonazos medidos: azul 5.50 · magenta 9.00 */
       #flashBlue { position: absolute; inset: 0; background: #e8f2ff; opacity: 0; z-index: 39; pointer-events: none; will-change: opacity; }
       #flashPink { position: absolute; inset: 0; background: #ff4fd8; opacity: 0; z-index: 39; pointer-events: none; will-change: opacity; }
+    
+      /* will-change: elementos animados por GSAP */
+      #partyWin { will-change: opacity; }
     </style>
   </head>
   <body>
@@ -175,7 +178,7 @@
       <div id="flashBlue"></div>
       <div id="flashPink"></div>
 
-      <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+      <script src="../assets/vendor/gsap.min.js"></script>
       <script>
         window.__timelines = window.__timelines || {};
 

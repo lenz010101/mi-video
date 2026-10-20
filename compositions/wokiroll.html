@@ -1,5 +1,49 @@
 <!DOCTYPE html>
-<html lang="es">
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"brand","type":"string","label":"Marca","default":"WOKIROLL"},
+    {"id":"est","type":"string","label":"Antetitulo","default":"EST. 1995"},
+    {"id":"tagline","type":"string","label":"Claim","default":"SABOR ASIÁTICO AL PASO"},
+    {"id":"seal","type":"string","label":"Sello","default":"WR"},
+    {"id":"menu1","type":"string","label":"Plato 1","default":"ROLLS"},
+    {"id":"menu2","type":"string","label":"Plato 2","default":"KIMBAP"},
+    {"id":"menu3","type":"string","label":"Plato 3","default":"WOK"},
+    {"id":"menu4","type":"string","label":"Plato 4","default":"RAMEN"},
+    {"id":"menu5","type":"string","label":"Plato 5","default":"SUSHI"},
+    {"id":"menu6","type":"string","label":"Plato 6","default":"ONIGIRI"},
+    {"id":"temp","type":"string","label":"Temperatura","default":"300°C"},
+    {"id":"tempSub","type":"string","label":"Bajada del sello","default":"FUEGO DIRECTO"},
+    {"id":"shot1k","type":"string","label":"Foto 1 · kicker","default":"EST. 1995"},
+    {"id":"shot1t","type":"string","label":"Foto 1 · titulo","default":"FUEGO\nCALLEJERO"},
+    {"id":"shot1s","type":"string","label":"Foto 1 · bajada","default":"NEÓN, WOK Y SABOR DE BARRIO"},
+    {"id":"shot2k","type":"string","label":"Foto 2 · kicker","default":"ROLLS & KIMBAP"},
+    {"id":"shot2t","type":"string","label":"Foto 2 · titulo","default":"ENROLLADO\nAL MOMENTO"},
+    {"id":"shot2s","type":"string","label":"Foto 2 · bajada","default":"ARROZ SUAVE · RELLENO GENEROSO"},
+    {"id":"shot3k","type":"string","label":"Foto 3 · kicker","default":"RAMEN & WOK"},
+    {"id":"shot3t","type":"string","label":"Foto 3 · titulo","default":"CALDO\nCALIENTE"},
+    {"id":"shot3s","type":"string","label":"Foto 3 · bajada","default":"SALTEADO A 300 °C, SERVIDO AL INSTANTE"},
+    {"id":"shot4k","type":"string","label":"Foto 4 · kicker","default":"NUESTRO LOCAL"},
+    {"id":"shot4t","type":"string","label":"Foto 4 · titulo","default":"MESAS\nY LUZ CÁLIDA"},
+    {"id":"shot4s","type":"string","label":"Foto 4 · bajada","default":"VEN, SIÉNTATE Y PIDE LO TUYO"},
+    {"id":"madeTitle","type":"string","label":"Titulo escena 4","default":"HECHO"},
+    {"id":"madeTitle2","type":"string","label":"Titulo escena 4 · 2","default":"AL MOMENTO"},
+    {"id":"feat1t","type":"string","label":"Ventaja 1 · titulo","default":"AL WOK 300°C"},
+    {"id":"feat1s","type":"string","label":"Ventaja 1 · bajada","default":"FUEGO DIRECTO, SABOR CALLEJERO"},
+    {"id":"feat2t","type":"string","label":"Ventaja 2 · titulo","default":"PREPARADO EN VIVO"},
+    {"id":"feat2s","type":"string","label":"Ventaja 2 · bajada","default":"INGREDIENTES FRESCOS AL INSTANTE"},
+    {"id":"feat3t","type":"string","label":"Ventaja 3 · titulo","default":"PARA LLEVAR"},
+    {"id":"feat3s","type":"string","label":"Ventaja 3 · bajada","default":"EMPACADO KRAFT · DELIVERY Y RETIRO"},
+    {"id":"ctaText","type":"string","label":"Invitacion","default":"TE ESPERAMOS"},
+    {"id":"city","type":"string","label":"Ciudad","default":"ESCÁRCEGA, CAMPECHE"},
+    {"id":"ctaSub","type":"string","label":"Bajada final","default":"COMIDA ASIÁTICA AL PASO · PARA LLEVAR"},
+    {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/audio/music.mp3"},
+    {"id":"alleySrc","type":"image","label":"Foto 1","default":"../assets/img/alley.jpg"},
+    {"id":"rollsSrc","type":"image","label":"Foto 2","default":"../assets/img/rolls.jpg"},
+    {"id":"ramenSrc","type":"image","label":"Foto 3","default":"../assets/img/ramen.jpg"},
+    {"id":"localSrc","type":"image","label":"Foto 4","default":"../assets/img/local.jpg"}
+  ]'
+>
   <head>
     <meta charset="UTF-8" />
     <title>WOKIROLL — Escárcega, Campeche</title>
@@ -472,7 +516,7 @@
         opacity: 0;
       }
 
-      .s4-title span {
+      .s4-title .t2 {
         color: #ff8a1f;
       }
 
@@ -643,15 +687,68 @@
       #corner b {
         font-family: "Bebas Neue", sans-serif;
         font-size: 32px;
-        font-weight: 400;
-        letter-spacing: 0.2em;
-        color: #fff7ec;
+        font-weight: 4
+      #s1 .s1-sub { will-change: transform, opacity; }or: #fff7ec;
       }
 
       #corner i {
         font-style: normal;
         color: #ff8a1f;
       }
+    
+      /* will-change: elementos animados por GSAP */
+      #cam { will-change: transform; }
+      #glowA { will-change: opacity, transform; }
+      #glowB { will-change: opacity, transform; }
+      #beam { will-change: opacity, transform; }
+      #sweep1 { will-change: opacity, transform; }
+      #s1 .s1-sub { will-change: transform; }
+      #s1 .seal { will-change: transform; }
+      #s1 .sealRing { will-change: transform; }
+      #frame .fc { will-change: transform; }
+      #s1 { will-change: transform; }
+      #s2 .word .dot { will-change: transform; }
+      #tempBadge { will-change: transform; }
+      #s2 { will-change: transform; }
+      #s3 { will-change: transform; }
+      #s4 .s4-title { will-change: transform, opacity; }
+      #s4 .feat { will-change: transform; }
+      #s4 .feat svg { will-change: transform; }
+      #s4 { will-change: transform; }
+      #s5 .pinWrap { will-change: transform; }
+      #s5 .ctaSub { will-change: transform; }
+      #s5 .tag { will-change: transform; }
+      #corner { will-change: transform; }
+
+      /* will-change: elementos animados por GSAP */
+      #grid { will-change: transform; }
+      #s1 .rule { will-change: transform; }
+      #s1 .est { will-change: opacity; }
+      #logoGlow { will-change: opacity; }
+      #s1 .seal { will-change: opacity, transform; }
+      #s1 .sealRing { will-change: opacity, transform; }
+      #frame .fc { will-change: opacity, transform; }
+      #s2 { will-change: opacity, transform; }
+      #s2 .word { will-change: opacity; }
+      #s2 .word .dot { will-change: opacity, transform; }
+      #tempBadge { will-change: opacity, transform; }
+      #rollList { will-change: transform; }
+      #s3 { will-change: opacity, transform; }
+      #s4 { will-change: opacity, transform; }
+      #s4 .feat { will-change: opacity, transform; }
+      #s4 .feat .bar { will-change: transform; }
+      #s4 .feat svg { will-change: opacity, transform; }
+      #s5 { will-change: opacity; }
+      #s5 .pinWrap { will-change: opacity, transform; }
+      #s5 .city { will-change: opacity; }
+      #s5 .ctaRule { will-change: transform; }
+      #s5 .ctaSub { will-change: opacity, transform; }
+      #s5 .tag { will-change: opacity, transform; }
+      #corner { will-change: opacity, transform; }
+
+      /* will-change: elementos animados por GSAP */
+      #s1 #logo .l i { will-change: transform; }
+      #s5 #cta .l i { will-change: transform; }
     </style>
   </head>
   <body>
@@ -670,7 +767,8 @@
         data-duration="17.5"
         data-track-index="9"
         data-volume="0.75"
-        src="assets/audio/music.mp3"
+        src="../assets/audio/music.mp3"
+        data-var-src="musicSrc"
         preload="auto"
       ></audio>
 
@@ -684,12 +782,12 @@
         <section id="s1" class="scene">
           <div class="s1-top">
             <span class="rule"></span>
-            <span class="est">EST. 1995</span>
+            <span class="est" data-var-text="est">EST. 1995</span>
             <span class="rule"></span>
           </div>
 
           <div class="logoWrap">
-            <div id="logoGlow" aria-hidden="true">WOKIROLL</div>
+            <div id="logoGlow" aria-hidden="true" data-var-text="brand">WOKIROLL</div>
             <h1 id="logo" aria-label="WOKIROLL">
               <span class="l"><i>W</i></span>
               <span class="l"><i>O</i></span>
@@ -703,20 +801,20 @@
             <div id="sweep1"></div>
           </div>
 
-          <p class="s1-sub">SABOR ASIÁTICO AL PASO</p>
+          <p class="s1-sub" data-var-text="tagline">SABOR ASIÁTICO AL PASO</p>
           <div class="sealRing"></div>
-          <div class="seal">WR</div>
+          <div class="seal" data-var-text="seal">WR</div>
         </section>
 
         <!-- ===== ESCENA 2 · CARTA ===== -->
         <section id="s2" class="scene">
           <div id="rollList">
-            <div class="word"><span class="dot"></span><em>ROLLS</em></div>
-            <div class="word alt"><span class="dot"></span><em>KIMBAP</em></div>
-            <div class="word"><span class="dot"></span><em>WOK</em></div>
-            <div class="word alt"><span class="dot"></span><em>RAMEN</em></div>
-            <div class="word"><span class="dot"></span><em>SUSHI</em></div>
-            <div class="word alt"><span class="dot"></span><em>ONIGIRI</em></div>
+            <div class="word"><span class="dot"></span><em data-var-text="menu1">ROLLS</em></div>
+            <div class="word alt"><span class="dot"></span><em data-var-text="menu2">KIMBAP</em></div>
+            <div class="word"><span class="dot"></span><em data-var-text="menu3">WOK</em></div>
+            <div class="word alt"><span class="dot"></span><em data-var-text="menu4">RAMEN</em></div>
+            <div class="word"><span class="dot"></span><em data-var-text="menu5">SUSHI</em></div>
+            <div class="word alt"><span class="dot"></span><em data-var-text="menu6">ONIGIRI</em></div>
           </div>
 
           <div id="tempBadge">
@@ -738,8 +836,8 @@
               />
             </svg>
             <span class="tb-text">
-              <strong>300°C</strong>
-              <small>FUEGO DIRECTO</small>
+              <strong data-var-text="temp">300°C</strong>
+              <small data-var-text="tempSub">FUEGO DIRECTO</small>
             </span>
           </div>
         </section>
@@ -747,45 +845,45 @@
         <!-- ===== ESCENA 3 · FOTOS ===== -->
         <section id="s3" class="scene">
           <div class="shot">
-            <img src="assets/img/alley.jpg" alt="Callejón nocturno con neones" />
+            <img src="../assets/img/alley.jpg" data-var-src="alleySrc" alt="Callejón nocturno con neones" />
             <div class="shotVeil"></div>
             <div class="shotCap">
-              <span class="k">EST. 1995</span>
-              <b>FUEGO<br />CALLEJERO</b>
-              <i>NEÓN, WOK Y SABOR DE BARRIO</i>
+              <span class="k" data-var-text="shot1k">EST. 1995</span>
+              <b data-var-lines="shot1t">FUEGO<br />CALLEJERO</b>
+              <i data-var-text="shot1s">NEÓN, WOK Y SABOR DE BARRIO</i>
             </div>
             <span class="shotNum">01 / 04</span>
           </div>
 
           <div class="shot">
-            <img src="assets/img/rolls.jpg" alt="Rolls de salmón" />
+            <img src="../assets/img/rolls.jpg" data-var-src="rollsSrc" alt="Rolls de salmón" />
             <div class="shotVeil"></div>
             <div class="shotCap">
-              <span class="k">ROLLS &amp; KIMBAP</span>
-              <b>ENROLLADO<br />AL MOMENTO</b>
-              <i>ARROZ SUAVE · RELLENO GENEROSO</i>
+              <span class="k" data-var-text="shot2k">ROLLS &amp; KIMBAP</span>
+              <b data-var-lines="shot2t">ENROLLADO<br />AL MOMENTO</b>
+              <i data-var-text="shot2s">ARROZ SUAVE · RELLENO GENEROSO</i>
             </div>
             <span class="shotNum">02 / 04</span>
           </div>
 
           <div class="shot">
-            <img src="assets/img/ramen.jpg" alt="Tazón de ramen" />
+            <img src="../assets/img/ramen.jpg" data-var-src="ramenSrc" alt="Tazón de ramen" />
             <div class="shotVeil"></div>
             <div class="shotCap">
-              <span class="k">RAMEN &amp; WOK</span>
-              <b>CALDO<br />CALIENTE</b>
-              <i>SALTEADO A 300 °C, SERVIDO AL INSTANTE</i>
+              <span class="k" data-var-text="shot3k">RAMEN &amp; WOK</span>
+              <b data-var-lines="shot3t">CALDO<br />CALIENTE</b>
+              <i data-var-text="shot3s">SALTEADO A 300 °C, SERVIDO AL INSTANTE</i>
             </div>
             <span class="shotNum">03 / 04</span>
           </div>
 
           <div class="shot">
-            <img src="assets/img/local.jpg" alt="Interior cálido del local" />
+            <img src="../assets/img/local.jpg" data-var-src="localSrc" alt="Interior cálido del local" />
             <div class="shotVeil"></div>
             <div class="shotCap">
-              <span class="k">NUESTRO LOCAL</span>
-              <b>MESAS<br />Y LUZ CÁLIDA</b>
-              <i>VEN, SIÉNTATE Y PIDE LO TUYO</i>
+              <span class="k" data-var-text="shot4k">NUESTRO LOCAL</span>
+              <b data-var-lines="shot4t">MESAS<br />Y LUZ CÁLIDA</b>
+              <i data-var-text="shot4s">VEN, SIÉNTATE Y PIDE LO TUYO</i>
             </div>
             <span class="shotNum">04 / 04</span>
           </div>
@@ -793,7 +891,7 @@
 
         <!-- ===== ESCENA 4 · DIFERENCIAS ===== -->
         <section id="s4" class="scene">
-          <h2 class="s4-title">HECHO <span>AL MOMENTO</span></h2>
+          <h2 class="s4-title"><span class="t1" data-var-text="madeTitle">HECHO</span> <span class="t2" data-var-text="madeTitle2">AL MOMENTO</span></h2>
 
           <div class="featList">
             <div class="feat">
@@ -803,8 +901,8 @@
                 <path d="M12 20.5a2.6 2.6 0 0 0 2.6-2.6c0-1.7-2.6-4.4-2.6-4.4s-2.6 2.7-2.6 4.4A2.6 2.6 0 0 0 12 20.5z" />
               </svg>
               <span class="txt">
-                <strong>AL WOK 300°C</strong>
-                <small>FUEGO DIRECTO, SABOR CALLEJERO</small>
+                <strong data-var-text="feat1t">AL WOK 300°C</strong>
+                <small data-var-text="feat1s">FUEGO DIRECTO, SABOR CALLEJERO</small>
               </span>
             </div>
 
@@ -815,8 +913,8 @@
                 <path d="M18.5 16.5l.8 2.4 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" />
               </svg>
               <span class="txt">
-                <strong>PREPARADO EN VIVO</strong>
-                <small>INGREDIENTES FRESCOS AL INSTANTE</small>
+                <strong data-var-text="feat2t">PREPARADO EN VIVO</strong>
+                <small data-var-text="feat2s">INGREDIENTES FRESCOS AL INSTANTE</small>
               </span>
             </div>
 
@@ -827,8 +925,8 @@
                 <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5" />
               </svg>
               <span class="txt">
-                <strong>PARA LLEVAR</strong>
-                <small>EMPACADO KRAFT · DELIVERY Y RETIRO</small>
+                <strong data-var-text="feat3t">PARA LLEVAR</strong>
+                <small data-var-text="feat3s">EMPACADO KRAFT · DELIVERY Y RETIRO</small>
               </span>
             </div>
           </div>
@@ -843,7 +941,7 @@
             </svg>
           </div>
 
-          <div class="city">ESCÁRCEGA, CAMPECHE</div>
+          <div class="city" data-var-text="city">ESCÁRCEGA, CAMPECHE</div>
 
           <div class="ctaMask">
             <div id="cta" class="cta" aria-label="Te esperamos">
@@ -853,9 +951,9 @@
 
           <span class="ctaRule"></span>
 
-          <p class="ctaSub">COMIDA ASIÁTICA AL PASO · PARA LLEVAR</p>
+          <p class="ctaSub" data-var-text="ctaSub">COMIDA ASIÁTICA AL PASO · PARA LLEVAR</p>
 
-          <div class="tag">WOKIROLL</div>
+          <div class="tag" data-var-text="brand">WOKIROLL</div>
         </section>
 
         <div id="frame">
@@ -870,15 +968,61 @@
         <div id="vignette"></div>
 
         <div id="corner">
-          <b>WOKIROLL</b>
+          <b data-var-text="brand">WOKIROLL</b>
           <i>•</i>
-          <span>ESCÁRCEGA, CAMPECHE</span>
+          <span data-var-text="city">ESCÁRCEGA, CAMPECHE</span>
         </div>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="../assets/vendor/gsap.min.js"></script>
     <script>
+      /* ---------- variables en render-time ----------
+         El runtime inyecta data-var-text / data-var-src. Aqui se aplican como
+         respaldo (defaults -> overrides del host -> --variables de CLI) y se
+         reconstruyen los titulos con salto de linea y las letras sueltas. */
+      const V = (window.__hyperframes && window.__hyperframes.getVariables)
+        ? window.__hyperframes.getVariables()
+        : {};
+
+      document.querySelectorAll("[data-var-text]").forEach((el) => {
+        const k = el.getAttribute("data-var-text");
+        if (typeof V[k] === "string" && V[k] !== "") el.textContent = V[k];
+      });
+
+      /* Titulos con salto de linea: \n -> <br /> (el runtime no inyecta este
+         atributo, asi que lo aplicamos nosotros). */
+      document.querySelectorAll("[data-var-lines]").forEach((el) => {
+        const k = el.getAttribute("data-var-lines");
+        if (typeof V[k] !== "string" || V[k] === "") return;
+        el.innerHTML = V[k].split("\n")
+          .map((line) => line.replace(/&/g, "&amp;").replace(/</g, "&lt;"))
+          .join("<br />");
+      });
+
+      /* Letras sueltas (logo, invitacion): una <span class="l"><i>x</i></span> por caracter. */
+      function setLetters(sel, text) {
+        const el = document.querySelector(sel);
+        if (!el || typeof text !== "string" || text === "") return;
+        el.innerHTML = "";
+        text.split("").forEach((ch) => {
+          if (ch === " ") {
+            const sp = document.createElement("span");
+            sp.className = "sp";
+            el.appendChild(sp);
+            return;
+          }
+          const s = document.createElement("span");
+          s.className = "l";
+          const i = document.createElement("i");
+          i.textContent = ch;
+          s.appendChild(i);
+          el.appendChild(s);
+        });
+      }
+      setLetters("#s1 #logo", V.brand);
+      setLetters("#s5 #cta", V.ctaText);
+
       const tl = gsap.timeline({ paused: true });
 
       /* ---------- cámara y ambiente (todo el vídeo) ---------- */
