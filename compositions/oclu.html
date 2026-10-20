@@ -73,6 +73,7 @@
       .pro .ac { margin-left: auto; font-size: 18px; color: #7f848d; }
 
       /* móvil */
+      .phone.big { width: 540px; height: 1080px; }
       .phone {
         position: absolute; z-index: 10; width: 430px; height: 880px; border-radius: 54px;
         background: #14161c; padding: 16px; box-shadow: 0 40px 90px rgba(0,0,0,.5);
@@ -162,6 +163,14 @@
             <div class="tabs" style="margin-top:20px;"><span class="on">Links</span><span>Solicitudes</span><span>Profesionales</span><span>Reglas</span></div>
           </div>
         </div>
+        <div class="ui" id="ui2b" style="left:64px; top:880px; width:952px; height:230px;">
+          <div class="ui-pad">
+            <div class="ui-sub" style="letter-spacing:.14em; font-size:15px;">CUANTO SE PUEDE RESERVAR</div>
+            <div class="row2" style="margin-top:16px;">
+              <div class="chip on">1 h</div><div class="chip">2 h</div><div class="chip">12 h</div><div class="chip">24 h</div>
+            </div>
+          </div>
+        </div>
       </div>
 
 <div class="scene light" id="s2" data-start="6.80" data-duration="1.90">
@@ -179,7 +188,15 @@
             <div class="row2" style="margin-top:16px;">
               <div class="ui-title" style="font-size:20px; font-weight:600;">Pendiente</div><div class="toggle"><i></i></div>
             </div>
+          </div>        <div class="ui" id="ui2b" style="left:64px; top:880px; width:952px; height:230px;">
+          <div class="ui-pad">
+            <div class="ui-sub" style="letter-spacing:.14em; font-size:15px;">CUANTO SE PUEDE RESERVAR</div>
+            <div class="row2" style="margin-top:16px;">
+              <div class="chip on">1 h</div><div class="chip">2 h</div><div class="chip">12 h</div><div class="chip">24 h</div>
+            </div>
           </div>
+        </div>
+
         </div>
       </div>
 
@@ -368,17 +385,25 @@
       <div class="scene light" id="s13" data-start="40.23" data-duration="3.20">
         <div class="badge" id="b13"><b>04</b> En la clínica</div>
         <div class="title" id="t13"><span data-var-text="c12Titlea">Te llega</span> <span class="dim" data-var-text="c12Titleb">la solicitud.</span></div>
-        <div class="ui" id="ui13" style="left:64px; top:520px; width:952px; height:560px;">
+        <div class="ui" id="ui13" style="left:40px; top:430px; width:1000px; height:980px;">
           <div class="ui-pad">
-            <div class="row2" style="border-bottom:1px solid #eee; padding-bottom:16px;">
-              <div class="ui-title">Reservas online</div><div class="ui-sub">Turnos que el paciente pide desde un link</div>
+            <div class="row2" style="border-bottom:1px solid #eee; padding-bottom:14px;">
+              <div class="ui-title" style="font-size:22px;">Agenda</div>
+              <div class="row2" style="gap:18px;"><div class="ui-sub">Notificaciones</div><div class="ui-sub">CHM OCLU</div></div>
             </div>
-            <div class="row2" style="margin-top:18px;">
-              <div class="chip">Sin solicitudes</div><div class="chip on">4 ⌄</div><div class="chip">Link de reservas ▾</div>
+            <div class="row2" style="margin-top:16px;">
+              <div class="chip">Sin solicitudes</div><div class="chip on">4 &#9660;</div><div class="chip">Link de reservas &#9660;</div>
             </div>
-            <div class="ui-sub" style="letter-spacing:.14em; font-size:15px; margin-top:26px;">JUEVES 1 DE OCTUBRE</div>
-            <div class="pro"><div class="av"></div><div><div class="nm">Mariel Gómez · Control</div></div><div class="ac" style="color:#2f7d55;">✓ Aceptar</div></div>
-            <div class="pro"><div class="av"></div><div><div class="nm">Laura Pérez · Endodoncia</div></div><div class="ac" style="color:#2f7d55;">✓ Aceptar</div></div>
+            <div class="row2" style="margin-top:22px;">
+              <div class="ui-title" style="font-size:20px;">Reservas online</div>
+              <div class="ui-sub">Turnos que el paciente pide desde un link</div>
+            </div>
+            <div class="ui-sub" style="letter-spacing:.14em; font-size:14px; margin-top:20px;">JUEVES 1 DE OCTUBRE</div>
+            <div class="pro" style="padding:20px 0;"><div class="av"></div><div><div class="nm">Mariel Gomez &middot; Control</div><div class="rl">08:30</div></div><div class="ac" style="color:#2f7d55;">&#10003; Aceptar</div></div>
+            <div class="pro" style="padding:20px 0;"><div class="av"></div><div><div class="nm">Laura Perez &middot; Endodoncia</div><div class="rl">09:00</div></div><div class="ac" style="color:#2f7d55;">&#10003; Aceptar</div></div>
+            <div class="pro" style="padding:20px 0;"><div class="av"></div><div><div class="nm">Mariana Ruiz &middot; Control</div><div class="rl">09:30</div></div><div class="ac" style="color:#2f7d55;">&#10003; Aceptar</div></div>
+            <div class="pro" style="padding:20px 0;"><div class="av"></div><div><div class="nm">Carla G&aacute;mez &middot; Ortodoncia</div><div class="rl">10:00</div></div><div class="ac" style="color:#2f7d55;">&#10003; Aceptar</div></div>
+            <div class="pro" style="padding:20px 0;"><div class="av"></div><div><div class="nm">Sofia Ruiz &middot; Control</div><div class="rl">10:30</div></div><div class="ac" style="color:#2f7d55;">&#10003; Aceptar</div></div>
           </div>
         </div>
       </div>
@@ -421,7 +446,7 @@
       <!-- ══ 7 · CIERRE · 50.5 – 60 ══ -->
       <div class="scene dark" id="s16" data-start="50.27" data-duration="1.96">
         <div class="title" id="t16"><span data-var-text="c15Titlea">Y tu paciente</span> <span class="dim" data-var-text="c15Titleb">se entera al toque.</span></div>
-        <div class="phone" id="ph7" style="left:330px; top:640px;">
+        <div class="phone big" id="ph7" style="left:270px; top:520px;">
           <div class="screen">
             <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra22">2:35</span><span data-var-text="tituloExtra23">OCLÜ</span></div>
             <div class="sbody">
@@ -434,7 +459,7 @@
       </div>
 
       <div class="scene dark" id="s17" data-start="52.23" data-duration="5.30">
-        <div class="phone" id="ph8" style="left:250px; top:600px;">
+        <div class="phone big" id="ph8" style="left:270px; top:500px;">
           <div class="screen">
             <div class="notch"></div><div class="sbar"><span data-var-text="tituloExtra24">2:35</span><span data-var-text="tituloExtra25">OCLÜ</span></div>
             <div class="sbody">
@@ -488,14 +513,14 @@
           tl.fromTo('[data-var-text="hookA"]', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.10);
           tl.fromTo('[data-var-text="hookB"]', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.95);
           ["#chat1", "#chat2", "#chat3", "#chat4", "#chat5"].forEach(function (b, i) {
-            tl.fromTo(b, { opacity: 0, x: -46 }, { opacity: 1, x: 0, duration: 0.32, ease: "power2.out" }, 0.30 + i * 0.40);
+            tl.fromTo(b, { opacity: 0, x: -46 }, { opacity: 1, x: 0, duration: 0.32, ease: "power2.out" }, 0.35 + i * 0.60);
           });
           tl.to("#s1", { opacity: 0, duration: 0.25, ease: "power2.in" }, 2.45);
 
           /* ══ LOGO 2.70 – 4.60: zoom-out de grande/centrado a chico ══ */
           tl.set("#s1b", { opacity: 1 }, 2.70);
           tl.fromTo("#logo1", { opacity: 0, scale: 1.85, x: 200, y: -140 },
-                                { opacity: 1, scale: 1.0, x: 0, y: 0, duration: 1.55, ease: "power3.inOut" }, 2.75);
+                                { opacity: 1, scale: 1.0, x: 0, y: 0, duration: 0.62, ease: "power3.inOut" }, 2.75);
           tl.to("#s1b", { opacity: 0, duration: 0.25, ease: "power2.in" }, 4.35);
 
           /* ══ el resto: entrada lateral + cursor que hace clic + enfoque ══ */
