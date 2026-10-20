@@ -17,6 +17,7 @@
     {"id":"char3Src","type":"image","label":"Personaje 3","default":"../assets/char3.png"},
     {"id":"char4Src","type":"image","label":"Personaje 4","default":"../assets/char4.png"},
     {"id":"logoSrc","type":"image","label":"Logo","default":"../assets/logo.png"},
+    {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/music.mp3"},
     {"id":"primaryColor","type":"color","label":"Color marca","default":"#ff4d4d"}
   ]'
 >
@@ -201,7 +202,7 @@
       data-fps="30"
     >
       <audio id="track" data-start="0" data-duration="12.7" data-media-start="0"
-        data-track-index="1" data-volume="1" src="../assets/music.mp3" preload="auto"></audio>
+        data-track-index="1" data-volume="1" src="../assets/music.mp3" data-var-src="musicSrc" preload="auto"></audio>
 
       <div id="content">
 
@@ -218,7 +219,7 @@
         <div class="scene" id="s1" data-start="0" data-duration="2.0">
           <div id="s1bg"></div>
           <img id="flyer" src="../assets/flyer.png" alt="" data-var-src="flyerSrc" />
-          <img id="flyerBlur" src="../assets/flyer.png" alt="" />
+          <img id="flyerBlur" src="../assets/flyer.png" data-var-src="flyerSrc" alt="" />
           <div id="dust">
             <i style="left:80px;  top:1320px; width:9px;  height:9px;"></i>
             <i style="left:150px; top:980px;  width:6px;  height:6px;"></i>
@@ -337,6 +338,27 @@
             }
           }
 
+          /* ---------- variables en render-time (API HyperFrames 0.8.x) ----------
+             El runtime no inyecta el valor: se aplica aqui desde
+             window.__hyperframes.getVariables() (defaults -> overrides del host
+             -> --variables de CLI). Los atributos data-var-* quedan como
+             declaracion legible de que variable manda en cada elemento. */
+          var __hfVars = (typeof V !== "undefined" && V)
+            ? V
+            : ((window.__hyperframes && window.__hyperframes.getVariables)
+                ? window.__hyperframes.getVariables() : {});
+          document.querySelectorAll("[data-var-text]").forEach(function (el) {
+            var k = el.getAttribute("data-var-text");
+            if (typeof __hfVars[k] === "string" && __hfVars[k] !== "") el.textContent = __hfVars[k];
+          });
+          document.querySelectorAll("[data-var-src]").forEach(function (el) {
+            var k = el.getAttribute("data-var-src");
+            if (typeof __hfVars[k] !== "string" || __hfVars[k] === "") return;
+            if (el.getAttribute("src") === __hfVars[k]) return;
+            el.setAttribute("src", __hfVars[k]);
+            /* si cambia la fuente de audio/video hay que recargarla */
+            if (el.tagName === "AUDIO" || el.tagName === "VIDEO") el.load();
+          });
           var tl = gsap.timeline({ paused: true });
           var i, t;
 

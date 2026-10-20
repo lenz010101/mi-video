@@ -325,6 +325,27 @@
           /* Ticker a la cadencia de captura (data-fps): el renderizador
              recorre la timeline fotograma a fotograma. */
           if (gsap.ticker) gsap.ticker.fps(30);
+          /* ---------- variables en render-time (API HyperFrames 0.8.x) ----------
+             El runtime no inyecta el valor: se aplica aqui desde
+             window.__hyperframes.getVariables() (defaults -> overrides del host
+             -> --variables de CLI). Los atributos data-var-* quedan como
+             declaracion legible de que variable manda en cada elemento. */
+          var __hfVars = (typeof V !== "undefined" && V)
+            ? V
+            : ((window.__hyperframes && window.__hyperframes.getVariables)
+                ? window.__hyperframes.getVariables() : {});
+          document.querySelectorAll("[data-var-text]").forEach(function (el) {
+            var k = el.getAttribute("data-var-text");
+            if (typeof __hfVars[k] === "string" && __hfVars[k] !== "") el.textContent = __hfVars[k];
+          });
+          document.querySelectorAll("[data-var-src]").forEach(function (el) {
+            var k = el.getAttribute("data-var-src");
+            if (typeof __hfVars[k] !== "string" || __hfVars[k] === "") return;
+            if (el.getAttribute("src") === __hfVars[k]) return;
+            el.setAttribute("src", __hfVars[k]);
+            /* si cambia la fuente de audio/video hay que recargarla */
+            if (el.tagName === "AUDIO" || el.tagName === "VIDEO") el.load();
+          });
           var tl = gsap.timeline({ paused: true });
 
           /* ══ E1 · 0.00 – 1.02 ══════════════════════════════════════
