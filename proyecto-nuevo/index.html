@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es"
+  data-composition-variables='[
+    {"id":"kicker","type":"string","label":"Antetítulo","default":"NUEVO PROYECTO"},
+    {"id":"title","type":"string","label":"Titular","default":"AQUÍ VA TU TITULAR"},
+    {"id":"b1","type":"string","label":"Línea 1","default":"Primera idea que quieras contar"},
+    {"id":"b2","type":"string","label":"Línea 2","default":"Segunda idea, más corta"},
+    {"id":"b3","type":"string","label":"Línea 3","default":"Y la que remata"},
+    {"id":"cta","type":"string","label":"Botón","default":"SÍGUEME"},
+    {"id":"handle","type":"string","label":"Usuario","default":"@TUUSUARIO"},
+    {"id":"accent","type":"color","label":"Color de acento","default":"#FFC63B"},
+    {"id":"bg","type":"color","label":"Fondo","default":"#0B0F19"},
+    {"id":"musicSrc","type":"image","label":"Música","default":"assets/audio/music-source.mp3"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="assets/fonts/fonts.css" />
+    <style>
+      /* Sin `transition`: el renderizador mueve la timeline, no el navegador.
+         Todo lo que se anima lleva will-change de la propiedad que muta. */
+      :root {
+        --accent: #FFC63B;
+        --accent-soft: rgba(255, 198, 59, .45);
+        --accent-faint: rgba(255, 198, 59, .16);
+        --bg: #0B0F19;
+        --ink: #F4F6FA;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+
+      #stage {
+        position: relative; width: 1080px; height: 1920px; overflow: hidden;
+        background: var(--bg); color: var(--ink);
+        font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        will-change: transform;
+      }
+
+      /* ── ambiente: luz de gradiente radial (nunca filter: blur) ── */
+      .orb { position: absolute; border-radius: 50%; will-change: transform, opacity; }
+      #orb1 {
+        width: 1240px; height: 1240px; left: -340px; top: -420px; opacity: .2;
+        background: radial-gradient(circle at 50% 50%, var(--accent) 0%, rgba(0, 0, 0, 0) 62%);
+      }
+      #orb2 {
+        width: 1020px; height: 1020px; right: -320px; bottom: -300px; opacity: .14;
+        background: radial-gradient(circle at 50% 50%, #4F8CFF 0%, rgba(0, 0, 0, 0) 64%);
+      }
+      #vig {
+        position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(ellipse 78% 62% at 50% 46%,
+          rgba(0, 0, 0, 0) 46%, rgba(0, 0, 0, .55) 100%);
+      }
+
+      /* ── escenas: aire abundante, nada roza los bordes ── */
+      .scene {
+        position: absolute; inset: 0; display: flex; flex-direction: column;
+        justify-content: center; align-items: flex-start; padding: 0 120px;
+        will-change: transform, opacity;
+      }
+      #s2, #s3 { opacity: 0; }
+
+      .kicker {
+        font-size: 34px; font-weight: 600; letter-spacing: .34em;
+        text-transform: uppercase; color: var(--accent);
+        text-shadow: 0 0 28px var(--accent-soft);
+        will-change: transform, opacity;
+      }
+      #title {
+        margin-top: 40px; font-size: 118px; font-weight: 800;
+        line-height: .96; letter-spacing: -.032em;
+      }
+      .word { display: inline-block; will-change: transform, opacity; }
+      .rule {
+        width: 220px; height: 8px; margin-top: 62px; border-radius: 4px;
+        background: var(--accent); transform-origin: 0 50%;
+        box-shadow: 0 0 34px var(--accent-soft);
+        will-change: transform, opacity;
+      }
+
+      .b {
+        font-size: 56px; font-weight: 400; line-height: 1.28;
+        letter-spacing: -.01em; color: var(--ink);
+        will-change: transform, opacity;
+      }
+      .b + .b { margin-top: 54px; }
+      .b.accent { color: var(--accent); font-weight: 600; text-shadow: 0 0 30px var(--accent-faint); }
+
+      .pill {
+        display: inline-flex; align-items: center; gap: 20px;
+        padding: 34px 62px; border-radius: 999px;
+        background: var(--accent); color: #0B0F19;
+        font-size: 46px; font-weight: 800; letter-spacing: .02em;
+        box-shadow: 0 0 60px var(--accent-faint);
+        will-change: transform, opacity;
+      }
+      .handle {
+        display: flex; align-items: center; gap: 18px; margin-top: 46px;
+        font-size: 46px; font-weight: 600; letter-spacing: -.005em;
+        will-change: transform, opacity;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="proyecto-nuevo"
+      data-start="0"
+      data-duration="12"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio
+        id="track"
+        data-start="0"
+        data-duration="12"
+        data-media-start="0"
+        data-track-index="1"
+        data-volume="0.8"
+        src="assets/audio/music-source.mp3"
+        data-var-src="musicSrc"
+        preload="auto"
+      ></audio>
+
+      <div class="orb" id="orb1"></div>
+      <div class="orb" id="orb2"></div>
+
+      <!-- ══ ESCENA 1 · gancho ══ -->
+      <section class="scene" id="s1" data-start="0" data-duration="4.5">
+        <div class="kicker" id="kicker" data-var-text="kicker">NUEVO PROYECTO</div>
+        <div id="title">
+          <span class="word">AQUÍ</span> <span class="word">VA</span>
+          <span class="word">TU</span> <span class="word">TITULAR</span>
+        </div>
+        <div class="rule" id="rule"></div>
+      </section>
+
+      <!-- ══ ESCENA 2 · contenido ══ -->
+      <section class="scene" id="s2" data-start="4.5" data-duration="4.05">
+        <div class="b" id="b1" data-var-text="b1">Primera idea que quieras contar</div>
+        <div class="b" id="b2" data-var-text="b2">Segunda idea, más corta</div>
+        <div class="b accent" id="b3" data-var-text="b3">Y la que remata</div>
+      </section>
+
+      <!-- ══ ESCENA 3 · cierre ══ -->
+      <section class="scene" id="s3" data-start="8.55" data-duration="3.45">
+        <div class="pill" id="pill" data-var-text="cta">SÍGUEME</div>
+        <div class="handle" id="handle">
+          <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
+            <circle cx="12" cy="12" r="11" fill="#1D9BF0"></circle>
+            <path d="M7 12.4l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span data-var-text="handle">@TUUSUARIO</span>
+        </div>
+      </section>
+
+      <div id="vig"></div>
+
+      <script src="assets/vendor/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+
+        /* color -> rgba (para los halos, que siguen al acento elegido) */
+        function hexToRgba(hex, a) {
+          var h = String(hex || "").replace("#", "");
+          if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+          if (!/^[0-9a-fA-F]{6}$/.test(h)) return "rgba(255,198,59," + a + ")";
+          var n = parseInt(h, 16);
+          return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
+        }
+
+        function build() {
+          /* ---------- variables en render-time ---------- */
+          var V = (window.__hyperframes && window.__hyperframes.getVariables)
+            ? window.__hyperframes.getVariables()
+            : {};
+          var root = document.documentElement;
+
+          if (typeof V.accent === "string" && V.accent) {
+            root.style.setProperty("--accent", V.accent);
+            root.style.setProperty("--accent-soft", hexToRgba(V.accent, .45));
+            root.style.setProperty("--accent-faint", hexToRgba(V.accent, .16));
+          }
+          if (typeof V.bg === "string" && V.bg) root.style.setProperty("--bg", V.bg);
+
+          var texts = document.querySelectorAll("[data-var-text]");
+          for (var i = 0; i < texts.length; i++) {
+            var k = texts[i].getAttribute("data-var-text");
+            if (typeof V[k] === "string" && V[k] !== "") texts[i].textContent = V[k];
+          }
+          var srcs = document.querySelectorAll("[data-var-src]");
+          for (var s = 0; s < srcs.length; s++) {
+            var ks = srcs[s].getAttribute("data-var-src");
+            if (typeof V[ks] !== "string" || V[ks] === "") continue;
+            if (srcs[s].getAttribute("src") === V[ks]) continue;
+            srcs[s].setAttribute("src", V[ks]);
+            if (srcs[s].tagName === "AUDIO" || srcs[s].tagName === "VIDEO") srcs[s].load();
+          }
+
+          /* el titular se reconstruye palabra a palabra desde la variable:
+             una <span> por palabra (si no, el binding se comeria el salto) */
+          var titleEl = document.getElementById("title");
+          var raw = (typeof V.title === "string" && V.title !== "")
+            ? V.title
+            : titleEl.textContent.replace(/\s+/g, " ").trim();
+          var words = String(raw).trim().split(/\s+/);
+          var html = "";
+          for (var w = 0; w < words.length; w++) {
+            html += (w ? " " : "") + '<span class="word">' + words[w] + "</span>";
+          }
+          titleEl.innerHTML = html;
+
+          /* ---------- timeline (paused: la mueve el renderizador) ---------- */
+          var tl = gsap.timeline({ paused: true });
+
+          /* zoom de camara continuo: no hay ni un fotograma quieto */
+          tl.fromTo("#stage", { scale: 1 }, { scale: 1.03, duration: 12, ease: "none" }, 0);
+
+          /* ambiente */
+          tl.fromTo("#orb1", { scale: .92, opacity: 0 },
+            { scale: 1.1, opacity: .2, duration: 5.6, ease: "power1.out" }, 0);
+          tl.to("#orb1", { scale: 1.2, opacity: .15, duration: 6.4, ease: "none" }, 5.6);
+          tl.fromTo("#orb2", { scale: 1.04, opacity: 0 },
+            { scale: 1.22, opacity: .14, duration: 12, ease: "none" }, 0);
+
+          /* escena 1: palabras escalonadas con curva expo */
+          tl.fromTo(".kicker", { opacity: 0, y: 26 },
+            { opacity: 1, y: 0, duration: .55, ease: "power3.out" }, .12);
+          tl.fromTo(".word", { opacity: 0, y: 64 },
+            { opacity: 1, y: 0, duration: .8, ease: "expo.out", stagger: .085 }, .3);
+          tl.fromTo(".rule", { opacity: 0, scaleX: 0 },
+            { opacity: 1, scaleX: 1, duration: .7, ease: "power3.out" }, 1.1);
+          tl.to("#s1", { opacity: 0, duration: .42, ease: "power2.in" }, 4.08);
+
+          /* escena 2: lineas al beat */
+          tl.to("#s2", { opacity: 1, duration: .35, ease: "power1.out" }, 4.5);
+          tl.fromTo(".b", { opacity: 0, y: 44 },
+            { opacity: 1, y: 0, duration: .62, ease: "power3.out", stagger: .16 }, 4.62);
+          tl.to("#s2", { opacity: 0, duration: .4, ease: "power2.in" }, 8.14);
+
+          /* escena 3: cierre */
+          tl.to("#s3", { opacity: 1, duration: .4, ease: "power1.out" }, 8.55);
+          tl.fromTo(".pill", { opacity: 0, scale: .9, y: 30 },
+            { opacity: 1, scale: 1, y: 0, duration: .7, ease: "back.out(1.7)" }, 8.7);
+          tl.fromTo(".handle", { opacity: 0, y: 26 },
+            { opacity: 1, y: 0, duration: .6, ease: "power3.out" }, 9.15);
+          tl.to(".pill", { scale: 1.02, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.8);
+
+          window.__timelines["proyecto-nuevo"] = tl;
+        }
+
+        if (gsap.ticker) gsap.ticker.fps(30);
+        build();
+      </script>
+    </div>
+  </body>
+</html>
