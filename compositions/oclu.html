@@ -493,6 +493,8 @@
 
           // el titulo se revela por palabras: la parte gris entra despues
           tl.set("#s1", { opacity: 1 }, 0.05);
+          // el div del titulo arranca en opacity 0 (CSS): hay que animarlo a el
+          tl.fromTo("#hookT", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none" }, 0.10);
           tl.fromTo('[data-var-text="hookA"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.10);
           tl.fromTo('[data-var-text="hookB"]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.85);
           // 5 burbujas apiladas, una cada ~0.42 s
