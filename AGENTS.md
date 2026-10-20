@@ -1,5 +1,28 @@
 # Instrucciones del proyecto
 
+## Estado del repo (cierre 2026-10-20)
+
+- Rama de trabajo: **`demo-premium`** (la `main` no se toca; el render se dispara
+  a mano con `workflow_dispatch` sobre `demo-premium`).
+- **Último MP4 entregado:** `C:\Users\Admin\Desktop\veluxe-promo.mp4`
+  (12,7 s · 1080×1920 · 22,5 MB). Verificado: **0 de 380 fotogramas
+  congelados**, 17 cambios de plano justo donde dice la timeline, audio AAC.
+- El **pase de dirección de arte** (encuadres variados en los 10 cortes,
+  barrido de luz sobre el cartel, cierre con halo y filete) está **en el código
+  pero sin renderizar** (commit `983a728`). Para verlo:
+  `node demo2/ciclo.mjs` → render + MP4 y hoja de contactos en el Escritorio.
+- Herramientas del repo:
+  | Script | Para qué |
+  |---|---|
+  | `demo2/audit-rules.mjs` | reglas 9.9 (0 problemas) |
+  | `demo2/check-css-integrity.mjs` | el CSS solo cambia en `will-change` |
+  | `demo2/verify-render.mjs` | MP4 entregado: frames congelados + cortes |
+  | `demo2/contact-sheet.mjs` | hoja de contactos con timecodes (revisión) |
+  | `demo2/ciclo.mjs` | render nube + entrega + verificación, un comando |
+- **Las reglas son globales**, no solo de este repo:
+  `~/.config/opencode/AGENTS.md` + skill `hyperframes-composition`
+  (con el auditor y el fixer en `~/.config/opencode/skills/.../scripts/`).
+
 ## Preferencias del usuario
 
 - **Nunca una hora de trabajo (regla permanente):** ni editando el vídeo ni
