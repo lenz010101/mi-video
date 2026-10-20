@@ -1,74 +1,89 @@
-# Proyecto nuevo (plantilla HyperFrames)
+# Proyecto nuevo — reel con presentador (edición de referencia)
 
-Composición vertical **1080×1920 · 30 fps · 14 s** con tres escenas: gancho,
-contenido y cierre. Es un proyecto **autocontenido**: fuentes, GSAP y música
-viven dentro de `assets/`, así que no depende de nada de fuera de esta carpeta.
+Réplica de la edición del reel de referencia (`Sígueme si te gustan los carros`):
+**presentador a cámara + columna izquierda de tiras LED con apodos y logos de
+marca + texto neón con las palabras de la narración + cierre con botón y check
+verificado**.
+
+Vertical **1080×1920 · 30 fps · 20 s**. Proyecto **autocontenido**: fuentes,
+GSAP, música, logos y el clip del presentador viven dentro de `assets/`.
 
 ```
 proyecto-nuevo/
-├─ index.html            composición + timeline GSAP
+├─ index.html                 composición + timeline GSAP
 └─ assets/
-   ├─ fonts/             Inter 400/600/800 (local, nada de Google Fonts)
-   ├─ vendor/gsap.min.js GSAP 3.12.5 vendorizado (nada de CDN)
-   └─ audio/             música de referencia
+   ├─ clips/presenter.mp4     presentador (stock, vertical 720×1280, Constrained Baseline)
+   ├─ logos/                  Toyota, Honda, BMW, Mercedes, Porsche, Nissan, Audi, Ford, Lexus, VW
+   ├─ fonts/                  Anton, Orbitron, Playfair, Inter (locales)
+   ├─ vendor/gsap.min.js      GSAP 3.12.5 vendorizado (nada de CDN)
+   ├─ audio/music-source.mp3  música
+   └─ grain.png               textura de grano
 ```
+
+## Estructura de tiempos (segundos)
+
+| t | qué pasa |
+|---|---|
+| 0 – 0,3 | flash de apertura y entrada de los apodos (POBRE · RICO · MILLONARIO) |
+| 0 – 14,4 | presentador en plano medio con push-in lento (1 → 1,06) |
+| 1,3 / 2,05 / 2,8 / 3,55 | entran los logos Toyota, Honda, BMW, Mercedes |
+| 4,35 – 14,0 | palabras de la narración una detrás de otra (entra con flash, sale en fundido) |
+| 11,6 / 13,3 | entran Porsche y Nissan |
+| 14,4 | **corte de edición**: punch-in de la misma toma (1,34 → 1,30) + flash |
+| 14,1 – 17,6 | segunda tanda de palabras |
+| 17,7 | zoom out a negro y entrada del cierre |
+| 18,4 / 18,85 / 18,95 | titular de cierre + botón + usuario |
+
+Cada escena lleva `data-start` y `data-duration` explícitos y todo el metraje
+tiene movimiento continuo (push-in, deriva de columnas, grano): **ningún
+fotograma se queda quieto**.
 
 ## Cambiar el contenido
 
-Todo se parametriza en el array `data-composition-variables` de `<html>` y se
-pinta en tiempo de render:
+Variables en el array `data-composition-variables` de `<html>`:
 
-| variable | qué es | tipo |
-|---|---|---|
-| `kicker` | antetítulo pequeño en mayúsculas | string |
-| `title` | titular grande, se revela palabra a palabra | string |
-| `b1` `b2` `b3` | las tres líneas de la escena 2 | string |
-| `cta` | texto del botón del cierre | string |
-| `handle` | usuario junto al check | string |
-| `accent` | color de acento (botón, línea, halos) | color |
-| `bg` | color de fondo | color |
-| `musicSrc` | ruta de la música | image |
+| variable | qué es |
+|---|---|
+| `tier1` `tier2` `tier3` | los tres apodos de las columnas (POBRE / RICO / MILLONARIO) |
+| `n1` … `n14` | las palabras de la narración (texto neón) |
+| `s1` … `s6` | los stickers de marca |
+| `closeTitle` `cta` | titular de cierre y usuario del botón |
+| `talkerSrc` `talker2Src` | clip del presentador (los dos planos) |
+| `toyotaSrc` … `nissanSrc` | logos |
+| `musicSrc` | música |
 
-Los valores por defecto están en el propio `index.html`. Para cambiar solo los
-textos, edita esos `default` (o pasa `--variables` en el render).
+Los valores por defecto están en el propio `index.html`.
 
-Estructura de tiempos (en **segundos**, `data-duration`):
-
-| escena | inicio | dura | qué entra |
-|---|---|---|---|
-| 1 · gancho | 0 | 5 | antetítulo, titular palabra a palabra, línea de acento |
-| 2 · contenido | 4,9 | 5,3 | tres líneas escalonadas al beat |
-| 3 · cierre | 10,2 | 3,8 | botón con el check y el usuario |
-
-Todo el metraje lleva un zoom de cámara lento (1 → 1,03) y orbes de luz en
-movimiento: **ningún fotograma se queda quieto**.
+Para cambiar de presentador: sustituye `assets/clips/presenter.mp4` por otro
+clip **H.264 Constrained Baseline** (si no, Chrome headless no lo decodifica) de
+al menos 8 s y 9:16.
 
 ## Renderizar
 
-Solo en la nube (GitHub Actions). Nunca en local:
+Solo en la nube (GitHub Actions), nunca en local:
 
 ```bash
 node demo2/ciclo.mjs proyecto-nuevo/index.html proyecto-nuevo.mp4
 ```
 
-Hace el render, comprueba fotogramas congelados y cortes, y deja el MP4 en
-`C:\Users\Admin\Desktop\`. Tarda 3,5–4,6 min.
+Renderiza, verifica fotogramas congelados y cortes, y deja el MP4 en
+`C:\Users\Admin\Desktop\`.
 
-## Reglas que ya cumple (no romper al editar)
+## Reglas que cumple (no romper al editar)
 
 - Sin `transition` en CSS (ni `transition: none`).
 - Sin `requestAnimationFrame` / `setTimeout` / `setInterval`.
 - **Build síncrono**: `build()` se llama directo, sin `fonts.ready` ni promesas.
-- `gsap.ticker.fps(30)` sincronizado con `data-fps="30"`.
+- `gsap.ticker.fps(30)` = `data-fps="30"`.
 - Timeline registrada como `window.__timelines["proyecto-nuevo"]`, creada con
   `{ paused: true }`.
 - `will-change` con la propiedad que muta en cada elemento animado.
-- Cada escena con `data-start` **y** `data-duration` en segundos.
-- Toda `data-var-*` apunta a una variable declarada en el array de variables.
+- `data-start` siempre con `data-duration` en segundos.
+- Toda `data-var-*` apunta a una variable declarada.
 
 Comprobación antes de renderizar:
 
 ```bash
-node demo2/audit-rules.mjs proyecto-nuevo      # 0 problemas
-npx --yes hyperframes@0.8.162 lint proyecto-nuevo   # 0 errores
+node demo2/audit-rules.mjs proyecto-nuevo             # 0 problemas
+npx --yes hyperframes@0.8.162 lint proyecto-nuevo    # 0 errores
 ```

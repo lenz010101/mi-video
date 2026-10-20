@@ -1,106 +1,228 @@
 <!DOCTYPE html>
-<html lang="es"
+<html
+  lang="es"
   data-composition-variables='[
-    {"id":"kicker","type":"string","label":"Antetítulo","default":"COCHES · 3 CLAVES"},
-    {"id":"title","type":"string","label":"Titular","default":"NO COMPRES UN CARRO SIN ESTO"},
-    {"id":"b1","type":"string","label":"Línea 1","default":"El mantenimiento pesa más que la marca"},
-    {"id":"b2","type":"string","label":"Línea 2","default":"Prueba el mismo modelo en dos talleres"},
-    {"id":"b3","type":"string","label":"Línea 3","default":"Y nunca firmes el mismo día"},
-    {"id":"cta","type":"string","label":"Botón","default":"SÍGUEME"},
-    {"id":"handle","type":"string","label":"Usuario","default":"@elgaraje"},
-    {"id":"accent","type":"color","label":"Color de acento","default":"#FFC63B"},
-    {"id":"bg","type":"color","label":"Fondo","default":"#0B0F19"},
-    {"id":"musicSrc","type":"image","label":"Música","default":"assets/audio/music-source.mp3"}
+    {"id":"tier1","type":"string","label":"Apodo 1","default":"POBRE"},
+    {"id":"tier2","type":"string","label":"Apodo 2","default":"RICO"},
+    {"id":"tier3","type":"string","label":"Apodo 3","default":"MILLONARIO"},
+    {"id":"toyotaSrc","type":"image","label":"Logo Toyota","default":"assets/logos/toyota.png"},
+    {"id":"hondaSrc","type":"image","label":"Logo Honda","default":"assets/logos/honda.png"},
+    {"id":"bmwSrc","type":"image","label":"Logo BMW","default":"assets/logos/bmw.png"},
+    {"id":"mercedesSrc","type":"image","label":"Logo Mercedes","default":"assets/logos/mercedes.png"},
+    {"id":"porscheSrc","type":"image","label":"Logo Porsche","default":"assets/logos/porsche.png"},
+    {"id":"nissanSrc","type":"image","label":"Logo Nissan","default":"assets/logos/nissan.png"},
+    {"id":"talkerSrc","type":"image","label":"Clip del presentador","default":"assets/clips/presenter.mp4"},
+    {"id":"n1","type":"string","label":"Neon 1","default":"Toyota, Honda, BMW, Mercedes..."},
+    {"id":"n2","type":"string","label":"Neon 2","default":"cuál compraría yo"},
+    {"id":"n3","type":"string","label":"Neon 3","default":"no existe una marca perfecta"},
+    {"id":"n4","type":"string","label":"Neon 4","default":"todo depende de..."},
+    {"id":"n5","type":"string","label":"Neon 5","default":"de la ciudad"},
+    {"id":"n6","type":"string","label":"Neon 6","default":"del presupuesto"},
+    {"id":"n7","type":"string","label":"Neon 7","default":"de tus viajes"},
+    {"id":"n8","type":"string","label":"Neon 8","default":"siempre recomiendo mezclar"},
+    {"id":"n9","type":"string","label":"Neon 9","default":"y confiabilidad"},
+    {"id":"n10","type":"string","label":"Neon 10","default":"y si tú"},
+    {"id":"n11","type":"string","label":"Neon 11","default":"tus pagos"},
+    {"id":"n12","type":"string","label":"Neon 12","default":"intereses"},
+    {"id":"n13","type":"string","label":"Neon 13","default":"tu caso"},
+    {"id":"n14","type":"string","label":"Neon 14","default":"y te daremos los mejores"},
+    {"id":"s1","type":"string","label":"Sticker 1","default":"TOYOTA"},
+    {"id":"s2","type":"string","label":"Sticker 2","default":"HONDA"},
+    {"id":"s3","type":"string","label":"Sticker 3","default":"BMW"},
+    {"id":"s4","type":"string","label":"Sticker 4","default":"MERCEDES"},
+    {"id":"s5","type":"string","label":"Sticker 5","default":"PORSCHE"},
+    {"id":"s6","type":"string","label":"Sticker 6","default":"NISSAN"},
+    {"id":"closeTitle","type":"string","label":"Cierre","default":"ELIGE SEGÚN TU VIDA"},
+    {"id":"cta","type":"string","label":"CTA","default":"@TUUSUARIO"},
+    {"id":"musicSrc","type":"image","label":"Musica","default":"assets/audio/music-source.mp3"},
+    {"id":"talkerSrc","type":"image","label":"Clip 1","default":"assets/clips/presenter.mp4"},
+    {"id":"talker2Src","type":"image","label":"Clip 2","default":"assets/clips/presenter.mp4"}
   ]'
 >
   <head>
     <meta charset="UTF-8" />
+    <title>El coche que compraria yo - v2 (plano medio del original)</title>
     <link rel="stylesheet" href="assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="assets/fonts/fonts-extra.css" />
+    <link rel="preload" href="assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/inter-800.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/orbitron-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/anton-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/playfair+display-600.woff2" as="font" type="font/woff2" crossorigin />
     <style>
-      /* Sin `transition`: el renderizador mueve la timeline, no el navegador.
-         Todo lo que se anima lleva will-change de la propiedad que muta. */
-      :root {
-        --accent: #FFC63B;
-        --accent-soft: rgba(255, 198, 59, .45);
-        --accent-faint: rgba(255, 198, 59, .16);
-        --bg: #0B0F19;
-        --ink: #F4F6FA;
-      }
-
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
-
+      html, body { background: #000; }
+      :root {
+        --t1: #ff2a2a;   /* columna POBRE (rojo) */
+        --t2: #19d7ff;   /* columna RICO (cian) */
+        --t3: #ffb020;   /* columna MILLONARIO (ambar) */
+        --ink: #ffffff;
+      }
       #stage {
         position: relative; width: 1080px; height: 1920px; overflow: hidden;
-        background: var(--bg); color: var(--ink);
-        font-family: "Inter", system-ui, sans-serif;
+        background: #000; font-family: "Inter", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
+      }
+
+      /* ══════════ EL PRESENTADOR ══════════ */
+      #talker, #talker2 {
+        position: absolute; inset: 0; width: 1080px; height: 1920px;
+        object-fit: cover; will-change: transform, opacity;
+      }
+      /* ══════════ EL SET: tiras de LED de color (como el cuarto) ══════════ */
+      #room { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+      .led {
+        position: absolute; top: -40px; height: 2000px; width: 16px;
+        background: repeating-linear-gradient(180deg, var(--c) 0 12px, rgba(0,0,0,0) 12px 26px);
+        opacity: .45;
+      }
+      .led .halo {
+        position: absolute; top: 0; bottom: 0; left: -110px; width: 236px;
+        background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--c) 50%, rgba(0,0,0,0) 100%);
+        opacity: .11;
+      }
+      #spill {
+        position: absolute; inset: 0; z-index: 6; pointer-events: none;
+        mix-blend-mode: screen; opacity: .38;
+        background:
+          radial-gradient(circle 520px at 16% 34%, rgba(255,40,60,.55) 0%, rgba(255,40,60,0) 70%),
+          radial-gradient(circle 560px at 48% 58%, rgba(40,140,255,.50) 0%, rgba(40,140,255,0) 70%),
+          radial-gradient(circle 500px at 86% 26%, rgba(255,170,40,.50) 0%, rgba(255,170,40,0) 70%),
+          radial-gradient(circle 480px at 90% 80%, rgba(255,120,60,.30) 0%, rgba(255,120,60,0) 70%);
+      }
+      /* velo: oscurece el fondo para que los graficos respiren */
+      #veil {
+        position: absolute; inset: 0; pointer-events: none;
+        background:
+          linear-gradient(180deg, rgba(2,2,10,.66) 0%, rgba(0,0,0,.16) 26%, rgba(0,0,0,.05) 55%, rgba(0,0,0,.78) 100%),
+          radial-gradient(ellipse 70% 42% at 50% 52%, rgba(0,0,0,0) 0%, rgba(0,0,0,.38) 100%);
+      }
+
+      /* ══════════ COLUMNAS LED + APODOS EN NEON ══════════ */
+      #cols { position: absolute; left: 0; right: 0; top: 0; height: 760px; z-index: 20; overflow: hidden; will-change: transform, opacity; }
+      .col { position: absolute; top: 0; width: 350px; height: 760px; }
+      .col .band {
+        position: absolute; left: 0; right: 0; top: 0; height: 700px; opacity: .30;
+        background: linear-gradient(180deg, var(--c) 0%, rgba(0,0,0,0) 92%);
+      }
+      .col .strip {
+        position: absolute; top: 0; width: 7px; height: 700px;
+        background: repeating-linear-gradient(180deg, rgba(255,255,255,.95) 0 7px, rgba(255,255,255,0) 7px 16px);
+        box-shadow: 0 0 14px rgba(255,255,255,.7);
+      }
+      .col .strip.l { left: 0; }
+      .col .strip.r { right: 0; }
+      .col .tier {
+        position: absolute; top: 46px; left: 24px; right: 24px; text-align: center;
+        font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 38px;
+        letter-spacing: .1em; color: var(--c); text-transform: uppercase;
+        text-shadow: 0 0 10px var(--c), 0 0 26px var(--c), 0 0 58px var(--c);
+        will-change: opacity, transform;
+      }
+      .col .lgs { position: absolute; left: 0; right: 0; top: 150px; }
+      .col .lgs img {
+        position: absolute; left: 50%; transform: translateX(-50%);
+        width: 190px; height: 96px; object-fit: contain; opacity: 0;
+        filter: drop-shadow(0 6px 14px rgba(0,0,0,.9)) brightness(1.18);
+        will-change: opacity, transform;
+      }
+
+      /* ══════════ TEXTO NEON (serif con halo) ══════════ */
+      .neon {
+        position: absolute; left: 20px; right: 20px; text-align: center; z-index: 30;
+        font-family: "Playfair Display", Georgia, serif; font-weight: 600;
+        font-size: 104px; line-height: 1.05; color: #fff; opacity: 0;
+        text-shadow:
+          0 0 8px rgba(190, 225, 255, .95),
+          0 0 22px rgba(120, 190, 255, .9),
+          0 0 48px rgba(70, 150, 255, .75),
+          0 0 90px rgba(40, 110, 235, .55);
+        will-change: transform, opacity;
+      }
+      .neon.sm { font-size: 74px; }
+      .neon, .plain { top: 1150px; }
+
+      /* ══════════ STICKER DE PAPEL RASGADO ══════════ */
+      .sticker {
+        position: absolute; left: 0; right: 0; top: 1140px; z-index: 30;
+        text-align: center; opacity: 0; will-change: transform, opacity;
+      }
+      .sticker .paper {
+        position: absolute; left: 50%; top: 50%; width: 760px; height: 160px;
+        margin-left: -380px; margin-top: -80px; background: #f3f1ea;
+        filter: url(#torn); will-change: transform;
+      }
+      .sticker .txt {
+        position: relative; display: inline-block; padding: 0 26px;
+        font-family: "Anton", sans-serif; font-size: 108px; line-height: 1.18;
+        color: #0b0b0b; letter-spacing: .01em;
+      }
+
+
+      /* ══════════ TEXTO PLANO (segundo plano, sin efectos) ══════════ */
+      /* contorno: relleno transparente + borde del color (como el original) */
+      .outline {
+        position: absolute; left: 30px; right: 30px; top: 1150px; z-index: 30; text-align: center;
+        font-family: "Anton", sans-serif; font-size: 96px; line-height: 1.05;
+        color: rgba(255,255,255,.10); opacity: 0;
+        -webkit-text-stroke: 3px #fff;
+        text-shadow:
+          0 0 24px rgba(190,225,255,.95),
+          0 0 60px rgba(90,170,255,.8),
+          0 6px 24px rgba(0,0,0,.9);
+        will-change: transform, opacity;
+      }
+      .outline.brand {
+        -webkit-text-stroke: 5px var(--bs, var(--bc));
+        color: color-mix(in srgb, var(--bs, var(--bc)) 18%, transparent);
+        text-shadow:
+          0 0 30px var(--bs, var(--bc)),
+          0 0 70px var(--bs, var(--bc)),
+          0 6px 22px rgba(0,0,0,.95);
+      }
+      /* palabras sueltas en blanco plano */
+      .plain {
+        position: absolute; left: 40px; right: 40px; top: 1195px; z-index: 30; text-align: center;
+        font-size: 54px; font-weight: 800; color: #fff; opacity: 0; line-height: 1.12;
+        text-shadow: 0 4px 20px rgba(0,0,0,.95), 0 0 40px rgba(0,0,0,.6);
+        will-change: transform, opacity;
+      }
+
+      /* ══════════ CIERRE ══════════ */
+      #outro { position: absolute; left: 0; right: 0; bottom: 0; height: 560px; z-index: 40; }
+      #closeTitle {
+        position: absolute; left: 0; right: 0; top: 120px; text-align: center;
+        font-family: "Anton", sans-serif; font-size: 92px; color: #fff;
+        opacity: 0; will-change: transform, opacity;
+      }
+      #ctaBox {
+        position: absolute; left: 50%; top: 300px; margin-left: -210px; width: 420px; height: 96px;
+        border-radius: 99px; border: 2px solid rgba(255,255,255,.45);
+        background: rgba(255,255,255,.08); opacity: 0;
+        will-change: transform, opacity;
+      }
+      #ctaText {
+        position: absolute; left: 0; right: 0; top: 325px; text-align: center;
+        font-size: 44px; font-weight: 800; letter-spacing: .06em; color: #fff; opacity: 0;
+        will-change: transform, opacity;
+      }
+
+      /* ══════════ FLASH / GRANO / VIÑETA ══════════ */
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 50; will-change: opacity; }
+      #grain {
+        position: absolute; inset: -40px; z-index: 70; pointer-events: none; opacity: .035;
+        background-image: url(assets/grain.png);
+        background-repeat: repeat; background-size: 256px 256px;
         will-change: transform;
       }
+      #vignette {
+        position: absolute; inset: 0; z-index: 80; pointer-events: none;
+        background: radial-gradient(ellipse 86% 68% at 50% 46%, rgba(0,0,0,0) 44%, rgba(0,0,0,.5) 80%, rgba(0,0,0,.9) 100%);
+      }
+      #fade { position: absolute; inset: 0; background: #000; opacity: 0; z-index: 65; pointer-events: none; will-change: opacity; }
 
-      /* ── ambiente: luz de gradiente radial (nunca filter: blur) ── */
-      .orb { position: absolute; border-radius: 50%; will-change: transform, opacity; }
-      #orb1 {
-        width: 1240px; height: 1240px; left: -340px; top: -420px; opacity: .2;
-        background: radial-gradient(circle at 50% 50%, var(--accent) 0%, rgba(0, 0, 0, 0) 62%);
-      }
-      #orb2 {
-        width: 1020px; height: 1020px; right: -320px; bottom: -300px; opacity: .14;
-        background: radial-gradient(circle at 50% 50%, #4F8CFF 0%, rgba(0, 0, 0, 0) 64%);
-      }
-      #vig {
-        position: absolute; inset: 0; pointer-events: none;
-        background: radial-gradient(ellipse 78% 62% at 50% 46%,
-          rgba(0, 0, 0, 0) 46%, rgba(0, 0, 0, .55) 100%);
-      }
-
-      /* ── escenas: aire abundante, nada roza los bordes ── */
-      .scene {
-        position: absolute; inset: 0; display: flex; flex-direction: column;
-        justify-content: center; align-items: flex-start; padding: 0 120px;
-        will-change: transform, opacity;
-      }
-      #s2, #s3 { opacity: 0; }
-
-      .kicker {
-        font-size: 34px; font-weight: 600; letter-spacing: .34em;
-        text-transform: uppercase; color: var(--accent);
-        text-shadow: 0 0 28px var(--accent-soft);
-        will-change: transform, opacity;
-      }
-      #title {
-        margin-top: 40px; font-size: 118px; font-weight: 800;
-        line-height: .96; letter-spacing: -.032em;
-      }
-      .word { display: inline-block; will-change: transform, opacity; }
-      .rule {
-        width: 220px; height: 8px; margin-top: 62px; border-radius: 4px;
-        background: var(--accent); transform-origin: 0 50%;
-        box-shadow: 0 0 34px var(--accent-soft);
-        will-change: transform, opacity;
-      }
-
-      .b {
-        font-size: 56px; font-weight: 400; line-height: 1.28;
-        letter-spacing: -.01em; color: var(--ink);
-        will-change: transform, opacity;
-      }
-      .b + .b { margin-top: 54px; }
-      .b.accent { color: var(--accent); font-weight: 600; text-shadow: 0 0 30px var(--accent-faint); }
-
-      .pill {
-        display: inline-flex; align-items: center; gap: 20px;
-        padding: 34px 62px; border-radius: 999px;
-        background: var(--accent); color: #0B0F19;
-        font-size: 46px; font-weight: 800; letter-spacing: .02em;
-        box-shadow: 0 0 60px var(--accent-faint);
-        will-change: transform, opacity;
-      }
-      .handle {
-        display: flex; align-items: center; gap: 18px; margin-top: 46px;
-        font-size: 46px; font-weight: 600; letter-spacing: -.005em;
-        will-change: transform, opacity;
-      }
+      /* will-change: elementos animados por GSAP */
+      #veil { will-change: opacity; }
     </style>
   </head>
   <body>
@@ -108,155 +230,202 @@
       id="stage"
       data-composition-id="proyecto-nuevo"
       data-start="0"
-      data-duration="14"
+      data-duration="20"
       data-width="1080"
       data-height="1920"
       data-fps="30"
     >
-      <audio
-        id="track"
-        data-start="0"
-        data-duration="14"
-        data-media-start="0"
-        data-track-index="1"
-        data-volume="0.8"
-        src="assets/audio/music-source.mp3"
-        data-var-src="musicSrc"
-        preload="auto"
-      ></audio>
+      <audio id="track" data-start="0" data-duration="20" data-media-start="32.6"
+        data-track-index="1" data-volume="0.8" src="assets/audio/music-source.mp3"
+        data-var-src="musicSrc" preload="auto"></audio>
 
-      <div class="orb" id="orb1"></div>
-      <div class="orb" id="orb2"></div>
+      <!-- filtro de papel rasgado (el borde irregular del sticker) -->
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <filter id="torn">
+          <feTurbulence type="fractalNoise" baseFrequency="0.03 0.05" numOctaves="3" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="26" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
 
-      <!-- ══ ESCENA 1 · gancho ══ -->
-      <section class="scene" id="s1" data-start="0" data-duration="5">
-        <div class="kicker" id="kicker" data-var-text="kicker">COCHES · 3 CLAVES</div>
-        <div id="title">
-          <span class="word">NO</span> <span class="word">COMPRES</span>
-          <span class="word">UN</span> <span class="word">CARRO</span>
-          <span class="word">SIN</span> <span class="word">ESTO</span>
+      <div id="room">
+        <div class="led" style="--c: #ff2a4a; left: 150px;"><div class="halo"></div></div>
+        <div class="led" style="--c: #19d7ff; left: 470px;"><div class="halo"></div></div>
+        <div class="led" style="--c: #ffb020; left: 820px;"><div class="halo"></div></div>
+      </div>
+      <div id="spill"></div>
+
+      <video id="talker" class="clip" src="assets/clips/presenter.mp4" data-var-src="talkerSrc"
+        data-start="0" data-duration="14.4" data-media-start="0" muted playsinline preload="auto"></video>
+      <video id="talker2" class="clip" src="assets/clips/presenter.mp4" data-var-src="talker2Src"
+        data-start="14.4" data-duration="5.6" data-media-start="1.5" muted playsinline preload="auto"></video>
+      <div id="veil"></div>
+
+      <!-- ══ COLUMNAS LED ══ -->
+      <div id="cols">
+        <div class="col" id="col1" style="--c: var(--t1); left: 0;">
+          <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
+          <div class="tier" data-var-text="tier1">POBRE</div>
+          <div class="lgs">
+            <img id="lgToyota" src="assets/logos/toyota.png" data-var-src="toyotaSrc" alt="" style="top: 0;" />
+            <img id="lgHonda" src="assets/logos/honda.png" data-var-src="hondaSrc" alt="" style="top: 150px;" />
+          </div>
         </div>
-        <div class="rule" id="rule"></div>
-      </section>
-
-      <!-- ══ ESCENA 2 · contenido ══ -->
-      <section class="scene" id="s2" data-start="4.9" data-duration="5.3">
-        <div class="b" id="b1" data-var-text="b1">El mantenimiento pesa más que la marca</div>
-        <div class="b" id="b2" data-var-text="b2">Prueba el mismo modelo en dos talleres</div>
-        <div class="b accent" id="b3" data-var-text="b3">Y nunca firmes el mismo día</div>
-      </section>
-
-      <!-- ══ ESCENA 3 · cierre ══ -->
-      <section class="scene" id="s3" data-start="10.2" data-duration="3.8">
-        <div class="pill" id="pill" data-var-text="cta">SÍGUEME</div>
-        <div class="handle" id="handle">
-          <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">
-            <circle cx="12" cy="12" r="11" fill="#1D9BF0"></circle>
-            <path d="M7 12.4l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.4"
-              stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          <span data-var-text="handle">@elgaraje</span>
+        <div class="col" id="col2" style="--c: var(--t2); left: 350px;">
+          <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
+          <div class="tier" data-var-text="tier2">RICO</div>
+          <div class="lgs">
+            <img id="lgBmw" src="assets/logos/bmw.png" data-var-src="bmwSrc" alt="" style="top: 0;" />
+            <img id="lgMercedes" src="assets/logos/mercedes.png" data-var-src="mercedesSrc" alt="" style="top: 150px;" />
+          </div>
         </div>
-      </section>
+        <div class="col" id="col3" style="--c: var(--t3); left: 700px;">
+          <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
+          <div class="tier" data-var-text="tier3">MILLONARIO</div>
+          <div class="lgs">
+            <img id="lgPorsche" src="assets/logos/porsche.png" data-var-src="porscheSrc" alt="" style="top: 0;" />
+            <img id="lgNissan" src="assets/logos/nissan.png" data-var-src="nissanSrc" alt="" style="top: 150px;" />
+          </div>
+        </div>
+      </div>
 
-      <div id="vig"></div>
+      <!-- ══ TEXTO NEON ══ -->
+      <div class="neon" id="n1" style="font-size:62px;" data-var-text="n1">Toyota, Honda, BMW, Mercedes...</div>
+      <div class="outline" id="n2" style="font-size:74px;" data-var-text="n2">cuál compraría yo</div>
+      <div class="outline" id="n3" style="font-size:62px;" data-var-text="n3">no existe una marca perfecta</div>
+      <div class="neon" id="n4" style="font-size:88px;" data-var-text="n4">todo depende de...</div>
+      <div class="plain" id="n5" style="font-size:60px;" data-var-text="n5">de la ciudad</div>
+      <div class="plain" id="n6" style="font-size:60px;" data-var-text="n6">del presupuesto</div>
+      <div class="plain" id="n7" style="font-size:60px;" data-var-text="n7">de tus viajes</div>
+      <div class="neon" id="n8" style="font-size:72px;" data-var-text="n8">siempre recomiendo mezclar</div>
+      <div class="outline" id="n9" style="font-size:66px;" data-var-text="n9">y confiabilidad</div>
+      <div class="outline" id="n10" style="font-size:74px;" data-var-text="n10">y si tú</div>
+      <div class="outline" id="n11" style="font-size:66px;" data-var-text="n11">tus pagos</div>
+      <div class="outline" id="n12" style="font-size:66px;" data-var-text="n12">intereses</div>
+      <div class="outline" id="n13" style="font-size:74px;" data-var-text="n13">tu caso</div>
+      <div class="outline" id="n14" style="font-size:56px;" data-var-text="n14">y te daremos los mejores</div>
+
+      <!-- ══ STICKERS DE PAPEL RASGADO ══ -->
+      <div class="outline brand" id="st1" style="--bc:var(--toyota); --bs:#ff4450;" data-var-text="s1">TOYOTA</div>
+      <div class="outline brand" id="st2" style="--bc:var(--honda); --bs:#ff4450;" data-var-text="s2">HONDA</div>
+      <div class="outline brand" id="st3" style="--bc:var(--bmw); --bs:#5cb0ff;" data-var-text="s3">BMW</div>
+      <div class="outline brand" id="st4" style="--bc:var(--mercedes); --bs:#7fd9ff;" data-var-text="s4">MERCEDES</div>
+      <div class="outline brand" id="st5" style="--bc:var(--porsche); --bs:#ff5a44;" data-var-text="s5">PORSCHE</div>
+      <div class="sticker" id="st6"><div class="paper"></div><span class="txt" data-var-text="s6">NISSAN</span></div>
+
+      <!-- ══ CIERRE ══ -->
+      <div id="outro">
+        <div id="closeTitle" data-var-text="closeTitle">ELIGE SEGÚN TU VIDA</div>
+        <div id="ctaBox"></div>
+        <div id="ctaText" data-var-text="cta">@TUUSUARIO</div>
+      </div>
+
+      <div id="flash"></div>
+      <div id="fade"></div>
+      <div id="grain"></div>
+      <div id="vignette"></div>
 
       <script src="assets/vendor/gsap.min.js"></script>
       <script>
         window.__timelines = window.__timelines || {};
-
-        /* color -> rgba (para los halos, que siguen al acento elegido) */
-        function hexToRgba(hex, a) {
-          var h = String(hex || "").replace("#", "");
-          if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
-          if (!/^[0-9a-fA-F]{6}$/.test(h)) return "rgba(255,198,59," + a + ")";
-          var n = parseInt(h, 16);
-          return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
-        }
 
         function build() {
           /* ---------- variables en render-time ---------- */
           var V = (window.__hyperframes && window.__hyperframes.getVariables)
             ? window.__hyperframes.getVariables()
             : {};
-          var root = document.documentElement;
+          document.querySelectorAll("[data-var-text]").forEach(function (el) {
+            var k = el.getAttribute("data-var-text");
+            if (typeof V[k] === "string" && V[k] !== "") el.textContent = V[k];
+          });
+          document.querySelectorAll("[data-var-src]").forEach(function (el) {
+            var k = el.getAttribute("data-var-src");
+            if (typeof V[k] !== "string" || V[k] === "") return;
+            if (el.getAttribute("src") === V[k]) return;
+            el.setAttribute("src", V[k]);
+            if (el.tagName === "AUDIO" || el.tagName === "VIDEO") el.load();
+          });
 
-          if (typeof V.accent === "string" && V.accent) {
-            root.style.setProperty("--accent", V.accent);
-            root.style.setProperty("--accent-soft", hexToRgba(V.accent, .45));
-            root.style.setProperty("--accent-faint", hexToRgba(V.accent, .16));
-          }
-          if (typeof V.bg === "string" && V.bg) root.style.setProperty("--bg", V.bg);
-
-          var texts = document.querySelectorAll("[data-var-text]");
-          for (var i = 0; i < texts.length; i++) {
-            var k = texts[i].getAttribute("data-var-text");
-            if (typeof V[k] === "string" && V[k] !== "") texts[i].textContent = V[k];
-          }
-          var srcs = document.querySelectorAll("[data-var-src]");
-          for (var s = 0; s < srcs.length; s++) {
-            var ks = srcs[s].getAttribute("data-var-src");
-            if (typeof V[ks] !== "string" || V[ks] === "") continue;
-            if (srcs[s].getAttribute("src") === V[ks]) continue;
-            srcs[s].setAttribute("src", V[ks]);
-            if (srcs[s].tagName === "AUDIO" || srcs[s].tagName === "VIDEO") srcs[s].load();
-          }
-
-          /* el titular se reconstruye palabra a palabra desde la variable:
-             una <span> por palabra (el binding plano se comeria el salto) */
-          var titleEl = document.getElementById("title");
-          var raw = (typeof V.title === "string" && V.title !== "")
-            ? V.title
-            : titleEl.textContent.replace(/\s+/g, " ").trim();
-          var words = String(raw).trim().split(/\s+/);
-          var html = "";
-          for (var w = 0; w < words.length; w++) {
-            html += (w ? " " : "") + '<span class="word">' + words[w] + "</span>";
-          }
-          titleEl.innerHTML = html;
-
-          /* ---------- timeline (paused: la mueve el renderizador) ---------- */
           var tl = gsap.timeline({ paused: true });
+          var i;
 
-          /* zoom de camara continuo: no hay ni un fotograma quieto */
-          tl.fromTo("#stage", { scale: 1 }, { scale: 1.03, duration: 14, ease: "none" }, 0);
+          /* ══════════ CAMARA: casi estatica, como el original ══════════ */
+          tl.fromTo("#talker", { scale: 1.0 }, { scale: 1.06, duration: 14.3, ease: "none" }, 0);
+          /* corte de edicion a 14.4: punch-in de la misma toma */
+          tl.fromTo("#talker2", { opacity: 0, scale: 1.34, y: -30 },
+            { opacity: 1, scale: 1.30, y: -20, duration: .25, ease: "power3.out" }, 14.4);
+          tl.set("#flash", { opacity: .5 }, 14.4);
+          tl.to("#flash", { opacity: 0, duration: .09, ease: "none" }, 14.43);
+          tl.fromTo("#cols", { x: 0 }, { x: -24, duration: 20, ease: "none" }, 0);
 
-          /* ambiente */
-          tl.fromTo("#orb1", { scale: .92, opacity: 0 },
-            { scale: 1.1, opacity: .2, duration: 6.5, ease: "power1.out" }, 0);
-          tl.to("#orb1", { scale: 1.2, opacity: .15, duration: 7.5, ease: "none" }, 6.5);
-          tl.fromTo("#orb2", { scale: 1.04, opacity: 0 },
-            { scale: 1.22, opacity: .14, duration: 14, ease: "none" }, 0);
+          /* ══════════ APODOS EN NEON: entrada con parpadeo de tubo ══════════ */
+          tl.fromTo("#col1 .tier", { opacity: 0, scale: .9 },
+            { opacity: 1, scale: 1, duration: .01, ease: "none" }, 0.05);
+          tl.fromTo("#col2 .tier", { opacity: 0, scale: .9 },
+            { opacity: 1, scale: 1, duration: .01, ease: "none" }, 0.12);
+          tl.fromTo("#col3 .tier", { opacity: 0, scale: .9 },
+            { opacity: 1, scale: 1, duration: .01, ease: "none" }, 0.19);
+          /* parpadeo de neon: caida corta de opacidad */
+          tl.to("#col1 .tier", { opacity: .18, duration: .05, ease: "none" }, .32);
+          tl.to("#col1 .tier", { opacity: 1, duration: .05, ease: "none" }, .40);
+          tl.to("#col3 .tier", { opacity: .25, duration: .05, ease: "none" }, .58);
+          tl.to("#col3 .tier", { opacity: 1, duration: .05, ease: "none" }, .66);
 
-          /* escena 1: gancho, palabras escalonadas con curva expo */
-          tl.fromTo("#s1", { y: 0 }, { y: -18, duration: 5, ease: "none" }, 0);
-          tl.fromTo(".kicker", { opacity: 0, y: 26 },
-            { opacity: 1, y: 0, duration: .55, ease: "power3.out" }, .12);
-          tl.fromTo(".word", { opacity: 0, y: 64 },
-            { opacity: 1, y: 0, duration: .8, ease: "expo.out", stagger: .085 }, .3);
-          tl.fromTo(".rule", { opacity: 0, scaleX: 0 },
-            { opacity: 1, scaleX: 1, duration: .7, ease: "power3.out" }, 1.1);
-          tl.to("#s1", { opacity: 0, duration: .45, ease: "power2.in" }, 4.55);
+          /* ══════════ LOGOS QUE APARECEN BAJO SU APODO ══════════ */
+          var LOGOS = [
+            ["#lgToyota", 1.30], ["#lgHonda", 2.05], ["#lgBmw", 2.80], ["#lgMercedes", 3.55],
+            ["#lgPorsche", 11.60], ["#lgNissan", 13.30]
+          ];
+          for (i = 0; i < LOGOS.length; i++) {
+            tl.fromTo(LOGOS[i][0], { opacity: 0, scale: .7, y: -14 },
+              { opacity: 1, scale: 1, y: 0, duration: .32, ease: "back.out(1.8)" }, LOGOS[i][1]);
+          }
 
-          /* escena 2: tres claves al beat + deriva lenta para que no se pare */
-          tl.to("#s2", { opacity: 1, duration: .35, ease: "power1.out" }, 4.9);
-          tl.fromTo("#s2", { y: 0 }, { y: -16, duration: 5, ease: "none" }, 5.2);
-          tl.fromTo(".b", { opacity: 0, y: 44 },
-            { opacity: 1, y: 0, duration: .62, ease: "power3.out", stagger: .18 }, 5.05);
-          tl.to("#s2", { opacity: 0, duration: .4, ease: "power2.in" }, 9.85);
+          /* ══════════ TEXTO NEON: entra con flash, sale fundido ══════════ */
+          var NEON = [
+            ["#n1", 0.15, 1.20], ["#n2", 4.35, 5.30], ["#n3", 5.40, 6.90],
+            ["#n4", 7.00, 8.00], ["#n5", 8.10, 8.80], ["#n6", 8.85, 9.55],
+            ["#n7", 9.60, 10.30], ["#n8", 10.40, 11.50], ["#n9", 12.40, 13.20],
+            ["#n10", 14.10, 14.75], ["#n11", 14.80, 15.45], ["#n12", 15.50, 16.15],
+            ["#n13", 16.20, 16.85], ["#n14", 16.90, 17.60]
+          ];
+          for (i = 0; i < NEON.length; i++) {
+            tl.fromTo(NEON[i][0], { opacity: 0, scale: .94, y: 18 },
+              { opacity: 1, scale: 1, y: 0, duration: .22, ease: "power3.out" }, NEON[i][1]);
+            tl.to(NEON[i][0], { opacity: 0, scale: 1.03, duration: .22, ease: "power2.in" }, NEON[i][2]);
+          }
 
-          /* escena 3: cierre con respiracion hasta el ultimo fotograma */
-          tl.to("#s3", { opacity: 1, duration: .4, ease: "power1.out" }, 10.2);
-          tl.fromTo("#s3", { y: 0 }, { y: -10, duration: 3.8, ease: "none" }, 10.2);
-          tl.fromTo(".pill", { opacity: 0, scale: .9, y: 30 },
-            { opacity: 1, scale: 1, y: 0, duration: .7, ease: "back.out(1.7)" }, 10.35);
-          tl.fromTo(".handle", { opacity: 0, y: 26 },
-            { opacity: 1, y: 0, duration: .6, ease: "power3.out" }, 10.85);
-          tl.to(".pill", { scale: 1.02, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 11.6);
+          /* ══════════ STICKERS DE PAPEL: entran de golpe con rotacion ══════════ */
+          var STK = [
+            ["#st1", 1.30, 2.00, -2.5], ["#st2", 2.05, 2.75, 1.8], ["#st3", 2.80, 3.50, -1.6],
+            ["#st4", 3.55, 4.25, 2.2], ["#st5", 11.60, 12.30, -2.0], ["#st6", 13.30, 14.00, 1.5]
+          ];
+          for (i = 0; i < STK.length; i++) {
+            tl.fromTo(STK[i][0], { opacity: 0, scale: 1.22, rotation: STK[i][3] },
+              { opacity: 1, scale: 1, rotation: 0, duration: .18, ease: "power4.out" }, STK[i][1]);
+            tl.to(STK[i][0], { opacity: 0, scale: .94, duration: .16, ease: "power2.in" }, STK[i][2]);
+          }
+
+          /* flash de apertura */
+          tl.fromTo("#flash", { opacity: 0 }, { opacity: .85, duration: .04, ease: "none" }, 0);
+          tl.to("#flash", { opacity: 0, duration: .22, ease: "none" }, .04);
+
+          /* ══════════ CIERRE: zoom out a negro (como el original) ══════════ */
+          tl.fromTo("#talker2", { scale: 1.30, y: -20, opacity: 1 },
+            { scale: .88, y: 140, opacity: 0, duration: 1.6, ease: "power2.inOut", immediateRender: false }, 17.70);
+          tl.to("#cols", { opacity: 0, duration: 1.1, ease: "power2.in" }, 17.70);
+          tl.to("#veil", { opacity: 1, duration: 1.1, ease: "power2.in" }, 17.70);
+          tl.fromTo("#fade", { opacity: 0 }, { opacity: 1, duration: 1.5, ease: "power2.inOut" }, 17.75);
+          tl.fromTo("#closeTitle", { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: .6, ease: "expo.out" }, 18.40);
+          tl.fromTo("#ctaBox", { opacity: 0, scale: .85 },
+            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 18.85);
+          tl.fromTo("#ctaText", { opacity: 0, scale: .92 },
+            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 18.95);
+          tl.to("#grain", { x: 14, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
+          tl.to("#grain", { y: 10, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
 
           window.__timelines["proyecto-nuevo"] = tl;
         }
-
         if (gsap.ticker) gsap.ticker.fps(30);
         build();
       </script>
