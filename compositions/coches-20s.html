@@ -2,70 +2,59 @@
 <html
   lang="es"
   data-composition-variables='[
-    {"id":"toyotaName","type":"string","label":"Toyota","default":"TOYOTA"},
-    {"id":"hondaName","type":"string","label":"Honda","default":"HONDA"},
-    {"id":"bmwName","type":"string","label":"BMW","default":"BMW"},
-    {"id":"mercedesName","type":"string","label":"Mercedes","default":"MERCEDES"},
-    {"id":"porscheName","type":"string","label":"Porsche","default":"PORSCHE"},
-    {"id":"nissanName","type":"string","label":"Nissan","default":"NISSAN"},
+    {"id":"tier1","type":"string","label":"Apodo 1","default":"POBRE"},
+    {"id":"tier2","type":"string","label":"Apodo 2","default":"RICO"},
+    {"id":"tier3","type":"string","label":"Apodo 3","default":"MILLONARIO"},
     {"id":"toyotaSrc","type":"image","label":"Logo Toyota","default":"../assets/logos/toyota.png"},
     {"id":"hondaSrc","type":"image","label":"Logo Honda","default":"../assets/logos/honda.png"},
     {"id":"bmwSrc","type":"image","label":"Logo BMW","default":"../assets/logos/bmw.png"},
     {"id":"mercedesSrc","type":"image","label":"Logo Mercedes","default":"../assets/logos/mercedes.png"},
     {"id":"porscheSrc","type":"image","label":"Logo Porsche","default":"../assets/logos/porsche.png"},
     {"id":"nissanSrc","type":"image","label":"Logo Nissan","default":"../assets/logos/nissan.png"},
-    {"id":"toyotaCar","type":"image","label":"Foto Toyota","default":"../assets/coches/toyota.jpg"},
-    {"id":"hondaCar","type":"image","label":"Foto Honda","default":"../assets/coches/honda.jpg"},
-    {"id":"bmwCar","type":"image","label":"Foto BMW","default":"../assets/coches/bmw.jpg"},
-    {"id":"mercedesCar","type":"image","label":"Foto Mercedes","default":"../assets/coches/mercedes.jpg"},
-    {"id":"porscheCar","type":"image","label":"Foto Porsche","default":"../assets/coches/porsche.jpg"},
-    {"id":"nissanCar","type":"image","label":"Foto Nissan","default":"../assets/coches/nissan.jpg"},
-    {"id":"k1","type":"string","label":"Marca 1","default":"TOYOTA"},
-    {"id":"k2","type":"string","label":"Marca 2","default":"HONDA"},
-    {"id":"k3","type":"string","label":"Marca 3","default":"BMW"},
-    {"id":"k4","type":"string","label":"Marca 4","default":"MERCEDES"},
-    {"id":"cap1","type":"string","label":"Pie 1","default":"cuál compraría yo"},
-    {"id":"w1","type":"string","label":"Frase 1","default":"NO EXISTE UNA MARCA PERFECTA"},
-    {"id":"cap2","type":"string","label":"Pie 2","default":"en serio"},
-    {"id":"w2","type":"string","label":"Frase 2","default":"TODO DEPENDE DE..."},
-    {"id":"cap3","type":"string","label":"Pie 3","default":"de la ciudad"},
-    {"id":"cap4","type":"string","label":"Pie 4","default":"del presupuesto"},
-    {"id":"cap5","type":"string","label":"Pie 5","default":"de tus viajes"},
-    {"id":"w3","type":"string","label":"Frase 3","default":"SIEMPRE RECOMIENDO MEZCLAR"},
-    {"id":"cap6","type":"string","label":"Pie 6","default":"y confiabilidad"},
-    {"id":"w4","type":"string","label":"Frase 4","default":"TOYOTA"},
-    {"id":"cap7","type":"string","label":"Pie 7","default":"muy"},
-    {"id":"cap8","type":"string","label":"Pie 8","default":"es una"},
-    {"id":"cap9","type":"string","label":"Pie 9","default":"futuro"},
-    {"id":"w5","type":"string","label":"Frase 5","default":"Y SI TÚ..."},
-    {"id":"cap10","type":"string","label":"Pie 10","default":"tus pagos"},
-    {"id":"cap11","type":"string","label":"Pie 11","default":"intereses"},
-    {"id":"w6","type":"string","label":"Frase 6","default":"TU CASO"},
-    {"id":"cap12","type":"string","label":"Pie 12","default":"y te daremos los mejores"},
-    {"id":"closeTitle","type":"string","label":"Cierre","default":"ELIGE SEGÚN TU VIDA"},
+    {"id":"talkerSrc","type":"image","label":"Clip del presentador","default":"../assets/clips/talker.mp4"},
+    {"id":"n1","type":"string","label":"Neon 1","default":"Toyota, Honda, BMW, Mercedes..."},
+    {"id":"n2","type":"string","label":"Neon 2","default":"cual compraria yo"},
+    {"id":"n3","type":"string","label":"Neon 3","default":"no existe una marca perfecta"},
+    {"id":"n4","type":"string","label":"Neon 4","default":"todo depende de..."},
+    {"id":"n5","type":"string","label":"Neon 5","default":"de la ciudad"},
+    {"id":"n6","type":"string","label":"Neon 6","default":"del presupuesto"},
+    {"id":"n7","type":"string","label":"Neon 7","default":"de tus viajes"},
+    {"id":"n8","type":"string","label":"Neon 8","default":"siempre recomiendo mezclar"},
+    {"id":"n9","type":"string","label":"Neon 9","default":"y confiabilidad"},
+    {"id":"n10","type":"string","label":"Neon 10","default":"y si tu"},
+    {"id":"n11","type":"string","label":"Neon 11","default":"tus pagos"},
+    {"id":"n12","type":"string","label":"Neon 12","default":"intereses"},
+    {"id":"n13","type":"string","label":"Neon 13","default":"tu caso"},
+    {"id":"n14","type":"string","label":"Neon 14","default":"y te daremos los mejores"},
+    {"id":"s1","type":"string","label":"Sticker 1","default":"TOYOTA"},
+    {"id":"s2","type":"string","label":"Sticker 2","default":"HONDA"},
+    {"id":"s3","type":"string","label":"Sticker 3","default":"BMW"},
+    {"id":"s4","type":"string","label":"Sticker 4","default":"MERCEDES"},
+    {"id":"s5","type":"string","label":"Sticker 5","default":"PORSCHE"},
+    {"id":"s6","type":"string","label":"Sticker 6","default":"NISSAN"},
+    {"id":"closeTitle","type":"string","label":"Cierre","default":"ELIGE SEGUN TU VIDA"},
     {"id":"cta","type":"string","label":"CTA","default":"@TUUSUARIO"},
     {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/audio/music-source.mp3"}
   ]'
 >
   <head>
     <meta charset="UTF-8" />
-    <title>El coche que compraria yo - replica de edicion 20 s</title>
+    <title>El coche que compraria yo - replica de edicion</title>
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../assets/fonts/fonts-extra.css" />
     <link rel="preload" href="../assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="../assets/fonts/inter-800.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="../assets/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/orbitron-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/anton-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/playfair+display-600.woff2" as="font" type="font/woff2" crossorigin />
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { background: #000; }
       :root {
-        --toyota: #eb0a1e;
-        --honda: #e4002b;
-        --bmw: #0166b1;
-        --mercedes: #00a3e0;
-        --porsche: #d5001c;
-        --nissan: #c3002f;
-        --ink: #f4f6f8;
+        --t1: #ff2a2a;   /* columna POBRE (rojo) */
+        --t2: #19d7ff;   /* columna RICO (cian) */
+        --t3: #ffb020;   /* columna MILLONARIO (ambar) */
+        --ink: #ffffff;
       }
       #stage {
         position: relative; width: 1080px; height: 1920px; overflow: hidden;
@@ -73,102 +62,127 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      /* ══════════ BARRA SUPERIOR DE MARCAS (como en la referencia) ══════════ */
-      #bar {
-        position: absolute; left: 0; right: 0; top: 0; height: 270px; overflow: hidden;
-        background: #07070a; z-index: 20;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, .8);
+      /* ══════════ EL PRESENTADOR ══════════ */
+      #talker {
+        position: absolute; inset: 0; width: 1080px; height: 1920px;
+        object-fit: cover; will-change: transform, opacity;
       }
-      #barInner { position: absolute; top: 0; left: 0; height: 100%; display: flex; will-change: transform; }
-      .bcol { position: relative; width: 230px; height: 100%; flex: 0 0 230px; }
-      .bcol .bl {
-        position: absolute; top: 34px; left: 50%; transform: translateX(-50%);
-        width: 140px; height: 92px; object-fit: contain;
-        filter: brightness(0) invert(1); opacity: .95;
-      }
-      .bcol .bn {
-        position: absolute; top: 150px; left: 0; right: 0; text-align: center;
-        font-size: 25px; font-weight: 800; letter-spacing: .2em; color: var(--c);
-      }
-      .bcol .bbar { position: absolute; left: 26px; right: 26px; bottom: 0; height: 3px; background: var(--c); opacity: .8; }
-      #barEdge {
-        position: absolute; left: 0; right: 0; bottom: 0; height: 2px; z-index: 21;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
-      }
-
-      /* ══════════ FOTOS DE LOS COCHES (protagonistas) ══════════ */
-      #stageImg { position: absolute; left: 0; right: 0; top: 270px; height: 1180px; overflow: hidden; }
-      .car {
-        position: absolute; left: 0; top: 0; width: 1080px; height: 1180px;
-        object-fit: cover; opacity: 0; will-change: transform, opacity;
-      }
-      /* gradiente para que el texto se lea sobre la foto */
-      #photoGrade {
-        position: absolute; left: 0; right: 0; top: 270px; height: 1180px; z-index: 10;
+      /* velo: oscurece el fondo para que los graficos respiren */
+      #veil {
+        position: absolute; inset: 0; pointer-events: none;
         background:
-          linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 26%),
-          linear-gradient(0deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.25) 34%, rgba(0,0,0,0) 60%);
+          linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.12) 26%, rgba(0,0,0,.05) 55%, rgba(0,0,0,.72) 100%),
+          radial-gradient(ellipse 70% 42% at 50% 52%, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 100%);
       }
 
-      /* ══════════ TIPOGRAFIA ══════════ */
-      .bigword {
-        position: absolute; left: 0; right: 0; top: 640px; text-align: center; z-index: 30;
-        font-family: "Bebas Neue", sans-serif; font-size: 132px; line-height: 1;
-        color: var(--ink); opacity: 0; letter-spacing: .01em;
-        text-shadow: 0 8px 40px rgba(0,0,0,.95);
-        will-change: transform, opacity;
+      /* ══════════ COLUMNAS LED + APODOS EN NEON ══════════ */
+      #cols { position: absolute; left: 0; right: 0; top: 0; height: 760px; z-index: 20; overflow: hidden; will-change: transform, opacity; }
+      .col { position: absolute; top: 0; width: 360px; height: 760px; }
+      .col .band {
+        position: absolute; left: 0; right: 0; top: 0; height: 700px; opacity: .30;
+        background: linear-gradient(180deg, var(--c) 0%, rgba(0,0,0,0) 92%);
       }
-      .bigword.sm { font-size: 88px; }
-      .cap {
-        position: absolute; left: 0; right: 0; top: 1010px; text-align: center; z-index: 30;
-        font-size: 54px; font-weight: 700; color: #fff; opacity: 0;
-        text-shadow: 0 4px 24px rgba(0,0,0,.95);
-        will-change: transform, opacity;
+      .col .strip {
+        position: absolute; top: 0; width: 7px; height: 700px;
+        background: repeating-linear-gradient(180deg, rgba(255,255,255,.95) 0 7px, rgba(255,255,255,0) 7px 16px);
+        box-shadow: 0 0 14px rgba(255,255,255,.7);
       }
-
-      /* ══════════ CIERRE (franja inferior negra) ══════════ */
-      #outro { position: absolute; left: 0; right: 0; bottom: 0; height: 470px; z-index: 30; }
-      #closeTitle {
-        position: absolute; left: 0; right: 0; top: 90px; text-align: center;
-        font-family: "Bebas Neue", sans-serif; font-size: 118px; color: var(--ink);
-        opacity: 0; text-shadow: 0 8px 40px rgba(0,0,0,.9);
-        will-change: transform, opacity;
+      .col .strip.l { left: 0; }
+      .col .strip.r { right: 0; }
+      .col .tier {
+        position: absolute; top: 46px; left: 24px; right: 24px; text-align: center;
+        font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 44px;
+        letter-spacing: .1em; color: var(--c); text-transform: uppercase;
+        text-shadow: 0 0 10px var(--c), 0 0 26px var(--c), 0 0 58px var(--c);
+        will-change: opacity, transform;
       }
-      #ctaBox {
-        position: absolute; left: 50%; top: 270px; margin-left: -200px; width: 400px; height: 92px;
-        border-radius: 99px; border: 2px solid rgba(255,255,255,.4);
-        background: rgba(255,255,255,.07); opacity: 0;
-        will-change: transform, opacity;
-      }
-      #ctaText {
-        position: absolute; left: 0; right: 0; top: 293px; text-align: center;
-        font-size: 42px; font-weight: 800; letter-spacing: .08em; color: #fff; opacity: 0;
-        will-change: transform, opacity;
-      }
-      #brandGlow {
-        position: absolute; left: 50%; top: 1330px; width: 1100px; height: 900px; margin-left: -550px;
-        border-radius: 50%; pointer-events: none; opacity: 0; z-index: 5;
-        background: radial-gradient(circle, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 66%);
+      .col .lgs { position: absolute; left: 0; right: 0; top: 150px; }
+      .col .lgs img {
+        position: absolute; left: 50%; transform: translateX(-50%);
+        width: 190px; height: 96px; object-fit: contain; opacity: 0;
+        filter: brightness(0) invert(1) drop-shadow(0 6px 12px rgba(0,0,0,.85));
         will-change: opacity, transform;
       }
 
+      /* ══════════ TEXTO NEON (serif con halo) ══════════ */
+      .neon {
+        position: absolute; left: 20px; right: 20px; text-align: center; z-index: 30;
+        font-family: "Playfair Display", Georgia, serif; font-weight: 600;
+        font-size: 104px; line-height: 1.05; color: #fff; opacity: 0;
+        text-shadow:
+          0 0 8px rgba(190, 225, 255, .95),
+          0 0 22px rgba(120, 190, 255, .9),
+          0 0 48px rgba(70, 150, 255, .75),
+          0 0 90px rgba(40, 110, 235, .55);
+        will-change: transform, opacity;
+      }
+      .neon.sm { font-size: 74px; }
+      #n1 { top: 700px; } #n2 { top: 700px; } #n3 { top: 690px; } #n4 { top: 690px; }
+      #n5, #n6, #n7 { top: 760px; font-size: 78px; }
+      #n8 { top: 700px; font-size: 88px; }
+      #n9, #n10, #n11, #n12, #n13, #n14 { top: 740px; font-size: 86px; }
+
+      /* ══════════ STICKER DE PAPEL RASGADO ══════════ */
+      .sticker {
+        position: absolute; left: 0; right: 0; top: 820px; z-index: 30;
+        text-align: center; opacity: 0; will-change: transform, opacity;
+      }
+      .sticker .paper {
+        position: absolute; left: 50%; top: 50%; width: 660px; height: 150px;
+        margin-left: -330px; margin-top: -75px; background: #f3f1ea;
+        filter: url(#torn); will-change: transform;
+      }
+      .sticker .txt {
+        position: relative; display: inline-block; padding: 0 26px;
+        font-family: "Anton", sans-serif; font-size: 108px; line-height: 1.18;
+        color: #0b0b0b; letter-spacing: .01em;
+      }
+      #st1 { top: 820px; } #st2 { top: 820px; } #st3 { top: 820px; }
+      #st4 { top: 820px; } #st5 { top: 820px; } #st6 { top: 820px; }
+
+      /* ══════════ TEXTO PLANO (segundo plano, sin efectos) ══════════ */
+      .plain {
+        position: absolute; left: 0; right: 0; top: 1180px; z-index: 30; text-align: center;
+        font-size: 56px; font-weight: 800; color: #fff; opacity: 0;
+        text-shadow: 0 4px 18px rgba(0,0,0,.9);
+        will-change: transform, opacity;
+      }
+
+      /* ══════════ CIERRE ══════════ */
+      #outro { position: absolute; left: 0; right: 0; bottom: 0; height: 560px; z-index: 40; }
+      #closeTitle {
+        position: absolute; left: 0; right: 0; top: 120px; text-align: center;
+        font-family: "Anton", sans-serif; font-size: 92px; color: #fff;
+        opacity: 0; will-change: transform, opacity;
+      }
+      #ctaBox {
+        position: absolute; left: 50%; top: 300px; margin-left: -210px; width: 420px; height: 96px;
+        border-radius: 99px; border: 2px solid rgba(255,255,255,.45);
+        background: rgba(255,255,255,.08); opacity: 0;
+        will-change: transform, opacity;
+      }
+      #ctaText {
+        position: absolute; left: 0; right: 0; top: 325px; text-align: center;
+        font-size: 44px; font-weight: 800; letter-spacing: .06em; color: #fff; opacity: 0;
+        will-change: transform, opacity;
+      }
+
       /* ══════════ FLASH / GRANO / VIÑETA ══════════ */
-      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 45; will-change: opacity; }
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 50; will-change: opacity; }
       #grain {
-        position: absolute; inset: -40px; z-index: 70; pointer-events: none; opacity: .07;
+        position: absolute; inset: -40px; z-index: 70; pointer-events: none; opacity: .06;
         background-image: url(../assets/grain.png);
         background-repeat: repeat; background-size: 256px 256px;
         will-change: transform;
       }
       #vignette {
         position: absolute; inset: 0; z-index: 80; pointer-events: none;
-        background: radial-gradient(ellipse 84% 66% at 50% 44%, rgba(0,0,0,0) 42%, rgba(0,0,0,.55) 80%, rgba(0,0,0,.92) 100%);
+        background: radial-gradient(ellipse 86% 68% at 50% 46%, rgba(0,0,0,0) 44%, rgba(0,0,0,.5) 80%, rgba(0,0,0,.9) 100%);
       }
       #fade { position: absolute; inset: 0; background: #000; opacity: 0; z-index: 65; pointer-events: none; will-change: opacity; }
 
       /* will-change: elementos animados por GSAP */
-      #stageImg { will-change: opacity, transform; }
-      #photoGrade { will-change: opacity; }
+      #veil { will-change: opacity; }
     </style>
   </head>
   <body>
@@ -182,86 +196,76 @@
       data-fps="30"
     >
       <audio id="track" data-start="0" data-duration="20" data-media-start="32.6"
-        data-track-index="1" data-volume="0.85" src="../assets/audio/music-source.mp3"
+        data-track-index="1" data-volume="0.8" src="../assets/audio/music-source.mp3"
         data-var-src="musicSrc" preload="auto"></audio>
 
-      <!-- ══ BARRA DE MARCAS ══ -->
-      <div id="bar">
-        <div id="barInner">
-          <div class="bcol" style="--c: var(--toyota)">
-            <img class="bl" src="../assets/logos/toyota.png" data-var-src="toyotaSrc" alt="" />
-            <div class="bn" data-var-text="toyotaName">TOYOTA</div><div class="bbar"></div>
-          </div>
-          <div class="bcol" style="--c: var(--honda)">
-            <img class="bl" src="../assets/logos/honda.png" data-var-src="hondaSrc" alt="" />
-            <div class="bn" data-var-text="hondaName">HONDA</div><div class="bbar"></div>
-          </div>
-          <div class="bcol" style="--c: var(--bmw)">
-            <img class="bl" src="../assets/logos/bmw.png" data-var-src="bmwSrc" alt="" />
-            <div class="bn" data-var-text="bmwName">BMW</div><div class="bbar"></div>
-          </div>
-          <div class="bcol" style="--c: var(--mercedes)">
-            <img class="bl" src="../assets/logos/mercedes.png" data-var-src="mercedesSrc" alt="" />
-            <div class="bn" data-var-text="mercedesName">MERCEDES</div><div class="bbar"></div>
-          </div>
-          <div class="bcol" style="--c: var(--porsche)">
-            <img class="bl" src="../assets/logos/porsche.png" data-var-src="porscheSrc" alt="" />
-            <div class="bn" data-var-text="porscheName">PORSCHE</div><div class="bbar"></div>
-          </div>
-          <div class="bcol" style="--c: var(--nissan)">
-            <img class="bl" src="../assets/logos/nissan.png" data-var-src="nissanSrc" alt="" />
-            <div class="bn" data-var-text="nissanName">NISSAN</div><div class="bbar"></div>
+      <!-- filtro de papel rasgado (el borde irregular del sticker) -->
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <filter id="torn">
+          <feTurbulence type="fractalNoise" baseFrequency="0.03 0.05" numOctaves="3" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+
+      <video id="talker" class="clip" src="../assets/clips/talker.mp4" data-var-src="talkerSrc"
+        data-start="0" data-duration="20" data-media-start="0" muted playsinline preload="auto"></video>
+      <div id="veil"></div>
+
+      <!-- ══ COLUMNAS LED ══ -->
+      <div id="cols">
+        <div class="col" id="col1" style="--c: var(--t1); left: 0;">
+          <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
+          <div class="tier" data-var-text="tier1">POBRE</div>
+          <div class="lgs">
+            <img id="lgToyota" src="../assets/logos/toyota.png" data-var-src="toyotaSrc" alt="" style="top: 0;" />
+            <img id="lgHonda" src="../assets/logos/honda.png" data-var-src="hondaSrc" alt="" style="top: 150px;" />
           </div>
         </div>
-        <div id="barEdge"></div>
+        <div class="col" id="col2" style="--c: var(--t2); left: 360px;">
+          <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
+          <div class="tier" data-var-text="tier2">RICO</div>
+          <div class="lgs">
+            <img id="lgBmw" src="../assets/logos/bmw.png" data-var-src="bmwSrc" alt="" style="top: 0;" />
+            <img id="lgMercedes" src="../assets/logos/mercedes.png" data-var-src="mercedesSrc" alt="" style="top: 150px;" />
+          </div>
+        </div>
+        <div class="col" id="col3" style="--c: var(--t3); left: 720px;">
+          <div class="band"></div><div class="strip l"></div><div class="strip r"></div>
+          <div class="tier" data-var-text="tier3">MILLONARIO</div>
+          <div class="lgs">
+            <img id="lgPorsche" src="../assets/logos/porsche.png" data-var-src="porscheSrc" alt="" style="top: 0;" />
+            <img id="lgNissan" src="../assets/logos/nissan.png" data-var-src="nissanSrc" alt="" style="top: 150px;" />
+          </div>
+        </div>
       </div>
 
-      <!-- ══ FOTOS DE LOS COCHES ══ -->
-      <div id="stageImg">
-        <img class="car" id="cToyota" src="../assets/coches/toyota.jpg" data-var-src="toyotaCar" alt="" />
-        <img class="car" id="cHonda" src="../assets/coches/honda.jpg" data-var-src="hondaCar" alt="" />
-        <img class="car" id="cBmw" src="../assets/coches/bmw.jpg" data-var-src="bmwCar" alt="" />
-        <img class="car" id="cMercedes" src="../assets/coches/mercedes.jpg" data-var-src="mercedesCar" alt="" />
-        <img class="car" id="cPorsche" src="../assets/coches/porsche.jpg" data-var-src="porscheCar" alt="" />
-        <img class="car" id="cNissan" src="../assets/coches/nissan.jpg" data-var-src="nissanCar" alt="" />
-      </div>
-      <div id="photoGrade"></div>
-      <div id="brandGlow"></div>
+      <!-- ══ TEXTO NEON ══ -->
+      <div class="neon" id="n1" data-var-text="n1">Toyota, Honda, BMW, Mercedes...</div>
+      <div class="neon" id="n2" data-var-text="n2">cual compraria yo</div>
+      <div class="neon" id="n3" data-var-text="n3">no existe una marca perfecta</div>
+      <div class="neon" id="n4" data-var-text="n4">todo depende de...</div>
+      <div class="neon sm" id="n5" data-var-text="n5">de la ciudad</div>
+      <div class="neon sm" id="n6" data-var-text="n6">del presupuesto</div>
+      <div class="neon sm" id="n7" data-var-text="n7">de tus viajes</div>
+      <div class="neon" id="n8" data-var-text="n8">siempre recomiendo mezclar</div>
+      <div class="neon sm" id="n9" data-var-text="n9">y confiabilidad</div>
+      <div class="neon sm" id="n10" data-var-text="n10">y si tu</div>
+      <div class="neon sm" id="n11" data-var-text="n11">tus pagos</div>
+      <div class="neon sm" id="n12" data-var-text="n12">intereses</div>
+      <div class="neon sm" id="n13" data-var-text="n13">tu caso</div>
+      <div class="neon sm" id="n14" data-var-text="n14">y te daremos los mejores</div>
 
-      <!-- ══ TIPOGRAFIA ══ -->
-      <div class="bigword" id="k1" data-var-text="k1" style="color: var(--toyota);">TOYOTA</div>
-      <div class="bigword" id="k2" data-var-text="k2" style="color: var(--honda);">HONDA</div>
-      <div class="bigword" id="k3" data-var-text="k3" style="color: var(--bmw);">BMW</div>
-      <div class="bigword" id="k4" data-var-text="k4" style="color: var(--mercedes);">MERCEDES</div>
-
-      <div class="cap" id="cap1" data-var-text="cap1">cuál compraría yo</div>
-
-      <div class="bigword sm" id="w1" data-var-text="w1">NO EXISTE UNA MARCA PERFECTA</div>
-      <div class="cap" id="cap2" data-var-text="cap2">en serio</div>
-
-      <div class="bigword" id="w2" data-var-text="w2">TODO DEPENDE DE...</div>
-      <div class="cap" id="cap3" data-var-text="cap3">de la ciudad</div>
-      <div class="cap" id="cap4" data-var-text="cap4">del presupuesto</div>
-      <div class="cap" id="cap5" data-var-text="cap5">de tus viajes</div>
-
-      <div class="bigword sm" id="w3" data-var-text="w3">SIEMPRE RECOMIENDO MEZCLAR</div>
-      <div class="cap" id="cap6" data-var-text="cap6">y confiabilidad</div>
-
-      <div class="bigword" id="w4" data-var-text="w4" style="color: var(--toyota);">TOYOTA</div>
-      <div class="cap" id="cap7" data-var-text="cap7">muy</div>
-      <div class="cap" id="cap8" data-var-text="cap8">es una</div>
-      <div class="cap" id="cap9" data-var-text="cap9">futuro</div>
-
-      <div class="bigword" id="w5" data-var-text="w5">Y SI TÚ...</div>
-      <div class="cap" id="cap10" data-var-text="cap10">tus pagos</div>
-      <div class="cap" id="cap11" data-var-text="cap11">intereses</div>
-
-      <div class="bigword" id="w6" data-var-text="w6">TU CASO</div>
-      <div class="cap" id="cap12" data-var-text="cap12">y te daremos los mejores</div>
+      <!-- ══ STICKERS DE PAPEL RASGADO ══ -->
+      <div class="sticker" id="st1"><div class="paper"></div><span class="txt" data-var-text="s1">TOYOTA</span></div>
+      <div class="sticker" id="st2"><div class="paper"></div><span class="txt" data-var-text="s2">HONDA</span></div>
+      <div class="sticker" id="st3"><div class="paper"></div><span class="txt" data-var-text="s3">BMW</span></div>
+      <div class="sticker" id="st4"><div class="paper"></div><span class="txt" data-var-text="s4">MERCEDES</span></div>
+      <div class="sticker" id="st5"><div class="paper"></div><span class="txt" data-var-text="s5">PORSCHE</span></div>
+      <div class="sticker" id="st6"><div class="paper"></div><span class="txt" data-var-text="s6">NISSAN</span></div>
 
       <!-- ══ CIERRE ══ -->
       <div id="outro">
-        <div id="closeTitle" data-var-text="closeTitle">ELIGE SEGÚN TU VIDA</div>
+        <div id="closeTitle" data-var-text="closeTitle">ELIGE SEGUN TU VIDA</div>
         <div id="ctaBox"></div>
         <div id="ctaText" data-var-text="cta">@TUUSUARIO</div>
       </div>
@@ -293,64 +297,75 @@
           });
 
           var tl = gsap.timeline({ paused: true });
-          var i, t;
+          var i;
 
-          /* ══════════ BARRA DE MARCAS: paneo lento a la derecha ══════════ */
-          tl.fromTo("#barInner", { x: -120 }, { x: -640, duration: 20, ease: "none" }, 0);
+          /* ══════════ CAMARA: casi estatica, como el original ══════════ */
+          tl.fromTo("#talker", { scale: 1.005 }, { scale: 1.045, duration: 15.59, ease: "none" }, 0);
+          tl.fromTo("#cols", { x: 0 }, { x: -46, duration: 20, ease: "none" }, 0);
 
-          /* ══════════ FOTOS: cross-fade + push lento (la camara) ══════════ */
-          /* [selector de foto, entra, sale] */
-          var SHOTS = [
-            ["#cToyota", 0.10, 0.86], ["#cHonda", 0.88, 1.64], ["#cBmw", 1.66, 2.42],
-            ["#cMercedes", 2.44, 6.30], ["#cPorsche", 6.30, 9.20], ["#cNissan", 9.20, 11.60],
-            ["#cToyota", 11.60, 14.20], ["#cPorsche", 14.20, 16.50], ["#cNissan", 16.50, 18.40]
+          /* ══════════ APODOS EN NEON: entrada con parpadeo de tubo ══════════ */
+          tl.fromTo("#col1 .tier", { opacity: 0, scale: .9 },
+            { opacity: 1, scale: 1, duration: .01, ease: "none" }, 0.05);
+          tl.fromTo("#col2 .tier", { opacity: 0, scale: .9 },
+            { opacity: 1, scale: 1, duration: .01, ease: "none" }, 0.12);
+          tl.fromTo("#col3 .tier", { opacity: 0, scale: .9 },
+            { opacity: 1, scale: 1, duration: .01, ease: "none" }, 0.19);
+          /* parpadeo de neon: caida corta de opacidad */
+          tl.to("#col1 .tier", { opacity: .18, duration: .05, ease: "none" }, .32);
+          tl.to("#col1 .tier", { opacity: 1, duration: .05, ease: "none" }, .40);
+          tl.to("#col3 .tier", { opacity: .25, duration: .05, ease: "none" }, .58);
+          tl.to("#col3 .tier", { opacity: 1, duration: .05, ease: "none" }, .66);
+
+          /* ══════════ LOGOS QUE APARECEN BAJO SU APODO ══════════ */
+          var LOGOS = [
+            ["#lgToyota", 0.35], ["#lgHonda", 1.05], ["#lgBmw", 1.75], ["#lgMercedes", 2.45],
+            ["#lgPorsche", 10.20], ["#lgNissan", 11.20]
           ];
-          for (i = 0; i < SHOTS.length; i++) {
-            var s = SHOTS[i];
-            tl.set(s[0], { opacity: 1 }, s[1]);
-            /* push lento de la foto mientras esta en pantalla */
-            tl.fromTo(s[0], { scale: 1.04 }, { scale: 1.13, duration: Math.max(0.6, s[2] - s[1]), ease: "none" }, s[1]);
-            if (i < SHOTS.length - 1) tl.set(s[0], { opacity: 0 }, SHOTS[i + 1][1]);
+          for (i = 0; i < LOGOS.length; i++) {
+            tl.fromTo(LOGOS[i][0], { opacity: 0, scale: .7, y: -14 },
+              { opacity: 1, scale: 1, y: 0, duration: .32, ease: "back.out(1.8)" }, LOGOS[i][1]);
           }
 
-          /* ══════════ PALABRAS GRANDES ══════════ */
-          var KW = [
-            ["#k1", 0.15, 0.80], ["#k2", 0.90, 1.55], ["#k3", 1.68, 2.33], ["#k4", 2.46, 3.30],
-            ["#w1", 3.40, 6.10], ["#w2", 6.30, 9.00], ["#w3", 9.20, 11.40],
-            ["#w4", 11.70, 13.90], ["#w5", 14.20, 16.30], ["#w6", 16.50, 18.30]
+          /* ══════════ TEXTO NEON: entra con flash, sale fundido ══════════ */
+          var NEON = [
+            ["#n1", 0.30, 1.25], ["#n2", 1.40, 2.90], ["#n3", 3.20, 5.00],
+            ["#n4", 5.20, 6.30], ["#n5", 6.45, 7.25], ["#n6", 7.30, 8.10],
+            ["#n7", 8.15, 8.95], ["#n8", 9.10, 10.30], ["#n9", 10.40, 11.30],
+            ["#n10", 11.60, 12.35], ["#n11", 12.40, 13.15], ["#n12", 13.20, 13.95],
+            ["#n13", 14.05, 14.80], ["#n14", 14.85, 15.60]
           ];
-          for (i = 0; i < KW.length; i++) {
-            tl.fromTo(KW[i][0], { opacity: 0, scale: .76, y: 44 },
-              { opacity: 1, scale: 1, y: 0, duration: .24, ease: "back.out(2.2)" }, KW[i][1]);
-            tl.to(KW[i][0], { opacity: 0, scale: 1.08, y: -30, duration: .2, ease: "power2.in" }, KW[i][2]);
+          for (i = 0; i < NEON.length; i++) {
+            tl.fromTo(NEON[i][0], { opacity: 0, scale: .94, y: 18 },
+              { opacity: 1, scale: 1, y: 0, duration: .22, ease: "power3.out" }, NEON[i][1]);
+            tl.to(NEON[i][0], { opacity: 0, scale: 1.03, duration: .22, ease: "power2.in" }, NEON[i][2]);
           }
-          var KC = [
-            ["#cap1", 0.95, 3.10], ["#cap2", 3.70, 5.20], ["#cap3", 6.50, 7.45],
-            ["#cap4", 7.50, 8.45], ["#cap5", 8.50, 9.45], ["#cap6", 9.60, 11.30],
-            ["#cap7", 11.80, 12.35], ["#cap8", 12.40, 13.05], ["#cap9", 13.10, 13.95],
-            ["#cap10", 14.35, 15.25], ["#cap11", 15.30, 16.25], ["#cap12", 16.70, 18.30]
+
+          /* ══════════ STICKERS DE PAPEL: entran de golpe con rotacion ══════════ */
+          var STK = [
+            ["#st1", 0.20, 0.90, -2.5], ["#st2", 0.95, 1.65, 1.8], ["#st3", 1.70, 2.40, -1.6],
+            ["#st4", 2.45, 3.30, 2.2], ["#st5", 10.00, 10.90, -2.0], ["#st6", 11.00, 11.90, 1.5]
           ];
-          for (i = 0; i < KC.length; i++) {
-            tl.fromTo(KC[i][0], { opacity: 0, y: 24 },
-              { opacity: 1, y: 0, duration: .22, ease: "power3.out" }, KC[i][1]);
-            tl.to(KC[i][0], { opacity: 0, y: -16, duration: .18, ease: "power2.in" }, KC[i][2]);
+          for (i = 0; i < STK.length; i++) {
+            tl.fromTo(STK[i][0], { opacity: 0, scale: 1.22, rotation: STK[i][3] },
+              { opacity: 1, scale: 1, rotation: 0, duration: .18, ease: "power4.out" }, STK[i][1]);
+            tl.to(STK[i][0], { opacity: 0, scale: .94, duration: .16, ease: "power2.in" }, STK[i][2]);
           }
 
           /* flash de apertura */
-          tl.fromTo("#flash", { opacity: 0 }, { opacity: 1, duration: .04, ease: "none" }, 0);
-          tl.to("#flash", { opacity: 0, duration: .2, ease: "none" }, .04);
+          tl.fromTo("#flash", { opacity: 0 }, { opacity: .85, duration: .04, ease: "none" }, 0);
+          tl.to("#flash", { opacity: 0, duration: .22, ease: "none" }, .04);
 
-          /* ══════════ CIERRE: la foto se apaga y entra el CTA ══════════ */
-          tl.to("#stageImg", { opacity: 0, scale: 1.06, duration: .7, ease: "power2.in" }, 18.40);
-          tl.to("#photoGrade", { opacity: 0, duration: .7, ease: "power2.in" }, 18.40);
-          tl.fromTo("#brandGlow", { opacity: 0, scale: .8 },
-            { opacity: 1, scale: 1, duration: .8, ease: "power3.out" }, 18.45);
-          tl.fromTo("#closeTitle", { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: .6, ease: "expo.out" }, 18.55);
-          tl.fromTo("#ctaBox", { opacity: 0, scale: .82 },
-            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 18.95);
-          tl.fromTo("#ctaText", { opacity: 0, scale: .9 },
-            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 19.05);
+          /* ══════════ CIERRE: zoom out a negro (como el original) ══════════ */
+          tl.fromTo("#talker", { scale: 1.045, y: 0, opacity: 1 },
+            { scale: .74, y: 120, opacity: .25, duration: 2.4, ease: "power2.inOut" }, 15.6);
+          tl.to("#cols", { opacity: 0, duration: 1.2, ease: "power2.in" }, 15.6);
+          tl.to("#veil", { opacity: 1, duration: 1.6, ease: "power2.in" }, 15.6);
+          tl.fromTo("#closeTitle", { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: .6, ease: "expo.out" }, 16.6);
+          tl.fromTo("#ctaBox", { opacity: 0, scale: .85 },
+            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 17.1);
+          tl.fromTo("#ctaText", { opacity: 0, scale: .92 },
+            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 17.2);
           tl.to("#grain", { x: 14, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
           tl.to("#grain", { y: 10, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
 

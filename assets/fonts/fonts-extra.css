@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Orbitron';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('./orbitron-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./anton-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: url('./playfair+display-600.woff2') format('woff2');
+}
