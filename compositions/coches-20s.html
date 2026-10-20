@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"toyotaName","type":"string","label":"Toyota","default":"TOYOTA"},
+    {"id":"hondaName","type":"string","label":"Honda","default":"HONDA"},
+    {"id":"bmwName","type":"string","label":"BMW","default":"BMW"},
+    {"id":"mercedesName","type":"string","label":"Mercedes","default":"MERCEDES"},
+    {"id":"porscheName","type":"string","label":"Porsche","default":"PORSCHE"},
+    {"id":"nissanName","type":"string","label":"Nissan","default":"NISSAN"},
+    {"id":"lexusName","type":"string","label":"Lexus","default":"LEXUS"},
+    {"id":"fordName","type":"string","label":"Ford","default":"FORD"},
+    {"id":"toyotaSrc","type":"image","label":"Logo Toyota","default":"../assets/logos/toyota.png"},
+    {"id":"hondaSrc","type":"image","label":"Logo Honda","default":"../assets/logos/honda.png"},
+    {"id":"bmwSrc","type":"image","label":"Logo BMW","default":"../assets/logos/bmw.png"},
+    {"id":"mercedesSrc","type":"image","label":"Logo Mercedes","default":"../assets/logos/mercedes.png"},
+    {"id":"porscheSrc","type":"image","label":"Logo Porsche","default":"../assets/logos/porsche.png"},
+    {"id":"nissanSrc","type":"image","label":"Logo Nissan","default":"../assets/logos/nissan.png"},
+    {"id":"lexusSrc","type":"image","label":"Logo Lexus","default":"../assets/logos/lexus.png"},
+    {"id":"fordSrc","type":"image","label":"Logo Ford","default":"../assets/logos/ford.png"},
+    {"id":"k1","type":"string","label":"Marca 1","default":"TOYOTA"},
+    {"id":"k2","type":"string","label":"Marca 2","default":"HONDA"},
+    {"id":"k3","type":"string","label":"Marca 3","default":"BMW"},
+    {"id":"k4","type":"string","label":"Marca 4","default":"MERCEDES"},
+    {"id":"cap1","type":"string","label":"Pie 1","default":"cual compraria yo"},
+    {"id":"w1","type":"string","label":"Frase 1","default":"NO EXISTE UNA MARCA PERFECTA"},
+    {"id":"cap2","type":"string","label":"Pie 2","default":"en serio"},
+    {"id":"w2","type":"string","label":"Frase 2","default":"TODO DEPENDE DE..."},
+    {"id":"cap3","type":"string","label":"Pie 3","default":"de tu ciudad"},
+    {"id":"cap4","type":"string","label":"Pie 4","default":"de tu presupuesto"},
+    {"id":"cap5","type":"string","label":"Pie 5","default":"de tus viajes"},
+    {"id":"w3","type":"string","label":"Regla 1","default":"MUCHO VIAJE > FIABILIDAD"},
+    {"id":"cap6","type":"string","label":"Pie 6","default":"si vas mucho"},
+    {"id":"w4","type":"string","label":"Regla 2","default":"POCO VIAJE > PRECIO"},
+    {"id":"cap7","type":"string","label":"Pie 7","default":"si vas poco"},
+    {"id":"w5","type":"string","label":"Regla 3","default":"FAMILIA > ESPACIO"},
+    {"id":"cap8","type":"string","label":"Pie 8","default":"si hay ninos o perro"},
+    {"id":"w6","type":"string","label":"Cierre 1","default":"ELIGE SEGUN TU VIDA"},
+    {"id":"w7","type":"string","label":"Cierre 2","default":"NO SEGUN EL LOGO"},
+    {"id":"cta","type":"string","label":"CTA","default":"@TUUSUARIO"},
+    {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/audio/music-source.mp3"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>El coche que compraria yo - motion graphics 20 s</title>
+    <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <link rel="preload" href="../assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/inter-800.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="../assets/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #000; }
+      :root {
+        --toyota: #eb0a1e;
+        --honda: #e4002b;
+        --bmw: #0166b1;
+        --mercedes: #00a3e0;
+        --porsche: #d5001c;
+        --nissan: #c3002f;
+        --lexus: #9aa3ad;
+        --ford: #1c4e80;
+        --ink: #f4f6f8;
+      }
+      #stage {
+        position: relative; width: 1080px; height: 1920px; overflow: hidden;
+        background: #05060a; font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ══════════ EL SET: muro de paneles de marca ══════════ */
+      #set { position: absolute; inset: 0; overflow: hidden; }
+      #setInner {
+        position: absolute; top: 0; left: 0; height: 100%; width: 2600px;
+        display: flex; will-change: transform, opacity;
+      }
+      .panel { position: relative; width: 300px; height: 100%; flex: 0 0 300px; }
+      .panel .glow {
+        position: absolute; inset: 0; opacity: .16;
+        background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--c) 46%, var(--c) 54%, rgba(0,0,0,0) 100%);
+      }
+      .panel .core {
+        position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; margin-left: -1.5px;
+        background: var(--c); box-shadow: 0 0 44px var(--c), 0 0 120px var(--c); opacity: .8;
+      }
+      .panel .plogo {
+        position: absolute; top: 210px; left: 50%; transform: translateX(-50%);
+        width: 180px; height: 92px; object-fit: contain;
+        filter: brightness(0) invert(1); opacity: .92;
+      }
+      .panel .pname {
+        position: absolute; top: 330px; left: 0; right: 0; text-align: center;
+        font-size: 27px; font-weight: 800; letter-spacing: .3em; color: var(--c);
+      }
+      .panel .pbase {
+        position: absolute; left: 40px; right: 40px; bottom: 0; height: 46%;
+        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.85) 100%);
+      }
+      /* oscurecimiento central para que la tipografia destaque */
+      #scrim {
+        position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(ellipse 62% 34% at 50% 44%, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,0) 100%);
+      }
+
+      /* ══════════ TIPOGRAFIA CINETICA ══════════ */
+      .bigword {
+        position: absolute; left: 0; right: 0; top: 780px; text-align: center;
+        font-family: "Bebas Neue", sans-serif; font-size: 132px; line-height: 1;
+        color: var(--ink); opacity: 0; letter-spacing: .01em;
+        text-shadow: 0 10px 46px rgba(0,0,0,.9);
+        will-change: transform, opacity;
+      }
+      .bigword.sm { font-size: 92px; }
+      .cap {
+        position: absolute; left: 0; right: 0; top: 1130px; text-align: center;
+        font-size: 44px; font-weight: 700; letter-spacing: .01em; color: #fff;
+        opacity: 0; text-shadow: 0 4px 22px rgba(0,0,0,.9);
+        will-change: transform, opacity;
+      }
+      #ctaLine {
+        position: absolute; left: 0; right: 0; top: 1300px; text-align: center;
+        font-size: 46px; font-weight: 800; letter-spacing: .06em; color: var(--ink);
+        opacity: 0; will-change: transform, opacity;
+      }
+      #ctaChip {
+        position: absolute; left: 50%; top: 1420px; margin-left: -190px; width: 380px; height: 92px;
+        border-radius: 99px; border: 2px solid rgba(255,255,255,.35);
+        background: rgba(255,255,255,.06); opacity: 0;
+        will-change: transform, opacity;
+      }
+      #ctaText {
+        position: absolute; left: 0; right: 0; top: 1443px; text-align: center;
+        font-size: 40px; font-weight: 800; letter-spacing: .1em; color: #fff;
+        opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══════════ FLASH / GRANO / VIÑETA ══════════ */
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 40; will-change: opacity; }
+      #grain {
+        position: absolute; inset: -40px; z-index: 70; pointer-events: none; opacity: .07;
+        background-image: url(../assets/grain.png);
+        background-repeat: repeat; background-size: 256px 256px;
+        will-change: transform;
+      }
+      #vignette {
+        position: absolute; inset: 0; z-index: 80; pointer-events: none;
+        background: radial-gradient(ellipse 80% 64% at 50% 46%, rgba(0,0,0,0) 40%, rgba(0,0,0,.6) 78%, rgba(0,0,0,.95) 100%);
+      }
+      #fade { position: absolute; inset: 0; background: #05060a; opacity: 0; z-index: 60; pointer-events: none; will-change: opacity; }
+
+      /* will-change: elementos animados por GSAP */
+      #scrim { will-change: opacity; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="coches-20s"
+      data-start="0"
+      data-duration="20"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio id="track" data-start="0" data-duration="20" data-media-start="32.6"
+        data-track-index="1" data-volume="0.85" src="../assets/audio/music-source.mp3"
+        data-var-src="musicSrc" preload="auto"></audio>
+
+      <div id="set">
+        <div id="setInner">
+          <div class="panel" style="--c: var(--toyota)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/toyota.png" data-var-src="toyotaSrc" alt="" />
+            <div class="pname" data-var-text="toyotaName">TOYOTA</div>
+            <div class="pbase"></div>
+          </div>
+          <div class="panel" style="--c: var(--honda)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/honda.png" data-var-src="hondaSrc" alt="" />
+            <div class="pname" data-var-text="hondaName">HONDA</div>
+            <div class="pbase"></div>
+          </div>
+          <div class="panel" style="--c: var(--bmw)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/bmw.png" data-var-src="bmwSrc" alt="" />
+            <div class="pname" data-var-text="bmwName">BMW</div>
+            <div class="pbase"></div>
+          </div>
+          <div class="panel" style="--c: var(--mercedes)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/mercedes.png" data-var-src="mercedesSrc" alt="" />
+            <div class="pname" data-var-text="mercedesName">MERCEDES</div>
+            <div class="pbase"></div>
+          </div>
+          <div class="panel" style="--c: var(--porsche)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/porsche.png" data-var-src="porscheSrc" alt="" />
+            <div class="pname" data-var-text="porscheName">PORSCHE</div>
+            <div class="pbase"></div>
+          </div>
+          <div class="panel" style="--c: var(--nissan)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/nissan.png" data-var-src="nissanSrc" alt="" />
+            <div class="pname" data-var-text="nissanName">NISSAN</div>
+            <div class="pbase"></div>
+          </div>
+          <div class="panel" style="--c: var(--lexus)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/lexus.png" data-var-src="lexusSrc" alt="" />
+            <div class="pname" data-var-text="lexusName">LEXUS</div>
+            <div class="pbase"></div>
+          </div>
+          <div class="panel" style="--c: var(--ford)">
+            <div class="glow"></div><div class="core"></div>
+            <img class="plogo" src="../assets/logos/ford.png" data-var-src="fordSrc" alt="" />
+            <div class="pname" data-var-text="fordName">FORD</div>
+            <div class="pbase"></div>
+          </div>
+        </div>
+      </div>
+      <div id="scrim"></div>
+
+      <!-- ══ TIPOGRAFIA CINETICA ══ -->
+      <div class="bigword" id="k1" data-var-text="k1" style="color: var(--toyota);">TOYOTA</div>
+      <div class="bigword" id="k2" data-var-text="k2" style="color: var(--honda);">HONDA</div>
+      <div class="bigword" id="k3" data-var-text="k3" style="color: var(--bmw);">BMW</div>
+      <div class="bigword" id="k4" data-var-text="k4" style="color: var(--mercedes);">MERCEDES</div>
+
+      <div class="cap" id="cap1" data-var-text="cap1">cual compraria yo</div>
+
+      <div class="bigword sm" id="w1" data-var-text="w1">NO EXISTE UNA MARCA PERFECTA</div>
+      <div class="cap" id="cap2" data-var-text="cap2">en serio</div>
+
+      <div class="bigword" id="w2" data-var-text="w2">TODO DEPENDE DE...</div>
+      <div class="cap" id="cap3" data-var-text="cap3">de tu ciudad</div>
+      <div class="cap" id="cap4" data-var-text="cap4">de tu presupuesto</div>
+      <div class="cap" id="cap5" data-var-text="cap5">de tus viajes</div>
+
+      <div class="bigword sm" id="w3" data-var-text="w3">MUCHO VIAJE > FIABILIDAD</div>
+      <div class="cap" id="cap6" data-var-text="cap6">si vas mucho</div>
+      <div class="bigword sm" id="w4" data-var-text="w4">POCO VIAJE > PRECIO</div>
+      <div class="cap" id="cap7" data-var-text="cap7">si vas poco</div>
+      <div class="bigword sm" id="w5" data-var-text="w5">FAMILIA > ESPACIO</div>
+      <div class="cap" id="cap8" data-var-text="cap8">si hay ninos o perro</div>
+
+      <div class="bigword" id="w6" data-var-text="w6">ELIGE SEGUN TU VIDA</div>
+      <div class="bigword" id="w7" data-var-text="w7">NO SEGUN EL LOGO</div>
+      <div id="ctaLine">TU PROXIMO COCHE</div>
+      <div id="ctaChip"></div>
+      <div id="ctaText" data-var-text="cta">@TUUSUARIO</div>
+
+      <div id="flash"></div>
+      <div id="fade"></div>
+      <div id="grain"></div>
+      <div id="vignette"></div>
+
+      <script src="../assets/vendor/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+
+        function build() {
+          /* ---------- variables en render-time ---------- */
+          var V = (window.__hyperframes && window.__hyperframes.getVariables)
+            ? window.__hyperframes.getVariables()
+            : {};
+          document.querySelectorAll("[data-var-text]").forEach(function (el) {
+            var k = el.getAttribute("data-var-text");
+            if (typeof V[k] === "string" && V[k] !== "") el.textContent = V[k];
+          });
+          document.querySelectorAll("[data-var-src]").forEach(function (el) {
+            var k = el.getAttribute("data-var-src");
+            if (typeof V[k] !== "string" || V[k] === "") return;
+            if (el.getAttribute("src") === V[k]) return;
+            el.setAttribute("src", V[k]);
+            if (el.tagName === "AUDIO" || el.tagName === "VIDEO") el.load();
+          });
+
+          var tl = gsap.timeline({ paused: true });
+          var i, t;
+          var B = 0.528;   /* 1/10 de la frase musical (5,28 s) */
+
+          /* ══════════ CAMARA: paneo lento + push del set ══════════ */
+          tl.fromTo("#setInner", { x: 60, scale: 1 },
+            { x: -1180, scale: 1.16, duration: 20, ease: "none" }, 0);
+          /* las luces de cada panel laten, como los LED del set */
+          for (i = 0; i < 8; i++) {
+            tl.to("#setInner .panel:nth-child(" + (i + 1) + ") .glow",
+              { opacity: 0.30, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 17 },
+              i * 0.12);
+          }
+          tl.to("#grain", { x: 14, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
+          tl.to("#grain", { y: 10, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
+
+          /* ══════════ PALABRAS CINETICAS (pop sincronizado a la musica) ══════════ */
+          /* [selector, entrada, salida] */
+          var KW = [
+            ["#k1", 0.15, 0.62], ["#k2", 0.68, 1.15], ["#k3", 1.21, 1.68], ["#k4", 1.74, 2.30],
+            ["#w1", 3.30, 4.55], ["#w2", 6.10, 7.30],
+            ["#w3", 9.40, 10.55], ["#w4", 11.20, 12.35], ["#w5", 13.00, 14.15],
+            ["#w6", 15.40, 16.60], ["#w7", 16.70, 18.10]
+          ];
+          for (i = 0; i < KW.length; i++) {
+            tl.fromTo(KW[i][0], { opacity: 0, scale: .74, y: 46 },
+              { opacity: 1, scale: 1, y: 0, duration: .26, ease: "back.out(2.2)" }, KW[i][1]);
+            tl.to(KW[i][0], { opacity: 0, scale: 1.10, y: -34, duration: .22, ease: "power2.in" }, KW[i][2]);
+          }
+          var KC = [
+            ["#cap1", 0.90, 2.60], ["#cap2", 3.60, 4.90], ["#cap3", 6.30, 7.30],
+            ["#cap4", 7.40, 8.40], ["#cap5", 8.50, 9.50], ["#cap6", 9.80, 10.90],
+            ["#cap7", 11.60, 12.70], ["#cap8", 13.40, 14.50]
+          ];
+          for (i = 0; i < KC.length; i++) {
+            tl.fromTo(KC[i][0], { opacity: 0, y: 26 },
+              { opacity: 1, y: 0, duration: .24, ease: "power3.out" }, KC[i][1]);
+            tl.to(KC[i][0], { opacity: 0, y: -18, duration: .2, ease: "power2.in" }, KC[i][2]);
+          }
+
+          /* flash de apertura */
+          tl.fromTo("#flash", { opacity: 0 }, { opacity: 1, duration: .04, ease: "none" }, 0);
+          tl.to("#flash", { opacity: 0, duration: .2, ease: "none" }, .04);
+
+          /* ══════════ CIERRE: el set se apaga y sale el CTA ══════════ */
+          tl.fromTo("#ctaLine", { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 17.0);
+          tl.fromTo("#ctaChip", { opacity: 0, scale: .8 },
+            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 17.35);
+          tl.fromTo("#ctaText", { opacity: 0, scale: .9 },
+            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 17.45);
+          /* el set se apaga: plano final sobre negro */
+          tl.to("#setInner", { opacity: 0, scale: 1.24, duration: .9, ease: "power2.in" }, 18.6);
+          tl.to("#scrim", { opacity: 0, duration: .9, ease: "power2.in" }, 18.6);
+          tl.fromTo("#fade", { opacity: 0 }, { opacity: 1, duration: .9, ease: "power2.in" }, 18.6);
+          tl.to("#ctaText", { opacity: 0, duration: .5, ease: "power2.in" }, 19.4);
+          tl.to("#ctaChip", { opacity: 0, duration: .5, ease: "power2.in" }, 19.4);
+          tl.to("#ctaLine", { opacity: 0, duration: .5, ease: "power2.in" }, 19.4);
+
+          window.__timelines["coches-20s"] = tl;
+        }
+        if (gsap.ticker) gsap.ticker.fps(30);
+        build();
+      </script>
+    </div>
+  </body>
+</html>
