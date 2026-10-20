@@ -67,6 +67,26 @@
         position: absolute; inset: 0; width: 1080px; height: 1920px;
         object-fit: cover; will-change: transform, opacity;
       }
+      /* ══════════ EL SET: tiras de LED de color (como el cuarto) ══════════ */
+      #room { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+      .led {
+        position: absolute; top: -40px; height: 2000px; width: 16px;
+        background: repeating-linear-gradient(180deg, var(--c) 0 12px, rgba(0,0,0,0) 12px 26px);
+        opacity: .85;
+      }
+      .led .halo {
+        position: absolute; top: 0; bottom: 0; left: -110px; width: 236px;
+        background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--c) 50%, rgba(0,0,0,0) 100%);
+        opacity: .17;
+      }
+      #spill {
+        position: absolute; inset: 0; z-index: 6; pointer-events: none;
+        mix-blend-mode: screen; opacity: .5;
+        background:
+          radial-gradient(circle 520px at 16% 34%, rgba(255,40,60,.55) 0%, rgba(255,40,60,0) 70%),
+          radial-gradient(circle 560px at 48% 58%, rgba(40,140,255,.50) 0%, rgba(40,140,255,0) 70%),
+          radial-gradient(circle 500px at 86% 26%, rgba(255,170,40,.45) 0%, rgba(255,170,40,0) 70%);
+      }
       /* velo: oscurece el fondo para que los graficos respiren */
       #veil {
         position: absolute; inset: 0; pointer-events: none;
@@ -142,9 +162,9 @@
 
       /* ══════════ TEXTO PLANO (segundo plano, sin efectos) ══════════ */
       .plain {
-        position: absolute; left: 0; right: 0; top: 1180px; z-index: 30; text-align: center;
-        font-size: 56px; font-weight: 800; color: #fff; opacity: 0;
-        text-shadow: 0 4px 18px rgba(0,0,0,.9);
+        position: absolute; left: 40px; right: 40px; top: 1120px; z-index: 30; text-align: center;
+        font-size: 60px; font-weight: 800; color: #fff; opacity: 0; line-height: 1.12;
+        text-shadow: 0 4px 20px rgba(0,0,0,.95), 0 0 40px rgba(0,0,0,.6);
         will-change: transform, opacity;
       }
 
@@ -207,6 +227,13 @@
         </filter>
       </svg>
 
+      <div id="room">
+        <div class="led" style="--c: #ff2a4a; left: 150px;"><div class="halo"></div></div>
+        <div class="led" style="--c: #19d7ff; left: 470px;"><div class="halo"></div></div>
+        <div class="led" style="--c: #ffb020; left: 820px;"><div class="halo"></div></div>
+      </div>
+      <div id="spill"></div>
+
       <video id="talker" class="clip" src="../assets/clips/talker.mp4" data-var-src="talkerSrc"
         data-start="0" data-duration="20" data-media-start="0" muted playsinline preload="auto"></video>
       <div id="veil"></div>
@@ -241,19 +268,19 @@
 
       <!-- ══ TEXTO NEON ══ -->
       <div class="neon" id="n1" style="font-size:62px;" data-var-text="n1">Toyota, Honda, BMW, Mercedes...</div>
-      <div class="neon" id="n2" style="font-size:92px;" data-var-text="n2">cuál compraría yo</div>
-      <div class="neon" id="n3" style="font-size:66px;" data-var-text="n3">no existe una marca perfecta</div>
+      <div class="plain" id="n2" style="font-size:60px;" data-var-text="n2">cuál compraría yo</div>
+      <div class="plain" id="n3" style="font-size:54px;" data-var-text="n3">no existe una marca perfecta</div>
       <div class="neon" id="n4" style="font-size:88px;" data-var-text="n4">todo depende de...</div>
-      <div class="neon" id="n5" style="font-size:76px;" data-var-text="n5">de la ciudad</div>
-      <div class="neon" id="n6" style="font-size:76px;" data-var-text="n6">del presupuesto</div>
-      <div class="neon" id="n7" style="font-size:76px;" data-var-text="n7">de tus viajes</div>
+      <div class="plain" id="n5" style="font-size:60px;" data-var-text="n5">de la ciudad</div>
+      <div class="plain" id="n6" style="font-size:60px;" data-var-text="n6">del presupuesto</div>
+      <div class="plain" id="n7" style="font-size:60px;" data-var-text="n7">de tus viajes</div>
       <div class="neon" id="n8" style="font-size:72px;" data-var-text="n8">siempre recomiendo mezclar</div>
-      <div class="neon" id="n9" style="font-size:78px;" data-var-text="n9">y confiabilidad</div>
-      <div class="neon" id="n10" style="font-size:94px;" data-var-text="n10">y si tú</div>
-      <div class="neon" id="n11" style="font-size:86px;" data-var-text="n11">tus pagos</div>
-      <div class="neon" id="n12" style="font-size:86px;" data-var-text="n12">intereses</div>
-      <div class="neon" id="n13" style="font-size:94px;" data-var-text="n13">tu caso</div>
-      <div class="neon" id="n14" style="font-size:74px;" data-var-text="n14">y te daremos los mejores</div>
+      <div class="plain" id="n9" style="font-size:60px;" data-var-text="n9">y confiabilidad</div>
+      <div class="plain" id="n10" style="font-size:66px;" data-var-text="n10">y si tú</div>
+      <div class="plain" id="n11" style="font-size:60px;" data-var-text="n11">tus pagos</div>
+      <div class="plain" id="n12" style="font-size:60px;" data-var-text="n12">intereses</div>
+      <div class="plain" id="n13" style="font-size:66px;" data-var-text="n13">tu caso</div>
+      <div class="plain" id="n14" style="font-size:54px;" data-var-text="n14">y te daremos los mejores</div>
 
       <!-- ══ STICKERS DE PAPEL RASGADO ══ -->
       <div class="sticker" id="st1"><div class="paper"></div><span class="txt" data-var-text="s1">TOYOTA</span></div>
