@@ -35,13 +35,22 @@ const withText = [
 const withoutText = [`fps=${fps}`, 'scale=190:338', 'tile=6x5'].join(',');
 
 /* El ffmpeg estatico del CI no trae drawtext (sin libfreetype). Si falla, se
-   hace la hoja sin timecodes en vez de romper el pipeline. */
-try {
-  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', mp4, '-vf', withText, '-frames:v', '1', out]);
-} catch (e) {
-  const msg = String(e.stderr || e.message || '');
-  if (!/drawtext|No such filter/i.test(msg)) throw e;
-  console.log('aviso: este ffmpeg no trae drawtext; la hoja sale sin timecodes.');
-  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', mp4, '-vf', withoutText, '-frames:v', '1', out]);
+   reintenta con el ffmpeg de apt (si esta) y, si tampoco, se hace la hoja
+   sin timecodes en vez de romper el pipeline. */
+const FFMPEG_CANDIDATES = ['ffmpeg', '/usr/bin/ffmpeg', '/usr/local/bin/ffmpeg'];
+function tryFfmpeg(bin, vf) {
+  execFileSync(bin, ['-y', '-v', 'error', '-i', mp4, '-vf', vf, '-frames:v', '1', out]);
+}
+let done = false;
+for (const bin of FFMPEG_CANDIDATES) {
+  try { tryFfmpeg(bin, withText); done = true; break; }
+  catch (e) {
+    const msg = String(e.stderr || e.message || '');
+    if (!/drawtext|No such filter|not found|ENOENT/i.test(msg)) throw e;
+  }
+}
+if (!done) {
+  console.log('aviso: ningun ffmpeg trae drawtext; la hoja sale sin timecodes.');
+  tryFfmpeg(FFMPEG_CANDIDATES[0], withoutText);
 }
 console.log('hoja de contactos: ' + out);
