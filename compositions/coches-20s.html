@@ -72,16 +72,16 @@
       .led {
         position: absolute; top: -40px; height: 2000px; width: 16px;
         background: repeating-linear-gradient(180deg, var(--c) 0 12px, rgba(0,0,0,0) 12px 26px);
-        opacity: .85;
+        opacity: .45;
       }
       .led .halo {
         position: absolute; top: 0; bottom: 0; left: -110px; width: 236px;
         background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--c) 50%, rgba(0,0,0,0) 100%);
-        opacity: .17;
+        opacity: .11;
       }
       #spill {
         position: absolute; inset: 0; z-index: 6; pointer-events: none;
-        mix-blend-mode: screen; opacity: .5;
+        mix-blend-mode: screen; opacity: .38;
         background:
           radial-gradient(circle 520px at 16% 34%, rgba(255,40,60,.55) 0%, rgba(255,40,60,0) 70%),
           radial-gradient(circle 560px at 48% 58%, rgba(40,140,255,.50) 0%, rgba(40,140,255,0) 70%),
@@ -137,14 +137,11 @@
         will-change: transform, opacity;
       }
       .neon.sm { font-size: 74px; }
-      #n1 { top: 700px; } #n2 { top: 700px; } #n3 { top: 690px; } #n4 { top: 690px; }
-      #n5, #n6, #n7 { top: 760px; font-size: 78px; }
-      #n8 { top: 700px; font-size: 88px; }
-      #n9, #n10, #n11, #n12, #n13, #n14 { top: 740px; font-size: 86px; }
+      .neon, .plain { top: 1110px; }
 
       /* ══════════ STICKER DE PAPEL RASGADO ══════════ */
       .sticker {
-        position: absolute; left: 0; right: 0; top: 820px; z-index: 30;
+        position: absolute; left: 0; right: 0; top: 1110px; z-index: 30;
         text-align: center; opacity: 0; will-change: transform, opacity;
       }
       .sticker .paper {
@@ -157,8 +154,7 @@
         font-family: "Anton", sans-serif; font-size: 108px; line-height: 1.18;
         color: #0b0b0b; letter-spacing: .01em;
       }
-      #st1 { top: 820px; } #st2 { top: 820px; } #st3 { top: 820px; }
-      #st4 { top: 820px; } #st5 { top: 820px; } #st6 { top: 820px; }
+
 
       /* ══════════ TEXTO PLANO (segundo plano, sin efectos) ══════════ */
       .plain {
