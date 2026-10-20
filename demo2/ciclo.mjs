@@ -89,7 +89,6 @@ const frames = findAll(DESKTOP, /^f_[\d.]+\.(jpg|png)$/i);
 const strip = findAll(DESKTOP, /^filmstrip\.png$/i);
 /* Todo lo que no sea el MP4 va a Desktop/qc: el Escritorio queda limpio. */
 const qcDir = path.join(DESKTOP, 'qc');
-fs.rmSync(qcDir, { recursive: true, force: true });
 fs.mkdirSync(qcDir, { recursive: true });
 for (const s of [...sheets, ...strip]) {
   fs.copyFileSync(s, path.join(qcDir, path.basename(s)));
@@ -98,7 +97,10 @@ for (const s of [...sheets, ...strip]) {
 if (frames.length) {
   const dst = path.join(qcDir, 'frames');
   fs.mkdirSync(dst, { recursive: true });
-  for (const f of frames) fs.copyFileSync(f, path.join(dst, path.basename(f)));
+  for (const f of frames) {
+    if (path.resolve(f) === path.resolve(path.join(dst, path.basename(f)))) continue;
+    fs.copyFileSync(f, path.join(dst, path.basename(f)));
+  }
   console.log('   qc/frames: ' + frames.length + ' fotogramas clave');
 }
 /* se borra la carpeta intermedia que deja la descompresion del artifact */
