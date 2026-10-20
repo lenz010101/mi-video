@@ -513,14 +513,14 @@
           tl.fromTo('[data-var-text="hookA"]', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.10);
           tl.fromTo('[data-var-text="hookB"]', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.95);
           ["#chat1", "#chat2", "#chat3", "#chat4", "#chat5"].forEach(function (b, i) {
-            tl.fromTo(b, { opacity: 0, x: -46 }, { opacity: 1, x: 0, duration: 0.32, ease: "power2.out" }, 0.35 + i * 0.60);
+            tl.fromTo(b, { opacity: 0, x: -46 }, { opacity: 1, x: 0, duration: 0.32, ease: "power2.out" }, 0.35 + i * 0.40);
           });
           tl.to("#s1", { opacity: 0, duration: 0.2, ease: "power2.in" }, 2.66);
 
           /* ══ LOGO 2.70 – 4.60: zoom-out de grande/centrado a chico ══ */
           tl.set("#s1b", { opacity: 1 }, 2.70);
-          tl.fromTo("#logo1", { opacity: 0, scale: 1.85, x: 200, y: -140 },
-                                { opacity: 1, scale: 1.85, x: 200, y: -140, duration: 0.3, ease: "none" }, 2.72);
+          tl.fromTo("#logo1", { opacity: 0, scale: 1.60 },
+                                { opacity: 1, scale: 1.60, duration: 0.3, ease: "none" }, 2.72);
           tl.to("#logo1", { scale: 1.0, x: 0, y: 0, duration: 1.5, ease: "power3.inOut" }, 3.05);
           tl.to("#s1b", { opacity: 0, duration: 0.25, ease: "power2.in" }, 4.35);
 
