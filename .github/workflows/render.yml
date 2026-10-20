@@ -154,6 +154,20 @@ jobs:
             echo "::warning::Falta assets/audio/music-source.mp3 - el video saldra sin musica."
           fi
 
+      # Logos y fotos de marca: estan commiteados, pero si faltaran (repo
+      # limpio o assets nuevos) se descargan aqui. Asi el render nunca
+      # depende de que el asset este en el repo.
+      - name: Prepare the brand assets
+        run: |
+          if [ -f assets/logos/bmw.png ] && [ -f assets/coches/bmw.jpg ]; then
+            echo "Logos y fotos ya estan en el repo."
+          else
+            echo "Faltan assets: se descargan de Wikimedia."
+            node demo2/get-logos.mjs || echo "::warning::Fallo la descarga de logos"
+            node demo2/get-fotos-coche.mjs || echo "::warning::Fallo la descarga de fotos"
+          fi
+          ls assets/logos/ assets/coches/ 2>/dev/null | head -20
+
       - name: Lint the composition
         run: npx --yes hyperframes@${{ env.HYPERFRAMES_VERSION }} lint .
 
@@ -187,6 +201,22 @@ jobs:
             --low-memory-mode \
             --workers "${WORKERS:-1}" \
             --output "renders/${FILENAME:-video.mp4}"
+
+      # Verificacion del MP4 TODO EN LA NUBE: perfil de movimiento (fotogramas
+      # congelados) y hoja de contactos con timecodes. El PC del usuario no
+      # analiza nada: solo descarga el resultado del artifact.
+      - name: Verify the MP4 (frozen frames + contact sheet)
+        if: always()
+        env:
+          FILENAME: ${{ inputs.filename }}
+        run: |
+          FILE="renders/${FILENAME:-video.mp4}"
+          if [ -f "$FILE" ]; then
+            node demo2/verify-render.mjs "$FILE" renders/qc
+            node demo2/contact-sheet.mjs "$FILE" renders/qc/hoja-de-contactos.png
+          else
+            echo "::warning::No hay MP4 que verificar"
+          fi
 
       - name: Capture review frames
         # Los fotogramas de revisión cuestan ~18 s de render aparte: solo se
@@ -235,6 +265,15 @@ jobs:
           path: renders/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Upload the QC report
+        # Hoja de contactos + fotogramas clave del MP4 ya verificado.
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-qc
+          path: renders/qc/
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Upload review frames
         if: always()

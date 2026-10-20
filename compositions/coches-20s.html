@@ -8,16 +8,18 @@
     {"id":"mercedesName","type":"string","label":"Mercedes","default":"MERCEDES"},
     {"id":"porscheName","type":"string","label":"Porsche","default":"PORSCHE"},
     {"id":"nissanName","type":"string","label":"Nissan","default":"NISSAN"},
-    {"id":"lexusName","type":"string","label":"Lexus","default":"LEXUS"},
-    {"id":"fordName","type":"string","label":"Ford","default":"FORD"},
     {"id":"toyotaSrc","type":"image","label":"Logo Toyota","default":"../assets/logos/toyota.png"},
     {"id":"hondaSrc","type":"image","label":"Logo Honda","default":"../assets/logos/honda.png"},
     {"id":"bmwSrc","type":"image","label":"Logo BMW","default":"../assets/logos/bmw.png"},
     {"id":"mercedesSrc","type":"image","label":"Logo Mercedes","default":"../assets/logos/mercedes.png"},
     {"id":"porscheSrc","type":"image","label":"Logo Porsche","default":"../assets/logos/porsche.png"},
     {"id":"nissanSrc","type":"image","label":"Logo Nissan","default":"../assets/logos/nissan.png"},
-    {"id":"lexusSrc","type":"image","label":"Logo Lexus","default":"../assets/logos/lexus.png"},
-    {"id":"fordSrc","type":"image","label":"Logo Ford","default":"../assets/logos/ford.png"},
+    {"id":"toyotaCar","type":"image","label":"Foto Toyota","default":"../assets/coches/toyota.jpg"},
+    {"id":"hondaCar","type":"image","label":"Foto Honda","default":"../assets/coches/honda.jpg"},
+    {"id":"bmwCar","type":"image","label":"Foto BMW","default":"../assets/coches/bmw.jpg"},
+    {"id":"mercedesCar","type":"image","label":"Foto Mercedes","default":"../assets/coches/mercedes.jpg"},
+    {"id":"porscheCar","type":"image","label":"Foto Porsche","default":"../assets/coches/porsche.jpg"},
+    {"id":"nissanCar","type":"image","label":"Foto Nissan","default":"../assets/coches/nissan.jpg"},
     {"id":"k1","type":"string","label":"Marca 1","default":"TOYOTA"},
     {"id":"k2","type":"string","label":"Marca 2","default":"HONDA"},
     {"id":"k3","type":"string","label":"Marca 3","default":"BMW"},
@@ -26,24 +28,28 @@
     {"id":"w1","type":"string","label":"Frase 1","default":"NO EXISTE UNA MARCA PERFECTA"},
     {"id":"cap2","type":"string","label":"Pie 2","default":"en serio"},
     {"id":"w2","type":"string","label":"Frase 2","default":"TODO DEPENDE DE..."},
-    {"id":"cap3","type":"string","label":"Pie 3","default":"de tu ciudad"},
-    {"id":"cap4","type":"string","label":"Pie 4","default":"de tu presupuesto"},
+    {"id":"cap3","type":"string","label":"Pie 3","default":"de la ciudad"},
+    {"id":"cap4","type":"string","label":"Pie 4","default":"del presupuesto"},
     {"id":"cap5","type":"string","label":"Pie 5","default":"de tus viajes"},
-    {"id":"w3","type":"string","label":"Regla 1","default":"MUCHO VIAJE > FIABILIDAD"},
-    {"id":"cap6","type":"string","label":"Pie 6","default":"si vas mucho"},
-    {"id":"w4","type":"string","label":"Regla 2","default":"POCO VIAJE > PRECIO"},
-    {"id":"cap7","type":"string","label":"Pie 7","default":"si vas poco"},
-    {"id":"w5","type":"string","label":"Regla 3","default":"FAMILIA > ESPACIO"},
-    {"id":"cap8","type":"string","label":"Pie 8","default":"si hay niños o perro"},
-    {"id":"w6","type":"string","label":"Cierre 1","default":"ELIGE SEGÚN TU VIDA"},
-    {"id":"w7","type":"string","label":"Cierre 2","default":"NO SEGÚN EL LOGO"},
+    {"id":"w3","type":"string","label":"Frase 3","default":"SIEMPRE RECOMIENDO MEZCLAR"},
+    {"id":"cap6","type":"string","label":"Pie 6","default":"y confiabilidad"},
+    {"id":"w4","type":"string","label":"Frase 4","default":"TOYOTA"},
+    {"id":"cap7","type":"string","label":"Pie 7","default":"muy"},
+    {"id":"cap8","type":"string","label":"Pie 8","default":"es una"},
+    {"id":"cap9","type":"string","label":"Pie 9","default":"futuro"},
+    {"id":"w5","type":"string","label":"Frase 5","default":"Y SI TÚ..."},
+    {"id":"cap10","type":"string","label":"Pie 10","default":"tus pagos"},
+    {"id":"cap11","type":"string","label":"Pie 11","default":"intereses"},
+    {"id":"w6","type":"string","label":"Frase 6","default":"TU CASO"},
+    {"id":"cap12","type":"string","label":"Pie 12","default":"y te daremos los mejores"},
+    {"id":"closeTitle","type":"string","label":"Cierre","default":"ELIGE SEGÚN TU VIDA"},
     {"id":"cta","type":"string","label":"CTA","default":"@TUUSUARIO"},
     {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/audio/music-source.mp3"}
   ]'
 >
   <head>
     <meta charset="UTF-8" />
-    <title>El coche que compraria yo - motion graphics 20 s</title>
+    <title>El coche que compraria yo - replica de edicion 20 s</title>
     <link rel="stylesheet" href="../assets/fonts/fonts.css" />
     <link rel="preload" href="../assets/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="../assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin />
@@ -59,90 +65,95 @@
         --mercedes: #00a3e0;
         --porsche: #d5001c;
         --nissan: #c3002f;
-        --lexus: #9aa3ad;
-        --ford: #1c4e80;
         --ink: #f4f6f8;
       }
       #stage {
         position: relative; width: 1080px; height: 1920px; overflow: hidden;
-        background: #05060a; font-family: "Inter", system-ui, sans-serif;
+        background: #000; font-family: "Inter", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
       }
 
-      /* ══════════ EL SET: muro de paneles de marca ══════════ */
-      #set { position: absolute; inset: 0; overflow: hidden; }
-      #setInner {
-        position: absolute; top: 0; left: 0; height: 100%; width: 2600px;
-        display: flex; will-change: transform, opacity;
+      /* ══════════ BARRA SUPERIOR DE MARCAS (como en la referencia) ══════════ */
+      #bar {
+        position: absolute; left: 0; right: 0; top: 0; height: 270px; overflow: hidden;
+        background: #07070a; z-index: 20;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, .8);
       }
-      .panel { position: relative; width: 300px; height: 100%; flex: 0 0 300px; }
-      .panel .glow {
-        position: absolute; inset: 0; opacity: .16;
-        background: linear-gradient(90deg, rgba(0,0,0,0) 0%, var(--c) 46%, var(--c) 54%, rgba(0,0,0,0) 100%);
-      }
-      .panel .core {
-        position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; margin-left: -1.5px;
-        background: var(--c); box-shadow: 0 0 44px var(--c), 0 0 120px var(--c); opacity: .8;
-      }
-      .panel .plogo {
-        position: absolute; top: 170px; left: 50%; transform: translateX(-50%);
-        width: 236px; height: 120px; object-fit: contain;
+      #barInner { position: absolute; top: 0; left: 0; height: 100%; display: flex; will-change: transform; }
+      .bcol { position: relative; width: 230px; height: 100%; flex: 0 0 230px; }
+      .bcol .bl {
+        position: absolute; top: 34px; left: 50%; transform: translateX(-50%);
+        width: 140px; height: 92px; object-fit: contain;
         filter: brightness(0) invert(1); opacity: .95;
       }
-      .panel .pname {
-        position: absolute; top: 320px; left: 0; right: 0; text-align: center;
-        font-size: 34px; font-weight: 800; letter-spacing: .26em; color: var(--c);
+      .bcol .bn {
+        position: absolute; top: 150px; left: 0; right: 0; text-align: center;
+        font-size: 25px; font-weight: 800; letter-spacing: .2em; color: var(--c);
       }
-      /* suelo del set: la luz rebota en el suelo, como en un plató */
-      .panel .pfloor {
-        position: absolute; left: -20px; right: -20px; bottom: 0; height: 34%;
-        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, var(--c) 78%, rgba(0,0,0,0) 100%);
-        opacity: .10;
-      }
-      .panel .pbase {
-        position: absolute; left: 0; right: 0; bottom: 0; height: 26%;
-        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.42) 70%, rgba(0,0,0,.62) 100%);
-      }
-      /* oscurecimiento central para que la tipografia destaque */
-      #scrim {
-        position: absolute; inset: 0; pointer-events: none;
-        background: radial-gradient(ellipse 62% 34% at 50% 44%, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,0) 100%);
+      .bcol .bbar { position: absolute; left: 26px; right: 26px; bottom: 0; height: 3px; background: var(--c); opacity: .8; }
+      #barEdge {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 2px; z-index: 21;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
       }
 
-      /* ══════════ TIPOGRAFIA CINETICA ══════════ */
+      /* ══════════ FOTOS DE LOS COCHES (protagonistas) ══════════ */
+      #stageImg { position: absolute; left: 0; right: 0; top: 270px; height: 1180px; overflow: hidden; }
+      .car {
+        position: absolute; left: 0; top: 0; width: 1080px; height: 1180px;
+        object-fit: cover; opacity: 0; will-change: transform, opacity;
+      }
+      /* gradiente para que el texto se lea sobre la foto */
+      #photoGrade {
+        position: absolute; left: 0; right: 0; top: 270px; height: 1180px; z-index: 10;
+        background:
+          linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 26%),
+          linear-gradient(0deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.25) 34%, rgba(0,0,0,0) 60%);
+      }
+
+      /* ══════════ TIPOGRAFIA ══════════ */
       .bigword {
-        position: absolute; left: 0; right: 0; top: 780px; text-align: center;
-        font-family: "Bebas Neue", sans-serif; font-size: 152px; line-height: 1;
+        position: absolute; left: 0; right: 0; top: 640px; text-align: center; z-index: 30;
+        font-family: "Bebas Neue", sans-serif; font-size: 132px; line-height: 1;
         color: var(--ink); opacity: 0; letter-spacing: .01em;
-        text-shadow: 0 10px 46px rgba(0,0,0,.9);
+        text-shadow: 0 8px 40px rgba(0,0,0,.95);
         will-change: transform, opacity;
       }
-      .bigword.sm { font-size: 106px; }
+      .bigword.sm { font-size: 88px; }
       .cap {
-        position: absolute; left: 0; right: 0; top: 1130px; text-align: center;
-        font-size: 50px; font-weight: 700; letter-spacing: .01em; color: #fff;
-        opacity: 0; text-shadow: 0 4px 22px rgba(0,0,0,.9);
+        position: absolute; left: 0; right: 0; top: 1010px; text-align: center; z-index: 30;
+        font-size: 54px; font-weight: 700; color: #fff; opacity: 0;
+        text-shadow: 0 4px 24px rgba(0,0,0,.95);
         will-change: transform, opacity;
       }
-      #ctaLine {
-        position: absolute; left: 0; right: 0; top: 1300px; text-align: center;
-        font-size: 46px; font-weight: 800; letter-spacing: .06em; color: var(--ink);
-        opacity: 0; will-change: transform, opacity;
+
+      /* ══════════ CIERRE (franja inferior negra) ══════════ */
+      #outro { position: absolute; left: 0; right: 0; bottom: 0; height: 470px; z-index: 30; }
+      #closeTitle {
+        position: absolute; left: 0; right: 0; top: 90px; text-align: center;
+        font-family: "Bebas Neue", sans-serif; font-size: 118px; color: var(--ink);
+        opacity: 0; text-shadow: 0 8px 40px rgba(0,0,0,.9);
+        will-change: transform, opacity;
       }
-      #ctaChip {
-        position: absolute; left: 50%; top: 1420px; margin-left: -190px; width: 380px; height: 92px;
-        border-radius: 99px; border: 2px solid rgba(255,255,255,.35);
-        background: rgba(255,255,255,.06); opacity: 0;
+      #ctaBox {
+        position: absolute; left: 50%; top: 270px; margin-left: -200px; width: 400px; height: 92px;
+        border-radius: 99px; border: 2px solid rgba(255,255,255,.4);
+        background: rgba(255,255,255,.07); opacity: 0;
         will-change: transform, opacity;
       }
       #ctaText {
-        position: absolute; left: 0; right: 0; top: 1443px; text-align: center;
-        font-size: 40px; font-weight: 800; letter-spacing: .1em; color: #fff;
-        opacity: 0; will-change: transform, opacity;
+        position: absolute; left: 0; right: 0; top: 293px; text-align: center;
+        font-size: 42px; font-weight: 800; letter-spacing: .08em; color: #fff; opacity: 0;
+        will-change: transform, opacity;
+      }
+      #brandGlow {
+        position: absolute; left: 50%; top: 1330px; width: 1100px; height: 900px; margin-left: -550px;
+        border-radius: 50%; pointer-events: none; opacity: 0; z-index: 5;
+        background: radial-gradient(circle, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 66%);
+        will-change: opacity, transform;
       }
 
       /* ══════════ FLASH / GRANO / VIÑETA ══════════ */
-      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 40; will-change: opacity; }
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 45; will-change: opacity; }
       #grain {
         position: absolute; inset: -40px; z-index: 70; pointer-events: none; opacity: .07;
         background-image: url(../assets/grain.png);
@@ -151,12 +162,13 @@
       }
       #vignette {
         position: absolute; inset: 0; z-index: 80; pointer-events: none;
-        background: radial-gradient(ellipse 80% 64% at 50% 46%, rgba(0,0,0,0) 40%, rgba(0,0,0,.6) 78%, rgba(0,0,0,.95) 100%);
+        background: radial-gradient(ellipse 84% 66% at 50% 44%, rgba(0,0,0,0) 42%, rgba(0,0,0,.55) 80%, rgba(0,0,0,.92) 100%);
       }
-      #fade { position: absolute; inset: 0; background: #05060a; opacity: 0; z-index: 60; pointer-events: none; will-change: opacity; }
+      #fade { position: absolute; inset: 0; background: #000; opacity: 0; z-index: 65; pointer-events: none; will-change: opacity; }
 
       /* will-change: elementos animados por GSAP */
-      #scrim { will-change: opacity; }
+      #stageImg { will-change: opacity, transform; }
+      #photoGrade { will-change: opacity; }
     </style>
   </head>
   <body>
@@ -173,69 +185,50 @@
         data-track-index="1" data-volume="0.85" src="../assets/audio/music-source.mp3"
         data-var-src="musicSrc" preload="auto"></audio>
 
-      <div id="set">
-        <div id="setInner">
-          <div class="panel" style="--c: var(--toyota)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/toyota.png" data-var-src="toyotaSrc" alt="" />
-            <div class="pname" data-var-text="toyotaName">TOYOTA</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
+      <!-- ══ BARRA DE MARCAS ══ -->
+      <div id="bar">
+        <div id="barInner">
+          <div class="bcol" style="--c: var(--toyota)">
+            <img class="bl" src="../assets/logos/toyota.png" data-var-src="toyotaSrc" alt="" />
+            <div class="bn" data-var-text="toyotaName">TOYOTA</div><div class="bbar"></div>
           </div>
-          <div class="panel" style="--c: var(--honda)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/honda.png" data-var-src="hondaSrc" alt="" />
-            <div class="pname" data-var-text="hondaName">HONDA</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
+          <div class="bcol" style="--c: var(--honda)">
+            <img class="bl" src="../assets/logos/honda.png" data-var-src="hondaSrc" alt="" />
+            <div class="bn" data-var-text="hondaName">HONDA</div><div class="bbar"></div>
           </div>
-          <div class="panel" style="--c: var(--bmw)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/bmw.png" data-var-src="bmwSrc" alt="" />
-            <div class="pname" data-var-text="bmwName">BMW</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
+          <div class="bcol" style="--c: var(--bmw)">
+            <img class="bl" src="../assets/logos/bmw.png" data-var-src="bmwSrc" alt="" />
+            <div class="bn" data-var-text="bmwName">BMW</div><div class="bbar"></div>
           </div>
-          <div class="panel" style="--c: var(--mercedes)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/mercedes.png" data-var-src="mercedesSrc" alt="" />
-            <div class="pname" data-var-text="mercedesName">MERCEDES</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
+          <div class="bcol" style="--c: var(--mercedes)">
+            <img class="bl" src="../assets/logos/mercedes.png" data-var-src="mercedesSrc" alt="" />
+            <div class="bn" data-var-text="mercedesName">MERCEDES</div><div class="bbar"></div>
           </div>
-          <div class="panel" style="--c: var(--porsche)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/porsche.png" data-var-src="porscheSrc" alt="" />
-            <div class="pname" data-var-text="porscheName">PORSCHE</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
+          <div class="bcol" style="--c: var(--porsche)">
+            <img class="bl" src="../assets/logos/porsche.png" data-var-src="porscheSrc" alt="" />
+            <div class="bn" data-var-text="porscheName">PORSCHE</div><div class="bbar"></div>
           </div>
-          <div class="panel" style="--c: var(--nissan)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/nissan.png" data-var-src="nissanSrc" alt="" />
-            <div class="pname" data-var-text="nissanName">NISSAN</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
-          </div>
-          <div class="panel" style="--c: var(--lexus)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/lexus.png" data-var-src="lexusSrc" alt="" />
-            <div class="pname" data-var-text="lexusName">LEXUS</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
-          </div>
-          <div class="panel" style="--c: var(--ford)">
-            <div class="glow"></div><div class="core"></div>
-            <img class="plogo" src="../assets/logos/ford.png" data-var-src="fordSrc" alt="" />
-            <div class="pname" data-var-text="fordName">FORD</div>
-            <div class="pfloor"></div>
-            <div class="pbase"></div>
+          <div class="bcol" style="--c: var(--nissan)">
+            <img class="bl" src="../assets/logos/nissan.png" data-var-src="nissanSrc" alt="" />
+            <div class="bn" data-var-text="nissanName">NISSAN</div><div class="bbar"></div>
           </div>
         </div>
+        <div id="barEdge"></div>
       </div>
-      <div id="scrim"></div>
 
-      <!-- ══ TIPOGRAFIA CINETICA ══ -->
+      <!-- ══ FOTOS DE LOS COCHES ══ -->
+      <div id="stageImg">
+        <img class="car" id="cToyota" src="../assets/coches/toyota.jpg" data-var-src="toyotaCar" alt="" />
+        <img class="car" id="cHonda" src="../assets/coches/honda.jpg" data-var-src="hondaCar" alt="" />
+        <img class="car" id="cBmw" src="../assets/coches/bmw.jpg" data-var-src="bmwCar" alt="" />
+        <img class="car" id="cMercedes" src="../assets/coches/mercedes.jpg" data-var-src="mercedesCar" alt="" />
+        <img class="car" id="cPorsche" src="../assets/coches/porsche.jpg" data-var-src="porscheCar" alt="" />
+        <img class="car" id="cNissan" src="../assets/coches/nissan.jpg" data-var-src="nissanCar" alt="" />
+      </div>
+      <div id="photoGrade"></div>
+      <div id="brandGlow"></div>
+
+      <!-- ══ TIPOGRAFIA ══ -->
       <div class="bigword" id="k1" data-var-text="k1" style="color: var(--toyota);">TOYOTA</div>
       <div class="bigword" id="k2" data-var-text="k2" style="color: var(--honda);">HONDA</div>
       <div class="bigword" id="k3" data-var-text="k3" style="color: var(--bmw);">BMW</div>
@@ -247,22 +240,31 @@
       <div class="cap" id="cap2" data-var-text="cap2">en serio</div>
 
       <div class="bigword" id="w2" data-var-text="w2">TODO DEPENDE DE...</div>
-      <div class="cap" id="cap3" data-var-text="cap3">de tu ciudad</div>
-      <div class="cap" id="cap4" data-var-text="cap4">de tu presupuesto</div>
+      <div class="cap" id="cap3" data-var-text="cap3">de la ciudad</div>
+      <div class="cap" id="cap4" data-var-text="cap4">del presupuesto</div>
       <div class="cap" id="cap5" data-var-text="cap5">de tus viajes</div>
 
-      <div class="bigword sm" id="w3" data-var-text="w3">MUCHO VIAJE > FIABILIDAD</div>
-      <div class="cap" id="cap6" data-var-text="cap6">si vas mucho</div>
-      <div class="bigword sm" id="w4" data-var-text="w4">POCO VIAJE > PRECIO</div>
-      <div class="cap" id="cap7" data-var-text="cap7">si vas poco</div>
-      <div class="bigword sm" id="w5" data-var-text="w5">FAMILIA > ESPACIO</div>
-      <div class="cap" id="cap8" data-var-text="cap8">si hay niños o perro</div>
+      <div class="bigword sm" id="w3" data-var-text="w3">SIEMPRE RECOMIENDO MEZCLAR</div>
+      <div class="cap" id="cap6" data-var-text="cap6">y confiabilidad</div>
 
-      <div class="bigword" id="w6" data-var-text="w6">ELIGE SEGÚN TU VIDA</div>
-      <div class="bigword" id="w7" data-var-text="w7">NO SEGÚN EL LOGO</div>
-      <div id="ctaLine">TU PRÓXIMO COCHE</div>
-      <div id="ctaChip"></div>
-      <div id="ctaText" data-var-text="cta">@TUUSUARIO</div>
+      <div class="bigword" id="w4" data-var-text="w4" style="color: var(--toyota);">TOYOTA</div>
+      <div class="cap" id="cap7" data-var-text="cap7">muy</div>
+      <div class="cap" id="cap8" data-var-text="cap8">es una</div>
+      <div class="cap" id="cap9" data-var-text="cap9">futuro</div>
+
+      <div class="bigword" id="w5" data-var-text="w5">Y SI TÚ...</div>
+      <div class="cap" id="cap10" data-var-text="cap10">tus pagos</div>
+      <div class="cap" id="cap11" data-var-text="cap11">intereses</div>
+
+      <div class="bigword" id="w6" data-var-text="w6">TU CASO</div>
+      <div class="cap" id="cap12" data-var-text="cap12">y te daremos los mejores</div>
+
+      <!-- ══ CIERRE ══ -->
+      <div id="outro">
+        <div id="closeTitle" data-var-text="closeTitle">ELIGE SEGÚN TU VIDA</div>
+        <div id="ctaBox"></div>
+        <div id="ctaText" data-var-text="cta">@TUUSUARIO</div>
+      </div>
 
       <div id="flash"></div>
       <div id="fade"></div>
@@ -292,62 +294,65 @@
 
           var tl = gsap.timeline({ paused: true });
           var i, t;
-          var B = 0.528;   /* 1/10 de la frase musical (5,28 s) */
 
-          /* ══════════ CAMARA: paneo lento + push del set ══════════ */
-          tl.fromTo("#setInner", { x: 60, scale: 1 },
-            { x: -1180, scale: 1.16, duration: 20, ease: "none" }, 0);
-          /* las luces de cada panel laten, como los LED del set */
-          for (i = 0; i < 8; i++) {
-            tl.to("#setInner .panel:nth-child(" + (i + 1) + ") .glow",
-              { opacity: 0.30, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 17 },
-              i * 0.12);
+          /* ══════════ BARRA DE MARCAS: paneo lento a la derecha ══════════ */
+          tl.fromTo("#barInner", { x: -120 }, { x: -640, duration: 20, ease: "none" }, 0);
+
+          /* ══════════ FOTOS: cross-fade + push lento (la camara) ══════════ */
+          /* [selector de foto, entra, sale] */
+          var SHOTS = [
+            ["#cToyota", 0.10, 0.86], ["#cHonda", 0.88, 1.64], ["#cBmw", 1.66, 2.42],
+            ["#cMercedes", 2.44, 6.30], ["#cPorsche", 6.30, 9.20], ["#cNissan", 9.20, 11.60],
+            ["#cToyota", 11.60, 14.20], ["#cPorsche", 14.20, 16.50], ["#cNissan", 16.50, 18.40]
+          ];
+          for (i = 0; i < SHOTS.length; i++) {
+            var s = SHOTS[i];
+            tl.set(s[0], { opacity: 1 }, s[1]);
+            /* push lento de la foto mientras esta en pantalla */
+            tl.fromTo(s[0], { scale: 1.04 }, { scale: 1.13, duration: Math.max(0.6, s[2] - s[1]), ease: "none" }, s[1]);
+            if (i < SHOTS.length - 1) tl.set(s[0], { opacity: 0 }, SHOTS[i + 1][1]);
           }
-          tl.to("#grain", { x: 14, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
-          tl.to("#grain", { y: 10, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
 
-          /* ══════════ PALABRAS CINETICAS (pop sincronizado a la musica) ══════════ */
-          /* [selector, entrada, salida] */
+          /* ══════════ PALABRAS GRANDES ══════════ */
           var KW = [
-            ["#k1", 0.15, 0.62], ["#k2", 0.68, 1.15], ["#k3", 1.21, 1.68], ["#k4", 1.74, 2.30],
-            ["#w1", 3.30, 4.55], ["#w2", 6.10, 7.30],
-            ["#w3", 9.40, 10.55], ["#w4", 11.20, 12.35], ["#w5", 13.00, 14.15],
-            ["#w6", 15.40, 16.60], ["#w7", 16.70, 18.10]
+            ["#k1", 0.15, 0.80], ["#k2", 0.90, 1.55], ["#k3", 1.68, 2.33], ["#k4", 2.46, 3.30],
+            ["#w1", 3.40, 6.10], ["#w2", 6.30, 9.00], ["#w3", 9.20, 11.40],
+            ["#w4", 11.70, 13.90], ["#w5", 14.20, 16.30], ["#w6", 16.50, 18.30]
           ];
           for (i = 0; i < KW.length; i++) {
-            tl.fromTo(KW[i][0], { opacity: 0, scale: .74, y: 46 },
-              { opacity: 1, scale: 1, y: 0, duration: .26, ease: "back.out(2.2)" }, KW[i][1]);
-            tl.to(KW[i][0], { opacity: 0, scale: 1.10, y: -34, duration: .22, ease: "power2.in" }, KW[i][2]);
+            tl.fromTo(KW[i][0], { opacity: 0, scale: .76, y: 44 },
+              { opacity: 1, scale: 1, y: 0, duration: .24, ease: "back.out(2.2)" }, KW[i][1]);
+            tl.to(KW[i][0], { opacity: 0, scale: 1.08, y: -30, duration: .2, ease: "power2.in" }, KW[i][2]);
           }
           var KC = [
-            ["#cap1", 0.90, 2.60], ["#cap2", 3.60, 4.90], ["#cap3", 6.30, 7.30],
-            ["#cap4", 7.40, 8.40], ["#cap5", 8.50, 9.50], ["#cap6", 9.80, 10.90],
-            ["#cap7", 11.60, 12.70], ["#cap8", 13.40, 14.50]
+            ["#cap1", 0.95, 3.10], ["#cap2", 3.70, 5.20], ["#cap3", 6.50, 7.45],
+            ["#cap4", 7.50, 8.45], ["#cap5", 8.50, 9.45], ["#cap6", 9.60, 11.30],
+            ["#cap7", 11.80, 12.35], ["#cap8", 12.40, 13.05], ["#cap9", 13.10, 13.95],
+            ["#cap10", 14.35, 15.25], ["#cap11", 15.30, 16.25], ["#cap12", 16.70, 18.30]
           ];
           for (i = 0; i < KC.length; i++) {
-            tl.fromTo(KC[i][0], { opacity: 0, y: 26 },
-              { opacity: 1, y: 0, duration: .24, ease: "power3.out" }, KC[i][1]);
-            tl.to(KC[i][0], { opacity: 0, y: -18, duration: .2, ease: "power2.in" }, KC[i][2]);
+            tl.fromTo(KC[i][0], { opacity: 0, y: 24 },
+              { opacity: 1, y: 0, duration: .22, ease: "power3.out" }, KC[i][1]);
+            tl.to(KC[i][0], { opacity: 0, y: -16, duration: .18, ease: "power2.in" }, KC[i][2]);
           }
 
           /* flash de apertura */
           tl.fromTo("#flash", { opacity: 0 }, { opacity: 1, duration: .04, ease: "none" }, 0);
           tl.to("#flash", { opacity: 0, duration: .2, ease: "none" }, .04);
 
-          /* ══════════ CIERRE: el set se apaga y sale el CTA ══════════ */
-          tl.fromTo("#ctaLine", { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 17.0);
-          tl.fromTo("#ctaChip", { opacity: 0, scale: .8 },
-            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 17.35);
+          /* ══════════ CIERRE: la foto se apaga y entra el CTA ══════════ */
+          tl.to("#stageImg", { opacity: 0, scale: 1.06, duration: .7, ease: "power2.in" }, 18.40);
+          tl.to("#photoGrade", { opacity: 0, duration: .7, ease: "power2.in" }, 18.40);
+          tl.fromTo("#brandGlow", { opacity: 0, scale: .8 },
+            { opacity: 1, scale: 1, duration: .8, ease: "power3.out" }, 18.45);
+          tl.fromTo("#closeTitle", { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: .6, ease: "expo.out" }, 18.55);
+          tl.fromTo("#ctaBox", { opacity: 0, scale: .82 },
+            { opacity: 1, scale: 1, duration: .5, ease: "back.out(1.8)" }, 18.95);
           tl.fromTo("#ctaText", { opacity: 0, scale: .9 },
-            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 17.45);
-          /* el set se apaga: plano final sobre negro */
-          tl.to("#setInner", { opacity: 0, scale: 1.24, duration: .9, ease: "power2.in" }, 18.6);
-          tl.to("#scrim", { opacity: 0, duration: .9, ease: "power2.in" }, 18.6);
-          tl.fromTo("#fade", { opacity: 0 }, { opacity: 1, duration: .9, ease: "power2.in" }, 18.6);
-          tl.to("#ctaText", { opacity: 0, duration: .5, ease: "power2.in" }, 19.4);
-          tl.to("#ctaChip", { opacity: 0, duration: .5, ease: "power2.in" }, 19.4);
-          tl.to("#ctaLine", { opacity: 0, duration: .5, ease: "power2.in" }, 19.4);
+            { opacity: 1, scale: 1, duration: .45, ease: "power3.out" }, 19.05);
+          tl.to("#grain", { x: 14, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
+          tl.to("#grain", { y: 10, duration: 0.08, ease: "steps(1)", yoyo: true, repeat: 249 }, 0);
 
           window.__timelines["coches-20s"] = tl;
         }

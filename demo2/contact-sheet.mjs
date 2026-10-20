@@ -12,8 +12,20 @@ const fps = process.argv[4] || '2';
 if (!fs.existsSync(mp4)) { console.error('no existe: ' + mp4); process.exit(1); }
 fs.mkdirSync(path.dirname(out), { recursive: true });
 
-/* La fuente de Windows sirve para el drawtext de ffmpeg (las woff2 del repo no). */
-const font = 'C\\:/Windows/Fonts/arial.ttf';
+/* Fuente para el drawtext de ffmpeg: la del sistema, la que exista.
+   (Las woff2 del repo no valen para drawtext.) */
+const FONT_CANDIDATES = [
+  'C\\:/Windows/Fonts/arial.ttf',
+  '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+  '/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf',
+  '/usr/share/fonts/TTF/DejaVuSans.ttf',
+];
+const fsx = fs;
+let font = FONT_CANDIDATES[0];
+for (const f of FONT_CANDIDATES) {
+  const p = f.replace(/\\:/g, ':').replace(/\\/g, '/');
+  if (fsx.existsSync(p)) { font = f; break; }
+}
 const vf = [
   `fps=${fps}`,
   `drawtext=fontfile='${font}':text='%{pts\\:hms}':x=8:y=8:fontsize=26:fontcolor=white:box=1:boxcolor=black@0.65:boxborderw=6`,

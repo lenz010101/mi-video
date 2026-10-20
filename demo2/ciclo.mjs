@@ -55,19 +55,28 @@ while (run.status !== 'completed') {
 console.log(`2) run ${run.conclusion} en ${((Date.now() - t0) / 1000).toFixed(0)} s`);
 
 const arts = await (await gh(`/repos/${REPO}/actions/runs/${run.id}/artifacts`)).json();
-const art = arts.artifacts.find(a => a.name.includes('hyperframes')) || arts.artifacts[0];
-if (!art) throw new Error('sin artifacts');
-const buf = Buffer.from(await (await gh(art.archive_download_url)).arrayBuffer());
-const zipPath = path.join(DESKTOP, '_hf.zip');
-fs.writeFileSync(zipPath, buf);
-execFileSync('powershell', ['-Command', `Expand-Archive -Force -LiteralPath "${zipPath}" -DestinationPath "${DESKTOP}"`]);
-fs.rmSync(zipPath, { force: true });
+const want = arts.artifacts.filter(a => /hyperframes/.test(a.name));
+if (!want.length) throw new Error('sin artifacts');
+/* Se descargan el MP4 y el informe de QC (la verificacion se hace en la nube,
+   asi que el PC del usuario no ejecuta ffmpeg ni analisis). */
+for (const art of want) {
+  const buf = Buffer.from(await (await gh(art.archive_download_url)).arrayBuffer());
+  const zipPath = path.join(DESKTOP, '_hf.zip');
+  fs.writeFileSync(zipPath, buf);
+  execFileSync('powershell', ['-Command', `Expand-Archive -Force -LiteralPath "${zipPath}" -DestinationPath "${DESKTOP}"`]);
+  fs.rmSync(zipPath, { force: true });
+  console.log(`   artifact ${art.name} (${(art.size_in_bytes / 1e6).toFixed(1)} MB) descargado`);
+}
 const mp4 = path.join(DESKTOP, FILENAME);
 if (!fs.existsSync(mp4)) throw new Error('MP4 no encontrado tras expandir');
 console.log(`3) MP4: ${mp4} (${(fs.statSync(mp4).size / 1e6).toFixed(1)} MB)`);
 
-/* 4) verificacion + hoja de contactos */
-console.log('4) verificacion...');
-spawnSync(process.execPath, ['demo2/verify-render.mjs', mp4, 'demo2/qc9'], { stdio: 'inherit' });
-spawnSync(process.execPath, ['demo2/contact-sheet.mjs', mp4, path.join(DESKTOP, 'hoja-de-contactos.png')], { stdio: 'inherit' });
-console.log(`\nLISTO. MP4 y hoja de contactos en el Escritorio.`);
+/* la hoja de contactos llega desde el artifact de QC */
+const qc = path.join(DESKTOP, 'renders', 'qc', 'hoja-de-contactos.png');
+if (fs.existsSync(qc)) {
+  fs.copyFileSync(qc, path.join(DESKTOP, 'hoja-de-contactos.png'));
+  console.log('4) hoja de contactos en el Escritorio');
+} else {
+  console.log('4) (sin hoja de contactos en el artifact)');
+}
+console.log('\nLISTO. Todo el trabajo pesado se ha hecho en la nube.');
