@@ -80,16 +80,18 @@ for (const [k, arr] of [...buckets.entries()].sort((a, b) => a[0] - b[0])) {
 if (phase) console.log(`  ${start}s .. ${frames.at(-1).t.toFixed(1)}s   ${phase}`);
 
 /* ── 5) filmstrip + fotogramas clave ── */
-execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', mp4, '-vf', 'fps=2,scale=216:384,tile=6x5',
+execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', mp4, '-vf', 'fps=2,scale=180:320,tile=6x5',
   '-frames:v', '1', path.join(outDir, 'filmstrip.png')]);
 console.log('\n== IMAGENES ==');
 console.log('  ' + path.join(outDir, 'filmstrip.png'));
 
-const keys = [0, 0.1, 0.5, 1.0, 1.6, 2.1, 3.0, 5.1, 5.3, 6.5, 7.7, 9.2, 10.7, 11.6, 12.4];
+/* Pocos frames y a media resolucion: el PC es lento y no hace falta mas. */
+const keys = [0.1, 1.0, 2.1, 5.1, 6.5, 9.2, 11.7, 12.4];
 for (const t of keys) {
-  const p = path.join(outDir, `f_${String(t).replace('.', '_')}.png`);
+  const p = path.join(outDir, `f_${String(t).replace('.', '_')}.jpg`);
   try {
-    execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', String(t), '-i', mp4, '-frames:v', '1', p]);
+    execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', String(t), '-i', mp4,
+      '-frames:v', '1', '-vf', 'scale=540:-1', '-q:v', '4', p]);
   } catch { console.log('  (no se pudo extraer t=' + t + ')'); }
 }
-console.log('  fotogramas clave en ' + outDir);
+console.log('  fotogramas clave (540 px) en ' + outDir);

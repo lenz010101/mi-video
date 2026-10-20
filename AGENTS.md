@@ -172,14 +172,38 @@ runtime. Verificado en el paquete `hyperframes` (0.8.162/0.8.172):
   - `will-change` con la propiedad correcta en todo elemento animado,
   - `data-duration` en todo contenedor con `data-start`,
   - `data-var-*` siempre apuntando a una variable declarada, sin atributos
-    obsoletos, y sin recursos embebidos en base64.
+    obsoletos, y sin recursos embebidos en base64,
+  - `gsap.ticker.fps()` con el mismo valor que `data-fps`, timeline registrada
+    con el `data-composition-id` y build **síncrono**.
   - `node demo2/fix-willchange.mjs [--write]` añade el `will-change` que falte
-    (reglas por id, para no tocar clases compartidas).
+    (reglas por id, para no tocar clases compartidas). **Solo edita la regla
+    afectada**: nunca reconstruir el CSS entero desde un parseo ingenuo (una
+    versión anterior así descolocó reglas y dejó llaves sin cerrar).
+- **Integridad del CSS:** `node demo2/check-css-integrity.mjs` compara el
+  `<style>` actual con el original (`git show 899ac3a:<fichero>`) y avisa si
+  cambia algo que no sea `will-change`. Ejecutar tras tocar CSS.
+- **Lint local con la MISMA versión del CI** (el CI usa 0.8.162):
+  `npx --yes hyperframes@0.8.162 lint .` → debe dar **0 errores**. Los warnings
+  son admisibles. Este paso es el que bloquea el render si falla.
 - `npx hyperframes lint .` en local **y** el CI lintea con 0.8.162: si el
   local (0.8.172) da 0 errores, el CI puede marcar `missing_local_asset` si
   un asset referenciado no está commiteado. `git add` siempre los assets.
 - Los MP4 fuente deben ser H.264 **Constrained Baseline** para que Chrome
   headless los decodifique: `-profile:v baseline -level 3.1`.
+
+### 4.1 Verificación del MP4 entregado (el "9.9 visual")
+
+```bash
+node demo2/verify-render.mjs "C:/Users/Admin/Desktop/<video>.mp4" demo2/qc9
+```
+
+- Perfil de movimiento por frame (`tblend=difference` + `signalstats`):
+  **0 frames con YAVG = 0** = ningún fotograma congelado.
+- Lista de cambios de plano: deben caer donde dice la tabla de tiempos de la
+  composición.
+- Filmstrip (2 fps) + 8 fotogramas clave (540 px) para la revisión visual.
+- Es la única fuente de verdad: se revisa el MP4 entregado, no capturas
+  intermedias. Es barato (ffmpeg sobre 12 s = segundos).
 
 ## Coreografía medida del promo VELUXE (referencia, no repetir la medición)
 
