@@ -211,22 +211,20 @@ jobs:
           npm install --no-audit --no-fund --loglevel=error
           node -e "console.log('remotion', require('remotion/package.json').version)"
 
-      - name: Render the plates with remotion
+      - name: Render the orb column with remotion
         working-directory: remotion
         run: |
-          mkdir -p ../renders/plates
-          for N in 5 4 3 2 1; do
-            echo "--- plate-$N ---"
-            npx remotion render BrandPlate "../renders/plates/plate-$N.mp4" \
-              --props="props/plate-$N.json" \
-              --log=error
-          done
-          ls -lh ../renders/plates
+          mkdir -p ../renders
+          # La columna de orbes dorados, sobre negro: en HyperFrames se compone
+          # en modo screen sobre el presentador.
+          npx remotion render OrbColumn "../renders/orbes.mp4" --log=error
+          ls -lh ../renders/orbes.mp4
 
       # ── 2) HYPERFRAMES: el montaje final ────────────────────────────
       - name: Copy the plates into the project
         run: |
-          cp renders/plates/*.mp4 assets/mezcla/
+          mkdir -p assets/mezcla
+          cp renders/orbes.mp4 assets/mezcla/orbes.mp4
           ls -lh assets/mezcla
 
       - name: Lint the composition
@@ -238,7 +236,7 @@ jobs:
           FILENAME: ${{ inputs.filename }}
         run: |
           hf render \
-            --composition compositions/ranking-mix-30s.html \
+            --composition compositions/ranking-ref-30s.html \
             --quality "${QUALITY:-high}" \
             --fps 30 \
             --format mp4 \
