@@ -69,12 +69,26 @@
   .logos{ position:absolute; left:560px; top:185px; width:500px; height:520px;
     display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:173px;
     align-items:center; justify-items:center; gap:0 10px; pointer-events:none; }
-  .logo{ position:relative; max-width:215px; max-height:118px; width:auto; height:auto;
-    object-fit:contain; opacity:0; will-change:opacity,transform;
-    filter:grayscale(1) brightness(1.95) contrast(1.02) drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
-  .logo-color{ position:absolute; opacity:0; will-change:opacity,transform;
-    filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)); }
-  .logo, .logo-color{ will-change:opacity,transform; }
+  /* Insignia de cromo: el logo real hace de mascara de un gradiente de
+     metal, con una capa oscura debajo (bisel) y sombra proyectada. */
+  .insignia{ position:absolute; left:var(--x); top:var(--y); width:var(--w); height:var(--h);
+    opacity:0; will-change:opacity,transform;
+    transform:perspective(900px) rotateY(-16deg) rotateX(7deg); }
+  .insignia::before{ content:''; position:absolute; inset:0;
+    background:linear-gradient(155deg,#FFFFFF 0%,#AEB4BA 14%,#F4F6F7 28%,#7C8288 46%,
+      #E9ECEE 60%,#878D93 76%,#FFFFFF 94%);
+    -webkit-mask-image:var(--src); mask-image:var(--src);
+    -webkit-mask-size:contain; mask-size:contain;
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    -webkit-mask-position:center; mask-position:center;
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.65)); }
+  .insignia::after{ content:''; position:absolute; inset:0;
+    background:linear-gradient(155deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.12) 45%,rgba(0,0,0,0) 70%);
+    -webkit-mask-image:var(--src); mask-image:var(--src);
+    -webkit-mask-size:contain; mask-size:contain;
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    -webkit-mask-position:center; mask-position:center;
+    transform:translateY(4px); }
 
   /* â”€â”€ El nombre de marca grande, abajo a la izquierda â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .nombre{ position:absolute; left:150px; top:1130px; font-family:'Anton',sans-serif;
@@ -165,6 +179,9 @@
   <div class="insignia" id="lgHonda" style="--x:872px; --y:386px; --w:170px; --h:96px; --src:url('../assets/logos/honda.png');"></div>
   <div class="insignia" id="lgNissan" style="--x:600px; --y:536px; --w:210px; --h:92px; --src:url('../assets/logos/nissan.png');"></div>
   <div class="insignia" id="lgLexus" style="--x:872px; --y:556px; --w:180px; --h:100px; --src:url('../assets/logos/lexus.png');"></div>
+  <!-- El cierre: la guia de "comenta tu marca" -->
+  <div class="cta" id="cta">
+    <div class="cta-1">COMENTA TU MARCA FAVORITA</div>
     <div class="cta-2">Y SIGUEME PARA MAS VIDEOS</div>
   </div>
 
@@ -236,7 +253,7 @@
     tl.fromTo(l.id, { opacity: 0, scale: .82, y: 12 },
       { opacity: 1, scale: 1, y: 0, duration: .45, ease: 'power4.out' }, l.t);
   }
-  tl.to('.insignia, .insignia-color', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
+  tl.to('.insignia', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
 
   const nombres = [
     { id: '#nom0', t: .3, d: 3.1 }, { id: '#nom1', t: 3.6, d: 2.2 }, { id: '#nom2', t: 6.0, d: 2.2 },
