@@ -106,7 +106,34 @@ completa en cada uno de los 900 fotogramas → la captura va de ~0,22 s/frame a
 
 ---
 
-## 4. Tiempos medidos (no repetirlos)
+## 4. Transiciones: los packs y las técnicas
+
+**No hay un "pack de transiciones" que instalar como archivo**: las
+transiciones profesionales no son un asset, son **técnicas**. Lo que sí existe
+y es gratis:
+
+| recurso | qué es | cómo se usa aquí |
+|---|---|---|
+| **ffmpeg `xfade`** | ~50 transiciones (wipeleft, circleopen, dissolve, radial, smoothleft, pixelize…) | se **hornean en la nube** con ffmpeg: `ffmpeg -i a.mp4 -i b.mp4 -filter_complex "[0][1]xfade=transition=wipeleft:duration=0.4"`. Coste cero |
+| **skills de Remotion** (12 oficiales + 9 comunidad) | patrons de timing, cámara, composicion | instaladas en local y en el runner |
+| **skills internas de HyperFrames** (`seam-craft`, `motion-doctrine`, `cut-the-curve`) | las transiciones "de verdad": smear, light leak, whip | se instalan en el runner (`hf skills`) |
+| **CapCut / DaVinci** | no hay pack: son las mismas técnicas | se reproducen con CSS + GSAP o con ffmpeg |
+
+**Las cuatro técnicas que hacen que una transición deje de ser genérica:**
+1. **Light leak**: un barrido de luz cálida en diagonal (`mix-blend-mode: screen`
+   + un gradiente que se mueve). Es lo que vende "cámara de verdad".
+2. **Smear / whip**: una estela horizontal de un frame (el motion blur del
+   golpe) en el frame exacto del corte.
+3. **Blowout**: el flash cálido con caída rápida (no un blanco plano de 3
+   frames).
+4. **Grano de película** por encima de todo (`assets/grain.png`), en
+   movimiento: sin grano, todo lo demas parece un render.
+
+Ejemplo real (la pieza `millonario`): destello cálido a los 22,72 s + light
+leak barriendo de izquierda a derecha + smear en el corte seco de los 24 s +
+grano en toda la pieza.
+
+## 5. Tiempos medidos (no repetirlos)
 
 | fase | tiempo |
 |---|---|
