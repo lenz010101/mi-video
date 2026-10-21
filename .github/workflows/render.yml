@@ -449,7 +449,7 @@ jobs:
             --no-end \
             -o renders/stills \
             --no-browser-gpu \
-            --browser-timeout 180
+            --timeout 120000
           ls -lh renders/stills
 
       - name: Verify the MP4 (frozen frames + contact sheet)
