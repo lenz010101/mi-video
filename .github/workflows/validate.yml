@@ -52,6 +52,12 @@ jobs:
           restore-keys: |
             hf-${{ runner.os }}-
 
+      - name: Cache de FFmpeg estatico
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ffmpeg-static
+          key: ffmpeg-static-johnvansickle-v1
+
       - name: Preparar el directorio de librerias
         run: |
           mkdir -p "$HOME/editing-tools"
@@ -136,14 +142,29 @@ jobs:
       - name: Install FFmpeg
         run: |
           FF="$HOME/.cache/ffmpeg-static"
-          if [ ! -x "$FF/ffmpeg" ]; then
+          if [ -x "$FF/ffmpeg" ] && "$FF/ffmpeg" -version >/dev/null 2>&1; then
+            echo "Binario estatico ya en cache."
+          else
             rm -rf "$FF"; mkdir -p "$FF"
-            curl -fsSL --retry 3 --max-time 240 -o /tmp/ff.tar.xz \
-              https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
-              && tar -xJf /tmp/ff.tar.xz -C "$FF" --strip-components=1 \
-              && chmod +x "$FF/ffmpeg" "$FF/ffprobe"
+            if curl -fsSL --retry 3 --max-time 240 -o /tmp/ff.tar.xz \
+                 https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
+               && tar -xJf /tmp/ff.tar.xz -C "$FF" --strip-components=1 \
+               && chmod +x "$FF/ffmpeg" "$FF/ffprobe" \
+               && "$FF/ffmpeg" -version >/dev/null 2>&1; then
+              echo "Binario estatico descargado."
+            else
+              echo "::warning::Fallo el binario estatico; se instala por apt."
+              rm -rf "$FF"; mkdir -p "$FF"
+              sudo apt-get install -y -qq --no-install-recommends ffmpeg || {
+                sudo apt-get update -qq
+                sudo apt-get install -y -qq --no-install-recommends ffmpeg
+              }
+            fi
           fi
-          echo "$FF" >> "$GITHUB_PATH"
+          if [ -x "$FF/ffmpeg" ]; then
+            export PATH="$FF:$PATH"
+            echo "$FF" >> "$GITHUB_PATH"
+          fi
           ffmpeg -version | head -1
 
       - name: Lint the composition
