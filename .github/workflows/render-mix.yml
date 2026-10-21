@@ -145,6 +145,28 @@ jobs:
           fi
           echo "$FF" >> "$GITHUB_PATH"
 
+      # El lint de HyperFrames revisa TODO el proyecto, asi que el material de
+      # las otras piezas tiene que estar montado (o el lint se queja de los
+      # audios que no encuentra). Va cacheado: solo se descarga una vez.
+      - name: Cache del material nuevo
+        uses: actions/cache@v4
+        with:
+          path: assets/nuevo/procesado
+          key: nuevo-v2-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+
+      - name: Cache del material de la inmobiliaria
+        uses: actions/cache@v4
+        with:
+          path: assets/nuevo/inmo/procesado
+          key: inmo-v1-${{ runner.os }}-${{ hashFiles('assets/nuevo/inmo/fuentes.json') }}
+
+      - name: Prepare the new material
+        run: |
+          node demo2/preparar-nuevo.mjs assets/nuevo/fuentes.json
+          if [ -f assets/nuevo/inmo/fuentes.json ]; then
+            node demo2/preparar-nuevo.mjs assets/nuevo/inmo/fuentes.json
+          fi
+
       # ── 1) REMOTION: los planos ──────────────────────────────────────
       - name: Prepare the remotion public folder
         run: |
