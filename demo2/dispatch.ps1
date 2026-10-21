@@ -10,6 +10,7 @@ param(
   [string]$Repo = 'lenz010101/mi-video',
   [string]$Branch = 'demo-premium',
   [switch]$SinQc,
+  [switch]$NoWait,
   [ValidateSet('video', 'frames')][string]$Modo = 'video',
   [string]$At = '1.5,6.8,12,17.2,22.5,28'
 )
@@ -68,6 +69,7 @@ for ($i = 0; $i -lt 20 -and -not $run; $i++) {
 }
 if (-not $run) { throw "no arranco el run" }
 Write-Output "run $($run.id) en marcha"
+if ($NoWait) { Write-Output "RUNID=$($run.id)"; exit 0 }
 $t0 = Get-Date
 $last = ''
 while ($true) {
