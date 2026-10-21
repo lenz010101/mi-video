@@ -80,6 +80,10 @@
     opacity:0; pointer-events:none; will-change:opacity,transform; }
   .vineta{ position:absolute; inset:0; pointer-events:none;
     background:radial-gradient(118% 78% at 46% 42%, rgba(0,0,0,0) 42%, rgba(0,0,0,.58) 100%); }
+  /* El degradado bajo la barra: la cabeza del presentador no choca con el neon */
+  .sombra-barra{ position:absolute; left:0; top:150px; width:1080px; height:120px;
+    pointer-events:none;
+    background:linear-gradient(to bottom, rgba(4,4,8,.85) 0%, rgba(4,4,8,.35) 45%, rgba(4,4,8,0) 100%); }
   /* La esquina inferior en diagonal */
   .diagonal{ position:absolute; left:0; bottom:0; width:1080px; height:330px; pointer-events:none;
     background:linear-gradient(to top right, rgba(4,4,6,.97) 0%, rgba(4,4,6,.97) 42%, rgba(4,4,6,0) 43%, transparent 100%); }
@@ -107,14 +111,14 @@
   </div>
 
   <!-- Los logos de marca, uno a uno -->
-  <img id="lgAudi"     class="logo"      style="left:620px; top:190px;  width:230px;" src="assets/logos/audi.png" alt="">
-  <img id="lgBmw"      class="logo"      style="left:860px; top:190px;  width:170px;" src="assets/logos/bmw.png" alt="">
-  <img id="lgMercedes" class="logo"      style="left:610px; top:400px;  width:330px;" src="assets/logos/mercedes.png" alt="">
-  <img id="lgPorsche"  class="logo"      style="left:850px; top:400px;  width:210px;" src="assets/logos/porsche.png" alt="">
-  <img id="lgHonda"    class="logo"      style="left:625px; top:610px;  width:250px;" src="assets/logos/honda.png" alt="">
-  <img id="lgNissan"   class="logo"      style="left:855px; top:610px;  width:190px;" src="assets/logos/nissan.png" alt="">
-  <img id="lgLexus"    class="logo"      style="left:630px; top:820px;  width:230px;" src="assets/logos/lexus.png" alt="">
-  <img id="lgToyota"   class="logo" style="left:855px; top:820px;  width:200px; filter:drop-shadow(0 4px 10px rgba(0,0,0,.65));" src="assets/logos/toyota.png" alt="">
+  <img id="lgAudi"     class="logo" style="left:580px; top:190px;  width:250px;" src="assets/logos/audi.png" alt="">
+  <img id="lgBmw"      class="logo" style="left:865px; top:200px;  width:165px;" src="assets/logos/bmw.png" alt="">
+  <img id="lgMercedes" class="logo" style="left:575px; top:420px;  width:330px;" src="assets/logos/mercedes.png" alt="">
+  <img id="lgPorsche"  class="logo" style="left:850px; top:450px;  width:230px;" src="assets/logos/porsche.png" alt="">
+  <img id="lgHonda"    class="logo" style="left:590px; top:590px;  width:250px;" src="assets/logos/honda.png" alt="">
+  <img id="lgNissan"   class="logo" style="left:855px; top:615px;  width:200px;" src="assets/logos/nissan.png" alt="">
+  <img id="lgLexus"    class="logo" style="left:585px; top:700px;  width:240px;" src="assets/logos/lexus.png" alt="">
+  <img id="lgToyota"   class="logo" style="left:855px; top:720px;  width:205px; filter:drop-shadow(0 4px 10px rgba(0,0,0,.65));" src="assets/logos/toyota.png" alt="">
 
   <!-- Los nombres de marca -->
   <div class="nombre nombre-serif" id="nom0">Mercedes-Benz</div>
@@ -127,6 +131,7 @@
   <div class="nombre" id="nom6">TOYOTA</div>
 
   <!-- Ambiente -->
+  <div class="sombra-barra"></div>
   <div class="glow" id="glow"></div>
   <div class="vineta"></div>
   <div class="diagonal"></div>
