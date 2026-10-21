@@ -93,6 +93,40 @@ para entregar:
 - El coste por fotograma se reparte así (medido en local): captura de pantalla
   base 38%, los 11 vídeos 20%, los gráficos (SVG + glow) 42%.
 
+## Rendimiento: el PC es una porquería y el runner también
+
+- **Tu PC**: i3-4170, **2 núcleos** (4 hilos), 16 GB RAM. El runner de GitHub
+  (`ubuntu-latest`, 4 vCPU) es de la misma familia → de ahí la varianza del
+  ~50 % entre ejecuciones.
+- **Lo que ya está decidido (medido, no inventado)**:
+  - `ubuntu-latest` es lo único gratis: los runners grandes (8/16 vCPU) se
+    **cobran también en repos públicos** ($0,022/min el de 8 núcleos).
+  - **1 worker** gana siempre: con 4, captura y encoding compiten por los 2
+    núcleos y se pierde el "streaming encode" (171 s frente a 146 s).
+  - `--low-memory-mode` fija 1 worker, captura por pantalla y **se salta la
+    calibración de workers** (14-20 s ahorrados). La imagen no cambia.
+  - No hay GPU: `--no-browser-gpu` siempre. Por eso **no** se activa
+    `--page-side-compositing` (6x más rápido solo con shader transitions, y
+    con WebGL por software sale más lento que el blend de Node).
+- **Flags que ya usa `render.yml`** para no perder tiempo:
+  | Flag | Por qué |
+  |---|---|
+  | `--browser-timeout 180` | con 11 vídeos + fuentes la página tarda más de 60 s en un runner lento y el render se cae entero |
+  | `--frames-cache-dir ~/.cache/hf-frames` | los fotogramas extraídos de los vídeos de origen se cachean entre ejecuciones (un rerender no los vuelve a extraer) |
+  | `--resume` (opción `resumable=si`) | captura segmentada: si el render se cae, reutiliza los tramos ya grabados en vez de empezar de cero |
+- **El mayor coste no es el vídeo, son los gráficos** (reparto medido: base
+  38 % · vídeos 20 % · gráficos 42 %). `node demo2/audit-perf.mjs` dice cuánto
+  cuesta cada composición y qué patrones caros tiene (`filter: blur()`,
+  `filter: drop-shadow()`, `mix-blend-mode`, `backdrop-filter`…). Correlo
+  **antes** de renderizar: quitar un `filter: blur()` suele valer más que
+  cualquier ajuste del runner.
+- **Renders en paralelo**: en repos públicos los minutos son gratis, así que
+  varias piezas = varios dispatches a la vez (GitHub los corre a la vez en
+  runners distintos). Parallelizar **dentro** de un render no compensa.
+- **Borradores**: `quality=draft` + `fps=15` = la mitad de tiempo, para
+  revisar; `quality=delivery` (o `high`) + `fps=30` para entregar.
+- **Nunca renderizar en local** (2 núcleos, 11,5 min); el PC solo descarga.
+
 ## Dirección de arte de vídeos (reglas permanentes del usuario)
 
 El usuario quiere los próximos vídeos con nivel "agencia premium" (After

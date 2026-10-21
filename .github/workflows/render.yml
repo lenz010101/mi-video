@@ -55,6 +55,20 @@ on:
         description: "Archivo de composicion a renderizar (vacio = index.html del proyecto)"
         type: string
         default: ""
+      resumable:
+        description: "Captura segmentada: si el render se cae, la siguiente ejecucion reutiliza los tramos ya hechos (algo de overhead, pero no se pierde el trabajo)"
+        type: choice
+        default: "no"
+        options:
+          - "no"
+          - "si"
+      frames_cache:
+        description: "Reutilizar los fotogramas extraidos de los videos de origen (cachea entre ejecuciones; acelera los rerenders)"
+        type: choice
+        default: "si"
+        options:
+          - "si"
+          - "no"
 
   # También se ejecuta solo al cambiar la composición.
   push:
@@ -104,6 +118,20 @@ jobs:
         with:
           path: ~/.cache/ffmpeg-static
           key: ffmpeg-static-johnvansickle-v1
+
+      # Cache de los fotogramas extraidos de los videos de origen: un rerender
+      # de la misma pieza no vuelve a extraerlos (el cache se restaura solo si
+      # los assets no han cambiado).
+      - name: Preparar el cache de fotogramas
+        run: mkdir -p "$HOME/.cache/hf-frames"
+
+      - name: Cache de los fotogramas extraidos
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.HOME }}/.cache/hf-frames
+          key: hf-frames-${{ runner.os }}-${{ hashFiles('assets/**') }}
+          restore-keys: |
+            hf-frames-${{ runner.os }}-
 
       # Las librerias de edicion se instalan aqui, en la nube. El PC del
       # usuario no instala nada. Viven en $HOME/editing-tools (fuera del
@@ -276,6 +304,8 @@ jobs:
           FORMAT: ${{ inputs.format }}
           WORKERS: ${{ inputs.workers }}
           COMPOSITION: ${{ inputs.composition }}
+          RESUMABLE: ${{ inputs.resumable }}
+          FRAMES_CACHE: ${{ inputs.frames_cache }}
         run: |
           # Con 1 worker HyperFrames usa "streaming encode" (los fotogramas van
           # a ffmpeg segun se capturan). Con 4 workers medidos: captura 116 s
@@ -285,9 +315,34 @@ jobs:
           # 14-20 s. La imagen no cambia.
           # --composition permite renderizar otra pieza distinta de index.html
           # (p. ej. una demo) sin tocar la composicion principal.
+          #
+          # PERFORMANCIO (runner de 4 vCPU, sin GPU):
+          #  * --browser-timeout 180: las paginas con 11 videos + fuentes tardan
+          #    mas de los 60 s por defecto en un runner lento, y el render se
+          #    cae entero. Subirlo es seguro: solo evita que caduque.
+          #  * --frames-cache-dir: cache de fotogramas extraidos de los videos
+          #    de origen. El cache se guarda entre ejecuciones, asi que un
+          #    rerender de la misma pieza no vuelve a extraerlos.
+          #  * --resume (captura segmentada): cada tramo se graba por separado;
+          #    si el render se cae, la siguiente ejecucion reutiliza los tramos
+          #    ya terminados en vez de empezar de cero. Cuesta algo de overhead,
+          #    por eso es opcional.
+          #  * NO --page-side-compositing: es 6x mas rapido SOLO con shader
+          #    transitions, y necesita WebGL. Con --no-browser-gpu el WebGL cae
+          #    a software y sale mas lento que el blend de Node.
           COMPOSITION_ARGS=""
           if [ -n "${COMPOSITION:-}" ]; then
             COMPOSITION_ARGS="--composition ${COMPOSITION}"
+          fi
+          CACHE_ARGS=""
+          if [ "${FRAMES_CACHE:-si}" = "si" ]; then
+            mkdir -p "$HOME/.cache/hf-frames"
+            CACHE_ARGS="--frames-cache-dir $HOME/.cache/hf-frames"
+          fi
+          RESUME_ARGS=""
+          if [ "${RESUMABLE:-no}" = "si" ]; then
+            export HF_SEGMENTED_CAPTURE=true
+            RESUME_ARGS="--resume --keep-segments"
           fi
           hf render \
             $COMPOSITION_ARGS \
@@ -297,6 +352,9 @@ jobs:
             --no-browser-gpu \
             --low-memory-mode \
             --workers "${WORKERS:-1}" \
+            --browser-timeout 180 \
+            $CACHE_ARGS \
+            $RESUME_ARGS \
             --output "renders/${FILENAME:-video.mp4}"
 
       # Verificacion del MP4 TODO EN LA NUBE: perfil de movimiento (fotogramas

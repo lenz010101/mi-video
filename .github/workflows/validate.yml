@@ -164,6 +164,11 @@ jobs:
       - name: Auditor de reglas del repo
         run: node demo2/audit-rules.mjs
 
+      - name: Coste estimado por fotograma
+        # Informativo: no falla el workflow. Dice que composicion va a ser la
+        # mas cara de renderizar y que patrones caros tiene.
+        run: node demo2/audit-perf.mjs
+
       # "hf check ." revisa TODO el proyecto (lint estatico + muestras en
       # runtime + contraste) sin renderizar ningun MP4. No acepta ficheros
       # sueltos: solo proyectos (directorios con index.html).
