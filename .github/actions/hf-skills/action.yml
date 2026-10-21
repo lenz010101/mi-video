@@ -15,15 +15,31 @@ runs:
         path: |
           ~/.claude/skills
           ~/.agents/skills
-        key: hf-skills-v1
+        key: hf-skills-v2
 
     - name: Install the HyperFrames skills
       shell: bash
       run: |
-        # "add --all" instala las 21 publicadas + las 6 internas del repo.
-        # Si el manifiesto published no se puede resolver, la propia CLI
-        # degrada al conjunto core fijado; "update" es el respaldo.
-        hf skills add --all || hf skills update || echo "::warning::no se pudieron instalar las skills"
+        # "hf skills" a secas instala el set COMPLETO publicado (21 en 0.8.162):
+        # el router + las de dominio + los flujos de creacion opcionales.
+        # "hf skills update" solo instala el core + lo ya instalado.
+        # OJO: "hf skills add" NO existe en 0.8.162 (es de otro CLI).
+        hf skills || hf skills update || echo "::warning::no se pudieron instalar las skills"
+        # Las 6 skills internas del repo (no vienen en el manifiesto publicado)
+        # se copian del tag de la misma version que la CLI.
+        TAG="v${HYPERFRAMES_VERSION:-0.8.162}"
+        if curl -fsSL --retry 2 --max-time 300 \
+             "https://codeload.github.com/heygen-com/hyperframes/tar.gz/refs/tags/${TAG}" -o /tmp/hf-src.tgz; then
+          mkdir -p /tmp/hf-src
+          tar -xzf /tmp/hf-src.tgz -C /tmp/hf-src --wildcards '*/.claude/skills/*' 2>/dev/null || true
+          for D in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
+            mkdir -p "$D"
+            cp -r /tmp/hf-src/*/.claude/skills/* "$D/" 2>/dev/null || true
+          done
+          rm -rf /tmp/hf-src /tmp/hf-src.tgz
+        else
+          echo "::warning::no se pudo descargar el tarball con las skills internas"
+        fi
         hf skills check || echo "::warning::las skills no estan en la ultima version"
         echo "--- skills instaladas ---"
         ls "$HOME/.claude/skills" 2>/dev/null | wc -l | xargs -I{} echo "  {} en ~/.claude/skills"
