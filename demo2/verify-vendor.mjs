@@ -60,6 +60,14 @@ function check(vendorFile, npmFile) {
 
 console.log(`vendorizado: ${path.join(REPO, 'assets', 'vendor')}`);
 console.log(`npm:         ${NPM}`);
+
+if (!fs.existsSync(NPM)) {
+  console.log('');
+  console.log('No hay node_modules aqui: la comparacion se omite.');
+  console.log('La comprobacion real se hace en la nube (render.yml / validate.yml),');
+  console.log('donde las librerias estan instaladas en $HOME/editing-tools.');
+  process.exit(0);
+}
 console.log('');
 
 for (const [v, n] of Object.entries(MAP)) check(v, n);
