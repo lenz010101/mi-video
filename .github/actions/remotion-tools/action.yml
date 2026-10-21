@@ -37,7 +37,10 @@ runs:
         }
         JSON
         npm install --no-audit --no-fund --loglevel=error
-        npx remotion --version
+        # OJO: "remotion --version" no es una bandera valida (el CLI imprime la
+        # ayuda y sale con codigo 1). La version se lee del package.json.
+        node -e "console.log('remotion ' + require('$HOME/remotion-tools/node_modules/remotion/package.json').version)"
+        npx remotion --help > /dev/null 2>&1 || true
         echo "REMOTION_BIN=$HOME/remotion-tools/node_modules/.bin/remotion" >> "$GITHUB_ENV"
         echo "REMOTION_DIR=$HOME/remotion-tools" >> "$GITHUB_ENV"
 
