@@ -64,6 +64,22 @@ function audit(file) {
   const inlineJs = inlineJsRaw
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .replace(/^\s*\/\/.*$/gm, '');
+
+  /* ── 2b. Sintaxis del JS inline ──
+     Un error de sintaxis (una variable declarada dos veces, llaves que
+     faltan...) tumba el script entero: la timeline no se registra y el
+     MP4 sale congelado. El lint de HyperFrames lo ve, pero TARDIA (tumba
+     el render de todas las piezas). Aqui se caza al momento. */
+  for (const m of src.matchAll(/<script(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/script>/gi)) {
+    const code = m[1];
+    if (!code.trim()) continue;
+    try {
+      new Function(code);
+    } catch (e) {
+      const line = (code.slice(0, 500).match(/\n/g) || []).length + 1;
+      problems.push(`JS   error de sintaxis en el script inline (linea ~${line}): ${e.message}`);
+    }
+  }
   for (const kw of ['requestAnimationFrame', 'setTimeout', 'setInterval']) {
     if (inlineJs.includes(kw)) problems.push(`JS   ${kw}: prohibido en el JS de la composicion`);
   }

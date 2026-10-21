@@ -432,8 +432,8 @@
   const F1 = ficha('d1', m2), F2 = ficha('d2', recamaras);
   const F3 = ficha('d3', banos), F4 = ficha('d4', estacionamiento);
   /* Los chips de amenidades vienen en la variable separados por / */
-  const chips = ['ch1', 'ch2', 'ch3', 'ch4'];
-  amenidades.split('/').map(s => s.trim()).filter(Boolean).slice(0, 4).forEach((a, i) => set(chips[i], a));
+  const chipIds = ['ch1', 'ch2', 'ch3', 'ch4'];
+  amenidades.split('/').map(s => s.trim()).filter(Boolean).slice(0, 4).forEach((a, i) => set(chipIds[i], a));
 
   const tl = gsap.timeline({ paused: true });
 
@@ -520,7 +520,10 @@
   const muros = [['#muA', 18.0], ['#muB', 18.1], ['#muC', 18.2], ['#muD', 18.3], ['#muE', 18.45], ['#muF', 18.55], ['#muG', 18.7], ['#muH', 18.8], ['#muI', 18.95]];
   for (const [sel, t] of muros) {
     const v = sel === '#muE' || sel === '#muG';
-    tl.fromTo(sel, v ? { scaleY: 0 } : { scaleX: 0 }, v ? { scaleY: 1 } : { scaleX: 1 }, duration: .35, ease: EASE }, t);
+    tl.fromTo(sel,
+      v ? { scaleY: 0 } : { scaleX: 0 },
+      v ? { scaleY: 1 } : { scaleX: 1 },
+      { duration: .35, ease: EASE }, t);
   }
   tl.fromTo('#mu1', { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .5, ease: GOLPE }, 18.1);
   tl.fromTo('#mu2', { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .5, ease: GOLPE }, 18.25);
