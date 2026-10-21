@@ -57,18 +57,25 @@ const cuerpo = {
   generationConfig: { temperature: 0.2, maxOutputTokens: 4096 },
 };
 
-const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-const res = await fetch(url + '?key=' + encodeURIComponent(key), {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(cuerpo),
-});
-const json = await res.json();
+const modelos = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-flash-latest'];
 let texto = '';
-if (json.candidates && json.candidates[0] && json.candidates[0].content) {
-  texto = json.candidates[0].content.parts.map(p => p.text || '').join('\n');
-} else {
-  texto = 'ERROR de la API: ' + JSON.stringify(json).slice(0, 600);
+let ultimoError = '';
+for (const modelo of modelos) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent`;
+  const res = await fetch(url + '?key=' + encodeURIComponent(key), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(cuerpo),
+  });
+  const json = await res.json();
+  if (json.candidates && json.candidates[0] && json.candidates[0].content) {
+    texto = json.candidates[0].content.parts.map(p => p.text || '').join('\n');
+    console.log('modelo usado: ' + modelo);
+    break;
+  }
+  ultimoError = JSON.stringify(json).slice(0, 400);
+  console.log('  ' + modelo + ' no disponible, probando el siguiente...');
 }
+if (!texto) texto = 'ERROR de la API: ' + ultimoError;
 console.log(texto.slice(0, 400) + (texto.length > 400 ? '...' : ''));
 if (salida) { fs.writeFileSync(salida, texto, 'utf8'); console.log('escrito en ' + salida); }
