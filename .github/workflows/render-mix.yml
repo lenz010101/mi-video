@@ -1,0 +1,283 @@
+name: Render mixto (Remotion + HyperFrames)
+
+# Render en dos motores, de verdad:
+#   1) REMOTION renderiza los PLANOS: uno por puesto del ranking
+#      (el presentador de fondo + el carril de marcas + logos + orbes).
+#      Un solo componente parametrizado genera los 5.
+#   2) HYPERFRAMES monta el final: hook, titulares de marca, pies de foto,
+#      veredicto, cierre, musica, grano y transiciones, usando esos planos.
+#
+# El resultado es un solo MP4 de 30 s con las dos tecnicas.
+
+on:
+  workflow_dispatch:
+    inputs:
+      filename:
+        description: "Nombre de la salida (se guarda en renders/)"
+        type: string
+        default: "ranking-mix-30s.mp4"
+      quality:
+        description: "Calidad del render"
+        type: choice
+        default: high
+        options:
+          - draft
+          - standard
+          - high
+      frames:
+        description: "Subir fotogramas de revision"
+        type: choice
+        default: "no"
+        options:
+          - "no"
+          - "si"
+
+permissions:
+  contents: read
+
+env:
+  HYPERFRAMES_VERSION: "0.8.162"
+
+jobs:
+  mix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Cache de HyperFrames, navegador y fuentes
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache
+          key: hf-${{ runner.os }}-${{ env.HYPERFRAMES_VERSION }}
+          restore-keys: |
+            hf-${{ runner.os }}-
+
+      - name: Cache de FFmpeg estatico
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ffmpeg-static
+          key: ffmpeg-static-johnvansickle-v1
+
+      - name: Preparar el directorio de librerias
+        run: |
+          mkdir -p "$HOME/editing-tools"
+          echo "EDITING_TOOLS=$HOME/editing-tools" >> "$GITHUB_ENV"
+
+      - name: Cache de las librerias de edicion
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.EDITING_TOOLS }}
+          key: editing-tools-node22-v1
+
+      - name: Install the editing libraries
+        env:
+          HF_VERSION: ${{ env.HYPERFRAMES_VERSION }}
+        run: |
+          set -e
+          TOOLS="$EDITING_TOOLS"
+          mkdir -p "$TOOLS"
+          cd "$TOOLS"
+          node -e '
+            const fs = require("fs");
+            const deps = {
+              hyperframes: process.env.HF_VERSION,
+              gsap: "3.15.0",
+              sharp: "0.35.5",
+              "fluent-ffmpeg": "2.1.3",
+              "ffmpeg-static": "5.3.0",
+              "ffprobe-static": "3.1.0",
+              "animejs": "4.5.0",
+              "lottie-web": "5.12.2",
+              three: "0.181.2",
+              d3: "7.9.0",
+              leaflet: "1.9.4",
+              "maplibre-gl": "6.15.0",
+              "mapbox-gl": "3.33.0",
+              typegpu: "0.12.8"
+            };
+            fs.writeFileSync("package.json", JSON.stringify({
+              name: "mi-video-editing-tools", private: true, version: "1.0.0",
+              description: "Librerias de edicion (video, imagen, animacion) para el render en la nube",
+              dependencies: deps
+            }, null, 2) + "\n");
+          '
+          npm install --no-audit --no-fund --loglevel=error || echo "::warning::npm install fallo: el render sigue con npx"
+          cd "$GITHUB_WORKSPACE"
+          mkdir -p "$HOME/hfbin"
+          cat > "$HOME/hfbin/hf" <<'SH'
+          #!/usr/bin/env bash
+          LOCAL="${EDITING_TOOLS:-$HOME/editing-tools}/node_modules/.bin/hyperframes"
+          if [ -x "$LOCAL" ] && "$LOCAL" --version >/dev/null 2>&1; then
+            exec "$LOCAL" "$@"
+          fi
+          exec npx --yes "hyperframes@${HF_VERSION:-0.8.162}" "$@"
+          SH
+          chmod +x "$HOME/hfbin/hf"
+          echo "$HOME/hfbin" >> "$GITHUB_PATH"
+          echo "HF_VERSION=$HF_VERSION" >> "$GITHUB_ENV"
+          echo "NODE_PATH=$TOOLS/node_modules" >> "$GITHUB_ENV"
+
+      - name: HyperFrames skills
+        uses: ./.github/actions/hf-skills
+
+      - name: Remotion tools
+        uses: ./.github/actions/remotion-tools
+
+      - name: Install FFmpeg
+        run: |
+          FF="$HOME/.cache/ffmpeg-static"
+          if [ ! -x "$FF/ffmpeg" ]; then
+            rm -rf "$FF"; mkdir -p "$FF"
+            curl -fsSL --retry 3 --max-time 240 -o /tmp/ff.tar.xz \
+              https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
+              && tar -xJf /tmp/ff.tar.xz -C "$FF" --strip-components=1 \
+              && chmod +x "$FF/ffmpeg" "$FF/ffprobe"
+          fi
+          echo "$FF" >> "$GITHUB_PATH"
+
+      # ── 1) REMOTION: los planos ──────────────────────────────────────
+      - name: Prepare the remotion public folder
+        run: |
+          mkdir -p remotion/public/logos remotion/public/fonts remotion/props assets/mezcla
+          cp assets/clips/talker-slow.mp4 remotion/public/presentador.mp4
+          for m in porsche bmw mercedes honda toyota; do
+            cp "assets/logos/$m.png" "remotion/public/logos/$m.png"
+          done
+          cp assets/fonts/anton-400.woff2 remotion/public/fonts/anton-400.woff2
+          cp assets/fonts/nuevo/jetbrains-mono-latin-600-normal.woff2 remotion/public/fonts/jetbrains-mono-600.woff2
+          ls remotion/public remotion/public/logos
+
+      - name: Remotion props
+        run: |
+          node -e '
+            const fs = require("fs");
+            const marcas = [
+              {nombre:"PORSCHE", logo:"logos/porsche.png", color:"#D5001C", frase:"pierden"},
+              {nombre:"BMW", logo:"logos/bmw.png", color:"#0066B1", frase:"recomiendo"},
+              {nombre:"MERCEDES-BENZ", logo:"logos/mercedes.png", color:"#00A19B", frase:"y confiabilidad"},
+              {nombre:"HONDA", logo:"logos/honda.png", color:"#CC0000", frase:"su valor"},
+              {nombre:"TOYOTA", logo:"logos/toyota.png", color:"#EB0A1E", frase:"quieres bajar"}
+            ];
+            // el presentador cambia de gesto en cada puesto
+            const desde = [120, 260, 430, 600, 760];
+            for (let i = 0; i < 5; i++) {
+              const props = {
+                posicion: 5 - i,
+                activa: i,
+                marcas,
+                presentadorDesde: desde[i],
+                presupuesto: "2.4 MDP"
+              };
+              fs.writeFileSync("remotion/props/plate-" + (5 - i) + ".json", JSON.stringify(props, null, 2));
+            }
+            console.log("props escritos");
+          '
+
+      - name: Install the remotion project
+        working-directory: remotion
+        run: |
+          npm install --no-audit --no-fund --loglevel=error
+          node -e "console.log('remotion', require('remotion/package.json').version)"
+
+      - name: Render the plates with remotion
+        working-directory: remotion
+        run: |
+          mkdir -p ../renders/plates
+          for N in 5 4 3 2 1; do
+            echo "--- plate-$N ---"
+            npx remotion render BrandPlate "../renders/plates/plate-$N.mp4" \
+              --props="props/plate-$N.json" \
+              --log=error
+          done
+          ls -lh ../renders/plates
+
+      # ── 2) HYPERFRAMES: el montaje final ────────────────────────────
+      - name: Copy the plates into the project
+        run: |
+          cp renders/plates/*.mp4 assets/mezcla/
+          ls -lh assets/mezcla
+
+      - name: Lint the composition
+        run: hf lint .
+
+      - name: Render the final edit with hyperframes
+        env:
+          QUALITY: ${{ inputs.quality }}
+          FILENAME: ${{ inputs.filename }}
+        run: |
+          hf render \
+            --composition compositions/ranking-mix-30s.html \
+            --quality "${QUALITY:-high}" \
+            --fps 30 \
+            --format mp4 \
+            --no-browser-gpu \
+            --low-memory-mode \
+            --workers 1 \
+            --browser-timeout 180 \
+            --output "renders/${FILENAME:-ranking-mix-30s.mp4}"
+
+      - name: Verify the MP4 (frozen frames + contact sheet)
+        if: always()
+        env:
+          FILENAME: ${{ inputs.filename }}
+        run: |
+          FILE="renders/${FILENAME:-ranking-mix-30s.mp4}"
+          if [ -f "$FILE" ]; then
+            node demo2/verify-render.mjs "$FILE" renders/qc
+            if ! ffmpeg -hide_banner -filters 2>/dev/null | grep -q drawtext; then
+              sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
+            fi
+            node demo2/contact-sheet.mjs "$FILE" renders/qc/hoja-de-contactos.png
+          else
+            echo "::warning::No hay MP4 que verificar"
+          fi
+
+      - name: Verify the output
+        if: always()
+        run: |
+          node -e '
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const dir = "renders";
+          if (!fs.existsSync(dir)) { console.log("No existe renders/"); process.exit(0); }
+          for (const f of fs.readdirSync(dir)) {
+            const p = path.join(dir, f);
+            if (fs.statSync(p).isDirectory()) continue;
+            const b = fs.readFileSync(p);
+            const audio = b.includes(Buffer.from("mp4a"));
+            const i = b.indexOf(Buffer.from("mvhd"));
+            let dur = "desconocida";
+            if (i >= 0) {
+              const ts = b.readUInt32BE(i + 16);
+              const dn = b.readUInt32BE(i + 20);
+              if (ts > 0) dur = (dn / ts).toFixed(2) + " s";
+            }
+            console.log("  " + f + "  " + (b.length / 1048576).toFixed(2) + " MB  duracion=" + dur + "  audio=" + (audio ? "SI" : "NO"));
+          }
+          '
+
+      - name: Upload the rendered video
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-video
+          path: renders/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload the QC report
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-qc
+          path: renders/qc/
+          if-no-files-found: ignore
+          retention-days: 14
