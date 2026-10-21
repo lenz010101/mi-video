@@ -158,29 +158,13 @@
   <div class="velo"></div>
   <div class="velo-palabras"></div>
 
-  <!-- Los logos de marca, uno a uno, en retícula -->
-  <div class="logos">
-    <img id="lgMercedes" class="logo" src="assets/logos/mercedes.png" alt="">
-    <img id="lgBmw"      class="logo" src="assets/logos/bmw.png" alt="">
-    <img id="lgPorsche"  class="logo" src="assets/logos/porsche.png" alt="">
-    <img id="lgHonda"    class="logo" src="assets/logos/honda.png" alt="">
-    <img id="lgNissan"   class="logo" src="assets/logos/nissan.png" alt="">
-    <img id="lgLexus"    class="logo" src="assets/logos/lexus.png" alt="">
-  </div>
-
-  <!-- Los nombres de marca -->
-  <div class="nombre nombre-serif" id="nom0">Mercedes-Benz</div>
-  <div class="nombre" id="nom1">PORSCHE</div>
-  <div class="nombre" id="nom2">HONDA</div>
-  <div class="nombre" id="nom3">CHRYSLER</div>
-  <div class="sticker" id="stic4"></div>
-  <div class="nombre nombre-negro" id="nom4">NISSAN</div>
-  <div class="nombre nombre-serif" id="nom5">LEXUS</div>
-  <div class="nombre" id="nom6">TOYOTA</div>
-
-  <!-- El cierre: la guia de "comenta tu marca" -->
-  <div class="cta" id="cta">
-    <div class="cta-1">COMENTA TU MARCA FAVORITA</div>
+  <!-- Las insignias de marca en cromo, en retícula -->
+  <div class="insignia" id="lgMercedes" style="--x:600px; --y:196px; --w:250px; --h:120px; --src:url('../assets/logos/mercedes.png');"></div>
+  <div class="insignia" id="lgBmw" style="--x:872px; --y:196px; --w:130px; --h:130px; --src:url('../assets/logos/bmw.png');"></div>
+  <div class="insignia" id="lgPorsche" style="--x:600px; --y:376px; --w:235px; --h:96px; --src:url('../assets/logos/porsche.png');"></div>
+  <div class="insignia" id="lgHonda" style="--x:872px; --y:386px; --w:170px; --h:96px; --src:url('../assets/logos/honda.png');"></div>
+  <div class="insignia" id="lgNissan" style="--x:600px; --y:536px; --w:210px; --h:92px; --src:url('../assets/logos/nissan.png');"></div>
+  <div class="insignia" id="lgLexus" style="--x:872px; --y:556px; --w:180px; --h:100px; --src:url('../assets/logos/lexus.png');"></div>
     <div class="cta-2">Y SIGUEME PARA MAS VIDEOS</div>
   </div>
 
@@ -252,7 +236,7 @@
     tl.fromTo(l.id, { opacity: 0, scale: .82, y: 12 },
       { opacity: 1, scale: 1, y: 0, duration: .45, ease: 'power4.out' }, l.t);
   }
-  tl.to('.logo', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
+  tl.to('.insignia, .insignia-color', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
 
   const nombres = [
     { id: '#nom0', t: .3, d: 3.1 }, { id: '#nom1', t: 3.6, d: 2.2 }, { id: '#nom2', t: 6.0, d: 2.2 },
