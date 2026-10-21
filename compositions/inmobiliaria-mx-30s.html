@@ -105,6 +105,14 @@
   /* ── Escenas ───────────────────────────────────────────────────── */
   .scene{ position:absolute; inset:0; }
   .capa{ position:absolute; inset:0; will-change:transform,opacity; }
+  /* Velo editorial (scrim): sin el, el texto de tinta se pierde sobre las
+     zonas claras del video (torre, ventana de la cocina). */
+  .scrim{ position:absolute; left:0; right:0; bottom:0; height:58%;
+    background:linear-gradient(to top, rgba(244,241,233,.96) 0%, rgba(244,241,233,.80) 34%, rgba(244,241,233,.30) 72%, rgba(244,241,233,0) 100%);
+    will-change:opacity; }
+  .scrim-topo{ position:absolute; left:0; right:0; top:0; height:72%;
+    background:linear-gradient(to bottom, rgba(244,241,233,.96) 0%, rgba(244,241,233,.82) 40%, rgba(244,241,233,.30) 78%, rgba(244,241,233,0) 100%);
+    will-change:opacity; }
 
   /* ── Transiciones ───────────────────────────────────────────────── */
   .dip{ position:absolute; inset:0; background:var(--papel); opacity:0;
@@ -193,6 +201,7 @@
   <!-- ═══ S1 · GANCHO (0 - 2) ═══ -->
   <div class="scene" id="s1" data-start="0" data-duration="2">
     <div class="capa">
+      <div class="scrim" id="velo1"></div>
       <div class="barrido" id="barrido1" style="left:-60%;"></div>
       <div class="display" id="gancho1" style="position:absolute; left:96px; top:1180px; font-size:132px;">UNA CASA</div>
       <div class="display-it" id="gancho2" style="position:absolute; left:96px; top:1320px; font-size:132px; color:var(--terracota);">lista para mudarse</div>
@@ -204,6 +213,7 @@
   <!-- ═══ S2 · PROMESA (2 - 4) ═══ -->
   <div class="scene" id="s2" data-start="2" data-duration="2">
     <div class="capa">
+      <div class="scrim" id="velo2"></div>
       <div class="titulo" id="promesa" style="position:absolute; left:96px; right:96px; top:1180px; font-size:74px;">ENTREGA INMEDIATA</div>
       <div class="cuerpo" id="promesa2" style="position:absolute; left:96px; right:96px; top:1300px; font-size:36px; color:var(--gris);">Sin obra. Sin contratas. Llaves en tus manos.</div>
       <div class="marca-regla" id="promesaRegla" style="position:absolute; left:96px; top:1262px; width:180px;"></div>
@@ -213,6 +223,7 @@
   <!-- ═══ S3 · PROCESO (4 - 10) ═══ -->
   <div class="scene" id="s3" data-start="4" data-duration="6">
     <div class="capa">
+      <div class="scrim" id="velo3"></div>
       <div class="mono mono-t" id="pr1" style="position:absolute; left:96px; bottom:330px;">01 / OBRA</div>
       <div class="mono mono-t" id="pr2" style="position:absolute; left:96px; bottom:330px;">02 / ACABADOS</div>
       <div class="mono mono-t" id="pr3" style="position:absolute; left:96px; bottom:330px;">03 / ENTREGA</div>
@@ -224,6 +235,7 @@
   <!-- ═══ S4 · LA CASA (10 - 16) ═══ -->
   <div class="scene" id="s4" data-start="10" data-duration="6">
     <div class="capa">
+      <div class="scrim" id="velo4"></div>
       <div class="display" id="casaT" style="position:absolute; left:96px; top:1200px; font-size:120px;">Así se vive</div>
       <div class="mono" id="casaL" style="position:absolute; left:96px; top:1400px;">COZINA / SALON / TERRAZA</div>
     </div>
@@ -232,6 +244,7 @@
   <!-- ═══ S5 · FICHA (16 - 20) ═══ -->
   <div class="scene" id="s5" data-start="16" data-duration="4">
     <div class="capa">
+      <div class="scrim-topo" id="velo5"></div>
       <div class="mono mono-t" id="fichaL" style="position:absolute; left:96px; top:420px;">FICHA TECNICA</div>
       <div class="dato" id="d1" style="position:absolute; left:96px; top:520px;">
         <span class="dato-n" id="n1">0</span><span class="dato-l">metros cuadrados</span>
@@ -296,6 +309,7 @@
   <!-- ═══ S7 · LA OFERTA (24 - 26) ═══ -->
   <div class="scene" id="s7" data-start="24" data-duration="2">
     <div class="capa">
+      <div class="scrim" id="velo7"></div>
       <div class="titulo" id="ofertaT" style="position:absolute; left:96px; right:96px; top:1180px; font-size:66px;">VISITAS CON CITA</div>
       <div class="display" id="ofertaTel" style="position:absolute; left:96px; top:1290px; font-size:88px;">+52 55 1234 5678</div>
       <div class="mono" id="ofertaW" style="position:absolute; left:96px; top:1430px;">ARCODEV.MX</div>
@@ -315,6 +329,7 @@
   <!-- ═══ S9 · CIERRE (28 - 30) ═══ -->
   <div class="scene" id="s9" data-start="28" data-duration="2">
     <div class="capa">
+      <div class="scrim" id="velo9"></div>
       <div class="barrido" id="barrido9" style="left:-60%;"></div>
       <div class="display" id="cierreT" style="position:absolute; left:96px; top:1200px; font-size:128px;">Quiero mi espacio</div>
       <div class="mono mono-t" id="cierreL" style="position:absolute; left:96px; top:1400px;">ESQUIRE EN SITIO</div>
@@ -459,6 +474,13 @@
     return '00:' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') + ':' + String(f).padStart(2, '0');
   };
   tl.eventCallback('onUpdate', function () { if (tc) tc.textContent = fmt(tl.time()); });
+
+  /* El velo editorial entra con su escena: sin el, el texto de tinta se
+     pierde sobre las zonas claras del video (torre, ventana de la cocina). */
+  const velos = [['#velo1', 0.1], ['#velo2', 2.1], ['#velo3', 4.1], ['#velo4', 10.1], ['#velo5', 16.1], ['#velo7', 24.1], ['#velo9', 28.1]];
+  for (const [sel, t] of velos) {
+    tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: .55, ease: 'power2.out' }, t);
+  }
 
   /* ── Material: entrada con dip a blanco y empuje lento ─────────── */
   const planos = [
