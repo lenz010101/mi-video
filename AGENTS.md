@@ -127,6 +127,23 @@ para entregar:
   revisar; `quality=delivery` (o `high`) + `fps=30` para entregar.
 - **Nunca renderizar en local** (2 núcleos, 11,5 min); el PC solo descarga.
 
+## Skills de HyperFrames en la nube
+
+- La acción compuesta `.github/actions/hf-skills` las instala en el HOME del
+  runner (`~/.claude/skills` + el espejo universal `~/.agents/skills`) y las
+  cachea (`hf-skills-v2`), así que se descargan una vez.
+- **27 skills**: las 21 publicadas (router `hyperframes`, las de dominio
+  `hyperframes-core/animation/audio/cli/creative/keyframes/registry/studio`,
+  `media-use`, y los flujos de creación opcionales `product-launch-video`,
+  `faceless-explainer`, `motion-graphics`, `music-to-video`, `pr-to-video`,
+  `talking-head-recut`, `embedded-captions`, `slideshow`, `general-video`,
+  `figma`, `remotion-to-hyperframes`) + las 6 internas del repo
+  (`captions-overlay`, `changelog-video`, `cut-the-curve`, `motion-doctrine`,
+  `oversized-cursor`, `seam-craft`).
+- Ojo con la CLI de 0.8.162: el set completo se instala con **`hf skills`**
+  a secas. `hf skills update` solo pone el core (10) + lo ya instalado, y
+  `hf skills add` **no existe** (es de otro CLI: el de skills.sh).
+
 ## Dirección de arte de vídeos (reglas permanentes del usuario)
 
 El usuario quiere los próximos vídeos con nivel "agencia premium" (After
