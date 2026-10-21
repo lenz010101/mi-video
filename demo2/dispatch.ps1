@@ -55,7 +55,7 @@ $isMix = $Workflow -like 'render-mix*'
 if ($isMix) {
   $inputs = @{ filename = $Filename; quality = $quality; frames = 'no'; fps = $fps; qc = $qc; mode = $Modo; at = $At }
 } else {
-  $inputs = @{ quality = $quality; fps = $fps; filename = $Filename; format = 'mp4'; workers = '1'; frames = 'no'; qc = $qc; composition = $Composition }
+  $inputs = @{ quality = $quality; fps = $fps; filename = $Filename; format = 'mp4'; workers = '1'; frames = 'no'; qc = $qc; composition = $Composition; mode = $Modo; at = $At }
 }
 Api POST "/actions/workflows/$Workflow/dispatches" @{ ref = $Branch; inputs = $inputs } | Out-Null
 Write-Output "dispatch: $Composition -> $Filename (modo=$Modo fps=$fps quality=$quality qc=$qc)"

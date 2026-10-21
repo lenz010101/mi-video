@@ -37,7 +37,8 @@ if (-not $SinLint) {
   if ($o) {
     # estos errores son esperables: el material se monta en la nube
     $permitidos = @('assets/nuevo/procesado/', 'assets/nuevo/inmo/procesado/',
-                    'assets/mezcla/plato-', 'assets/mezcla/voz.m4a')
+                    'assets/mezcla/plato-', 'assets/mezcla/voz.m4a',
+                    'assets/mezcla/presentador-')
     $fatal = @()
     foreach ($f in $o.findings) {
       if ($f.severity -ne 'error') { continue }

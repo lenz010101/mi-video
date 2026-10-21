@@ -76,6 +76,17 @@ on:
         options:
           - "si"
           - "no"
+      mode:
+        description: "Modo: video (entrega) o frames (revision de arte, sin MP4)"
+        type: choice
+        default: video
+        options:
+          - video
+          - frames
+      at:
+        description: "Marcas de tiempo del modo frames (segundos, por comas)"
+        type: string
+        default: "1.2,4.5,8,11.5,16,22.8,25.5"
 
   # TambiÃ©n se ejecuta solo al cambiar la composiciÃ³n.
   push:
@@ -331,12 +342,35 @@ jobs:
             node demo2/preparar-nuevo.mjs assets/nuevo/inmo/fuentes.json
           fi
 
+      # El presentador se gradua aqui, en la nube: cuarto oscuro, contraste
+      # alto, poca saturacion y una vineta. Asi el plano tiene el aire del
+      # video de referencia (luz magenta a la izquierda) sin tocar el PC.
+      # Solo hace falta para las piezas que usan assets/clips/talker-*.mp4.
+      - name: Graduar al presentador
+        if: contains(inputs.composition, 'millonario')
+        run: |
+          mkdir -p assets/mezcla
+          # PLANO 1 (24 s): el plano largo, con su voz.
+          ffmpeg -v error -y -i assets/clips/talker-slow.mp4 -t 24 \
+            -vf "eq=contrast=1.20:saturation=0.60:brightness=-0.045,colorbalance=rs=0.07:rm=-0.03:bs=-0.03,vignette=angle=PI/4" \
+            -c:v libx264 -profile:v baseline -level 3.1 -preset veryfast -crf 20 \
+            -pix_fmt yuv420p -r 30 -c:a aac -b:a 160k -ac 2 -movflags +faststart \
+            assets/mezcla/presentador-1.mp4
+          # PLANO 2 (6,2 s): otro take, mas cerrado y mas frio (el corte final).
+          ffmpeg -v error -y -i assets/clips/talker.mp4 -t 6.2 \
+            -vf "scale=1188:2112,crop=1080:1920:0:96,eq=contrast=1.16:saturation=0.42:brightness=-0.055,colorbalance=bs=0.10:rs=-0.04,vignette=angle=PI/4" \
+            -c:v libx264 -profile:v baseline -level 3.1 -preset veryfast -crf 20 \
+            -pix_fmt yuv420p -r 30 -c:a aac -b:a 160k -ac 2 -movflags +faststart \
+            assets/mezcla/presentador-2.mp4
+          ls -lh assets/mezcla/
+
       - name: Lint the composition
         # "hf" = la libreria de HyperFrames instalada en la nube (misma version
         # fijada que el lint); si no esta, cae al npx de siempre.
         run: hf lint .
 
       - name: Render
+        if: inputs.mode == 'video'
         env:
           QUALITY: ${{ inputs.quality }}
           FPS: ${{ inputs.fps }}
@@ -401,8 +435,25 @@ jobs:
       # Verificacion del MP4 TODO EN LA NUBE: perfil de movimiento (fotogramas
       # congelados) y hoja de contactos con timecodes. El PC del usuario no
       # analiza nada: solo descarga el resultado del artifact.
+      # Solo fotogramas: en ~1 min se ve la direccion de arte y se descarga
+      # 1 MB en vez de 35 MB. Es el bucle de revision barato.
+      - name: Snapshot de fotogramas (revision de arte, sin MP4)
+        if: inputs.mode == 'frames'
+        env:
+          AT: ${{ inputs.at }}
+        run: |
+          mkdir -p renders/stills
+          hf snapshot . \
+            --composition millonario \
+            --at "$AT" \
+            --no-end \
+            -o renders/stills \
+            --no-browser-gpu \
+            --browser-timeout 180
+          ls -lh renders/stills
+
       - name: Verify the MP4 (frozen frames + contact sheet)
-        if: always() && inputs.qc != 'no'
+        if: always() && inputs.qc != 'no' && inputs.mode == 'video'
         env:
           FILENAME: ${{ inputs.filename }}
         run: |
@@ -463,12 +514,22 @@ jobs:
           '
 
       - name: Upload the rendered video
+        if: inputs.mode == 'video'
         uses: actions/upload-artifact@v4
         with:
           name: hyperframes-video
           path: renders/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Upload the stills
+        if: inputs.mode == 'frames'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-stills
+          path: renders/stills/
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Upload the QC report
         # Hoja de contactos + fotogramas clave del MP4 ya verificado.
