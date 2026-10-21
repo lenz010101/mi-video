@@ -38,6 +38,7 @@ verificación del MP4 en la nube: −40 s).
 | comando | para qué |
 |---|---|
 | `node demo2/audit-rules.mjs [fichero]` | reglas del repo (2 s, sin Chrome) |
+| `node demo2/audit-bash.mjs` | sintaxis de los scripts de los workflows (2 s) |
 | `npx --yes hyperframes@0.8.162 lint . --json` | lint de HyperFrames (1 min) |
 | `.\demo2\commit-api.ps1 -Branch demo-premium -Message "..." -Paths a.html` | subir cambios sin `git` |
 | `.\demo2\dispatch.ps1 -Workflow render-mix.yml -Composition ... -Filename ...` | render en la nube (espera) |
@@ -76,7 +77,7 @@ completa en cada uno de los 900 fotogramas → la captura va de ~0,22 s/frame a
 | fase | tiempo |
 |---|---|
 | material nuevo (con caché) | 0 s |
-| skills + librerías (con caché) | 15-30 s |
+| skills + librerías (con caché: `editing-tools`, `remotion-tools`, `remotion-skills`) | 10-20 s |
 | Remotion (columna de orbes, 30 s) | ~49 s |
 | horneado de los 5 planos | ~30 s |
 | captura + encode (900 frames) | 150-210 s |

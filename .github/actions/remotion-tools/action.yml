@@ -16,6 +16,18 @@ runs:
           ~/.remotion
         key: remotion-v1-${{ runner.os }}
 
+    - name: Cache de las dependencias de remotion
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.HOME }}/remotion-tools/node_modules
+        key: remotion-tools-node22-v1
+
+    - name: Cache de los skills de remotion
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.HOME }}/remotion-skills
+        key: remotion-skills-v1-${{ runner.os }}
+
     - name: Install remotion
       shell: bash
       run: |
@@ -36,7 +48,12 @@ runs:
           }
         }
         JSON
-        npm install --no-audit --no-fund --loglevel=error
+        # con las dependencias ya en cache, el install es un no-op (~1 s)
+        if [ ! -d node_modules/remotion ]; then
+          npm install --no-audit --no-fund --loglevel=error --prefer-offline
+        else
+          echo "node_modules en cache: no se reinstala"
+        fi
         # OJO: "remotion --version" no es una bandera valida (el CLI imprime la
         # ayuda y sale con codigo 1). La version se lee del package.json.
         node -e "console.log('remotion ' + require('$HOME/remotion-tools/node_modules/remotion/package.json').version)"
@@ -49,13 +66,13 @@ runs:
       run: |
         # 12 skills oficiales (remotion-best-practices, -create, -render, -captions,
         # -maps, -multimedia, -studio, -saas, -docs, -markup, -interactivity, -upgrade)
+        STAGE="$HOME/remotion-skills"
+        mkdir -p "$STAGE"
+        if [ -z "$(ls -A "$STAGE" 2>/dev/null)" ]; then
         curl -fsSL --retry 2 --max-time 300 \
           "https://codeload.github.com/remotion-dev/skills/tar.gz/refs/heads/main" -o /tmp/rskills.tgz
         mkdir -p /tmp/rskills && tar -xzf /tmp/rskills.tgz -C /tmp/rskills
-        for D in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
-          mkdir -p "$D"
-          cp -r /tmp/rskills/*/skills/* "$D/" 2>/dev/null || true
-        done
+        cp -r /tmp/rskills/*/skills/* "$STAGE/" 2>/dev/null || true
         rm -rf /tmp/rskills /tmp/rskills.tgz
 
         # Skills OPCIONALES de la comunidad (9 en total):
@@ -70,18 +87,22 @@ runs:
           curl -fsSL --retry 2 --max-time 300 \
             "https://codeload.github.com/${REPO}/tar.gz/refs/heads/${BRANCH}" -o /tmp/pack.tgz || { echo "::warning::no se pudo bajar $REPO"; return 0; }
           rm -rf /tmp/pack && mkdir -p /tmp/pack && tar -xzf /tmp/pack.tgz -C /tmp/pack || return 0
-          for D in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
-            mkdir -p "$D"
-            for SRC in /tmp/pack/*/"$PATTERN"/*/; do
-              [ -d "$SRC" ] || continue
-              cp -r "$SRC" "$D/" 2>/dev/null || true
-            done
+          for SRC in /tmp/pack/*/"$PATTERN"/*/; do
+            [ -d "$SRC" ] || continue
+            cp -r "$SRC" "$STAGE/" 2>/dev/null || true
           done
           rm -rf /tmp/pack /tmp/pack.tgz
         }
         install_pack "buainoai/remotion-skills" "main" "skills"
         install_pack "liancheng-zcy/remotion-com-skills" "main" ".claude/skills"
         install_pack "jincheng2026/jc-remotion-skills" "master" "skills"
+        else
+          echo "skills de remotion en cache: no se vuelven a bajar"
+        fi
+        for D in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
+          mkdir -p "$D"
+          cp -r "$STAGE/." "$D/" 2>/dev/null || true
+        done
 
         echo "skills de remotion: $(ls "$HOME/.claude/skills" | grep -ci 'remotion')"
         ls "$HOME/.claude/skills" | tr '\n' ' '; echo

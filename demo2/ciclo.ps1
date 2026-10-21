@@ -22,10 +22,12 @@ $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path -Parent $PSScriptRoot)
 $t0 = Get-Date
 
-# ── 1) AUDITOR DE REGLAS (2 s, sin arrancar Chrome) ───────────────────
-Write-Output "[1/4] auditor de reglas..."
+# ── 1) AUDITORES EN LOCAL (2 s, sin arrancar Chrome) ─────────────────
+Write-Output "[1/4] auditor de reglas + sintaxis de los workflows..."
 node demo2/audit-rules.mjs
 if ($LASTEXITCODE -ne 0) { throw "el auditor ha encontrado problemas: NO se renderiza" }
+node demo2/audit-bash.mjs
+if ($LASTEXITCODE -ne 0) { throw "un script de bash tiene un error de sintaxis: NO se renderiza" }
 
 # ── 2) LINT DE HYPERFRAMES (1 min; opcional) ─────────────────────────
 if (-not $SinLint) {

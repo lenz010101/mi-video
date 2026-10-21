@@ -66,6 +66,7 @@
     compositions/x.html -Filename x.mp4 -Workflow render-mix.yml -Paths
     compositions/x.html` (`-SinLint` ahorra 1 min, `-SinQc` ahorra 40 s) |
   | `demo2/audit-rules.mjs` | reglas 9.9 (0 problemas), 2 s, sin Chrome |
+  | `demo2/audit-bash.mjs` | sintaxis de los scripts de los workflows (2 s) |
   | `demo2/check-css-integrity.mjs` | el CSS solo cambia en `will-change` |
   | `demo2/verify-render.mjs` | MP4 entregado: frames congelados + cortes |
   | `demo2/contact-sheet.mjs` | hoja de contactos con timecodes (revisión) |
