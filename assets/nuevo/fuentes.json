@@ -1,4 +1,4 @@
-{
+﻿{
   "_nota": "Fuentes del reel HUMO v2 (calidad Resolve). El repo solo guarda este manifiesto: los clips, la musica y los efectos se descargan y se montan en la nube (demo2/preparar-nuevo.mjs). Origen: Mixkit (licencia libre, sin clave).",
   "salida": "assets/nuevo/procesado",
   "fps": 24,
@@ -52,28 +52,28 @@
   },
   "clips": [
     { "nombre": "apertura", "base": "1968", "inicio": 2.0, "duracion": 3.4, "encuadre": "centro", "grado": "calido",
-      "overlay": { "id": "48495", "inicio": 0.5, "opacidad": 0.32 } },
+      "overlay": { "id": "48495", "inicio": 0.5, "opacidad": 0.12 } },
     { "nombre": "declaracion", "base": "1960", "inicio": 4.0, "duracion": 3.3, "encuadre": "centro", "grado": "calido",
-      "overlay": { "id": "25284", "inicio": 1.0, "opacidad": 0.30 } },
+      "overlay": { "id": "25284", "inicio": 1.0, "opacidad": 0.11 } },
     { "nombre": "titulo", "base": "1964", "inicio": 8.0, "duracion": 3.3, "encuadre": "centro", "grado": "calido",
-      "overlay": { "id": "46236", "inicio": 3.0, "opacidad": 0.26 } },
+      "overlay": { "id": "46236", "inicio": 3.0, "opacidad": 0.10 } },
     { "nombre": "m1", "base": "50951", "inicio": 5.0, "duracion": 0.9, "encuadre": "izquierda", "grado": "calido",
-      "overlay": { "id": "48011", "inicio": 0.5, "opacidad": 0.24 } },
+      "overlay": { "id": "48011", "inicio": 0.5, "opacidad": 0.10 } },
     { "nombre": "m2", "base": "1962", "inicio": 2.0, "duracion": 0.9, "encuadre": "centro", "grado": "calido",
-      "overlay": { "id": "47282", "inicio": 2.0, "opacidad": 0.30 } },
-    { "nombre": "m3", "base": "4362", "inicio": 12.0, "duracion": 0.9, "encuadre": "izquierda", "grado": "calido", "overlay": null },
+      "overlay": { "id": "47282", "inicio": 2.0, "opacidad": 0.11 } },
+    { "nombre": "m3", "base": "4362", "inicio": 12.0, "duracion": 0.9, "encuadre": "centro", "grado": "calido", "overlay": null },
     { "nombre": "m4", "base": "3925", "inicio": 3.0, "duracion": 0.9, "encuadre": "centro", "grado": "frio", "overlay": null },
     { "nombre": "m5", "base": "45298", "inicio": 3.0, "duracion": 0.9, "encuadre": "derecha", "grado": "calido",
-      "overlay": { "id": "48012", "inicio": 1.0, "opacidad": 0.22 } },
+      "overlay": { "id": "48012", "inicio": 1.0, "opacidad": 0.10 } },
     { "nombre": "m6", "base": "1968", "inicio": 6.0, "duracion": 2.6, "encuadre": "centro", "grado": "frio",
-      "overlay": { "id": "48013", "inicio": 2.0, "opacidad": 0.30 } },
+      "overlay": { "id": "48013", "inicio": 2.0, "opacidad": 0.11 } },
     { "nombre": "tipografia", "base": "45298", "inicio": 6.0, "duracion": 3.3, "encuadre": "derecha", "grado": "calido",
-      "overlay": { "id": "48494", "inicio": 0.5, "opacidad": 0.20 } },
+      "overlay": { "id": "48494", "inicio": 0.5, "opacidad": 0.08 } },
     { "nombre": "datos", "base": "4362", "inicio": 20.0, "duracion": 3.3, "encuadre": "izquierda", "grado": "calido",
-      "overlay": { "id": "47283", "inicio": 1.0, "opacidad": 0.18 } },
+      "overlay": { "id": "47283", "inicio": 1.0, "opacidad": 0.08 } },
     { "nombre": "metodo", "base": "3925", "inicio": 6.0, "duracion": 3.3, "encuadre": "centro", "grado": "frio", "overlay": null },
     { "nombre": "cierre", "base": "1968", "inicio": 9.0, "duracion": 3.9, "encuadre": "centro", "grado": "calido",
-      "overlay": { "id": "46237", "inicio": 4.0, "opacidad": 0.28 } }
+      "overlay": { "id": "46237", "inicio": 4.0, "opacidad": 0.12 } }
   ],
   "capas": [
     { "nombre": "polvo", "base": "47285", "inicio": 0.0, "duracion": 30.0, "encuadre": "centro", "grado": "polvo", "continuo": true, "overlay": null }
@@ -92,3 +92,4 @@
     { "id": "1714", "archivo": "sfx-hit-open.mp3", "en": 0.0, "ganancia": 0.26 }
   ]
 }
+
