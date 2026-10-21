@@ -38,10 +38,10 @@ export const defaultOrbProps: OrbProps = {
   ],
   encendido: [1.2, 6.4, 11.6, 16.8, 22.0],
   duracion: 5.2,
-  radio: 54,
-  paso: 200,
-  top: 560,
-  left: 118,
+  radio: 78,
+  paso: 214,
+  top: 500,
+  left: 168,
 };
 
 const ORO = '#F5C242';
@@ -108,13 +108,13 @@ export const OrbColumn: React.FC<OrbProps> = (props) => {
               <div
                 style={{
                   position: 'absolute',
-                  left: left + radio - 150,
-                  top: y + radio - 150,
-                  width: 300,
-                  height: 300,
+                  left: left + radio - 230,
+                  top: y + radio - 230,
+                  width: 460,
+                  height: 460,
                   borderRadius: '50%',
-                  background: `radial-gradient(circle at 50% 50%, rgba(245,194,66,${0.55 * glow}) 0%, rgba(245,194,66,${0.22 * glow}) 38%, rgba(245,194,66,0) 72%)`,
-                  transform: `scale(${0.8 + 0.25 * glow})`,
+                  background: `radial-gradient(circle at 50% 50%, rgba(245,194,66,${0.85 * glow}) 0%, rgba(245,194,66,${0.34 * glow}) 36%, rgba(245,194,66,${0.10 * glow}) 58%, rgba(245,194,66,0) 76%)`,
+                  transform: `scale(${0.75 + 0.3 * glow})`,
                 }}
               />
             ) : null}
@@ -131,10 +131,10 @@ export const OrbColumn: React.FC<OrbProps> = (props) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 background: esActiva
-                  ? `radial-gradient(circle at 50% 45%, #FFE9A8 0%, ${ORO} 42%, #B87A12 78%, rgba(184,122,18,0) 100%)`
-                  : 'radial-gradient(circle at 50% 45%, rgba(245,194,66,.10) 0%, rgba(245,194,66,.05) 60%, rgba(245,194,66,0) 100%)',
+                  ? `radial-gradient(circle at 50% 42%, #FFF0BE 0%, ${ORO} 38%, #C98A15 72%, rgba(201,138,21,0) 100%)`
+                  : 'radial-gradient(circle at 50% 42%, rgba(245,194,66,.16) 0%, rgba(245,194,66,.07) 58%, rgba(245,194,66,0) 100%)',
                 boxShadow: esActiva
-                  ? `0 0 42px rgba(245,194,66,.75), 0 0 120px rgba(245,194,66,.45), inset 0 0 22px rgba(255,246,214,.55)`
+                  ? `0 0 60px rgba(245,194,66,.95), 0 0 170px rgba(245,194,66,.6), 0 0 320px rgba(245,194,66,.3), inset 0 0 30px rgba(255,248,222,.7)`
                   : 'none',
                 transform: `scale(${escala})`,
                 opacity: esActiva ? 1 : 0.62,

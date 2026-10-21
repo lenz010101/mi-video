@@ -31,6 +31,17 @@ on:
         options:
           - "no"
           - "si"
+      fps:
+        description: "FPS del render (15 para revision, 30 para entrega)"
+        type: string
+        default: "30"
+      qc:
+        description: "Verificar el MP4 (frames congelados + hoja)"
+        type: choice
+        default: "si"
+        options:
+          - "si"
+          - "no"
 
 permissions:
   contents: read
@@ -234,11 +245,12 @@ jobs:
         env:
           QUALITY: ${{ inputs.quality }}
           FILENAME: ${{ inputs.filename }}
+          FPS: ${{ inputs.fps }}
         run: |
           hf render \
             --composition compositions/ranking-ref-30s.html \
             --quality "${QUALITY:-high}" \
-            --fps 30 \
+            --fps "${FPS:-30}" \
             --format mp4 \
             --no-browser-gpu \
             --low-memory-mode \
@@ -247,7 +259,7 @@ jobs:
             --output "renders/${FILENAME:-ranking-mix-30s.mp4}"
 
       - name: Verify the MP4 (frozen frames + contact sheet)
-        if: always()
+        if: always() && inputs.qc != 'no'
         env:
           FILENAME: ${{ inputs.filename }}
         run: |
