@@ -44,7 +44,7 @@
      (que Remotion dibuja a la izquierda) tenga sitio limpio, como en la
      referencia. */
   .presentador{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-    object-position:78% center; opacity:0; will-change:opacity,transform; }
+    object-position:88% center; opacity:0; will-change:opacity,transform; }
 
   /* La capa de orbes la renderiza Remotion sobre negro: en modo screen solo
      sobrevive la luz, igual que en una composicion de After Effects. */
@@ -175,7 +175,7 @@
 
   /* El presentador entra con un empuje corto */
   tl.fromTo('#presentador', { opacity: 0 }, { opacity: 1, duration: .6, ease: 'power1.out' }, 0);
-  tl.fromTo('#presentador', { scale: 1.02 }, { scale: 1.08, duration: 30, ease: 'none' }, 0);
+  tl.fromTo('#presentador', { scale: 1.16 }, { scale: 1.22, duration: 30, ease: 'none' }, 0);
   tl.fromTo('#orbes', { opacity: 0 }, { opacity: 1, duration: .8, ease: 'power1.out' }, .15);
 
   /* Apertura */
