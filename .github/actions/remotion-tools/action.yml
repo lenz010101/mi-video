@@ -1,0 +1,59 @@
+name: Remotion tools
+description: Instala en el runner Remotion (CLI, renderer y sus 12 skills oficiales) para poder crear y renderizar con Remotion ademas de HyperFrames. Todo cacheado.
+
+runs:
+  using: composite
+  steps:
+    - name: Preparar los directorios
+      shell: bash
+      run: mkdir -p "$HOME/remotion-tools" "$HOME/.claude/skills" "$HOME/.agents/skills"
+
+    - name: Cache de remotion
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/remotion
+          ~/.remotion
+        key: remotion-v1-${{ runner.os }}
+
+    - name: Install remotion
+      shell: bash
+      run: |
+        cd "$HOME/remotion-tools"
+        cat > package.json <<'JSON'
+        {
+          "name": "remotion-tools",
+          "private": true,
+          "version": "1.0.0",
+          "description": "Remotion en la nube, junto a HyperFrames",
+          "dependencies": {
+            "remotion": "4.0.537",
+            "@remotion/cli": "4.0.537",
+            "@remotion/bundler": "4.0.537",
+            "@remotion/renderer": "4.0.537",
+            "react": "19.3.1",
+            "react-dom": "19.3.1"
+          }
+        }
+        JSON
+        npm install --no-audit --no-fund --loglevel=error
+        npx remotion --version
+        echo "REMOTION_BIN=$HOME/remotion-tools/node_modules/.bin/remotion" >> "$GITHUB_ENV"
+        echo "REMOTION_DIR=$HOME/remotion-tools" >> "$GITHUB_ENV"
+
+    - name: Install the remotion skills
+      shell: bash
+      run: |
+        # 12 skills oficiales (remotion-best-practices, -create, -render, -captions,
+        # -maps, -multimedia, -studio, -saas, -docs, -markup, -interactivity, -upgrade)
+        curl -fsSL --retry 2 --max-time 300 \
+          "https://codeload.github.com/remotion-dev/skills/tar.gz/refs/heads/main" -o /tmp/rskills.tgz
+        mkdir -p /tmp/rskills && tar -xzf /tmp/rskills.tgz -C /tmp/rskills
+        for D in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
+          mkdir -p "$D"
+          cp -r /tmp/rskills/*/skills/* "$D/" 2>/dev/null || true
+        done
+        rm -rf /tmp/rskills /tmp/rskills.tgz
+        echo "skills de remotion: $(ls "$HOME/.claude/skills" | grep -c '^remotion')"
+        ls "$HOME/.claude/skills" | tr '\n' ' '; echo
+        echo "skills totales (hyperframes + remotion): $(ls "$HOME/.claude/skills" | wc -l)"

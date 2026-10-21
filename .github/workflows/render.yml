@@ -208,6 +208,9 @@ jobs:
       - name: HyperFrames skills
         uses: ./.github/actions/hf-skills
 
+      - name: Remotion tools
+        uses: ./.github/actions/remotion-tools
+
       - name: Verify the editing libraries
         run: |
           node -e '
