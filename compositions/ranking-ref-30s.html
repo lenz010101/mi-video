@@ -39,12 +39,20 @@
     font-family:'JetBrains Mono',monospace; -webkit-font-smoothing:antialiased;
   }
 
-  /* El presentador: protagonistico, a pantalla completa, CON SU VOZ.
-     object-position lo desplaza a la derecha para que la columna de orbes
-     (que Remotion dibuja a la izquierda) tenga sitio limpio, como en la
-     referencia. */
-  .presentador{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-    object-position:88% center; opacity:0; will-change:opacity,transform; }
+  /* El presentador: en un panel enmarcado (tipo ventana editorial) a la
+     derecha, CON SU VOZ. Encima, la foto del coche de cada marca. */
+  .presentador{ position:absolute; right:56px; top:470px; width:440px; height:782px;
+    object-fit:cover; object-position:60% 26%; opacity:0;
+    border:2px solid rgba(227,164,75,.42);
+    box-shadow:0 30px 70px rgba(0,0,0,.62); will-change:opacity,transform; }
+  .marco-presentador{ position:absolute; right:56px; top:470px; width:440px; height:782px;
+    border:2px solid rgba(227,164,75,.42); pointer-events:none; }
+  /* La foto del coche: banda inferior a sangre */
+  .coche{ position:absolute; left:0; right:0; bottom:0; height:760px; width:100%;
+    object-fit:cover; object-position:50% 58%; opacity:0; will-change:opacity,transform; }
+  .coche-velo{ position:absolute; left:0; right:0; bottom:0; height:760px; width:100%;
+    background:linear-gradient(to bottom, rgba(11,10,8,.98) 0%, rgba(11,10,8,.55) 22%, rgba(11,10,8,.15) 46%, rgba(11,10,8,.35) 100%);
+    pointer-events:none; }
 
   /* La capa de orbes la renderiza Remotion sobre negro: en modo screen solo
      sobrevive la luz, igual que en una composicion de After Effects. */
@@ -95,9 +103,18 @@
 
 <div id="root" data-composition-id="ranking-ref" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
 
-  <!-- El presentador, con su audio (la voz del video) -->
+  <!-- El presentador, en panel enmarcado, con su audio (la voz del video) -->
   <video id="presentador" class="presentador clip" data-start="0" data-duration="30" data-track-index="0"
     data-var-src="presentador" src="assets/clips/talker-slow.mp4" data-has-audio playsinline></video>
+  <div class="marco-presentador"></div>
+
+  <!-- La foto del coche de cada marca: banda inferior a sangre -->
+  <img id="coche5" class="coche" src="assets/coches/porsche.jpg" alt="">
+  <img id="coche4" class="coche" src="assets/coches/bmw.jpg" alt="">
+  <img id="coche3" class="coche" src="assets/coches/mercedes.jpg" alt="">
+  <img id="coche2" class="coche" src="assets/coches/honda.jpg" alt="">
+  <img id="coche1" class="coche" src="assets/coches/toyota.jpg" alt="">
+  <div class="coche-velo"></div>
 
   <!-- La capa de orbes dorados: la renderiza Remotion -->
   <video id="orbes" class="orbes clip" data-start="0" data-duration="30" data-track-index="1"
@@ -173,9 +190,8 @@
   tl.to('#fuga', { opacity: .8, x: 30, y: -18, duration: 9, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
   tl.to('#grano', { x: 20, y: -12, duration: 2.6, ease: 'steps(6)', repeat: -1 }, 0);
 
-  /* El presentador entra con un empuje corto */
-  tl.fromTo('#presentador', { opacity: 0 }, { opacity: 1, duration: .6, ease: 'power1.out' }, 0);
-  tl.fromTo('#presentador', { scale: 1.16 }, { scale: 1.22, duration: 30, ease: 'none' }, 0);
+  /* El presentador entra en su panel y la foto del coche se abre */
+  tl.fromTo('#presentador', { opacity: 0, y: 40, scale: 1.06 }, { opacity: 1, y: 0, scale: 1, duration: .8, ease: EASE }, .1);
   tl.fromTo('#orbes', { opacity: 0 }, { opacity: 1, duration: .8, ease: 'power1.out' }, .15);
 
   /* Apertura */
@@ -187,13 +203,16 @@
   /* Los 5 puestos: enciende el orbe (Remotion), entra el logo flotante,
      el pie de foto, y un flash-through-white en el corte. */
   const puestos = [
-    { n: 5, t: 1.2, dur: 5.2, lg: 'lg5', halo: 'halo5', pie: 'pie5' },
-    { n: 4, t: 6.4, dur: 5.2, lg: 'lg4', halo: 'halo4', pie: 'pie4' },
-    { n: 3, t: 11.6, dur: 5.2, lg: 'lg3', halo: 'halo3', pie: 'pie3' },
-    { n: 2, t: 16.8, dur: 5.2, lg: 'lg2', halo: 'halo2', pie: 'pie2' },
-    { n: 1, t: 22.0, dur: 5.2, lg: 'lg1', halo: 'halo1', pie: 'pie1' },
+    { n: 5, t: 1.2, dur: 5.2, lg: 'lg5', halo: 'halo5', pie: 'pie5', coche: 'coche5' },
+    { n: 4, t: 6.4, dur: 5.2, lg: 'lg4', halo: 'halo4', pie: 'pie4', coche: 'coche4' },
+    { n: 3, t: 11.6, dur: 5.2, lg: 'lg3', halo: 'halo3', pie: 'pie3', coche: 'coche3' },
+    { n: 2, t: 16.8, dur: 5.2, lg: 'lg2', halo: 'halo2', pie: 'pie2', coche: 'coche2' },
+    { n: 1, t: 22.0, dur: 5.2, lg: 'lg1', halo: 'halo1', pie: 'pie1', coche: 'coche1' },
   ];
   for (const p of puestos) {
+    /* la foto del coche entra con un empuje lento y se va */
+    tl.fromTo('#' + p.coche, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 1.1, ease: EASE }, p.t - .35);
+    tl.to('#' + p.coche, { opacity: 0, scale: 1.04, duration: .5, ease: 'power2.in' }, p.t + p.dur - .7);
     tl.fromTo('#' + p.lg, { opacity: 0, y: -26, scale: .92 }, { opacity: 1, y: 0, scale: 1, duration: .7, ease: EASE }, p.t + .15);
     tl.fromTo('#' + p.halo, { opacity: 0 }, { opacity: 1, duration: .6, ease: EASE }, p.t + .15);
     tl.to('#' + p.lg, { y: -10, duration: 2.4, ease: 'sine.inOut', yoyo: true, repeat: 1 }, p.t + .9);
