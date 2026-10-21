@@ -2,6 +2,22 @@
 
 ## Estado del repo (cierre 2026-10-20)
 
+- **Pieza nueva: `compositions/humo-reel-30s.html` — "HUMO", reel de estudio
+  30 s en 9:16, hecho desde cero.** Material 100 % nuevo (8 clips de humo de
+  Mixkit + música nueva), montado en la nube. Render medido: **2 m 22 s**,
+  30,00 s, 0 fotogramas congelados, 11 cambios de plano, audio sí.
+  Entregado: `humo-reel-30s.mp4` (73,8 MB).
+  - **El repo solo guarda el manifiesto** (`assets/nuevo/fuentes.json`); los
+    clips y la música se descargan y se montan **en el runner**
+    (`demo2/preparar-nuevo.mjs`: recorte 9:16, grado de color, H.264
+    baseline 3.1) y se cachean. El PC del usuario no toca vídeo.
+  - Dirección de arte: negro cálido `#0B0A08` + **un solo acento ámbar**
+    `#E3A44B` (nada de cyan-neón), Anton (condensada) + Instrument Serif
+    (editorial) + JetBrains Mono (datos), halo radial en vez de `filter:blur`,
+    grano local, foco doble por escena, rótulos anclados a los bordes.
+  - Se parametriza en render-time: `marca`, `claim`, `sub`, `pie`, `cta`,
+    `musica` (`data-composition-variables`).
+
 - Rama de trabajo: **`demo-premium`** (la `main` no se toca; el render se dispara
   a mano con `workflow_dispatch` sobre `demo-premium`).
 - **Último MP4 entregado:** `C:\Users\Admin\Desktop\veluxe-promo.mp4`
