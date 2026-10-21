@@ -51,14 +51,15 @@
   .n-oro{ color:var(--oro); text-shadow:0 0 14px rgba(255,192,42,.95), 0 0 44px rgba(255,150,0,.6); }
 
   /* ── Logos de marca (cromados), en retícula sobre un velo ────────── */
-  .logos{ position:absolute; left:548px; top:178px; width:512px; height:600px;
-    display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:150px;
-    align-items:center; justify-items:center; gap:0 12px;
-    background:radial-gradient(ellipse 62% 58% at 50% 48%, rgba(3,3,7,.72) 0%, rgba(3,3,7,.45) 58%, rgba(3,3,7,0) 100%);
-    pointer-events:none; }
-  .logo{ position:relative; height:112px; width:auto; max-width:210px;
+  .velo{ position:absolute; left:420px; top:0; width:660px; height:920px;
+    pointer-events:none;
+    background:radial-gradient(ellipse 72% 60% at 76% 34%, rgba(3,3,7,.82) 0%, rgba(3,3,7,.44) 56%, rgba(3,3,7,0) 100%); }
+  .logos{ position:absolute; left:560px; top:185px; width:500px; height:520px;
+    display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:173px;
+    align-items:center; justify-items:center; gap:0 10px; pointer-events:none; }
+  .logo{ position:relative; max-width:215px; max-height:118px; width:auto; height:auto;
     object-fit:contain; opacity:0; will-change:opacity,transform;
-    filter:grayscale(1) brightness(1.5) contrast(1.1) drop-shadow(0 4px 12px rgba(0,0,0,.7)); }
+    filter:grayscale(1) brightness(1.55) contrast(1.05) drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
   .logo-color{ position:absolute; opacity:0; will-change:opacity,transform;
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)); }
   .logo, .logo-color{ will-change:opacity,transform; }
@@ -75,9 +76,9 @@
   .nombre-serif{ font-family:'Playfair',serif; font-size:104px; letter-spacing:.01em; }
 
   /* ── Las palabras: abajo a la derecha ───────────────────────────── */
-  .palabra{ position:absolute; right:170px; top:1150px; font-family:'Inter',sans-serif;
+  .palabra{ position:absolute; right:150px; top:1280px; font-family:'Inter',sans-serif;
     font-weight:800; font-size:64px; letter-spacing:-.015em; color:#FFFFFF;
-    text-shadow:0 4px 18px rgba(0,0,0,.8), 0 1px 2px rgba(0,0,0,.9);
+    text-shadow:0 4px 18px rgba(0,0,0,.85), 0 1px 2px rgba(0,0,0,.95);
     white-space:nowrap; opacity:0; will-change:opacity,transform; }
 
   /* ── Ambiente ───────────────────────────────────────────────────── */
@@ -123,16 +124,17 @@
     <div class="p3"><span class="neon n-oro" id="t3">MILLONARIO</span></div>
   </div>
 
+  <!-- El velo que apaga el fondo detras de los logos -->
+  <div class="velo"></div>
+
   <!-- Los logos de marca, uno a uno, en retícula -->
   <div class="logos">
-    <img id="lgAudi"     class="logo" src="assets/logos/audi.png" alt="">
-    <img id="lgBmw"      class="logo" src="assets/logos/bmw.png" alt="">
     <img id="lgMercedes" class="logo" src="assets/logos/mercedes.png" alt="">
+    <img id="lgBmw"      class="logo" src="assets/logos/bmw.png" alt="">
     <img id="lgPorsche"  class="logo" src="assets/logos/porsche.png" alt="">
     <img id="lgHonda"    class="logo" src="assets/logos/honda.png" alt="">
     <img id="lgNissan"   class="logo" src="assets/logos/nissan.png" alt="">
     <img id="lgLexus"    class="logo" src="assets/logos/lexus.png" alt="">
-    <img id="lgToyota"   class="logo" style="filter:drop-shadow(0 4px 12px rgba(0,0,0,.7));" src="assets/logos/toyota.png" alt="">
   </div>
 
   <!-- Los nombres de marca -->
@@ -200,9 +202,9 @@
 
   /* ── Los logos: entran uno a uno, en cadena ─────────────────────── */
   const logos = [
-    { id: '#lgAudi', t: .6 }, { id: '#lgMercedes', t: 1.7 }, { id: '#lgBmw', t: 3.0 },
+    { id: '#lgMercedes', t: 1.7 }, { id: '#lgBmw', t: 3.0 },
     { id: '#lgPorsche', t: 4.3 }, { id: '#lgHonda', t: 5.8 }, { id: '#lgNissan', t: 7.3 },
-    { id: '#lgLexus', t: 8.8 }, { id: '#lgToyota', t: 10.3 }
+    { id: '#lgLexus', t: 8.8 }
   ];
   for (const l of logos) {
     tl.fromTo(l.id, { opacity: 0, scale: .55, rotation: -8 },
