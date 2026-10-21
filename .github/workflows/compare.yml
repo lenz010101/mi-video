@@ -47,6 +47,61 @@ jobs:
           restore-keys: |
             hf-${{ runner.os }}-
 
+      # Las mismas librerias de edicion que usa el render principal, instaladas
+      # en la nube (fuera del proyecto, para no ensuciar el repo).
+      - name: Preparar el directorio de librerias
+        run: |
+          mkdir -p "$HOME/editing-tools"
+          echo "EDITING_TOOLS=$HOME/editing-tools" >> "$GITHUB_ENV"
+
+      - name: Cache de las librerias de edicion
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.EDITING_TOOLS }}
+          key: editing-tools-node22-v1
+
+      - name: Install the editing libraries
+        env:
+          HF_VERSION: ${{ env.HYPERFRAMES_VERSION }}
+        run: |
+          set -e
+          TOOLS="$EDITING_TOOLS"
+          mkdir -p "$TOOLS"
+          cd "$TOOLS"
+          node -e '
+            const fs = require("fs");
+            const deps = {
+              hyperframes: process.env.HF_VERSION,
+              gsap: "3.12.5",
+              sharp: "0.35.5",
+              "fluent-ffmpeg": "2.1.3",
+              "ffmpeg-static": "5.3.0",
+              "ffprobe-static": "3.1.0"
+            };
+            fs.writeFileSync("package.json", JSON.stringify({
+              name: "mi-video-editing-tools",
+              private: true,
+              version: "1.0.0",
+              description: "Librerias de edicion (video, imagen, animacion) para el render en la nube",
+              dependencies: deps
+            }, null, 2) + "\n");
+          '
+          npm install --no-audit --no-fund --loglevel=error || echo "::warning::npm install fallo: se sigue con npx"
+          cd "$GITHUB_WORKSPACE"
+          mkdir -p "$HOME/hfbin"
+          cat > "$HOME/hfbin/hf" <<'SH'
+          #!/usr/bin/env bash
+          LOCAL="${EDITING_TOOLS:-$HOME/editing-tools}/node_modules/.bin/hyperframes"
+          if [ -x "$LOCAL" ] && "$LOCAL" --version >/dev/null 2>&1; then
+            exec "$LOCAL" "$@"
+          fi
+          exec npx --yes "hyperframes@${HF_VERSION:-0.8.162}" "$@"
+          SH
+          chmod +x "$HOME/hfbin/hf"
+          echo "$HOME/hfbin" >> "$GITHUB_PATH"
+          echo "HF_VERSION=$HF_VERSION" >> "$GITHUB_ENV"
+          echo "NODE_PATH=$TOOLS/node_modules" >> "$GITHUB_ENV"
+
       - name: Install FFmpeg
         run: |
           sudo apt-get update -qq
@@ -54,7 +109,7 @@ jobs:
 
       - name: Snapshot del diseno actual
         run: |
-          npx --yes hyperframes@${{ env.HYPERFRAMES_VERSION }} snapshot . \
+          hf snapshot . \
             --frames 7 \
             --no-browser-gpu \
             --output new-frames
