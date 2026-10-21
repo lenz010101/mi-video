@@ -1,0 +1,75 @@
+name: Comparar con Google Vision
+
+# Compara el video de referencia con el nuestro, fotograma a fotograma, y
+# guarda el informe de la IA (que dice que cambios de edicion hay que hacer).
+# Corre en la nube: el PC no toca nada.
+
+on:
+  workflow_dispatch:
+    inputs:
+      a:
+        description: "Video A (la referencia)"
+        type: string
+        default: "assets/ref/referencia.mp4"
+      b:
+        description: "Video B (el nuestro)"
+        type: string
+        default: "assets/ref/nuestro.mp4"
+      gemini_key:
+        description: "API key de Google (si no, se usa el secreto GEMINI_API_KEY)"
+        type: string
+        default: ""
+      segundos:
+        description: "Tiempos a comparar (por comas)"
+        type: string
+        default: "0,6,12,18,24,28"
+
+permissions:
+  contents: read
+
+jobs:
+  comparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install FFmpeg
+        run: |
+          FF="$HOME/.cache/ffmpeg-static"
+          if [ ! -x "$FF/ffmpeg" ]; then
+            rm -rf "$FF"; mkdir -p "$FF"
+            curl -fsSL --retry 3 --max-time 240 -o /tmp/ff.tar.xz \
+              https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
+              && tar -xJf /tmp/ff.tar.xz -C "$FF" --strip-components=1 \
+              && chmod +x "$FF/ffmpeg" "$FF/ffprobe"
+          fi
+          echo "$FF" >> "$GITHUB_PATH"
+
+      - name: Comparar con la vision de Google
+        env:
+          KEY: ${{ secrets.GEMINI_API_KEY || inputs.gemini_key }}
+          A: ${{ inputs.a }}
+          B: ${{ inputs.b }}
+          SEG: ${{ inputs.segundos }}
+        run: |
+          if [ -z "${KEY:-}" ]; then
+            echo "::warning::sin API key: no se puede comparar"
+            exit 0
+          fi
+          node demo2/comparar-vision.mjs "$A" "$B" "$KEY" informe.md "$SEG"
+
+      - name: Upload the report
+        uses: actions/upload-artifact@v4
+        with:
+          name: informe-vision
+          path: |
+            informe.md
+          if-no-files-found: ignore
+          retention-days: 14
