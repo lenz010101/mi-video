@@ -1,4 +1,4 @@
-﻿name: Render video
+name: Render video
 
 # Renderiza la composiciÃ³n index.html en la nube de GitHub y publica el MP4
 # como artefacto descargable. No requiere instalar nada en tu ordenador.
@@ -306,7 +306,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: assets/nuevo/procesado
-          key: nuevo-v3-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+          key: nuevo-v4-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
 
       - name: Prepare the new material
         run: node demo2/preparar-nuevo.mjs
@@ -466,4 +466,5 @@ jobs:
           path: snapshots/
           if-no-files-found: ignore
           retention-days: 14
+
 

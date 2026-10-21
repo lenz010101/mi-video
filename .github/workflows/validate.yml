@@ -1,4 +1,4 @@
-﻿name: Validate compositions
+name: Validate compositions
 
 # Valida el repo SIN renderizar ningun video:
 #   * lint de HyperFrames (el mismo binario y version que el render)
@@ -168,7 +168,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: assets/nuevo/procesado
-          key: nuevo-v3-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+          key: nuevo-v4-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
 
       - name: Prepare the new material
         run: node demo2/preparar-nuevo.mjs
@@ -203,4 +203,5 @@ jobs:
             snapshots-extra/
           if-no-files-found: ignore
           retention-days: 14
+
 

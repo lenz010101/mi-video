@@ -1,4 +1,4 @@
-﻿/* Prepara el material NUEVO del reel en la nube (nunca en el PC del usuario).
+/* Prepara el material NUEVO del reel en la nube (nunca en el PC del usuario).
    Lee assets/nuevo/fuentes.json, descarga los clips, las fugas de luz, la
    musica y los efectos de Mixkit, y deja el material con un GRADO DE
    COLORISTA sobre el material en bruto:
@@ -59,7 +59,7 @@ async function montar(c) {
      (74 MB en 30 s) y la escena ya lleva su capa de grano en CSS, que es
      gratis. Con el video limpio el MP4 baja a un tercio y se descarga
      mucho antes. */
-  const post = [g.vineta].filter(Boolean).join(',');
+  const post = [g.vineta, g.grano].filter(Boolean).join(',');
 
   const base = path.join(OUT, `_b_${c.nombre}.mp4`);
   await baja(`https://assets.mixkit.co/videos/${c.base}/${c.base}-720.mp4`, base);
@@ -181,4 +181,5 @@ if (faltan.length) {
 }
 
 console.log(`\n${man.clips?.length || 0} clips + ${man.capas?.length || 0} capas + ${man.musica?.length || 0} pistas + ${man.sfx?.length || 0} sfx listos en ${man.salida} (${fallos} fallo(s))`);
+
 
