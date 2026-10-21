@@ -12,15 +12,6 @@ name: Validate compositions
 
 on:
   workflow_dispatch:
-    inputs:
-      composition:
-        description: "Composicion a validar (vacio = index.html del proyecto)"
-        type: string
-        default: ""
-      extra_composition:
-        description: "Segunda composicion a validar (opcional)"
-        type: string
-        default: ""
 
 permissions:
   contents: read
@@ -173,33 +164,14 @@ jobs:
       - name: Auditor de reglas del repo
         run: node demo2/audit-rules.mjs
 
-      - name: Check de la composicion principal (runtime, sin MP4)
+      # "hf check ." revisa TODO el proyecto (lint estatico + muestras en
+      # runtime + contraste) sin renderizar ningun MP4. No acepta ficheros
+      # sueltos: solo proyectos (directorios con index.html).
+      - name: Check del proyecto (runtime, sin MP4)
         run: |
           hf check . --snapshots
           hf snapshot . --frames 7 --no-browser-gpu --output snapshots
           ls snapshots | head -10
-
-      - name: Check de otras composiciones (montadas en un proyecto temporal)
-        env:
-          EXTRA: ${{ inputs.extra_composition }}
-        run: |
-          if [ -z "${EXTRA:-}" ]; then echo "Sin composiciones extra."; exit 0; fi
-          # El CLI solo acepta proyectos (directorios con index.html), asi que
-          # se monta la composicion como index.html de un proyecto temporal y se
-          # enlazan los assets. El repo no se toca.
-          mkdir -p "$GITHUB_WORKSPACE/.validate"
-          ln -sfn "$GITHUB_WORKSPACE/assets" "$GITHUB_WORKSPACE/.validate/assets"
-          for FILE in $EXTRA; do
-            if [ ! -f "$FILE" ]; then echo "::warning::no existe $FILE"; continue; fi
-            NAME=$(basename "$FILE" .html)
-            DIR="$GITHUB_WORKSPACE/.validate/$NAME"
-            rm -rf "$DIR"; mkdir -p "$DIR"
-            cp "$FILE" "$DIR/index.html"
-            ln -sfn "$GITHUB_WORKSPACE/assets" "$DIR/assets"
-            ID=$(grep -o 'data-composition-id="[^"]*"' "$FILE" | head -1 | sed 's/.*="\(.*\)"/\1/')
-            echo "--- $FILE (composition-id: $ID) ---"
-            hf check "$DIR" --samples 5 || echo "::warning::el check de $FILE dio problemas"
-          done
 
       - name: Upload the validation frames
         if: always()
