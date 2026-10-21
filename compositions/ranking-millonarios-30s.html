@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html
   lang="es"
   data-composition-variables='[
@@ -58,6 +58,23 @@
         -webkit-font-smoothing: antialiased;
       }
       .scene { position: absolute; inset: 0; pointer-events: none; }
+      /* orden de capas: fondo < presentador < velo del hook < graficos < cabecera */
+      #bgScene { z-index: 0; }
+      #presenterScene { z-index: 1; }
+      #scrimScene { z-index: 2; }
+      #listScene, #cardScene, #punchScene { z-index: 3; }
+      #hookScene { z-index: 4; }
+      #headerScene { z-index: 5; }
+      #bandScene { z-index: 6; }
+      #verdictScene { z-index: 7; }
+      #ctaScene { z-index: 8; }
+
+      /* velo del hook: oscurece al presentador para que el titular se lea */
+      #hookScrim {
+        position: absolute; left: 0; top: 0; width: 1080px; height: 700px;
+        background: linear-gradient(180deg, rgba(6,9,16,.96) 0%, rgba(6,9,16,.88) 58%, rgba(6,9,16,0) 100%);
+        opacity: 0; will-change: opacity;
+      }
 
       /* ══ FONDO ══════════════════════════════════════════════════════ */
       #bgBase {
@@ -198,6 +215,7 @@
         background: #fff; border-radius: 4px; overflow: hidden;
         box-shadow: 0 20px 62px rgba(0,0,0,.62), 0 0 0 1px rgba(255,255,255,.07);
         display: flex; align-items: center; justify-content: center;
+        will-change: transform;
       }
       .plate img { max-width: 292px; max-height: 116px; object-fit: contain; }
       .shine {
@@ -351,6 +369,11 @@
         <div id="kickerRule"></div>
       </div>
 
+      <!-- ══ VELO DEL HOOK: oscurece al presentador para que el titular se lea ══ -->
+      <div class="scene" id="scrimScene" data-start="0" data-duration="4">
+        <div id="hookScrim"></div>
+      </div>
+
       <!-- ══ HOOK ══ -->
       <div class="scene" id="hookScene" data-start="0" data-duration="4">
         <div class="h1l" id="h1a" data-var-text="hookL1">LOS 5 COCHOS</div>
@@ -422,35 +445,35 @@
       <div class="scene" id="cardScene" data-start="4" data-duration="20">
         <div class="card" id="card5">
           <div class="badge">Nº 5</div>
-          <div class="plate">
+          <div class="plate" id="plate5" data-plate="5">
             <img src="../assets/logos/porsche.png" alt="Porsche" data-var-src="porscheSrc" />
             <div class="shine" id="shine5"></div>
           </div>
         </div>
         <div class="card" id="card4">
           <div class="badge">Nº 4</div>
-          <div class="plate">
+          <div class="plate" id="plate4" data-plate="4">
             <img src="../assets/logos/bmw.png" alt="BMW" data-var-src="bmwSrc" />
             <div class="shine" id="shine4"></div>
           </div>
         </div>
         <div class="card" id="card3">
           <div class="badge">Nº 3</div>
-          <div class="plate">
+          <div class="plate" id="plate3" data-plate="3">
             <img src="../assets/logos/mercedes.png" alt="Mercedes-Benz" data-var-src="mercedesSrc" />
             <div class="shine" id="shine3"></div>
           </div>
         </div>
         <div class="card" id="card2">
           <div class="badge">Nº 2</div>
-          <div class="plate">
+          <div class="plate" id="plate2" data-plate="2">
             <img src="../assets/logos/honda.png" alt="Honda" data-var-src="hondaSrc" />
             <div class="shine" id="shine2"></div>
           </div>
         </div>
         <div class="card" id="card1">
           <div class="badge">Nº 1</div>
-          <div class="plate">
+          <div class="plate" id="plate1" data-plate="1">
             <img src="../assets/logos/toyota.png" alt="Toyota" data-var-src="toyotaSrc" />
             <div class="shine" id="shine1"></div>
           </div>
@@ -562,6 +585,8 @@
           tl.fromTo("#kickerRule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .7, ease: "expo.out" }, .5);
 
           /* ══ HOOK · 0.70 - 3.95 ══════════════════════════════════════ */
+          tl.fromTo("#hookScrim", { opacity: 0 }, { opacity: 1, duration: .6, ease: "power2.out" }, 0);
+          tl.to("#hookScrim", { opacity: 0, duration: .5, ease: "power2.in" }, 3.4);
           tl.fromTo("#h1a", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .95, ease: "expo.out" }, .7);
           tl.fromTo("#h1b", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .95, ease: "expo.out" }, .85);
           tl.fromTo("#hookSub", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: .7, ease: "expo.out" }, 1.5);
@@ -602,6 +627,10 @@
               { opacity: 1, y: 0, duration: .35, ease: "power2.out" }, T + .34);
             tl.fromTo("#glow" + r, { opacity: 0, scale: .55 },
               { opacity: 1, scale: 1, duration: .55, ease: "power3.out" }, T + .3);
+            /* el orbe respira: el bloque nunca se queda quieto */
+            tl.to("#glow" + r, { opacity: .42, duration: 1.5, yoyo: true, repeat: 1, ease: "sine.inOut" }, T + .9);
+            /* la ficha respira: empuje lentisimo durante todo el bloque */
+            tl.fromTo("#plate" + r, { scale: 1 }, { scale: 1.035, duration: 3.7, ease: "none" }, T + .1);
             /* la frase */
             tl.fromTo("#punch" + r, { opacity: 0, y: 24 },
               { opacity: 1, y: 0, duration: .55, ease: "expo.out" }, T + .5);
@@ -618,6 +647,8 @@
           tl.fromTo("#vPlate", { opacity: 0, scale: .9, y: 22 }, { opacity: 1, scale: 1, y: 0, duration: .75, ease: "expo.out" }, 24.3);
           tl.fromTo("#vBand", { opacity: 0, scale: 1.14 }, { opacity: 1, scale: 1, duration: 1.15, ease: "expo.out" }, 24.5);
           tl.to("#vBand", { scale: 1.045, duration: 2.4, ease: "none" }, 25.65);
+          /* la banda sigue respirando hasta el final (el ultimo plano no se queda quieto) */
+          tl.to("#vBand", { scale: 1.075, duration: 1.95, ease: "none" }, 28.1);
           tl.fromTo("#vLine", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: .65, ease: "expo.out" }, 24.9);
           tl.to("#vKicker", { opacity: 0, duration: .3, ease: "none" }, 26.85);
           tl.to("#vOne", { opacity: 0, y: -34, duration: .35, ease: "power2.in" }, 26.85);
