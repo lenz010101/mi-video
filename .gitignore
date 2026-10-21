@@ -31,3 +31,10 @@ snapqc/
 
 # clips candidatos de stock (descarga temporal, no se versionan)
 assets/clips/candidates/
+
+# material NUEVO del reel: en el repo solo vive el manifiesto (fuentes.json).
+# Los clips y la musica se descargan y se montan en la nube (demo2/preparar-nuevo.mjs).
+assets/nuevo/procesado/
+assets/nuevo/*.mp4
+assets/nuevo/*.jpg
+assets/nuevo/_clips.json

@@ -1,0 +1,112 @@
+{
+  "_nota": "Fuentes del reel HUMO. El repo solo guarda este manifiesto; los clips y la musica se descargan y se montan en la nube (demo2/preparar-nuevo.mjs). Origen: Mixkit (licencia libre, sin clave).",
+  "salida": "assets/nuevo/procesado",
+  "perfil": {
+    "ancho": 1080,
+    "alto": 1920,
+    "codec": "libx264",
+    "perfil_h264": "baseline",
+    "nivel_h264": "3.1",
+    "pix_fmt": "yuv420p",
+    "crf": 23,
+    "preset": "veryfast",
+    "gradado": "eq=contrast=1.12:saturation=0.78:gamma=0.98,colorbalance=bs=0.04:rm=-0.015"
+  },
+  "clips": [
+    {
+      "slug": "black-background-with-smoke-foreground",
+      "id": "1968",
+      "calidad": "720",
+      "inicio": 2.0,
+      "duracion": 6.0,
+      "encuadre": "centro",
+      "uso": "apertura + cierre"
+    },
+    {
+      "slug": "a-trail-of-smoke-rapidly-twirls-over-a-dark-background",
+      "id": "50951",
+      "calidad": "720",
+      "inicio": 5.0,
+      "duracion": 6.0,
+      "encuadre": "izquierda",
+      "uso": "montaje"
+    },
+    {
+      "slug": "smoke-in-motion",
+      "id": "1964",
+      "calidad": "720",
+      "inicio": 8.0,
+      "duracion": 6.0,
+      "encuadre": "centro",
+      "uso": "montaje"
+    },
+    {
+      "slug": "grey-smoke-on-a-black-background",
+      "id": "45298",
+      "calidad": "720",
+      "inicio": 3.0,
+      "duracion": 5.5,
+      "encuadre": "derecha",
+      "uso": "tipografia"
+    },
+    {
+      "slug": "white-smoke-with-black-background",
+      "id": "1960",
+      "calidad": "720",
+      "inicio": 4.0,
+      "duracion": 5.0,
+      "encuadre": "centro",
+      "uso": "declaracion"
+    },
+    {
+      "slug": "plume-of-smoke-in-lower-third",
+      "id": "1962",
+      "calidad": "720",
+      "inicio": 2.0,
+      "duracion": 5.0,
+      "encuadre": "centro",
+      "uso": "montaje"
+    },
+    {
+      "slug": "smoke-from-power-plant",
+      "id": "4362",
+      "calidad": "720",
+      "inicio": 12.0,
+      "duracion": 6.0,
+      "encuadre": "izquierda",
+      "uso": "datos"
+    },
+    {
+      "slug": "depressed-guy-smoking-in-the-dark",
+      "id": "3925",
+      "calidad": "720",
+      "inicio": 3.0,
+      "duracion": 5.0,
+      "encuadre": "centro",
+      "uso": "proceso"
+    }
+  ],
+  "musica": [
+    {
+      "id": "614",
+      "genero": "cinematic",
+      "archivo": "music-614.mp3",
+      "inicio": 0.0,
+      "duracion": 30.0
+    },
+    {
+      "id": "871",
+      "genero": "cinematic-tension",
+      "archivo": "music-871.mp3",
+      "inicio": 0.0,
+      "duracion": 30.0
+    },
+    {
+      "id": "127",
+      "genero": "ambient",
+      "archivo": "music-127.mp3",
+      "inicio": 0.0,
+      "duracion": 30.0
+    }
+  ]
+}

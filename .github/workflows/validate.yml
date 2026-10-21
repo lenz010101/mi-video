@@ -161,6 +161,18 @@ jobs:
           fi
           ffmpeg -version | head -1
 
+      - name: Preparar el directorio del material nuevo
+        run: mkdir -p assets/nuevo/procesado
+
+      - name: Cache del material nuevo
+        uses: actions/cache@v4
+        with:
+          path: assets/nuevo/procesado
+          key: nuevo-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+
+      - name: Prepare the new material
+        run: node demo2/preparar-nuevo.mjs
+
       - name: Lint the composition
         run: hf lint .
 
