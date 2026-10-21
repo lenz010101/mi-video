@@ -76,7 +76,7 @@
       "overlay": { "id": "46237", "inicio": 4.0, "opacidad": 0.28 } }
   ],
   "capas": [
-    { "nombre": "polvo", "base": "47285", "inicio": 0.0, "duracion": 30.0, "encuadre": "centro", "grado": "neutro", "overlay": null }
+    { "nombre": "polvo", "base": "47285", "inicio": 0.0, "duracion": 30.0, "encuadre": "centro", "grado": "polvo", "continuo": true, "overlay": null }
   ],
   "musica": [
     { "id": "614", "archivo": "music-614.mp3", "inicio": 0.96, "duracion": 30.0 }

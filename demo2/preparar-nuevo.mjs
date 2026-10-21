@@ -1,4 +1,4 @@
-/* Prepara el material NUEVO del reel en la nube (nunca en el PC del usuario).
+﻿/* Prepara el material NUEVO del reel en la nube (nunca en el PC del usuario).
    Lee assets/nuevo/fuentes.json, descarga los clips, las fugas de luz, la
    musica y los efectos de Mixkit, y deja el material con un GRADO DE
    COLORISTA sobre el material en bruto:
@@ -30,7 +30,11 @@ const H2 = { 'User-Agent': UA, Referer: 'https://mixkit.co/' };
 
 const ff = (args) => {
   const r = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...args], { stdio: ['ignore', 'ignore', 'pipe'] });
-  if (r.status !== 0) throw new Error('ffmpeg: ' + (r.stderr || '').toString().slice(-500));
+  if (r.status !== 0) {
+    const err = (r.stderr || '').toString();
+    /* ffmpeg pone el motivo al principio: se muestran los dos extremos. */
+    throw new Error('ffmpeg: ' + err.slice(0, 420).replace(/\s+/g, ' ') + (err.length > 420 ? ' ... ' + err.slice(-260).replace(/\s+/g, ' ') : ''));
+  }
 };
 
 async function baja(url, dest) {
@@ -42,7 +46,7 @@ async function baja(url, dest) {
 const listo = (f) => fs.existsSync(f) && fs.statSync(f).size > 20000;
 let fallos = 0;
 
-/* ── Clips: base + fuga de luz + grado ─────────────────────────────── */
+/* â”€â”€ Clips: base + fuga de luz + grado â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function montar(c) {
   const out = path.join(OUT, `${c.nombre}.mp4`);
   if (listo(out)) { console.log(`  cache  ${c.nombre}.mp4`); return; }
@@ -64,8 +68,8 @@ async function montar(c) {
 
   /* base y overlay deben entrar al blend con el MISMO frame rate y timebase
      (si no, ffmpeg aborta con "Error binding filtergraph inputs/outputs"). */
-  const norm = `fps=${FPS},settb=AVTB,format=yuv420p,`;
-  const trim = `[0:v]trim=start=${c.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=-2:${H}:flags=lanczos,crop=${W}:${H}:${cx}:0,setsar=1,${norm}unsharp=5:5:0.5:5:5:0.0[base]`;
+  const norm = `fps=${FPS},settb=AVTB,format=yuv420p`;
+  const trim = `[0:v]trim=start=${c.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=-2:${H}:flags=lanczos,crop=${W}:${H}:${cx}:0,setsar=1,${norm},unsharp=5:5:0.5:5:5:0.0[base]`;
   const chains = [trim];
   let last = 'base';
 
@@ -86,7 +90,17 @@ async function montar(c) {
     chains.push(`[gr]${post ? post + ',' : ''}fps=${FPS}[out]`);
   }
 
-  ff(['-filter_complex', chains.join(';'), '-map', '[out]',
+  /* Los ficheros de entrada van ANTES del grafo: [0:v] es la base y
+     [1:v] la fuga de luz. Sin esto el grafo no tiene entradas ("Invalid
+     file index 0") y no sale ningun plano. */
+  const inputs = [];
+  /* El polvo es una capa continua: el fuente es corto, se hace loop. */
+  if (c.continuo) inputs.push('-stream_loop', '-1');
+  inputs.push('-i', base);
+  if (ov && fs.existsSync(ov)) inputs.push('-i', ov);
+
+  ff([...inputs,
+    '-filter_complex', chains.join(';'), '-map', '[out]',
     '-c:v', 'libx264', '-profile:v', P.perfil_h264 || 'baseline', '-level', P.nivel_h264 || '3.1',
     '-preset', P.preset || 'veryfast', '-crf', String(P.crf ?? 21),
     '-pix_fmt', P.pix_fmt || 'yuv420p', '-movflags', '+faststart', '-an', '-r', String(FPS), out]);
@@ -98,9 +112,10 @@ async function montar(c) {
 
 /* Si un plano falla, se borra el fichero roto: un MP4 a medias hace fallar el
    render entero con "moov atom not found". */
-function montarSeguro(c) {
-  try { montar(c); }
-  catch (e) {
+async function montarSeguro(c) {
+  try {
+    await montar(c);
+  } catch (e) {
     fallos++;
     const out = path.join(OUT, `${c.nombre}.mp4`);
     if (fs.existsSync(out)) { fs.rmSync(out, { force: true }); console.log(`  [warning] ${c.nombre}: roto, se borra`); }
@@ -108,10 +123,10 @@ function montarSeguro(c) {
   }
 }
 
-for (const c of man.clips || []) { if (!process.env.SOLO || c.nombre === process.env.SOLO) montarSeguro(c); }
-for (const c of man.capas || []) { if (!process.env.SOLO || c.nombre === process.env.SOLO) montarSeguro(c); }
+for (const c of man.clips || []) { if (!process.env.SOLO || c.nombre === process.env.SOLO) await montarSeguro(c); }
+for (const c of man.capas || []) { if (!process.env.SOLO || c.nombre === process.env.SOLO) await montarSeguro(c); }
 
-/* ── Musica ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Musica â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 for (const m of man.musica || []) {
   const out = path.join(OUT, m.archivo || `music-${m.id}.mp3`);
   if (listo(out)) { console.log(`  cache  ${m.archivo}`); continue; }
@@ -127,7 +142,7 @@ for (const m of man.musica || []) {
   } catch (e) { fallos++; console.log(`  [warning] musica ${m.id}: ${e.message}`); }
 }
 
-/* ── Efectos de sonido (whooshes e impactos) ───────────────────────── */
+/* â”€â”€ Efectos de sonido (whooshes e impactos) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 for (const s of man.sfx || []) {
   const out = path.join(OUT, s.archivo || `sfx-${s.id}.mp3`);
   if (listo(out)) { console.log(`  cache  ${s.archivo}`); continue; }
@@ -162,3 +177,4 @@ if (faltan.length) {
 }
 
 console.log(`\n${man.clips?.length || 0} clips + ${man.capas?.length || 0} capas + ${man.musica?.length || 0} pistas + ${man.sfx?.length || 0} sfx listos en ${man.salida} (${fallos} fallo(s))`);
+
