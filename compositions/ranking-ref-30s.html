@@ -203,13 +203,15 @@
   tl.to('#fuga', { opacity: .8, x: 30, y: -18, duration: 9, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
   tl.to('#grano', { x: 20, y: -12, duration: 2.6, ease: 'steps(6)', repeat: -1 }, 0);
 
-  /* Los planos entran con un fundido; el resto (orbes, coche, presentador) ya
-     viene horneado dentro de ellos. */
-  tl.fromTo('#pl5', { opacity: 0 }, { opacity: 1, duration: .5, ease: 'power1.out' }, .85);
-  tl.fromTo('#pl4', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 6.05);
-  tl.fromTo('#pl3', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 11.25);
-  tl.fromTo('#pl2', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 16.45);
-  tl.fromTo('#pl1', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 21.65);
+  /* Los planos entran con un fundido corto en el corte; el resto (orbes,
+     coche, presentador) ya viene horneado dentro de ellos. El fundido
+     empieza JUSTO en el data-start del clip: antes de ese instante el
+     elemento puede estar en negro y se veria un parpadeo. */
+  tl.fromTo('#pl5', { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 1.2);
+  tl.fromTo('#pl4', { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 6.4);
+  tl.fromTo('#pl3', { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 11.6);
+  tl.fromTo('#pl2', { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 16.8);
+  tl.fromTo('#pl1', { opacity: 0 }, { opacity: 1, duration: .3, ease: 'power1.out' }, 22.0);
   /* el veredicto vuelve al plano de la marca #1, mas grande y con luz */
   tl.fromTo('#pl1', { scale: 1 }, { scale: 1.06, duration: 2.6, ease: 'power2.out' }, 26.7);
 
