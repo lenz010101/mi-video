@@ -291,7 +291,7 @@ jobs:
       # ── 2) HYPERFRAMES: el montaje final ────────────────────────────
 
       - name: Lint the composition
-        run: hf lint .
+        run: node demo2/lint-ci.mjs
 
       - name: Render the final edit with hyperframes
         if: inputs.mode == 'video'

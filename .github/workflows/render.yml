@@ -367,7 +367,7 @@ jobs:
       - name: Lint the composition
         # "hf" = la libreria de HyperFrames instalada en la nube (misma version
         # fijada que el lint); si no esta, cae al npx de siempre.
-        run: hf lint .
+        run: node demo2/lint-ci.mjs
 
       - name: Render
         if: inputs.mode == 'video'
