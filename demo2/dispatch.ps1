@@ -9,7 +9,9 @@ param(
   [string]$Filename = 'video.mp4',
   [string]$Repo = 'lenz010101/mi-video',
   [string]$Branch = 'demo-premium',
-  [switch]$SinQc
+  [switch]$SinQc,
+  [ValidateSet('video', 'frames')][string]$Modo = 'video',
+  [string]$At = '1.5,6.8,12,17.2,22.5,28'
 )
 $ErrorActionPreference = 'Stop'
 
@@ -51,12 +53,12 @@ $qc = if ($SinQc) { 'no' } else { 'si' }
 
 $isMix = $Workflow -like 'render-mix*'
 if ($isMix) {
-  $inputs = @{ filename = $Filename; quality = $quality; frames = 'no'; fps = $fps; qc = $qc }
+  $inputs = @{ filename = $Filename; quality = $quality; frames = 'no'; fps = $fps; qc = $qc; mode = $Modo; at = $At }
 } else {
   $inputs = @{ quality = $quality; fps = $fps; filename = $Filename; format = 'mp4'; workers = '1'; frames = 'no'; qc = $qc; composition = $Composition }
 }
 Api POST "/actions/workflows/$Workflow/dispatches" @{ ref = $Branch; inputs = $inputs } | Out-Null
-Write-Output "dispatch: $Composition -> $Filename (fps=$fps quality=$quality qc=$qc)"
+Write-Output "dispatch: $Composition -> $Filename (modo=$Modo fps=$fps quality=$quality qc=$qc)"
 
 $run = $null
 for ($i = 0; $i -lt 20 -and -not $run; $i++) {

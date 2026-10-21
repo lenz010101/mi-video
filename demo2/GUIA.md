@@ -39,6 +39,8 @@ verificación del MP4 en la nube: −40 s).
 |---|---|
 | `node demo2/audit-rules.mjs [fichero]` | reglas del repo (2 s, sin Chrome) |
 | `node demo2/audit-bash.mjs` | sintaxis de los scripts de los workflows (2 s) |
+| `.\demo2\dispatch.ps1 -Workflow render-mix.yml -Composition ... -Filename ... -Modo frames -At "1.5,12,28"` | **revisión de arte**: solo fotogramas PNG (~1 min, 1 MB) |
+| `.\demo2\descargar.ps1 -RunId <id> -Stills` | baja los PNG de la revisión a `%TEMP%\stills-last` |
 | `npx --yes hyperframes@0.8.162 lint . --json` | lint de HyperFrames (1 min) |
 | `.\demo2\commit-api.ps1 -Branch demo-premium -Message "..." -Paths a.html` | subir cambios sin `git` |
 | `.\demo2\dispatch.ps1 -Workflow render-mix.yml -Composition ... -Filename ...` | render en la nube (espera) |
@@ -56,6 +58,20 @@ verificación del MP4 en la nube: −40 s).
 | `render.yml` | HyperFrames | piezas puras (HUMO, ARCO) |
 | `render-mix.yml` | **Remotion + HyperFrames + ffmpeg** | piezas con gráficos generados (el ranking) |
 | `validate.yml` | ninguno | valida el repo **sin renderizar** (~2 min) |
+
+### El modo `frames` (el bucle de revisión barato)
+
+`render-mix.yml` acepta `mode: frames` → hace todo lo mismo (material, orbes,
+horneado) pero en vez del MP4 saca **6 fotogramas PNG** en los tiempos que le
+digas (`at: "1.5,6.8,12,17.2,22.5,28"`). Sirve para **revisar la dirección de
+arte antes de renderizar el vídeo**: ~1 min de nube y 1 MB de descarga, frente
+a 4 min y 35 MB. Es el equivalente a tener el navegador abierto mientras
+editas, que es lo que hace que los vídeos de otros agentes salgan mejor.
+
+```powershell
+.\demo2\dispatch.ps1 -Workflow render-mix.yml -Composition compositions/ranking-ref-30s.html `
+                      -Filename ranking-ref-30s.mp4 -Modo frames -At "1.5,12,22.5,28"
+```
 
 En `render-mix.yml` el orden es:
 

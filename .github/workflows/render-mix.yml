@@ -42,6 +42,17 @@ on:
         options:
           - "si"
           - "no"
+      mode:
+        description: "Modo: video (entrega) o frames (revision de arte, sin MP4)"
+        type: choice
+        default: video
+        options:
+          - video
+          - frames
+      at:
+        description: "Marcas de tiempo para el modo frames (segundos, por comas)"
+        type: string
+        default: "1.5,6.8,12,17.2,22.5,28"
 
 permissions:
   contents: read
@@ -219,8 +230,19 @@ jobs:
       - name: Install the remotion project
         working-directory: remotion
         run: |
-          npm install --no-audit --no-fund --loglevel=error
+          if [ ! -d node_modules/remotion ]; then
+            npm install --no-audit --no-fund --loglevel=error --prefer-offline
+          else
+            echo "node_modules en cache: no se reinstala"
+          fi
           node -e "console.log('remotion', require('remotion/package.json').version)"
+
+      # La columna de orbes no cambia entre runs: se cachea (49 s ahorrados)
+      - name: Cache de la columna de orbes
+        uses: actions/cache@v4
+        with:
+          path: assets/mezcla/orbes.mp4
+          key: orbes-v2-${{ runner.os }}-${{ hashFiles('remotion/src/**') }}
 
       - name: Render the orb column with remotion
         working-directory: remotion
@@ -228,7 +250,11 @@ jobs:
           mkdir -p ../assets/mezcla ../renders
           # La columna de orbes dorados, sobre negro: se hornea despues encima
           # del presentador en modo screen.
-          npx remotion render OrbColumn "../assets/mezcla/orbes.mp4" --log=error
+          if [ -f ../assets/mezcla/orbes.mp4 ]; then
+            echo "columna de orbes en cache: no se vuelve a renderizar"
+          else
+            npx remotion render OrbColumn "../assets/mezcla/orbes.mp4" --log=error
+          fi
           ls -lh ../assets/mezcla/orbes.mp4
 
       - name: Bake the plates (presentador + coche + orbes en un solo plano)
@@ -268,6 +294,7 @@ jobs:
         run: hf lint .
 
       - name: Render the final edit with hyperframes
+        if: inputs.mode == 'video'
         env:
           QUALITY: ${{ inputs.quality }}
           FILENAME: ${{ inputs.filename }}
@@ -291,8 +318,24 @@ jobs:
             --browser-timeout 180 \
             --output "renders/${FILENAME:-ranking-mix-30s.mp4}"
 
+      - name: Snapshot de fotogramas (revision de arte, sin MP4)
+        if: inputs.mode == 'frames'
+        env:
+          AT: ${{ inputs.at }}
+        run: |
+          # Solo fotogramas: en ~1 min se ve la direccion de arte y se descarga
+          # 1 MB en vez de 35 MB. Es el bucle de revision barato.
+          mkdir -p renders/stills
+          hf snapshot . \
+            --composition ranking-ref \
+            --at "$AT" \
+            --no-end \
+            -o renders/stills \
+            --browser-timeout 180
+          ls -lh renders/stills
+
       - name: Verify the MP4 (frozen frames + contact sheet)
-        if: always() && inputs.qc != 'no'
+        if: always() && inputs.qc != 'no' && inputs.mode == 'video'
         env:
           FILENAME: ${{ inputs.filename }}
         run: |
@@ -332,12 +375,22 @@ jobs:
           '
 
       - name: Upload the rendered video
+        if: inputs.mode == 'video'
         uses: actions/upload-artifact@v4
         with:
           name: hyperframes-video
           path: renders/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Upload the stills
+        if: inputs.mode == 'frames'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyperframes-stills
+          path: renders/stills/
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Upload the QC report
         uses: actions/upload-artifact@v4

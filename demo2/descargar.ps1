@@ -4,7 +4,8 @@ param(
   [Parameter(Mandatory=$true)][long]$RunId,
   [string]$Filename = 'video.mp4',
   [string]$Desktop = 'C:\Users\Admin\Desktop',
-  [switch]$QC
+  [switch]$QC,
+  [switch]$Stills
 )
 Add-Type -TypeDefinition @"
 using System;
@@ -36,9 +37,14 @@ $arts = (Invoke-WebRequest -Uri "https://api.github.com/repos/$repo/actions/runs
 foreach ($a in $arts.artifacts) {
   $esVideo = $a.name -eq 'hyperframes-video'
   $esQC = $a.name -eq 'hyperframes-qc'
-  if (-not $esVideo -and -not $esQC) { continue }
-  if ($QC -and -not $esQC) { continue }
-  if (-not $QC -and -not $esVideo) { continue }
+  $esStills = $a.name -eq 'hyperframes-stills'
+  if ($Stills) {
+    if (-not $esStills) { continue }
+  } else {
+    if (-not $esVideo -and -not $esQC) { continue }
+    if ($QC -and -not $esQC) { continue }
+    if (-not $QC -and -not $esVideo) { continue }
+  }
   $req = [System.Net.HttpWebRequest]::Create($a.archive_download_url)
   $req.UserAgent = 'opencode'; $req.Headers.Add('Authorization', "token $token"); $req.AllowAutoRedirect = $false; $req.Timeout = 60000
   $loc = $req.GetResponse().Headers['Location']
@@ -48,7 +54,14 @@ foreach ($a in $arts.artifacts) {
   $fs = [IO.File]::Create($zip); $res2.GetResponseStream().CopyTo($fs); $fs.Close(); $res2.Close()
   $dest = Join-Path $env:TEMP ("hd-" + [guid]::NewGuid().ToString().Substring(0,6))
   Expand-Archive -Force -LiteralPath $zip -DestinationPath $dest
-  if ($esVideo) {
+  if ($esStills) {
+    $destino = Join-Path $env:TEMP 'stills-last'
+    Remove-Item -Recurse -Force $destino -ErrorAction SilentlyContinue
+    New-Item -ItemType Directory -Force -Path $destino | Out-Null
+    Get-ChildItem $dest -Recurse -Filter *.png | ForEach-Object { Copy-Item $_.FullName $destino -Force }
+    Write-Output "STILLS -> $destino"
+    Get-ChildItem $destino -Filter *.png | ForEach-Object { Write-Output "   $($_.Name)" }
+  } elseif ($esVideo) {
     $mp4 = Get-ChildItem $dest -Recurse -Filter *.mp4 | Where-Object { $_.FullName -notlike '*plates*' -and $_.FullName -notlike '*orbes*' } | Select-Object -First 1
     if (-not $mp4) { $mp4 = Get-ChildItem $dest -Recurse -Filter *.mp4 | Select-Object -First 1 }
     Move-Item -Force $mp4.FullName (Join-Path $Desktop $Filename)

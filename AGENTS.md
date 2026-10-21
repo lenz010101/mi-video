@@ -114,6 +114,12 @@
     `assets/coches/*.jpg` y `assets/mezcla/orbes.mp4`.
   - La voz del presentador va suelta (`assets/mezcla/voz.m4a`, generado en el
     mismo paso) porque los planos horneados van mudos.
+  - **Modo `frames`** (`mode: frames`): el mismo job pero en vez del MP4 saca
+    6 PNG en los tiempos de `at`. Es el **bucle de revisión barato** (~1 min
+    de nube, 1 MB de descarga): revisa la dirección de arte ANTES de gastar un
+    render de 4 min. Úsalo siempre antes de un render final.
+  - La columna de orbes va cacheada (`orbes-v2-...`): si no cambian los
+    sources de Remotion, no se vuelve a renderizar (ahorra 49 s).
 - **Las reglas son globales**, no solo de este repo:
   `~/.config/opencode/AGENTS.md` + skill `hyperframes-composition`
   (con el auditor y el fixer en `~/.config/opencode/skills/.../scripts/`).
