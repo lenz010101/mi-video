@@ -247,6 +247,12 @@ jobs:
           FILENAME: ${{ inputs.filename }}
           FPS: ${{ inputs.fps }}
         run: |
+          # Preview rapido a 15 fps: la composicion declara data-fps y el ticker
+          # tienen que ir a la misma cadencia, asi que se ajustan los dos.
+          if [ "${FPS:-30}" = "15" ]; then
+            sed -i 's/data-fps="30"/data-fps="15"/; s/ticker\.fps(30)/ticker.fps(15)/' \
+              compositions/ranking-ref-30s.html
+          fi
           hf render \
             --composition compositions/ranking-ref-30s.html \
             --quality "${QUALITY:-high}" \

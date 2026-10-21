@@ -39,9 +39,12 @@
     font-family:'JetBrains Mono',monospace; -webkit-font-smoothing:antialiased;
   }
 
-  /* El presentador: protagonistico, a pantalla completa, CON SU VOZ */
-  .presentador{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0;
-    will-change:opacity,transform; }
+  /* El presentador: protagonistico, a pantalla completa, CON SU VOZ.
+     object-position lo desplaza a la derecha para que la columna de orbes
+     (que Remotion dibuja a la izquierda) tenga sitio limpio, como en la
+     referencia. */
+  .presentador{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    object-position:78% center; opacity:0; will-change:opacity,transform; }
 
   /* La capa de orbes la renderiza Remotion sobre negro: en modo screen solo
      sobrevive la luz, igual que en una composicion de After Effects. */

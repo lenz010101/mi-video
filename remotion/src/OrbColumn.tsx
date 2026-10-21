@@ -144,8 +144,8 @@ export const OrbColumn: React.FC<OrbProps> = (props) => {
               <Img
                 src={staticFile(m.logo)}
                 style={{
-                  maxWidth: radio * 1.15,
-                  maxHeight: radio * 1.15,
+                  maxWidth: radio * 0.92,
+                  maxHeight: radio * 0.92,
                   objectFit: 'contain',
                   opacity: logoOp,
                   transform: `scale(${0.7 + 0.3 * logoOp})`,
