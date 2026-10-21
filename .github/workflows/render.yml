@@ -441,15 +441,23 @@ jobs:
         if: inputs.mode == 'frames'
         env:
           AT: ${{ inputs.at }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           mkdir -p renders/stills
+          # Si hay un secret GEMINI_API_KEY, ademas de las imagenes se guarda el
+          # analisis de vision de cada fotograma (una IA Critica la edicion).
+          DESCRIBE=""
+          if [ -n "${GEMINI_API_KEY:-}" ]; then
+            DESCRIBE='--describe Describe el fotograma: la barra de neon arriba con tres paneles, los logos de marca, el nombre de marca grande abajo a la izquierda, las palabras blancas a la derecha y el presentador. Senala cualquier elemento que tape la cara, que este mal colocado o que se lea mal.'
+          fi
           hf snapshot . \
             --composition millonario \
             --at "$AT" \
             --no-end \
             -o renders/stills \
             --no-browser-gpu \
-            --timeout 120000
+            --timeout 120000 \
+            $DESCRIBE
           ls -lh renders/stills
 
       - name: Verify the MP4 (frozen frames + contact sheet)

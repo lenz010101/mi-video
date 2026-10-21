@@ -28,11 +28,11 @@
   html,body{ margin:0; padding:0; background:var(--fondo); }
   body{ width:1080px; height:1920px; overflow:hidden; }
 
-  /* ── Los planos ─────────────────────────────────────────────────── */
+  /* â”€â”€ Los planos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .plano{ position:absolute; inset:0; width:100%; height:100%;
     object-fit:cover; opacity:0; will-change:opacity,transform; }
 
-  /* ── Barra de neón arriba: tres paneles + tiras de LED ──────────── */
+  /* â”€â”€ Barra de neón arriba: tres paneles + tiras de LED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .barra{ position:absolute; left:0; top:0; width:1080px; height:168px;
     display:flex; align-items:center; opacity:0; will-change:opacity,transform; }
   .p1{ width:378px; height:168px; background:linear-gradient(90deg,#2A0606 0%,#5C0F0F 55%,#7C1414 100%);
@@ -41,16 +41,28 @@
     display:flex; align-items:center; justify-content:center; }
   .p3{ width:402px; height:168px; background:linear-gradient(90deg,#2E1B05 0%,#5A3A0A 55%,#7A5210 100%);
     display:flex; align-items:center; justify-content:center; }
-  .led{ width:20px; height:168px;
-    background:repeating-linear-gradient(180deg,#FFFFFF 0 12px,#1A1A22 12px 20px);
-    opacity:.92; }
+  .led-wrap{ width:20px; height:168px; overflow:hidden; flex:0 0 20px; }
+  .led{ width:20px; height:420px; margin-top:-70px;
+    background:repeating-linear-gradient(180deg,#FFFFFF 0 14px,#14141A 14px 22px);
+    opacity:.92; will-change:transform; }
   .neon{ font-family:'Anton',sans-serif; font-size:56px; letter-spacing:.02em;
     will-change:opacity; }
   .n-rojo{ color:var(--rojo); text-shadow:0 0 14px rgba(255,42,42,.95), 0 0 44px rgba(255,0,0,.65); }
   .n-azul{ color:var(--azul); text-shadow:0 0 14px rgba(53,200,255,.95), 0 0 44px rgba(0,120,255,.7); }
   .n-oro{ color:var(--oro); text-shadow:0 0 14px rgba(255,192,42,.95), 0 0 44px rgba(255,150,0,.6); }
 
-  /* ── Logos de marca (cromados), en retícula sobre un velo ────────── */
+  /* â”€â”€ Logos de marca (cromados), en retícula sobre un velo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* El cierre: la guia de "comenta tu marca" */
+  .cta{ position:absolute; left:50%; bottom:240px; transform:translateX(-50%);
+    text-align:center; opacity:0; will-change:opacity,transform; }
+  .cta-1{ font-family:'Anton',sans-serif; font-size:56px; letter-spacing:.02em;
+    color:#FFFFFF; white-space:nowrap;
+    text-shadow:0 8px 30px rgba(0,0,0,.9), 0 2px 4px rgba(0,0,0,.8); }
+  .cta-2{ font-family:'Inter',sans-serif; font-weight:800; font-size:26px;
+    letter-spacing:.14em; color:var(--oro); margin-top:12px; white-space:nowrap;
+    text-shadow:0 4px 20px rgba(0,0,0,.95); }
+  .fundido{ position:absolute; inset:0; background:#05050A; opacity:0;
+    pointer-events:none; will-change:opacity; }
   .velo{ position:absolute; left:420px; top:0; width:660px; height:920px;
     pointer-events:none;
     background:radial-gradient(ellipse 72% 60% at 76% 34%, rgba(3,3,7,.55) 0%, rgba(3,3,7,.28) 56%, rgba(3,3,7,0) 100%); }
@@ -64,7 +76,7 @@
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)); }
   .logo, .logo-color{ will-change:opacity,transform; }
 
-  /* ── El nombre de marca grande, abajo a la izquierda ───────────── */
+  /* â”€â”€ El nombre de marca grande, abajo a la izquierda â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .nombre{ position:absolute; left:150px; top:1130px; font-family:'Anton',sans-serif;
     font-size:118px; line-height:1; letter-spacing:.005em; white-space:nowrap;
     opacity:0; text-shadow:0 10px 34px rgba(0,0,0,.85); will-change:opacity,transform; }
@@ -75,7 +87,7 @@
   .nombre-negro{ color:#0C0C0C; }
   .nombre-serif{ font-family:'Playfair',serif; font-size:104px; letter-spacing:.01em; }
 
-  /* ── Las palabras: abajo a la derecha, sobre fondo limpio ───────── */
+  /* â”€â”€ Las palabras: abajo a la derecha, sobre fondo limpio â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .velo-palabras{ position:absolute; left:470px; top:800px; width:610px; height:250px;
     pointer-events:none;
     background:radial-gradient(ellipse 62% 60% at 62% 50%, rgba(3,3,7,.58) 0%, rgba(3,3,7,.28) 60%, rgba(3,3,7,0) 100%); }
@@ -84,7 +96,7 @@
     text-shadow:0 3px 10px rgba(0,0,0,.95), 0 1px 2px rgba(0,0,0,1), 0 0 26px rgba(0,0,0,.6);
     white-space:nowrap; opacity:0; will-change:opacity,transform; }
 
-  /* ── Ambiente ───────────────────────────────────────────────────── */
+  /* â”€â”€ Ambiente â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .glow{ position:absolute; left:-26%; top:2%; width:66%; height:72%;
     background:radial-gradient(ellipse 52% 50% at 42% 42%, rgba(255,42,110,.20) 0%, rgba(255,20,90,.07) 45%, transparent 72%);
     opacity:0; pointer-events:none; will-change:opacity,transform; }
@@ -136,9 +148,9 @@
   <!-- La barra de neón -->
   <div class="barra" id="barra">
     <div class="p1"><span class="neon n-rojo" id="t1">POBRE</span></div>
-    <div class="led"></div>
+    <div class="led-wrap"><div class="led"></div></div>
     <div class="p2"><span class="neon n-azul" id="t2">RICO</span></div>
-    <div class="led"></div>
+    <div class="led-wrap"><div class="led"></div></div>
     <div class="p3"><span class="neon n-oro" id="t3">MILLONARIO</span></div>
   </div>
 
@@ -166,7 +178,13 @@
   <div class="nombre nombre-serif" id="nom5">LEXUS</div>
   <div class="nombre" id="nom6">TOYOTA</div>
 
-  <!-- Ambiente -->
+  /* Ambiente */
+  <!-- El cierre: la guia de "comenta tu marca" -->
+  <div class="cta" id="cta">
+    <div class="cta-1">COMENTA TU MARCA FAVORITA</div>
+    <div class="cta-2">Y SIGUEME PARA MAS VIDEOS</div>
+  </div>
+
   <div class="sombra-barra"></div>
   <div class="brillo-barra"></div>
   <div class="glow" id="glow"></div>
@@ -176,6 +194,7 @@
   <div class="leak" id="leak"></div>
   <div class="smear" id="smear"></div>
   <div class="grano" id="grano"></div>
+  <div class="fundido" id="fundido"></div>
 
   <!-- Musica por debajo de la voz -->
   <audio id="musica" class="clip" data-start="0" data-duration="30" data-track-index="9"
@@ -184,13 +203,13 @@
 
 <script src="../assets/vendor/gsap.min.js"></script>
 <script>
-/* ══════════════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CLON DE REFERENCIA: el mismo montaje que el video original del usuario
    (barra de neon POBRE | RICO | MILLONARIO, logos que entran uno a uno,
    nombre de marca grande como sticker, palabras sueltas y corte final a
    otro plano). El presentador es el nuestro, graduado en la nube para que
    el cuarto tenga el mismo aire oscuro con luz magenta.
-   ══════════════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 (function () {
   const V = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
   const txt = (id, def) => (V && V[id] != null && V[id] !== '') ? String(V[id]) : def;
@@ -214,13 +233,13 @@
 
   const tl = gsap.timeline({ paused: true });
 
-  /* ── Planos: entrada suave + empuje lento de camara (el vivo) ───── */
+  /* â”€â”€ Planos: entrada suave + empuje lento de camara (el vivo) â”€â”€â”€â”€â”€ */
   tl.fromTo('#p1', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.035, duration: 30, ease: 'none' }, 0);
   /* el corte final: seco (con el smear encima) y luego empuje lento */
   tl.fromTo('#p2', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.0, duration: .05, ease: 'none' }, 24);
   tl.to('#p2', { scale: 1.05, duration: 6, ease: 'none' }, 24.05);
 
-  /* ── La barra entra, cae y el neon parpadea como el de verdad ───── */
+  /* â”€â”€ La barra entra, cae y el neon parpadea como el de verdad â”€â”€â”€â”€â”€ */
   tl.fromTo('#barra', { opacity: 0, y: -46 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, .05);
   /* el parpadeo del neon: tres pulsos rapidos al_encender */
   tl.to('.neon', { opacity: .45, duration: .05, ease: 'none' }, .62);
@@ -229,7 +248,7 @@
   tl.to('.neon', { opacity: 1, duration: .06, ease: 'none' }, .84);
   tl.to('#barra', { opacity: 0, duration: .25, ease: 'power2.in' }, 23.75);
 
-  /* ── Los logos: entran uno a uno, en cadena ─────────────────────── */
+  /* â”€â”€ Los logos: entran uno a uno, en cadena â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const logos = [
     { id: '#lgMercedes', t: 1.7 }, { id: '#lgBmw', t: 3.0 },
     { id: '#lgPorsche', t: 4.3 }, { id: '#lgHonda', t: 5.8 }, { id: '#lgNissan', t: 7.3 },
@@ -242,7 +261,7 @@
   /* y se van todos en el corte */
   tl.to('.logo', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
 
-  /* ── Los nombres de marca, uno detras de otro ──────────────────── */
+  /* â”€â”€ Los nombres de marca, uno detras de otro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const nombres = [
     { id: '#nom0', t: .3, d: 3.1 }, { id: '#nom1', t: 3.6, d: 2.2 }, { id: '#nom2', t: 6.0, d: 2.2 },
     { id: '#nom3', t: 8.4, d: 2.2 }, { id: '#nom4', t: 10.8, d: 2.2 }, { id: '#nom5', t: 13.2, d: 2.2 },
@@ -258,7 +277,7 @@
     { opacity: 1, scale: 1, duration: .4, ease: 'power4.out' }, 10.8);
   tl.to('#stic4', { opacity: 0, duration: .32, ease: 'power2.in' }, 13.0);
 
-  /* ── Las palabras: al ritmo del habla ──────────────────────────── */
+  /* â”€â”€ Las palabras: al ritmo del habla â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   /* antes del corte: ~1,05 s por palabra; despues: ~0,82 s. Se dejan
      ~0,6 s a pantalla completa: si no, no se leen. */
   const antes = 6.2, gap1 = .95, gap2 = .75, corte = 24.0;
@@ -277,10 +296,10 @@
     tl.fromTo(el, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: .26, ease: 'power3.out' }, t);
     tl.to(el, { opacity: 0, x: -16, duration: .26, ease: 'power2.in' }, t + dur - .26);
     t += dur;
-    if (t > 29.7) break;
+    if (t > 27.6) break;
   }
 
-  /* ── La transicion del destello: light leak + blowout + corte en seco ── */
+  /* â”€â”€ La transicion del destello: light leak + blowout + corte en seco â”€â”€ */
   /* el destello calido */
   tl.fromTo('#flash', { opacity: 0 }, { opacity: .85, duration: .07, ease: 'none' }, 22.72);
   tl.to('#flash', { opacity: 0, duration: .45, ease: 'power2.out' }, 22.79);
@@ -293,9 +312,15 @@
   /* el grano se mueve: el vivo de la pelicula */
   tl.to('#grano', { x: 18, y: -10, duration: 2.4, ease: 'steps(5)', repeat: -1, yoyo: true }, 0);
 
-  /* ── La luz magenta late despacio ──────────────────────────────── */
+  /* â”€â”€ La luz magenta late despacio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   tl.to('#glow', { opacity: .9, x: 26, y: -14, duration: 7, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
 
+  /* las tiras de LED persiguen los segmentos (no estan quietas) */
+  tl.to('.led', { y: -22, duration: .9, ease: 'none', repeat: -1 }, 0);
+
+  /* el cierre: la guia y el fundido a negro */
+  tl.fromTo('#cta', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, 28.2);
+  tl.fromTo('#fundido', { opacity: 0 }, { opacity: 1, duration: .6, ease: 'power2.inOut' }, 29.4);
   window.__timelines["millonario"] = tl;
   if (gsap.ticker) gsap.ticker.fps(30);
 })();
