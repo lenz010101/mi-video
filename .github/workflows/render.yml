@@ -460,6 +460,23 @@ jobs:
             $DESCRIBE
           ls -lh renders/stills
 
+      # HyperFrames deja el MP4 en H.264 nivel 5.0: muchos reproductores (el
+      # de Windows, moviles viejos) NO lo abren. Se re-codifica a nivel 4.0
+      # (mismo aspecto, compatible con todo) antes de subirlo.
+      - name: Ajustar el nivel de H.264 (que lo abra cualquier reproductor)
+        if: inputs.mode == 'video'
+        env:
+          FILENAME: ${{ inputs.filename }}
+        run: |
+          FILE="renders/${FILENAME:-video.mp4}"
+          if [ -f "$FILE" ]; then
+            ffmpeg -v error -y -i "$FILE" \
+              -c:v libx264 -profile:v high -level 4.0 -preset veryfast -crf 20 \
+              -pix_fmt yuv420p -c:a aac -b:a 160k -ac 2 -movflags +faststart \
+              "$FILE.nivel.mp4" && mv "$FILE.nivel.mp4" "$FILE"
+            ffprobe -v error -show_entries stream=codec_name,profile,level -of default=nw=1 "$FILE" | head -4
+          fi
+
       - name: Verify the MP4 (frozen frames + contact sheet)
         if: always() && inputs.qc != 'no' && inputs.mode == 'video'
         env:
