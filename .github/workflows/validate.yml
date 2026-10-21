@@ -178,12 +178,22 @@ jobs:
           COMPOSITION: ${{ inputs.composition }}
           EXTRA: ${{ inputs.extra_composition }}
         run: |
-          ARGS=""
-          if [ -n "${COMPOSITION:-}" ]; then ARGS="--composition ${COMPOSITION}"; fi
-          hf snapshot . $ARGS --frames 7 --no-browser-gpu --output snapshots
-          if [ -n "${EXTRA:-}" ]; then
-            hf snapshot . --composition "${EXTRA}" --frames 7 --no-browser-gpu --output snapshots-extra
-          fi
+          # En "snapshot", --composition es el data-composition-id (no la ruta).
+          # Si se pasa una ruta, se saca el id del propio HTML.
+          snap() {
+            FILE="$1"; OUT="$2"
+            if [ -n "${FILE}" ]; then
+              ID=$(grep -o 'data-composition-id="[^"]*"' "$FILE" | head -1 | sed 's/.*="\(.*\)"/\1/')
+              if [ -z "$ID" ]; then echo "::warning::$FILE no declara data-composition-id"; return 1; fi
+              echo "  $FILE  (composition-id: $ID)"
+              hf snapshot "$FILE" --composition "$ID" --frames 7 --no-browser-gpu --output "$OUT"
+            else
+              echo "  index.html (composition-id: casa-modular)"
+              hf snapshot . --composition casa-modular --frames 7 --no-browser-gpu --output "$OUT"
+            fi
+          }
+          snap "${COMPOSITION:-}" snapshots
+          if [ -n "${EXTRA:-}" ]; then snap "$EXTRA" snapshots-extra; fi
           ls snapshots snapshots-extra 2>/dev/null | head -20
 
       - name: Upload the validation frames
