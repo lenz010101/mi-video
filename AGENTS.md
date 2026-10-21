@@ -53,6 +53,11 @@
      cuesta 3-8 min.
   6. El render nunca es lo lento: son los renders **muertos** por bugs, el
      material re-gradado y las descargas.
+  7. **El lint de HyperFrames ya está instalado en LOCAL**:
+     `npx hyperframes@0.8.162 lint . --json` (1 min de instalación la primera
+     vez). Valida ANTES de subir. En local son esperables los errores de
+     material ausente (`assets/nuevo/**/procesado/*`, `assets/mezcla/*`),
+     porque el material se monta en la nube.
 - Herramientas del repo:
   | Script | Para qué |
   |---|---|
