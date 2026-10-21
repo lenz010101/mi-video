@@ -352,13 +352,13 @@ jobs:
           mkdir -p assets/mezcla
           # PLANO 1 (24 s): el plano largo, con su voz.
           ffmpeg -v error -y -i assets/clips/talker-slow.mp4 -t 24 \
-            -vf "eq=contrast=1.20:saturation=0.60:brightness=-0.045,colorbalance=rs=0.07:rm=-0.03:bs=-0.03,vignette=angle=PI/4" \
+            -vf "eq=contrast=1.13:saturation=0.74:brightness=0.02,colorbalance=rs=0.07:rm=-0.03:bs=-0.03,vignette=angle=PI/4" \
             -c:v libx264 -profile:v baseline -level 3.1 -preset veryfast -crf 20 \
             -pix_fmt yuv420p -r 30 -c:a aac -b:a 160k -ac 2 -movflags +faststart \
             assets/mezcla/presentador-1.mp4
           # PLANO 2 (6,2 s): otro take, mas cerrado y mas frio (el corte final).
           ffmpeg -v error -y -i assets/clips/talker.mp4 -t 6.2 \
-            -vf "scale=1188:2112,crop=1080:1920:0:96,eq=contrast=1.16:saturation=0.42:brightness=-0.055,colorbalance=bs=0.10:rs=-0.04,vignette=angle=PI/4" \
+            -vf "scale=1188:2112,crop=1080:1920:0:96,eq=contrast=1.10:saturation=0.55:brightness=-0.01,colorbalance=bs=0.10:rs=-0.04,vignette=angle=PI/4" \
             -c:v libx264 -profile:v baseline -level 3.1 -preset veryfast -crf 20 \
             -pix_fmt yuv420p -r 30 -c:a aac -b:a 160k -ac 2 -movflags +faststart \
             assets/mezcla/presentador-2.mp4
