@@ -203,6 +203,11 @@ jobs:
           echo "HF_VERSION=$HF_VERSION" >> "$GITHUB_ENV"
           echo "NODE_PATH=$TOOLS/node_modules" >> "$GITHUB_ENV"
 
+      # Las skills de HyperFrames (las 21 publicadas + las 6 internas) se
+      # instalan en el HOME del runner y se cachean: se descargan una vez.
+      - name: HyperFrames skills
+        uses: ./.github/actions/hf-skills
+
       - name: Verify the editing libraries
         run: |
           node -e '

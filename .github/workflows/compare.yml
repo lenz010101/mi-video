@@ -110,6 +110,9 @@ jobs:
           echo "HF_VERSION=$HF_VERSION" >> "$GITHUB_ENV"
           echo "NODE_PATH=$TOOLS/node_modules" >> "$GITHUB_ENV"
 
+      - name: HyperFrames skills
+        uses: ./.github/actions/hf-skills
+
       - name: Install FFmpeg
         run: |
           sudo apt-get update -qq

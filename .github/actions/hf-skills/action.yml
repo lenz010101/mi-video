@@ -1,0 +1,31 @@
+name: HyperFrames skills
+description: Instala en el runner todas las skills de HyperFrames (las 21 publicadas + las 6 internas del repo) y las cachea entre ejecuciones.
+
+runs:
+  using: composite
+  steps:
+    # El cache necesita que el directorio exista, o el step falla.
+    - name: Preparar el directorio de skills
+      shell: bash
+      run: mkdir -p "$HOME/.claude/skills" "$HOME/.agents/skills"
+
+    - name: Cache de las skills de HyperFrames
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.claude/skills
+          ~/.agents/skills
+        key: hf-skills-v1
+
+    - name: Install the HyperFrames skills
+      shell: bash
+      run: |
+        # "add --all" instala las 21 publicadas + las 6 internas del repo.
+        # Si el manifiesto published no se puede resolver, la propia CLI
+        # degrada al conjunto core fijado; "update" es el respaldo.
+        hf skills add --all || hf skills update || echo "::warning::no se pudieron instalar las skills"
+        hf skills check || echo "::warning::las skills no estan en la ultima version"
+        echo "--- skills instaladas ---"
+        ls "$HOME/.claude/skills" 2>/dev/null | wc -l | xargs -I{} echo "  {} en ~/.claude/skills"
+        ls "$HOME/.claude/skills" 2>/dev/null | tr '\n' ' '; echo
+        ls "$HOME/.agents/skills" 2>/dev/null | wc -l | xargs -I{} echo "  {} en ~/.agents/skills (espejo universal)"
