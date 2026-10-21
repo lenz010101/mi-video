@@ -61,9 +61,26 @@
 
   /* El logo gigante flotando (tecnica extruded-logo del catalogo) */
   .logo-grande{ position:absolute; left:50%; top:150px; transform:translateX(-50%);
-    opacity:0; will-change:transform,opacity; }
+    opacity:0; overflow:hidden; will-change:transform,opacity; }
   .logo-grande img{ max-width:820px; max-height:300px; object-fit:contain;
     filter:drop-shadow(0 22px 52px rgba(0,0,0,.62)); }
+  /* Extrusion: una pila de sombras hace de borde 3D (tecnica del bloque
+     extruded-logo del catalogo, que usa un logo 3D pre-renderizado) */
+  .logo-3d img{
+    filter:
+      drop-shadow(0 2px 0 rgba(90,32,6,.85)) drop-shadow(0 4px 0 rgba(70,24,4,.75))
+      drop-shadow(0 6px 0 rgba(52,18,3,.6)) drop-shadow(0 9px 14px rgba(0,0,0,.7))
+      drop-shadow(0 26px 60px rgba(0,0,0,.6)); }
+  /* El brillo que barre el logo */
+  .brillo{ position:absolute; top:-30%; left:-60%; width:34%; height:160%;
+    background:linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.55) 46%, rgba(255,255,255,0) 100%);
+    transform:rotate(14deg); opacity:0; pointer-events:none;
+    will-change:transform,opacity; }
+  /* La luz que recorre el borde del frame (tecnica light-edge) */
+  .borde-luz{ position:absolute; top:-30%; left:-70%; width:26%; height:160%;
+    background:linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,240,214,.55) 48%, rgba(255,255,255,0) 100%);
+    transform:rotate(12deg); opacity:0; pointer-events:none;
+    will-change:transform,opacity; }
   .logo-halo{ position:absolute; left:50%; top:60px; width:1000px; height:520px;
     transform:translateX(-50%); opacity:0; pointer-events:none;
     background:radial-gradient(ellipse 50% 58% at 50% 46%, rgba(255,255,255,.13), transparent 70%);
@@ -81,6 +98,8 @@
 
   /* Flash-through-white (tecnica del catalogo) */
   .flash{ position:absolute; inset:0; background:#FFF; opacity:0;
+    will-change:opacity; pointer-events:none; }
+  .fundido{ position:absolute; inset:0; background:#0B0A08; opacity:0;
     will-change:opacity; pointer-events:none; }
   /* Fuga de luz organica (tecnica del catalogo): radiales + screen */
   .fuga{ position:absolute; inset:-10%; mix-blend-mode:screen; opacity:0; pointer-events:none;
@@ -125,6 +144,7 @@
   <div class="grano" id="grano"></div>
   <div class="vineta"></div>
   <div class="flash" id="flash"></div>
+  <div class="fundido" id="flashEnd"></div>
 
   <!-- Los logos flotantes, uno por marca -->
   <div class="logo-halo" id="halo5"></div>
@@ -136,7 +156,8 @@
   <div class="logo-halo" id="halo2"></div>
   <div class="logo-grande" id="lg2"><img src="assets/logos/honda.png" alt=""></div>
   <div class="logo-halo" id="halo1"></div>
-  <div class="logo-grande" id="lg1"><img src="assets/logos/toyota.png" alt=""></div>
+  <div class="logo-grande logo-3d" id="lg1"><img src="assets/logos/toyota.png" alt=""><span class="brillo" id="brillo1"></span></div>
+  <div class="borde-luz" id="bordeLuz"></div>
 
   <!-- Los pies de foto -->
   <div class="pie" id="pie0">Top cinco</div>
@@ -226,9 +247,22 @@
     tl.to('#' + p.halo, { opacity: 0, duration: .4, ease: 'power2.in' }, p.t + p.dur - .5);
   }
 
-  /* Veredicto */
+  /* Veredicto + MOMENTO HERO: la marca #1 con extrusion, el brillo que barre
+     el logo, la luz que recorre el borde y el flash final. */
   tl.fromTo('#pieV', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .6, ease: EASE }, 27.3);
   tl.fromTo('#fuente', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .5, ease: EASE }, 27.8);
+  /* la foto del coche hace push-in y sube de luz en el veredicto */
+  tl.fromTo('#coche1', { opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1.1, duration: 2.4, ease: 'power2.out' }, 27.0);
+  /* el logo entra con mas presencia y el brillo lo barre */
+  tl.fromTo('#lg1', { opacity: 0, y: -30, scale: .88 }, { opacity: 1, y: 0, scale: 1, duration: .8, ease: GOLPE }, 27.25);
+  tl.fromTo('#halo1', { opacity: 0 }, { opacity: 1, duration: .6, ease: EASE }, 27.3);
+  tl.fromTo('#brillo1', { xPercent: -30, opacity: 0 }, { xPercent: 420, opacity: 1, duration: .75, ease: 'power2.inOut' }, 27.75);
+  /* la luz del borde cruza el frame */
+  tl.fromTo('#bordeLuz', { xPercent: -40, opacity: 0 }, { xPercent: 520, opacity: 1, duration: .9, ease: 'power2.inOut' }, 27.55);
+  /* y el flash final */
+  tl.fromTo('#flash', { opacity: 0 }, { opacity: .55, duration: .07, ease: 'none' }, 27.6);
+  tl.to('#flash', { opacity: 0, duration: .4, ease: 'power2.out' }, 27.67);
+  tl.fromTo('#flashEnd', { opacity: 0 }, { opacity: 1, duration: .5, ease: 'power2.in' }, 29.5);
 
   window.__timelines["ranking-ref"] = tl;
   if (gsap.ticker) gsap.ticker.fps(30);
