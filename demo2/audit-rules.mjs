@@ -196,3 +196,6 @@ for (const f of files) {
   problems.forEach(p => { console.log('  [!] ' + p); bad++; });
 }
 console.log(`\n${bad} problema(s) en ${files.length} archivo(s).`);
+/* Codigo de salida != 0 si hay problemas: asi el CI falla en vez de pasar
+   de largo, y en local se puede encadenar con && . */
+process.exit(bad ? 1 : 0);

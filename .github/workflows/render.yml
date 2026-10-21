@@ -135,11 +135,19 @@ jobs:
             const fs = require("fs");
             const deps = {
               hyperframes: process.env.HF_VERSION,
-              gsap: "3.12.5",
+              gsap: "3.15.0",
               sharp: "0.35.5",
               "fluent-ffmpeg": "2.1.3",
               "ffmpeg-static": "5.3.0",
-              "ffprobe-static": "3.1.0"
+              "ffprobe-static": "3.1.0",
+              "animejs": "4.5.0",
+              "lottie-web": "5.12.2",
+              three: "0.181.2",
+              d3: "7.9.0",
+              leaflet: "1.9.4",
+              "maplibre-gl": "6.15.0",
+              "mapbox-gl": "3.33.0",
+              typegpu: "0.12.8"
             };
             fs.writeFileSync("package.json", JSON.stringify({
               name: "mi-video-editing-tools",
@@ -172,25 +180,22 @@ jobs:
           node -e '
             const fs = require("fs");
             const root = (process.env.EDITING_TOOLS || process.env.HOME + "/editing-tools") + "/node_modules/";
-            const names = ["hyperframes","gsap","sharp","fluent-ffmpeg","ffmpeg-static","ffprobe-static"];
+            const names = ["hyperframes","gsap","sharp","fluent-ffmpeg","ffmpeg-static","ffprobe-static","animejs","lottie-web","three","d3","leaflet","maplibre-gl","mapbox-gl","typegpu"];
+            let missing = 0;
             for (const n of names) {
               try {
                 const p = JSON.parse(fs.readFileSync(root + n + "/package.json", "utf8"));
                 console.log("  OK   " + n + "@" + p.version);
               } catch (e) {
                 console.log("::warning::no instalada: " + n);
+                missing++;
               }
             }
-            try {
-              const a = fs.readFileSync("assets/vendor/gsap.min.js");
-              const b = fs.readFileSync(root + "gsap/dist/gsap.min.js");
-              console.log(a.equals(b)
-                ? "  OK   el gsap vendorizado es identico al de npm"
-                : "::warning::el gsap vendorizado NO es identico al de npm");
-            } catch (e) {
-              console.log("::warning::no se pudo comparar el gsap vendorizado");
-            }
+            if (missing) console.log("::warning::faltan " + missing + " librerias");
           '
+          # Todo lo vendorizado en assets/vendor tiene que ser IDENTICO a lo que
+          # instala npm: si no, el repo y la nube renderizan distinto.
+          node demo2/verify-vendor.mjs
           if [ -x "$EDITING_TOOLS/node_modules/ffmpeg-static/ffmpeg" ]; then
             "$EDITING_TOOLS/node_modules/ffmpeg-static/ffmpeg" -version | head -1
           fi

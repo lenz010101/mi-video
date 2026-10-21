@@ -26,14 +26,20 @@
   `$HOME/editing-tools`, **fuera** del repo (un `node_modules` dentro del
   proyecto se colaría en el escaneo de assets y en el tamaño que se sube a la
   nube), y se cachean con la clave `editing-tools-node22-v1`:
-  `hyperframes@0.8.162` (la misma versión fijada que el lint), `gsap@3.12.5`,
-  `sharp@0.35.5`, `fluent-ffmpeg@2.1.3`, `ffmpeg-static@5.3.0` y
-  `ffprobe-static@3.1.0`. Además sigue el `ffmpeg` estático de johnvansickle
-  (7.0.2). El paso `Verify the editing libraries` comprueba que el GSAP
-  vendorizado en `assets/vendor/gsap.min.js` es **idéntico** al de npm
-  (SHA256 `28033E44…`).
+  `hyperframes@0.8.162` (la misma versión fijada que el lint), `gsap@3.15.0`,
+  `sharp@0.35.5`, `fluent-ffmpeg@2.1.3`, `ffmpeg-static@5.3.0`,
+  `ffprobe-static@3.1.0`, `animejs@4.5.0`, `lottie-web@5.12.2`,
+  `three@0.181.2`, `d3@7.9.0`, `leaflet@1.9.4`, `maplibre-gl@6.15.0`,
+  `mapbox-gl@3.33.0` y `typegpu@0.12.8`. Además sigue el `ffmpeg` estático de
+  johnvansickle (7.0.2). El paso `Verify the editing libraries` comprueba que
+  todo lo vendorizado en `assets/vendor/` es **idéntico** a lo que instala npm
+  (`node demo2/verify-vendor.mjs`).
   Los pasos usan el wrapper `hf` (prepara la CLI instalada y cae a `npx` si
   no está sana), así que el render nunca se queda sin HyperFrames.
+- **Workflow `validate.yml`**: valida el repo **sin renderizar vídeo** (lint +
+  auditor de reglas + verify-vendor + 7 fotogramas de la composición). Sirve
+  para probar cambios en `assets/vendor` o en las librerías sin gastar un
+  render completo. `node demo2/ciclo.mjs` sigue siendo el ciclo completo con MP4.
 - **Las reglas son globales**, no solo de este repo:
   `~/.config/opencode/AGENTS.md` + skill `hyperframes-composition`
   (con el auditor y el fixer en `~/.config/opencode/skills/.../scripts/`).
@@ -156,9 +162,38 @@ render fluido (sin fotogramas congelados) y automatización escalable.
   registrada cuando el renderizador pide el primer fotograma, el MP4 sale
   congelado. Con `gsap.ticker.fps(30)` sincronizado con `data-fps`.
 - **GSAP se carga en local** desde `assets/vendor/gsap.min.js` (vendorizado,
-  3.12.5). Nada de CDN: si jsdelivr falla, no hay timeline y el vídeo sale
+  **3.15.0**). Nada de CDN: si jsdelivr falla, no hay timeline y el vídeo sale
   congelado. Ruta: `assets/vendor/gsap.min.js` (root) o
   `../assets/vendor/gsap.min.js` (dentro de `compositions/`).
+- **Los plugins de GSAP están vendorizados** en `assets/vendor/gsap/` (los 24
+  ficheros `*.min.js` del paquete npm: SplitText, ScrollTrigger, MotionPath,
+  MorphSVG, DrawSVG, Draggable, Flip, Observer, CustomEase, TextPlugin,
+  ScrambleText, Inertia, GSDevTools…). Se cargan **por plugin** y se registran:
+  ```html
+  <script src="../assets/vendor/gsap/SplitText.min.js"></script>
+  <script>gsap.registerPlugin(SplitText);</script>
+  ```
+- **El resto de runtimes que HyperFrames soporta, también vendorizados** en
+  `assets/vendor/` (versiones = las que recomienda el propio framework):
+  | Runtime | Fichero | Paquete npm |
+  |---|---|---|
+  | Anime.js | `anime.umd.min.js` | `animejs@4.5.0` (UMD) |
+  | Lottie | `lottie.min.js` | `lottie-web@5.12.2` (bodymovin) |
+  | Three.js | `three.module.js` | `three@0.181.2` (ESM: necesita `importmap`) |
+  | D3 | `d3.min.js` | `d3@7.9.0` |
+  | Leaflet | `leaflet/` (js, css, marcadores) | `leaflet@1.9.4` |
+  | WAAPI / CSS | nativo del navegador | — |
+  | MapLibre / Mapbox / TypeGPU | solo instalados en la nube (npm) | `maplibre-gl`, `mapbox-gl`, `typegpu` |
+  Three.js es ESM, así que va con importmap local:
+  ```html
+  <script type="importmap">
+  {"imports":{"three":"../assets/vendor/three.module.js"}}
+  </script>
+  ```
+- `demo2/verify-vendor.mjs` comprueba que **todo** lo vendorizado es byte a
+  byte lo mismo que instala npm (lo ejecuta el CI en `render.yml` y en
+  `validate.yml`): si cambia un fichero a mano, el repo y la nube renderizan
+  distinto.
 
 ### 3. Variables en render-time (API real de HyperFrames 0.8.x)
 
