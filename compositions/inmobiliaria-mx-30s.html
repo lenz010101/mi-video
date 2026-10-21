@@ -147,7 +147,7 @@
   .ruta{ fill:none; stroke:var(--salvia); stroke-width:9; stroke-linecap:round; stroke-linejoin:round;
     transform-origin:left center; will-change:transform,opacity; }
   .pin{ width:44px; height:44px; border-radius:50% 50% 50% 0; background:var(--terracota);
-    transform:rotate(-45deg); will-change:transform,opacity; }
+    will-change:transform,opacity; }
   .pin-hueco{ position:absolute; width:16px; height:16px; border-radius:50%; background:var(--papel);
     will-change:opacity; }
 </style>
@@ -533,7 +533,9 @@
   /* ── S6 ubicacion: el mapa dibujado ────────────────────────────── */
   tl.fromTo('#ubiL', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, 20.1);
   tl.fromTo('#ruta', { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 1.5, ease: EASE }, 20.4);
-  tl.fromTo('#pin', { opacity: 0, y: -40, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .6, ease: GOLPE }, 21.7);
+  /* La rotacion del pin va en GSAP: un transform en CSS que se anima con GSAP
+     es un conflicto (gsap_css_transform_conflict) y el lint lo bloquea. */
+  tl.fromTo('#pin', { opacity: 0, y: -40, scale: .6, rotation: -45 }, { opacity: 1, y: 0, scale: 1, rotation: -45, duration: .6, ease: GOLPE }, 21.7);
   tl.fromTo('#pinHueco', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'none' }, 21.9);
   tl.fromTo('#ubiT', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .7, ease: EASE }, 22.1);
   tl.fromTo('#ubiS', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .6, ease: EASE }, 22.35);

@@ -2,10 +2,19 @@
 
 ## Estado del repo (cierre 2026-10-20)
 
+- **Pieza nueva: `compositions/inmobiliaria-mx-30s.html` — "ARCO", reel de
+  inmobiliaria para México, 30 s en 9:16, desde cero.** Storyboard completo en
+  `compositions/inmobiliaria-mx-30s.md`. Motor visual propio ("LUZ": marfil
+  `#F4F1E9` + tinta + **un solo acento terracota** `#A8643C`), Instrument Serif
+  + Montserrat + JetBrains Mono, **dip a blanco** en cada corte, rejilla de
+  compás de **2,0 s exactos** (la música se estira con `atempo` a 120 BPM para
+  que el corte caiga en el golpe, sin tocar el pitch), y todo el copy local en
+  variables de render-time (`DESDE $2.9 MDP`, `3 RECÁMARAS`, `+52 55…`,
+  `ESQUIRE EN SITIO`). Material 100 % nuevo (Mixkit) montado en la nube.
 - **Pieza nueva: `compositions/humo-reel-30s.html` — "HUMO", reel de estudio
   30 s en 9:16, hecho desde cero.** Material 100 % nuevo (8 clips de humo de
-  Mixkit + música nueva), montado en la nube. Render medido: **2 m 22 s**,
-  30,00 s, 0 fotogramas congelados, 11 cambios de plano, audio sí.
+  Mixkit + fugas de luz + música nueva), montado en la nube. Render medido:
+  **2 m 22 s**, 30,00 s, 0 fotogramas congelados, 11 cambios de plano, audio sí.
   Entregado: `humo-reel-30s.mp4` (73,8 MB).
   - **El repo solo guarda el manifiesto** (`assets/nuevo/fuentes.json`); los
     clips y la música se descargan y se montan **en el runner**
