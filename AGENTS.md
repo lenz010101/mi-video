@@ -19,6 +19,21 @@
   | `demo2/verify-render.mjs` | MP4 entregado: frames congelados + cortes |
   | `demo2/contact-sheet.mjs` | hoja de contactos con timecodes (revisión) |
   | `demo2/ciclo.mjs` | render nube + entrega + verificación, un comando |
+  | `demo2/gh.ps1` | API de GitHub sin `git` instalado (lee el token del
+    Administrador de Credenciales de Windows, en memoria) |
+- **Librerías de edición instaladas en la nube** (paso `Install the editing
+  libraries` de `render.yml` y `compare.yml`): se instalan en
+  `$HOME/editing-tools`, **fuera** del repo (un `node_modules` dentro del
+  proyecto se colaría en el escaneo de assets y en el tamaño que se sube a la
+  nube), y se cachean con la clave `editing-tools-node22-v1`:
+  `hyperframes@0.8.162` (la misma versión fijada que el lint), `gsap@3.12.5`,
+  `sharp@0.35.5`, `fluent-ffmpeg@2.1.3`, `ffmpeg-static@5.3.0` y
+  `ffprobe-static@3.1.0`. Además sigue el `ffmpeg` estático de johnvansickle
+  (7.0.2). El paso `Verify the editing libraries` comprueba que el GSAP
+  vendorizado en `assets/vendor/gsap.min.js` es **idéntico** al de npm
+  (SHA256 `28033E44…`).
+  Los pasos usan el wrapper `hf` (prepara la CLI instalada y cae a `npx` si
+  no está sana), así que el render nunca se queda sin HyperFrames.
 - **Las reglas son globales**, no solo de este repo:
   `~/.config/opencode/AGENTS.md` + skill `hyperframes-composition`
   (con el auditor y el fixer en `~/.config/opencode/skills/.../scripts/`).
