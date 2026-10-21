@@ -91,21 +91,23 @@
     transform:translateY(4px); }
 
   /* â”€â”€ El nombre de marca grande, abajo a la izquierda â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .nombre{ position:absolute; left:150px; top:1130px; font-family:'Anton',sans-serif;
+  .nombre{ position:absolute; left:0; right:0; top:1430px; text-align:center;
+    font-family:'Anton',sans-serif;
     font-size:118px; line-height:1; letter-spacing:.005em; white-space:nowrap;
     opacity:0; text-shadow:0 10px 34px rgba(0,0,0,.85); will-change:opacity,transform; }
   /* El sticker rasgado (NISSAN): un recorte irregular con borde duro */
-  .sticker{ position:absolute; left:132px; top:1112px; width:520px; height:158px;
+  .sticker{ position:absolute; left:calc(50% - 260px); top:1412px; width:520px; height:158px;
     background:#F4F4F0; opacity:0; will-change:opacity,transform;
     clip-path:polygon(2% 18%,8% 4%,16% 14%,24% 2%,33% 12%,42% 3%,52% 13%,61% 2%,71% 11%,80% 1%,89% 12%,98% 5%,100% 26%,97% 42%,100% 58%,96% 74%,99% 88%,90% 96%,81% 88%,72% 98%,62% 89%,52% 97%,43% 88%,33% 98%,24% 89%,14% 97%,6% 86%,1% 70%,4% 54%,0% 38%); }
   .nombre-negro{ color:#0C0C0C; }
   .nombre-serif{ font-family:'Playfair',serif; font-size:104px; letter-spacing:.01em; }
 
   /* â”€â”€ Las palabras: abajo a la derecha, sobre fondo limpio â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .velo-palabras{ position:absolute; left:470px; top:800px; width:610px; height:250px;
+  .velo-palabras{ position:absolute; left:170px; top:905px; width:740px; height:250px;
     pointer-events:none;
     background:radial-gradient(ellipse 62% 60% at 62% 50%, rgba(3,3,7,.45) 0%, rgba(3,3,7,.20) 60%, rgba(3,3,7,0) 100%); }
-  .palabra{ position:absolute; right:150px; top:880px; font-family:'Inter',sans-serif;
+  .palabra{ position:absolute; left:0; right:0; top:985px; text-align:center;
+    font-family:'Inter',sans-serif;
     font-weight:800; font-size:62px; letter-spacing:-.015em; color:#FFFFFF;
     text-shadow:0 3px 10px rgba(0,0,0,.95), 0 1px 2px rgba(0,0,0,1), 0 0 26px rgba(0,0,0,.6);
     white-space:nowrap; opacity:0; will-change:opacity,transform; }
@@ -172,13 +174,14 @@
   <div class="velo"></div>
   <div class="velo-palabras"></div>
 
-  <!-- Las insignias de marca en cromo, en retícula -->
-  <div class="insignia" id="lgMercedes" style="--x:600px; --y:196px; --w:250px; --h:120px; --src:url('../assets/logos/mercedes.png');"></div>
-  <div class="insignia" id="lgBmw" style="--x:872px; --y:196px; --w:130px; --h:130px; --src:url('../assets/logos/bmw.png');"></div>
-  <div class="insignia" id="lgPorsche" style="--x:600px; --y:376px; --w:235px; --h:96px; --src:url('../assets/logos/porsche.png');"></div>
-  <div class="insignia" id="lgHonda" style="--x:872px; --y:386px; --w:170px; --h:96px; --src:url('../assets/logos/honda.png');"></div>
-  <div class="insignia" id="lgNissan" style="--x:600px; --y:536px; --w:210px; --h:92px; --src:url('../assets/logos/nissan.png');"></div>
-  <div class="insignia" id="lgLexus" style="--x:872px; --y:556px; --w:180px; --h:100px; --src:url('../assets/logos/lexus.png');"></div>
+  <!-- Las insignias de marca en cromo, apiladas bajo su categoria -->
+  <div class="insignia" id="lgHonda" style="--x:78px; --y:196px; --w:230px; --h:110px; --src:url('../assets/logos/honda.png');"></div>
+  <div class="insignia" id="lgToyota" style="--x:78px; --y:366px; --w:230px; --h:110px; --src:url('../assets/logos/toyota.png');"></div>
+  <div class="insignia" id="lgMercedes" style="--x:432px; --y:196px; --w:225px; --h:110px; --src:url('../assets/logos/mercedes.png');"></div>
+  <div class="insignia" id="lgBmw" style="--x:470px; --y:366px; --w:150px; --h:150px; --src:url('../assets/logos/bmw.png');"></div>
+  <div class="insignia" id="lgNissan" style="--x:440px; --y:556px; --w:205px; --h:92px; --src:url('../assets/logos/nissan.png');"></div>
+  <div class="insignia" id="lgPorsche" style="--x:790px; --y:196px; --w:225px; --h:95px; --src:url('../assets/logos/porsche.png');"></div>
+  <div class="insignia" id="lgLexus" style="--x:800px; --y:366px; --w:205px; --h:105px; --src:url('../assets/logos/lexus.png');"></div>
   <!-- El cierre: la guia de "comenta tu marca" -->
   <div class="cta" id="cta">
     <div class="cta-1">COMENTA TU MARCA FAVORITA</div>
@@ -233,7 +236,8 @@
 
   const tl = gsap.timeline({ paused: true });
 
-  tl.fromTo('#p1', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.035, duration: 30, ease: 'none' }, 0);
+  tl.set('#p1', { opacity: 1 }, 0);
+  tl.fromTo('#p1', { scale: 1.0 }, { scale: 1.035, duration: 30, ease: 'none' }, 0);
   tl.fromTo('#p2', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.0, duration: .05, ease: 'none' }, 24);
   tl.to('#p2', { scale: 1.05, duration: 6, ease: 'none' }, 24.05);
 
@@ -245,15 +249,15 @@
   tl.to('#barra', { opacity: 0, duration: .25, ease: 'power2.in' }, 23.75);
 
   const logos = [
-    { id: '#lgMercedes', t: 1.7 }, { id: '#lgBmw', t: 3.0 },
-    { id: '#lgPorsche', t: 4.3 }, { id: '#lgHonda', t: 5.8 }, { id: '#lgNissan', t: 7.3 },
-    { id: '#lgLexus', t: 8.8 }
+    { id: '#lgHonda', t: 1.8 }, { id: '#lgToyota', t: 3.4 },
+    { id: '#lgMercedes', t: 5 }, { id: '#lgBmw', t: 6.6 },
+    { id: '#lgNissan', t: 8.2 }, { id: '#lgPorsche', t: 9.8 },
+    { id: '#lgLexus', t: 11.4 }
   ];
   for (const l of logos) {
     tl.fromTo(l.id, { opacity: 0, scale: .82, y: 12 },
       { opacity: 1, scale: 1, y: 0, duration: .45, ease: 'power4.out' }, l.t);
   }
-  tl.to('.insignia', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
 
   const nombres = [
     { id: '#nom0', t: .3, d: 3.1 }, { id: '#nom1', t: 3.6, d: 2.2 }, { id: '#nom2', t: 6.0, d: 2.2 },
