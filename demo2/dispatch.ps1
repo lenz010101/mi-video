@@ -1,15 +1,12 @@
-# Lanza un render en la nube y espera a que termine.
-#   .\demo2\dispatch.ps1 -Workflow render.yml -Composition compositions/x.html -Filename x.mp4 -Preset entrega
-# Presets:
-#   entrega  = 30 fps + quality high + QC   (el MP4 final)
-#   revision = 30 fps + quality draft + QC  (mismo aspecto, codificacion mas rapida y archivo mas pequeno)
-#   rapido   = 15 fps + quality draft + QC  (la mitad de fotogramas: ~2 min)
+# Lanza un render FINAL en la nube y espera a que termine.
+#   .\demo2\dispatch.ps1 -Workflow render.yml -Composition compositions/x.html -Filename x.mp4
+# Siempre a 30 fps y calidad "high" (el MP4 de entrega). Para una revision
+# rapida, pasa -Qc no y baja el peso a mano: no hay pasos intermedios.
 # El token se lee del Administrador de Credenciales (el mismo que usa git).
 param(
   [string]$Workflow = 'render.yml',
   [string]$Composition = '',
   [string]$Filename = 'video.mp4',
-  [ValidateSet('entrega', 'revision', 'rapido')][string]$Preset = 'entrega',
   [string]$Repo = 'lenz010101/mi-video',
   [string]$Branch = 'demo-premium'
 )
@@ -49,8 +46,6 @@ function Api([string]$m, [string]$p, $body) {
 
 $wid = (Api GET "/actions/workflows/$Workflow").id
 $fps = '30'; $quality = 'high'; $qc = 'si'
-if ($Preset -eq 'revision') { $quality = 'draft' }
-if ($Preset -eq 'rapido') { $fps = '15'; $quality = 'draft' }
 
 $isMix = $Workflow -like 'render-mix*'
 if ($isMix) {
