@@ -54,6 +54,32 @@ runs:
           cp -r /tmp/rskills/*/skills/* "$D/" 2>/dev/null || true
         done
         rm -rf /tmp/rskills /tmp/rskills.tgz
-        echo "skills de remotion: $(ls "$HOME/.claude/skills" | grep -c '^remotion')"
+
+        # Skills OPCIONALES de la comunidad (9 en total):
+        #   buainoai/remotion-skills            -> remotion
+        #   liancheng-zcy/remotion-com-skills   -> remotion-components, tts-voiceover
+        #   jincheng2026/jc-remotion-skills     -> remotion-assembly, remotion-broll,
+        #                                            remotion-design-system,
+        #                                            remotion-gotchas-index,
+        #                                            remotion-reference-fidelity, remotion-sfx
+        install_pack() {
+          REPO="$1"; BRANCH="$2"; PATTERN="$3"
+          curl -fsSL --retry 2 --max-time 300 \
+            "https://codeload.github.com/${REPO}/tar.gz/refs/heads/${BRANCH}" -o /tmp/pack.tgz || { echo "::warning::no se pudo bajar $REPO"; return 0; }
+          rm -rf /tmp/pack && mkdir -p /tmp/pack && tar -xzf /tmp/pack.tgz -C /tmp/pack || return 0
+          for D in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
+            mkdir -p "$D"
+            for SRC in /tmp/pack/*/"$PATTERN"/*/; do
+              [ -d "$SRC" ] || continue
+              cp -r "$SRC" "$D/" 2>/dev/null || true
+            done
+          done
+          rm -rf /tmp/pack /tmp/pack.tgz
+        }
+        install_pack "buainoai/remotion-skills" "main" "skills"
+        install_pack "liancheng-zcy/remotion-com-skills" "main" ".claude/skills"
+        install_pack "jincheng2026/jc-remotion-skills" "master" "skills"
+
+        echo "skills de remotion: $(ls "$HOME/.claude/skills" | grep -ci 'remotion')"
         ls "$HOME/.claude/skills" | tr '\n' ' '; echo
         echo "skills totales (hyperframes + remotion): $(ls "$HOME/.claude/skills" | wc -l)"
