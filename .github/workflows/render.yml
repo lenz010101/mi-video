@@ -305,11 +305,15 @@ jobs:
       - name: Cache del material nuevo
         uses: actions/cache@v4
         with:
-          path: assets/nuevo/procesado
-          key: nuevo-v5-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+          path: |
+            assets/nuevo/procesado
+            assets/nuevo/inmo/procesado
+          key: nuevo-v6-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json', 'assets/nuevo/inmo/fuentes.json') }}
 
       - name: Prepare the new material
-        run: node demo2/preparar-nuevo.mjs
+        run: |
+            node demo2/preparar-nuevo.mjs assets/nuevo/fuentes.json
+            node demo2/preparar-nuevo.mjs assets/nuevo/inmo/fuentes.json
 
       - name: Lint the composition
         # "hf" = la libreria de HyperFrames instalada en la nube (misma version
