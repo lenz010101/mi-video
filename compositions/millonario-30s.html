@@ -50,9 +50,15 @@
   .n-azul{ color:var(--azul); text-shadow:0 0 14px rgba(53,200,255,.95), 0 0 44px rgba(0,120,255,.7); }
   .n-oro{ color:var(--oro); text-shadow:0 0 14px rgba(255,192,42,.95), 0 0 44px rgba(255,150,0,.6); }
 
-  /* ── Logos de marca (cromados) ──────────────────────────────────── */
-  .logo{ position:absolute; opacity:0; will-change:opacity,transform;
-    filter:grayscale(1) brightness(1.45) contrast(1.12) drop-shadow(0 4px 10px rgba(0,0,0,.65)); }
+  /* ── Logos de marca (cromados), en retícula sobre un velo ────────── */
+  .logos{ position:absolute; left:548px; top:178px; width:512px; height:600px;
+    display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:150px;
+    align-items:center; justify-items:center; gap:0 12px;
+    background:radial-gradient(ellipse 62% 58% at 50% 48%, rgba(3,3,7,.72) 0%, rgba(3,3,7,.45) 58%, rgba(3,3,7,0) 100%);
+    pointer-events:none; }
+  .logo{ position:relative; height:112px; width:auto; max-width:210px;
+    object-fit:contain; opacity:0; will-change:opacity,transform;
+    filter:grayscale(1) brightness(1.5) contrast(1.1) drop-shadow(0 4px 12px rgba(0,0,0,.7)); }
   .logo-color{ position:absolute; opacity:0; will-change:opacity,transform;
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)); }
   .logo, .logo-color{ will-change:opacity,transform; }
@@ -84,6 +90,13 @@
   .sombra-barra{ position:absolute; left:0; top:150px; width:1080px; height:120px;
     pointer-events:none;
     background:linear-gradient(to bottom, rgba(4,4,8,.85) 0%, rgba(4,4,8,.35) 45%, rgba(4,4,8,0) 100%); }
+  /* El halo del neon: la luz de los tres paneles cae sobre la escena */
+  .brillo-barra{ position:absolute; left:0; top:158px; width:1080px; height:170px;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse 24% 100% at 17% 0%, rgba(255,42,42,.30) 0%, transparent 70%),
+      radial-gradient(ellipse 17% 100% at 50% 0%, rgba(53,200,255,.30) 0%, transparent 70%),
+      radial-gradient(ellipse 24% 100% at 83% 0%, rgba(255,192,42,.26) 0%, transparent 70%); }
   /* La esquina inferior en diagonal */
   .diagonal{ position:absolute; left:0; bottom:0; width:1080px; height:330px; pointer-events:none;
     background:linear-gradient(to top right, rgba(4,4,6,.97) 0%, rgba(4,4,6,.97) 42%, rgba(4,4,6,0) 43%, transparent 100%); }
@@ -110,15 +123,17 @@
     <div class="p3"><span class="neon n-oro" id="t3">MILLONARIO</span></div>
   </div>
 
-  <!-- Los logos de marca, uno a uno -->
-  <img id="lgAudi"     class="logo" style="left:580px; top:190px;  width:250px;" src="assets/logos/audi.png" alt="">
-  <img id="lgBmw"      class="logo" style="left:865px; top:200px;  width:165px;" src="assets/logos/bmw.png" alt="">
-  <img id="lgMercedes" class="logo" style="left:575px; top:420px;  width:330px;" src="assets/logos/mercedes.png" alt="">
-  <img id="lgPorsche"  class="logo" style="left:850px; top:450px;  width:230px;" src="assets/logos/porsche.png" alt="">
-  <img id="lgHonda"    class="logo" style="left:590px; top:590px;  width:250px;" src="assets/logos/honda.png" alt="">
-  <img id="lgNissan"   class="logo" style="left:855px; top:615px;  width:200px;" src="assets/logos/nissan.png" alt="">
-  <img id="lgLexus"    class="logo" style="left:585px; top:700px;  width:240px;" src="assets/logos/lexus.png" alt="">
-  <img id="lgToyota"   class="logo" style="left:855px; top:720px;  width:205px; filter:drop-shadow(0 4px 10px rgba(0,0,0,.65));" src="assets/logos/toyota.png" alt="">
+  <!-- Los logos de marca, uno a uno, en retícula -->
+  <div class="logos">
+    <img id="lgAudi"     class="logo" src="assets/logos/audi.png" alt="">
+    <img id="lgBmw"      class="logo" src="assets/logos/bmw.png" alt="">
+    <img id="lgMercedes" class="logo" src="assets/logos/mercedes.png" alt="">
+    <img id="lgPorsche"  class="logo" src="assets/logos/porsche.png" alt="">
+    <img id="lgHonda"    class="logo" src="assets/logos/honda.png" alt="">
+    <img id="lgNissan"   class="logo" src="assets/logos/nissan.png" alt="">
+    <img id="lgLexus"    class="logo" src="assets/logos/lexus.png" alt="">
+    <img id="lgToyota"   class="logo" style="filter:drop-shadow(0 4px 12px rgba(0,0,0,.7));" src="assets/logos/toyota.png" alt="">
+  </div>
 
   <!-- Los nombres de marca -->
   <div class="nombre nombre-serif" id="nom0">Mercedes-Benz</div>
@@ -132,6 +147,7 @@
 
   <!-- Ambiente -->
   <div class="sombra-barra"></div>
+  <div class="brillo-barra"></div>
   <div class="glow" id="glow"></div>
   <div class="vineta"></div>
   <div class="diagonal"></div>
