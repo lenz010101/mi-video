@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"kicker","type":"string","label":"Cabecera","default":"TOP 5 · MILLONARIOS"},
+    {"id":"hookL1","type":"string","label":"Titular 1","default":"LOS 5 COCHOS"},
+    {"id":"hookL2","type":"string","label":"Titular 2","default":"DE LOS MILLONARIOS"},
+    {"id":"hookSub","type":"string","label":"Subtitulo","default":"Y el orden te va a sorprender."},
+    {"id":"ctaKicker","type":"string","label":"Kicker CTA","default":"EL RANKING COMPLETO"},
+    {"id":"ctaL1","type":"string","label":"CTA 1","default":"SÍGUEME"},
+    {"id":"ctaL2","type":"string","label":"CTA 2","default":"SI TE GUSTAN"},
+    {"id":"ctaL3","type":"string","label":"CTA 3","default":"LOS CARROS"},
+    {"id":"handle","type":"string","label":"Handle","default":"@TUUSUARIO"},
+    {"id":"source","type":"string","label":"Fuente","default":"Datos: The State of Wealth — Ramsey Solutions · selección editorial"},
+    {"id":"verdictKicker","type":"string","label":"Kicker veredicto","default":"EL VEREDICTO"},
+    {"id":"verdictLine","type":"string","label":"Frase veredicto","default":"El Toyota es el coche más común en los garajes de los millonarios."},
+    {"id":"n5Name","type":"string","label":"Nombre 5","default":"PORSCHE"},
+    {"id":"n5Line","type":"string","label":"Frase 5","default":"El capricho que entra en el garaje sin pedir permiso."},
+    {"id":"n4Name","type":"string","label":"Nombre 4","default":"BMW"},
+    {"id":"n4Line","type":"string","label":"Frase 4","default":"El que dice que has llegado antes de hablar."},
+    {"id":"n3Name","type":"string","label":"Nombre 3","default":"MERCEDES-BENZ"},
+    {"id":"n3Line","type":"string","label":"Frase 3","default":"Silencioso, enorme y con chófer incluido."},
+    {"id":"n2Name","type":"string","label":"Nombre 2","default":"HONDA"},
+    {"id":"n2Line","type":"string","label":"Frase 2","default":"El que se hereda de generación en generación."},
+    {"id":"n1Name","type":"string","label":"Nombre 1","default":"TOYOTA"},
+    {"id":"n1Line","type":"string","label":"Frase 1","default":"El más común en los garajes de los millonarios."},
+    {"id":"musicSrc","type":"image","label":"Musica","default":"../assets/audio/music-30s.mp3"},
+    {"id":"presenterSrc","type":"image","label":"Presentador","default":"../assets/clips/talker-slow.mp4"},
+    {"id":"porscheSrc","type":"image","label":"Logo Porsche","default":"../assets/logos/porsche.png"},
+    {"id":"bmwSrc","type":"image","label":"Logo BMW","default":"../assets/logos/bmw.png"},
+    {"id":"mercedesSrc","type":"image","label":"Logo Mercedes","default":"../assets/logos/mercedes.png"},
+    {"id":"hondaSrc","type":"image","label":"Logo Honda","default":"../assets/logos/honda.png"},
+    {"id":"toyotaSrc","type":"image","label":"Logo Toyota","default":"../assets/logos/toyota.png"},
+    {"id":"porschePhoto","type":"image","label":"Foto Porsche","default":"../assets/coches/porsche.jpg"},
+    {"id":"bmwPhoto","type":"image","label":"Foto BMW","default":"../assets/coches/bmw.jpg"},
+    {"id":"mercedesPhoto","type":"image","label":"Foto Mercedes","default":"../assets/coches/mercedes.jpg"},
+    {"id":"hondaPhoto","type":"image","label":"Foto Honda","default":"../assets/coches/honda.jpg"},
+    {"id":"toyotaPhoto","type":"image","label":"Foto Toyota","default":"../assets/coches/toyota.jpg"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Top 5 · Los coches de los millonarios (30 s vertical)</title>
+    <link rel="stylesheet" href="../assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="../assets/fonts/fonts-extra.css" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #000; }
+      :root {
+        --gold: #f5c451;
+        --gold-soft: #ffd98a;
+        --ink: #f2f6ff;
+        --muted: #93a3c4;
+      }
+      #stage {
+        position: relative; width: 1080px; height: 1920px; overflow: hidden;
+        background: #06080f; font-family: "Inter", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .scene { position: absolute; inset: 0; pointer-events: none; }
+
+      /* ══ FONDO ══════════════════════════════════════════════════════ */
+      #bgBase {
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg, #0a101e 0%, #070a12 44%, #05070c 100%);
+      }
+      #glowGold {
+        position: absolute; inset: 0;
+        background: radial-gradient(circle 780px at 18% 26%, rgba(245, 196, 81, .22) 0%, rgba(245, 196, 81, 0) 68%);
+        opacity: 0; will-change: opacity;
+      }
+      #glowBlue {
+        position: absolute; inset: 0;
+        background: radial-gradient(circle 840px at 94% 32%, rgba(62, 112, 220, .22) 0%, rgba(62, 112, 220, 0) 70%);
+        opacity: 0; will-change: opacity;
+      }
+      #vig {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse 80% 60% at 50% 44%, rgba(0, 0, 0, 0) 36%, rgba(0, 0, 0, .62) 100%);
+      }
+      /* barrido de luz */
+      #sweep {
+        position: absolute; left: -820px; top: -760px; width: 560px; height: 3400px;
+        transform: rotate(16deg);
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.5) 42%, rgba(245,196,81,.45) 58%, rgba(255,255,255,0) 100%);
+        opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══ PRESENTADOR (columna derecha) ═════════════════════════════ */
+      #presenter {
+        position: absolute; left: 590px; top: 0; width: 490px; height: 1920px;
+        object-fit: cover; object-position: 48% 50%;
+        opacity: 0; will-change: transform, opacity;
+      }
+      #presenterEdge {
+        position: absolute; left: 590px; top: 0; width: 540px; height: 1920px; z-index: 2;
+        background: linear-gradient(90deg, #070a12 0%, rgba(7,10,18,.94) 10%, rgba(7,10,18,.6) 26%, rgba(7,10,18,0) 48%);
+        opacity: 0; will-change: opacity;
+      }
+      #presenterVeil {
+        position: absolute; left: 590px; top: 0; width: 490px; height: 1920px; z-index: 3;
+        background: linear-gradient(180deg, rgba(6,9,16,.88) 0%, rgba(6,9,16,.16) 15%, rgba(6,9,16,.10) 58%, rgba(6,9,16,.82) 100%);
+        opacity: 0; will-change: opacity;
+      }
+
+      /* ══ CABECERA ═══════════════════════════════════════════════════ */
+      #kicker {
+        position: absolute; left: 56px; top: 64px;
+        font-family: "Orbitron", sans-serif; font-size: 23px; font-weight: 700;
+        letter-spacing: .40em; color: var(--gold);
+        opacity: 0; will-change: transform, opacity;
+      }
+      #kickerRule {
+        position: absolute; left: 56px; top: 108px; width: 190px; height: 1px;
+        background: linear-gradient(90deg, var(--gold), rgba(245,196,81,0));
+        transform-origin: 0 50%; opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══ HOOK (0 - 4 s) ═════════════════════════════════════════════ */
+      .h1l {
+        position: absolute; left: 56px; width: 1000px;
+        font-family: "Anton", sans-serif; font-size: 112px; line-height: .96;
+        letter-spacing: .01em; color: #fff;
+        text-shadow: 0 12px 54px rgba(0,0,0,.8);
+        opacity: 0; will-change: transform, opacity;
+      }
+      #h1a { top: 250px; }
+      #h1b { top: 360px; color: var(--gold); text-shadow: 0 12px 54px rgba(0,0,0,.8), 0 0 46px rgba(245,196,81,.28); }
+      #hookSub {
+        position: absolute; left: 56px; top: 508px; width: 500px;
+        font-size: 31px; line-height: 1.34; color: #c6d2ea;
+        opacity: 0; will-change: transform, opacity;
+      }
+      #hookRule {
+        position: absolute; left: 56px; top: 590px; width: 420px; height: 3px;
+        background: linear-gradient(90deg, var(--gold), rgba(245,196,81,0));
+        transform-origin: 0 50%; opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══ LISTA / ESCALERA DE PUESTOS (2.3 - 24 s) ══════════════════ */
+      .row {
+        position: absolute; left: 56px; width: 504px; height: 124px;
+        opacity: 0; will-change: transform, opacity;
+      }
+      #row5 { top: 620px; } #row4 { top: 760px; } #row3 { top: 900px; }
+      #row2 { top: 1040px; } #row1 { top: 1180px; }
+      .orb { position: absolute; left: 0; top: 0; width: 124px; height: 124px; }
+      .oglow {
+        position: absolute; inset: -20px; border-radius: 50%;
+        background: radial-gradient(circle at 50% 50%, rgba(245,196,81,.42) 0%, rgba(245,196,81,.13) 44%, rgba(245,196,81,0) 72%);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .oring {
+        position: absolute; inset: 0; border-radius: 50%;
+        border: 2px solid rgba(245,196,81,.30);
+        background: radial-gradient(circle at 50% 34%, rgba(28,38,62,.92), rgba(6,9,15,.94));
+      }
+      .oringLit {
+        position: absolute; inset: 0; border-radius: 50%;
+        border: 2px solid rgba(245,196,81,.95);
+        box-shadow: 0 0 34px rgba(245,196,81,.40), inset 0 0 26px rgba(245,196,81,.16);
+        background: radial-gradient(circle at 50% 34%, rgba(74,58,22,.94), rgba(10,14,22,.96));
+        opacity: 0; will-change: transform, opacity;
+      }
+      .onum {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        font-family: "Anton", sans-serif; font-size: 48px; color: rgba(245,196,81,.40);
+      }
+      .onumLit {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        font-family: "Anton", sans-serif; font-size: 48px; color: var(--gold);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .rname {
+        position: absolute; left: 166px; top: 32px; width: 338px; height: 60px;
+        display: flex; align-items: center;
+        font-weight: 800; font-size: 32px; letter-spacing: .13em; color: #fff;
+        opacity: 0; will-change: transform, opacity;
+      }
+      .rrule {
+        position: absolute; left: 166px; top: 98px; width: 338px; height: 1px;
+        background: linear-gradient(90deg, rgba(245,196,81,.55), rgba(245,196,81,0));
+        transform-origin: 0 50%; opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══ TARJETA DE MARCA (4 - 24 s) ═══════════════════════════════ */
+      .card {
+        position: absolute; left: 210px; top: 236px; width: 350px; height: 250px;
+        opacity: 0; will-change: transform, opacity;
+      }
+      .badge {
+        position: absolute; left: 0; top: 0;
+        font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 24px;
+        letter-spacing: .34em; color: var(--gold);
+      }
+      .plate {
+        position: absolute; left: 0; top: 46px; width: 350px; height: 186px;
+        background: #fff; border-radius: 4px; overflow: hidden;
+        box-shadow: 0 20px 62px rgba(0,0,0,.62), 0 0 0 1px rgba(255,255,255,.07);
+        display: flex; align-items: center; justify-content: center;
+      }
+      .plate img { max-width: 292px; max-height: 116px; object-fit: contain; }
+      .shine {
+        position: absolute; top: -40%; left: 0; width: 200px; height: 180%;
+        background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.92), rgba(255,255,255,0));
+        transform: translateX(-300px) rotate(14deg);
+        opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══ FRASE (4 - 24 s) ═══════════════════════════════════════════ */
+      .punch {
+        position: absolute; left: 56px; top: 1400px; width: 500px;
+        font-size: 31px; line-height: 1.34; color: #dce5f7;
+        opacity: 0; will-change: transform, opacity;
+      }
+
+      /* ══ VEREDICTO (24 - 27 s) ═════════════════════════════════════ */
+      .vkicker {
+        position: absolute; left: 0; right: 0; top: 118px; text-align: center;
+        font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 26px;
+        letter-spacing: .42em; color: var(--gold);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .vone {
+        position: absolute; left: 0; right: 0; top: 186px; text-align: center;
+        font-family: "Anton", sans-serif; font-size: 196px; line-height: 1; color: var(--gold);
+        text-shadow: 0 0 62px rgba(245,196,81,.34), 0 10px 44px rgba(0,0,0,.75);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .vflare {
+        position: absolute; left: 50%; top: -262px; width: 1100px; height: 1100px;
+        margin-left: -550px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(245,196,81,.55) 0%, rgba(245,196,81,.17) 34%, rgba(245,196,81,0) 66%);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .vplate {
+        position: absolute; left: 280px; top: 468px; width: 520px; height: 232px;
+        background: #fff; border-radius: 6px; overflow: hidden;
+        box-shadow: 0 26px 74px rgba(0,0,0,.68), 0 0 0 1px rgba(255,255,255,.08);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; will-change: transform, opacity;
+      }
+      .vplate img { max-width: 430px; max-height: 152px; object-fit: contain; }
+      .vline {
+        position: absolute; left: 90px; top: 1400px; width: 900px; text-align: center;
+        font-size: 36px; line-height: 1.3; color: #eaf0ff;
+        opacity: 0; will-change: transform, opacity;
+      }
+      /* banda heroica con el coche ganador */
+      .band {
+        position: absolute; left: 0; top: 760px; width: 1080px; height: 560px; overflow: hidden;
+        opacity: 0; will-change: transform, opacity;
+      }
+      .band img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.12) brightness(.60); }
+      .band::before {
+        content: ""; position: absolute; inset: 0; z-index: 2;
+        background: linear-gradient(180deg, rgba(7,10,18,.96) 0%, rgba(7,10,18,0) 17%, rgba(7,10,18,0) 84%, rgba(7,10,18,.96) 100%);
+      }
+      .band::after {
+        content: ""; position: absolute; inset: 0; z-index: 1; mix-blend-mode: screen;
+        background: linear-gradient(180deg, rgba(245,196,81,.22) 0%, rgba(245,196,81,0) 58%);
+      }
+
+      /* ══ CTA (27 - 30 s) ════════════════════════════════════════════ */
+      .ckicker {
+        position: absolute; left: 0; right: 0; top: 212px; text-align: center;
+        font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 24px;
+        letter-spacing: .42em; color: var(--gold);
+        opacity: 0; will-change: transform, opacity;
+      }
+      .chead {
+        position: absolute; left: 0; right: 0; text-align: center;
+        font-family: "Anton", sans-serif; font-size: 112px; line-height: .94;
+        letter-spacing: .01em; color: #fff;
+        text-shadow: 0 12px 50px rgba(0,0,0,.8);
+        opacity: 0; will-change: transform, opacity;
+      }
+      #chead1 { top: 272px; }
+      #chead2 { top: 378px; }
+      #chead3 { top: 484px; color: var(--gold); text-shadow: 0 12px 50px rgba(0,0,0,.8), 0 0 44px rgba(245,196,81,.26); }
+      .col {
+        position: absolute; top: 700px; width: 180px;
+        opacity: 0; will-change: transform, opacity;
+      }
+      #col5 { left: 58px; } #col4 { left: 255px; } #col3 { left: 452px; }
+      #col2 { left: 649px; } #col1 { left: 846px; }
+      .colNum {
+        text-align: center; font-family: "Anton", sans-serif; font-size: 34px; color: var(--gold);
+      }
+      .colPlate {
+        width: 180px; height: 84px; margin-top: 8px; background: #fff; border-radius: 4px;
+        overflow: hidden; display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 12px 34px rgba(0,0,0,.5);
+      }
+      .colPlate img { max-width: 152px; max-height: 56px; object-fit: contain; }
+      .colPhoto {
+        width: 180px; height: 120px; margin-top: 10px; border-radius: 8px; overflow: hidden;
+        background: #0a0e18;
+      }
+      .colPhoto img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.08) brightness(.70); }
+      .col.top .colPlate { box-shadow: 0 0 0 3px var(--gold), 0 16px 44px rgba(245,196,81,.32); }
+      .col.top .colPhoto img { filter: grayscale(.5) contrast(1.05) brightness(.92); }
+      .cchip {
+        position: absolute; left: 320px; top: 1058px; width: 440px; height: 112px;
+        border-radius: 56px; background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+        color: #16110a; font-weight: 800; font-size: 42px; letter-spacing: .05em;
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; will-change: transform, opacity;
+      }
+      .csource {
+        position: absolute; left: 0; right: 0; top: 1212px; text-align: center;
+        font-size: 23px; color: var(--muted);
+        opacity: 0; will-change: transform, opacity;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="stage"
+      data-composition-id="ranking-millonarios"
+      data-start="0"
+      data-duration="30"
+      data-width="1080"
+      data-height="1920"
+      data-fps="30"
+    >
+      <audio id="track" src="../assets/audio/music-30s.mp3" data-start="0" data-duration="30"
+        data-media-start="0" data-track-index="1" data-volume="1" data-var-src="musicSrc"
+        preload="auto"></audio>
+
+      <!-- ══ FONDO ══ -->
+      <div class="scene" id="bgScene" data-start="0" data-duration="30">
+        <div id="bgBase"></div>
+        <div id="glowGold"></div>
+        <div id="glowBlue"></div>
+        <div id="vig"></div>
+        <div id="sweep"></div>
+      </div>
+
+      <!-- ══ PRESENTADOR ══ -->
+      <div class="scene" id="presenterScene">
+        <video id="presenter" src="../assets/clips/talker-slow.mp4" data-start="0" data-duration="24"
+          data-media-start="0" data-var-src="presenterSrc" muted playsinline preload="auto"></video>
+        <div id="presenterEdge"></div>
+        <div id="presenterVeil"></div>
+      </div>
+
+      <!-- ══ CABECERA ══ -->
+      <div class="scene" id="headerScene" data-start="0" data-duration="30">
+        <div id="kicker" data-var-text="kicker">TOP 5 · MILLONARIOS</div>
+        <div id="kickerRule"></div>
+      </div>
+
+      <!-- ══ HOOK ══ -->
+      <div class="scene" id="hookScene" data-start="0" data-duration="4">
+        <div class="h1l" id="h1a" data-var-text="hookL1">LOS 5 COCHOS</div>
+        <div class="h1l" id="h1b" data-var-text="hookL2">DE LOS MILLONARIOS</div>
+        <div id="hookSub" data-var-text="hookSub">Y el orden te va a sorprender.</div>
+        <div id="hookRule"></div>
+      </div>
+
+      <!-- ══ ESCALERA ══ -->
+      <div class="scene" id="listScene" data-start="2.3" data-duration="21.9">
+        <div class="row" id="row5">
+          <div class="orb">
+            <div class="oglow" id="glow5"></div>
+            <div class="oring"></div>
+            <div class="oringLit" id="orbLit5"></div>
+            <div class="onum">5</div>
+            <div class="onumLit" id="numLit5">5</div>
+          </div>
+          <div class="rname" id="name5" data-var-text="n5Name">PORSCHE</div>
+          <div class="rrule" id="rule5"></div>
+        </div>
+        <div class="row" id="row4">
+          <div class="orb">
+            <div class="oglow" id="glow4"></div>
+            <div class="oring"></div>
+            <div class="oringLit" id="orbLit4"></div>
+            <div class="onum">4</div>
+            <div class="onumLit" id="numLit4">4</div>
+          </div>
+          <div class="rname" id="name4" data-var-text="n4Name">BMW</div>
+          <div class="rrule" id="rule4"></div>
+        </div>
+        <div class="row" id="row3">
+          <div class="orb">
+            <div class="oglow" id="glow3"></div>
+            <div class="oring"></div>
+            <div class="oringLit" id="orbLit3"></div>
+            <div class="onum">3</div>
+            <div class="onumLit" id="numLit3">3</div>
+          </div>
+          <div class="rname" id="name3" data-var-text="n3Name">MERCEDES-BENZ</div>
+          <div class="rrule" id="rule3"></div>
+        </div>
+        <div class="row" id="row2">
+          <div class="orb">
+            <div class="oglow" id="glow2"></div>
+            <div class="oring"></div>
+            <div class="oringLit" id="orbLit2"></div>
+            <div class="onum">2</div>
+            <div class="onumLit" id="numLit2">2</div>
+          </div>
+          <div class="rname" id="name2" data-var-text="n2Name">HONDA</div>
+          <div class="rrule" id="rule2"></div>
+        </div>
+        <div class="row" id="row1">
+          <div class="orb">
+            <div class="oglow" id="glow1"></div>
+            <div class="oring"></div>
+            <div class="oringLit" id="orbLit1"></div>
+            <div class="onum">1</div>
+            <div class="onumLit" id="numLit1">1</div>
+          </div>
+          <div class="rname" id="name1" data-var-text="n1Name">TOYOTA</div>
+          <div class="rrule" id="rule1"></div>
+        </div>
+      </div>
+
+      <!-- ══ TARJETA DE MARCA ══ -->
+      <div class="scene" id="cardScene" data-start="4" data-duration="20">
+        <div class="card" id="card5">
+          <div class="badge">Nº 5</div>
+          <div class="plate">
+            <img src="../assets/logos/porsche.png" alt="Porsche" data-var-src="porscheSrc" />
+            <div class="shine" id="shine5"></div>
+          </div>
+        </div>
+        <div class="card" id="card4">
+          <div class="badge">Nº 4</div>
+          <div class="plate">
+            <img src="../assets/logos/bmw.png" alt="BMW" data-var-src="bmwSrc" />
+            <div class="shine" id="shine4"></div>
+          </div>
+        </div>
+        <div class="card" id="card3">
+          <div class="badge">Nº 3</div>
+          <div class="plate">
+            <img src="../assets/logos/mercedes.png" alt="Mercedes-Benz" data-var-src="mercedesSrc" />
+            <div class="shine" id="shine3"></div>
+          </div>
+        </div>
+        <div class="card" id="card2">
+          <div class="badge">Nº 2</div>
+          <div class="plate">
+            <img src="../assets/logos/honda.png" alt="Honda" data-var-src="hondaSrc" />
+            <div class="shine" id="shine2"></div>
+          </div>
+        </div>
+        <div class="card" id="card1">
+          <div class="badge">Nº 1</div>
+          <div class="plate">
+            <img src="../assets/logos/toyota.png" alt="Toyota" data-var-src="toyotaSrc" />
+            <div class="shine" id="shine1"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ FRASE ══ -->
+      <div class="scene" id="punchScene" data-start="4" data-duration="20">
+        <div class="punch" id="punch5" data-var-text="n5Line">El capricho que entra en el garaje sin pedir permiso.</div>
+        <div class="punch" id="punch4" data-var-text="n4Line">El que dice que has llegado antes de hablar.</div>
+        <div class="punch" id="punch3" data-var-text="n3Line">Silencioso, enorme y con chófer incluido.</div>
+        <div class="punch" id="punch2" data-var-text="n2Line">El que se hereda de generación en generación.</div>
+        <div class="punch" id="punch1" data-var-text="n1Line">El más común en los garajes de los millonarios.</div>
+      </div>
+
+      <!-- ══ VEREDICTO ══ -->
+      <div class="scene" id="verdictScene" data-start="24" data-duration="3">
+        <div class="vkicker" id="vKicker" data-var-text="verdictKicker">EL VEREDICTO</div>
+        <div class="vone" id="vOne">Nº 1</div>
+        <div class="vflare" id="vFlare"></div>
+        <div class="vplate" id="vPlate">
+          <img src="../assets/logos/toyota.png" alt="Toyota" data-var-src="toyotaSrc" />
+        </div>
+        <div class="vline" id="vLine" data-var-text="verdictLine">El Toyota es el coche más común en los garajes de los millonarios.</div>
+      </div>
+      <div class="scene" id="bandScene" data-start="24" data-duration="6">
+        <div class="band" id="vBand">
+          <img src="../assets/coches/toyota.jpg" alt="" data-var-src="toyotaPhoto" />
+        </div>
+      </div>
+
+      <!-- ══ CTA ══ -->
+      <div class="scene" id="ctaScene" data-start="27" data-duration="3">
+        <div class="ckicker" id="cKicker" data-var-text="ctaKicker">EL RANKING COMPLETO</div>
+        <div class="chead" id="chead1" data-var-text="ctaL1">SÍGUEME</div>
+        <div class="chead" id="chead2" data-var-text="ctaL2">SI TE GUSTAN</div>
+        <div class="chead" id="chead3" data-var-text="ctaL3">LOS CARROS</div>
+        <div class="col" id="col5">
+          <div class="colNum">5</div>
+          <div class="colPlate"><img src="../assets/logos/porsche.png" alt="" data-var-src="porscheSrc" /></div>
+          <div class="colPhoto"><img src="../assets/coches/porsche.jpg" alt="" data-var-src="porschePhoto" /></div>
+        </div>
+        <div class="col" id="col4">
+          <div class="colNum">4</div>
+          <div class="colPlate"><img src="../assets/logos/bmw.png" alt="" data-var-src="bmwSrc" /></div>
+          <div class="colPhoto"><img src="../assets/coches/bmw.jpg" alt="" data-var-src="bmwPhoto" /></div>
+        </div>
+        <div class="col" id="col3">
+          <div class="colNum">3</div>
+          <div class="colPlate"><img src="../assets/logos/mercedes.png" alt="" data-var-src="mercedesSrc" /></div>
+          <div class="colPhoto"><img src="../assets/coches/mercedes.jpg" alt="" data-var-src="mercedesPhoto" /></div>
+        </div>
+        <div class="col" id="col2">
+          <div class="colNum">2</div>
+          <div class="colPlate"><img src="../assets/logos/honda.png" alt="" data-var-src="hondaSrc" /></div>
+          <div class="colPhoto"><img src="../assets/coches/honda.jpg" alt="" data-var-src="hondaPhoto" /></div>
+        </div>
+        <div class="col top" id="col1">
+          <div class="colNum">1</div>
+          <div class="colPlate"><img src="../assets/logos/toyota.png" alt="" data-var-src="toyotaSrc" /></div>
+          <div class="colPhoto"><img src="../assets/coches/toyota.jpg" alt="" data-var-src="toyotaPhoto" /></div>
+        </div>
+        <div class="cchip" id="cChip" data-var-text="handle">@TUUSUARIO</div>
+        <div class="csource" id="cSource" data-var-text="source">Datos: The State of Wealth — Ramsey Solutions · selección editorial</div>
+      </div>
+
+      <script src="../assets/vendor/gsap.min.js"></script>
+      <script>
+        window.__timelines = window.__timelines || {};
+
+        function build() {
+          /* variables en render-time (API HyperFrames 0.8.x) */
+          var V = (window.__hyperframes && window.__hyperframes.getVariables)
+            ? window.__hyperframes.getVariables() : {};
+          document.querySelectorAll("[data-var-text]").forEach(function (el) {
+            var k = el.getAttribute("data-var-text");
+            if (typeof V[k] === "string" && V[k] !== "") el.textContent = V[k];
+          });
+          document.querySelectorAll("[data-var-src]").forEach(function (el) {
+            var k = el.getAttribute("data-var-src");
+            if (typeof V[k] !== "string" || V[k] === "") return;
+            if (el.getAttribute("src") === V[k]) return;
+            el.setAttribute("src", V[k]);
+            if (el.tagName === "AUDIO" || el.tagName === "VIDEO") el.load();
+          });
+
+          if (gsap.ticker) gsap.ticker.fps(30);
+          var tl = gsap.timeline({ paused: true });
+
+          /* ══ FONDO · 0.00 ═══════════════════════════════════════════ */
+          tl.fromTo("#glowGold", { opacity: 0 }, { opacity: 1, duration: 1.3, ease: "power2.out" }, 0);
+          tl.fromTo("#glowBlue", { opacity: 0 }, { opacity: .9, duration: 1.6, ease: "power2.out" }, .2);
+
+          /* ══ PRESENTADOR · 0.10 - 24.10 ══════════════════════════════
+             Entra con un empuje corto y se va con un FUNDIDO LENTO:
+             el corte seco del final del original hacia la foto del
+             coche se pierde y la pieza respira mejor. */
+          tl.fromTo("#presenter", { opacity: 0, scale: 1.10, x: 40 },
+            { opacity: 1, scale: 1, x: 0, duration: 1.3, ease: "power3.out" }, .1);
+          tl.to("#presenter", { scale: 1.07, duration: 22.3, ease: "none" }, 1.4);
+          tl.fromTo("#presenterEdge", { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "power2.out" }, .1);
+          tl.fromTo("#presenterVeil", { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "power2.out" }, .1);
+          tl.to("#presenter", { opacity: 0, x: 130, duration: .55, ease: "power2.in" }, 23.5);
+          tl.to("#presenterEdge", { opacity: 0, duration: .55, ease: "power2.in" }, 23.5);
+          tl.to("#presenterVeil", { opacity: 0, duration: .55, ease: "power2.in" }, 23.5);
+
+          /* ══ CABECERA · 0.35 ═════════════════════════════════════════ */
+          tl.fromTo("#kicker", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: .6, ease: "expo.out" }, .35);
+          tl.fromTo("#kickerRule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .7, ease: "expo.out" }, .5);
+
+          /* ══ HOOK · 0.70 - 3.95 ══════════════════════════════════════ */
+          tl.fromTo("#h1a", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .95, ease: "expo.out" }, .7);
+          tl.fromTo("#h1b", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .95, ease: "expo.out" }, .85);
+          tl.fromTo("#hookSub", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: .7, ease: "expo.out" }, 1.5);
+          tl.fromTo("#hookRule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .8, ease: "expo.out" }, 2.1);
+          tl.to("#h1a", { opacity: 0, y: -34, duration: .45, ease: "power2.in" }, 3.45);
+          tl.to("#h1b", { opacity: 0, y: -34, duration: .45, ease: "power2.in" }, 3.45);
+          tl.to("#hookSub", { opacity: 0, y: -20, duration: .4, ease: "power2.in" }, 3.45);
+          tl.to("#hookRule", { opacity: 0, duration: .3, ease: "none" }, 3.45);
+
+          /* ══ ESCALERA · 2.30 ═════════════════════════════════════════ */
+          tl.fromTo(".row", { opacity: 0, x: -80 },
+            { opacity: 1, x: 0, duration: .85, ease: "expo.out", stagger: .09 }, 2.3);
+
+          /* ══ LAS 5 MARCAS · rejilla de 4 s (pulse de la musica) ═════ */
+          var BEATS = [
+            { r: 5, t: 4.0 }, { r: 4, t: 8.0 }, { r: 3, t: 12.0 },
+            { r: 2, t: 16.0 }, { r: 1, t: 20.0 }
+          ];
+          for (var i = 0; i < BEATS.length; i++) {
+            var T = BEATS[i].t, r = BEATS[i].r;
+            /* la tarjeta de marca entra */
+            tl.fromTo("#card" + r, { opacity: 0, y: 28, scale: .96 },
+              { opacity: 1, y: 0, scale: 1, duration: .55, ease: "expo.out" }, T);
+            tl.to("#card" + r, { opacity: 0, y: -18, duration: .3, ease: "power2.in" }, T + 3.8);
+            /* el brillo barre la placa */
+            tl.fromTo("#shine" + r, { x: -430, opacity: 0 },
+              { x: 430, opacity: .9, duration: .55, ease: "power2.inOut" }, T + .18);
+            tl.to("#shine" + r, { opacity: 0, duration: .25, ease: "none" }, T + .73);
+            /* el nombre entra en la escalera */
+            tl.fromTo("#name" + r, { opacity: 0, x: -28 },
+              { opacity: 1, x: 0, duration: .6, ease: "expo.out" }, T + .22);
+            tl.fromTo("#rule" + r, { opacity: 0, scaleX: 0 },
+              { opacity: 1, scaleX: 1, duration: .65, ease: "expo.out" }, T + .3);
+            /* el orbe se enciende */
+            tl.fromTo("#orbLit" + r, { opacity: 0, scale: .82 },
+              { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.2)" }, T + .34);
+            tl.fromTo("#numLit" + r, { opacity: 0, y: 12 },
+              { opacity: 1, y: 0, duration: .35, ease: "power2.out" }, T + .34);
+            tl.fromTo("#glow" + r, { opacity: 0, scale: .55 },
+              { opacity: 1, scale: 1, duration: .55, ease: "power3.out" }, T + .3);
+            /* la frase */
+            tl.fromTo("#punch" + r, { opacity: 0, y: 24 },
+              { opacity: 1, y: 0, duration: .55, ease: "expo.out" }, T + .5);
+            tl.to("#punch" + r, { opacity: 0, y: -16, duration: .3, ease: "power2.in" }, T + 3.8);
+          }
+          /* la escalera se va al llegar el veredicto */
+          tl.to(".row", { opacity: 0, x: -70, duration: .5, ease: "power2.in", stagger: .05 }, 23.8);
+
+          /* ══ VEREDICTO · 24.00 - 26.85 ═══════════════════════════════ */
+          tl.fromTo("#vKicker", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: .5, ease: "expo.out" }, 24);
+          tl.fromTo("#vOne", { opacity: 0, scale: .55 }, { opacity: 1, scale: 1, duration: .85, ease: "back.out(2.4)" }, 24.05);
+          tl.fromTo("#vFlare", { opacity: 0, scale: .3 }, { opacity: .95, scale: 1.5, duration: 1.1, ease: "power2.out" }, 24.05);
+          tl.to("#vFlare", { opacity: .22, scale: 1.95, duration: 1, ease: "power2.out" }, 25.15);
+          tl.fromTo("#vPlate", { opacity: 0, scale: .9, y: 22 }, { opacity: 1, scale: 1, y: 0, duration: .75, ease: "expo.out" }, 24.3);
+          tl.fromTo("#vBand", { opacity: 0, scale: 1.14 }, { opacity: 1, scale: 1, duration: 1.15, ease: "expo.out" }, 24.5);
+          tl.to("#vBand", { scale: 1.045, duration: 2.4, ease: "none" }, 25.65);
+          tl.fromTo("#vLine", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: .65, ease: "expo.out" }, 24.9);
+          tl.to("#vKicker", { opacity: 0, duration: .3, ease: "none" }, 26.85);
+          tl.to("#vOne", { opacity: 0, y: -34, duration: .35, ease: "power2.in" }, 26.85);
+          tl.to("#vPlate", { opacity: 0, y: -26, duration: .35, ease: "power2.in" }, 26.85);
+          tl.to("#vLine", { opacity: 0, y: -22, duration: .35, ease: "power2.in" }, 26.85);
+          tl.to("#vFlare", { opacity: 0, duration: .4, ease: "none" }, 26.9);
+
+          /* ══ CTA · 27.00 - 30.00 ═════════════════════════════════════ */
+          tl.to("#vBand", { y: 520, duration: .95, ease: "expo.out" }, 26.9);
+          tl.fromTo("#cKicker", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: .5, ease: "expo.out" }, 27.05);
+          tl.fromTo(".chead", { opacity: 0, y: 70 },
+            { opacity: 1, y: 0, duration: .85, ease: "expo.out", stagger: .07 }, 27.15);
+          tl.fromTo(".col", { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: .75, ease: "expo.out", stagger: .08 }, 27.5);
+          tl.fromTo("#cChip", { opacity: 0, scale: .85 }, { opacity: 1, scale: 1, duration: .65, ease: "back.out(2.2)" }, 28.1);
+          tl.fromTo("#cSource", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .55, ease: "expo.out" }, 28.4);
+          tl.fromTo("#sweep", { opacity: 0, x: 0 }, { opacity: .55, x: 2300, duration: 1.3, ease: "power2.inOut" }, 27.35);
+          tl.to("#sweep", { opacity: 0, duration: .35, ease: "none" }, 28.65);
+
+          window.__timelines["ranking-millonarios"] = tl;
+        }
+        build();   /* build sincrono: la timeline existe antes del primer fotograma */
+      </script>
+    </div>
+  </body>
+</html>
