@@ -178,7 +178,6 @@
   <div class="nombre nombre-serif" id="nom5">LEXUS</div>
   <div class="nombre" id="nom6">TOYOTA</div>
 
-  /* Ambiente */
   <!-- El cierre: la guia de "comenta tu marca" -->
   <div class="cta" id="cta">
     <div class="cta-1">COMENTA TU MARCA FAVORITA</div>
@@ -233,22 +232,17 @@
 
   const tl = gsap.timeline({ paused: true });
 
-  /* â”€â”€ Planos: entrada suave + empuje lento de camara (el vivo) â”€â”€â”€â”€â”€ */
   tl.fromTo('#p1', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.035, duration: 30, ease: 'none' }, 0);
-  /* el corte final: seco (con el smear encima) y luego empuje lento */
   tl.fromTo('#p2', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.0, duration: .05, ease: 'none' }, 24);
   tl.to('#p2', { scale: 1.05, duration: 6, ease: 'none' }, 24.05);
 
-  /* â”€â”€ La barra entra, cae y el neon parpadea como el de verdad â”€â”€â”€â”€â”€ */
   tl.fromTo('#barra', { opacity: 0, y: -46 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, .05);
-  /* el parpadeo del neon: tres pulsos rapidos al_encender */
   tl.to('.neon', { opacity: .45, duration: .05, ease: 'none' }, .62);
   tl.to('.neon', { opacity: 1, duration: .05, ease: 'none' }, .70);
   tl.to('.neon', { opacity: .6, duration: .04, ease: 'none' }, .78);
   tl.to('.neon', { opacity: 1, duration: .06, ease: 'none' }, .84);
   tl.to('#barra', { opacity: 0, duration: .25, ease: 'power2.in' }, 23.75);
 
-  /* â”€â”€ Los logos: entran uno a uno, en cadena â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const logos = [
     { id: '#lgMercedes', t: 1.7 }, { id: '#lgBmw', t: 3.0 },
     { id: '#lgPorsche', t: 4.3 }, { id: '#lgHonda', t: 5.8 }, { id: '#lgNissan', t: 7.3 },
@@ -258,10 +252,8 @@
     tl.fromTo(l.id, { opacity: 0, scale: .82, y: 12 },
       { opacity: 1, scale: 1, y: 0, duration: .45, ease: 'power4.out' }, l.t);
   }
-  /* y se van todos en el corte */
   tl.to('.logo', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
 
-  /* â”€â”€ Los nombres de marca, uno detras de otro â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const nombres = [
     { id: '#nom0', t: .3, d: 3.1 }, { id: '#nom1', t: 3.6, d: 2.2 }, { id: '#nom2', t: 6.0, d: 2.2 },
     { id: '#nom3', t: 8.4, d: 2.2 }, { id: '#nom4', t: 10.8, d: 2.2 }, { id: '#nom5', t: 13.2, d: 2.2 },
@@ -272,12 +264,10 @@
       { opacity: 1, y: 0, scale: 1, duration: .45, ease: 'power4.out' }, n.t);
     tl.to(n.id, { opacity: 0, y: -14, scale: .985, duration: .32, ease: 'power2.in' }, n.t + n.d);
   }
-  /* el sticker de NISSAN sale con su nombre */
   tl.fromTo('#stic4', { opacity: 0, scale: .94 },
     { opacity: 1, scale: 1, duration: .4, ease: 'power4.out' }, 10.8);
   tl.to('#stic4', { opacity: 0, duration: .32, ease: 'power2.in' }, 13.0);
 
-  /* â”€â”€ Las palabras: al ritmo del habla â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   /* antes del corte: ~1,05 s por palabra; despues: ~0,82 s. Se dejan
      ~0,6 s a pantalla completa: si no, no se leen. */
   const antes = 6.2, gap1 = .95, gap2 = .75, corte = 24.0;
@@ -299,26 +289,18 @@
     if (t > 27.6) break;
   }
 
-  /* â”€â”€ La transicion del destello: light leak + blowout + corte en seco â”€â”€ */
-  /* el destello calido */
   tl.fromTo('#flash', { opacity: 0 }, { opacity: .85, duration: .07, ease: 'none' }, 22.72);
   tl.to('#flash', { opacity: 0, duration: .45, ease: 'power2.out' }, 22.79);
-  /* el light leak barre la escena (de izquierda a derecha, como una lente) */
   tl.fromTo('#leak', { opacity: 0, x: 0 }, { opacity: .9, duration: .18, ease: 'power2.out' }, 22.70);
   tl.to('#leak', { x: 1350, opacity: 0, duration: .55, ease: 'power2.in' }, 22.88);
-  /* el smear: el golpe del corte, con estela */
   tl.fromTo('#smear', { opacity: 0 }, { opacity: .85, duration: .05, ease: 'none' }, 23.92);
   tl.to('#smear', { opacity: 0, duration: .22, ease: 'power2.out' }, 23.97);
-  /* el grano se mueve: el vivo de la pelicula */
   tl.to('#grano', { x: 18, y: -10, duration: 2.4, ease: 'steps(5)', repeat: -1, yoyo: true }, 0);
 
-  /* â”€â”€ La luz magenta late despacio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   tl.to('#glow', { opacity: .9, x: 26, y: -14, duration: 7, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
 
-  /* las tiras de LED persiguen los segmentos (no estan quietas) */
   tl.to('.led', { y: -22, duration: .9, ease: 'none', repeat: -1 }, 0);
 
-  /* el cierre: la guia y el fundido a negro */
   tl.fromTo('#cta', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, 28.2);
   tl.fromTo('#fundido', { opacity: 0 }, { opacity: 1, duration: .6, ease: 'power2.inOut' }, 29.4);
   window.__timelines["millonario"] = tl;
