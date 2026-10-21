@@ -1,112 +1,94 @@
 {
-  "_nota": "Fuentes del reel HUMO. El repo solo guarda este manifiesto; los clips y la musica se descargan y se montan en la nube (demo2/preparar-nuevo.mjs). Origen: Mixkit (licencia libre, sin clave).",
+  "_nota": "Fuentes del reel HUMO v2 (calidad Resolve). El repo solo guarda este manifiesto: los clips, la musica y los efectos se descargan y se montan en la nube (demo2/preparar-nuevo.mjs). Origen: Mixkit (licencia libre, sin clave).",
   "salida": "assets/nuevo/procesado",
+  "fps": 24,
+  "rejilla": {
+    "_nota": "147 BPM medidos en la pista 614. Compas = 1.632 s. La musica se corta en 0.96 s para que el primer golpe caiga en 0.",
+    "compas": 1.632,
+    "corte_musica": 0.96
+  },
   "perfil": {
     "ancho": 1080,
     "alto": 1920,
-    "codec": "libx264",
     "perfil_h264": "baseline",
     "nivel_h264": "3.1",
     "pix_fmt": "yuv420p",
-    "crf": 23,
-    "preset": "veryfast",
-    "gradado": "eq=contrast=1.12:saturation=0.78:gamma=0.98,colorbalance=bs=0.04:rm=-0.015"
+    "crf": 21,
+    "preset": "veryfast"
+  },
+  "grados": {
+    "calido": {
+      "curves": "curves=r='0/0 0.25/0.20 0.5/0.5 0.75/0.80 1/0.97':g='0/0 0.25/0.19 0.5/0.5 0.75/0.78 1/0.95':b='0/0.02 0.25/0.16 0.5/0.46 0.75/0.72 1/0.92'",
+      "tono": "colorbalance=rs=-0.02:gs=0.0:bs=0.06:rm=0.03:gm=0.0:bm=0.0:rh=0.05:gh=0.0:bh=-0.05",
+      "eq": "eq=contrast=1.10:saturation=0.92:gamma=1.01",
+      "halation": 0.18,
+      "vineta": "vignette=angle=PI/5",
+      "grano": "noise=alls=5:allf=t+u"
+    },
+    "frio": {
+      "curves": "curves=r='0/0 0.25/0.19 0.5/0.5 0.75/0.79 1/0.96':g='0/0.01 0.25/0.19 0.5/0.5 0.75/0.78 1/0.94':b='0/0.05 0.25/0.20 0.5/0.49 0.75/0.75 1/0.93'",
+      "tono": "colorbalance=rs=0.04:gs=0.0:bs=-0.03:rm=0.0:gm=0.0:bm=0.02:rh=0.0:gh=0.0:bh=0.02",
+      "eq": "eq=contrast=1.12:saturation=0.88:gamma=1.0",
+      "halation": 0.14,
+      "vineta": "vignette=angle=PI/5",
+      "grano": "noise=alls=5:allf=t+u"
+    },
+    "neutro": {
+      "curves": "curves=r='0/0 0.25/0.20 0.5/0.5 0.75/0.80 1/0.98':g='0/0 0.25/0.20 0.5/0.5 0.75/0.80 1/0.97':b='0/0.02 0.25/0.18 0.5/0.48 0.75/0.76 1/0.94'",
+      "tono": "colorbalance=rs=0:gs=0:bs=0:rm=0:gm=0:bm=0:rh=0:gh=0:bh=0",
+      "eq": "eq=contrast=1.08:saturation=0.95",
+      "halation": 0.12,
+      "vineta": "vignette=angle=PI/5",
+      "grano": "noise=alls=4:allf=t+u"
+    },
+    "polvo": {
+      "curves": "",
+      "tono": "",
+      "eq": "eq=contrast=0.85:saturation=0.35:brightness=0.06",
+      "halation": 0,
+      "vineta": "",
+      "grano": "noise=alls=3:allf=t"
+    }
   },
   "clips": [
-    {
-      "slug": "black-background-with-smoke-foreground",
-      "id": "1968",
-      "calidad": "720",
-      "inicio": 2.0,
-      "duracion": 6.0,
-      "encuadre": "centro",
-      "uso": "apertura + cierre"
-    },
-    {
-      "slug": "a-trail-of-smoke-rapidly-twirls-over-a-dark-background",
-      "id": "50951",
-      "calidad": "720",
-      "inicio": 5.0,
-      "duracion": 6.0,
-      "encuadre": "izquierda",
-      "uso": "montaje"
-    },
-    {
-      "slug": "smoke-in-motion",
-      "id": "1964",
-      "calidad": "720",
-      "inicio": 8.0,
-      "duracion": 6.0,
-      "encuadre": "centro",
-      "uso": "montaje"
-    },
-    {
-      "slug": "grey-smoke-on-a-black-background",
-      "id": "45298",
-      "calidad": "720",
-      "inicio": 3.0,
-      "duracion": 5.5,
-      "encuadre": "derecha",
-      "uso": "tipografia"
-    },
-    {
-      "slug": "white-smoke-with-black-background",
-      "id": "1960",
-      "calidad": "720",
-      "inicio": 4.0,
-      "duracion": 5.0,
-      "encuadre": "centro",
-      "uso": "declaracion"
-    },
-    {
-      "slug": "plume-of-smoke-in-lower-third",
-      "id": "1962",
-      "calidad": "720",
-      "inicio": 2.0,
-      "duracion": 5.0,
-      "encuadre": "centro",
-      "uso": "montaje"
-    },
-    {
-      "slug": "smoke-from-power-plant",
-      "id": "4362",
-      "calidad": "720",
-      "inicio": 12.0,
-      "duracion": 6.0,
-      "encuadre": "izquierda",
-      "uso": "datos"
-    },
-    {
-      "slug": "depressed-guy-smoking-in-the-dark",
-      "id": "3925",
-      "calidad": "720",
-      "inicio": 3.0,
-      "duracion": 5.0,
-      "encuadre": "centro",
-      "uso": "proceso"
-    }
+    { "nombre": "apertura", "base": "1968", "inicio": 2.0, "duracion": 3.4, "encuadre": "centro", "grado": "calido",
+      "overlay": { "id": "48495", "inicio": 0.5, "opacidad": 0.32 } },
+    { "nombre": "declaracion", "base": "1960", "inicio": 4.0, "duracion": 3.3, "encuadre": "centro", "grado": "calido",
+      "overlay": { "id": "25284", "inicio": 1.0, "opacidad": 0.30 } },
+    { "nombre": "titulo", "base": "1964", "inicio": 8.0, "duracion": 3.3, "encuadre": "centro", "grado": "calido",
+      "overlay": { "id": "46236", "inicio": 3.0, "opacidad": 0.26 } },
+    { "nombre": "m1", "base": "50951", "inicio": 5.0, "duracion": 0.9, "encuadre": "izquierda", "grado": "calido",
+      "overlay": { "id": "48011", "inicio": 0.5, "opacidad": 0.24 } },
+    { "nombre": "m2", "base": "1962", "inicio": 2.0, "duracion": 0.9, "encuadre": "centro", "grado": "calido",
+      "overlay": { "id": "47282", "inicio": 2.0, "opacidad": 0.30 } },
+    { "nombre": "m3", "base": "4362", "inicio": 12.0, "duracion": 0.9, "encuadre": "izquierda", "grado": "calido", "overlay": null },
+    { "nombre": "m4", "base": "3925", "inicio": 3.0, "duracion": 0.9, "encuadre": "centro", "grado": "frio", "overlay": null },
+    { "nombre": "m5", "base": "45298", "inicio": 3.0, "duracion": 0.9, "encuadre": "derecha", "grado": "calido",
+      "overlay": { "id": "48012", "inicio": 1.0, "opacidad": 0.22 } },
+    { "nombre": "m6", "base": "1968", "inicio": 6.0, "duracion": 2.6, "encuadre": "centro", "grado": "frio",
+      "overlay": { "id": "48013", "inicio": 2.0, "opacidad": 0.30 } },
+    { "nombre": "tipografia", "base": "45298", "inicio": 6.0, "duracion": 3.3, "encuadre": "derecha", "grado": "calido",
+      "overlay": { "id": "48494", "inicio": 0.5, "opacidad": 0.20 } },
+    { "nombre": "datos", "base": "4362", "inicio": 20.0, "duracion": 3.3, "encuadre": "izquierda", "grado": "calido",
+      "overlay": { "id": "47283", "inicio": 1.0, "opacidad": 0.18 } },
+    { "nombre": "metodo", "base": "3925", "inicio": 6.0, "duracion": 3.3, "encuadre": "centro", "grado": "frio", "overlay": null },
+    { "nombre": "cierre", "base": "1968", "inicio": 9.0, "duracion": 3.9, "encuadre": "centro", "grado": "calido",
+      "overlay": { "id": "46237", "inicio": 4.0, "opacidad": 0.28 } }
+  ],
+  "capas": [
+    { "nombre": "polvo", "base": "47285", "inicio": 0.0, "duracion": 30.0, "encuadre": "centro", "grado": "neutro", "overlay": null }
   ],
   "musica": [
-    {
-      "id": "614",
-      "genero": "cinematic",
-      "archivo": "music-614.mp3",
-      "inicio": 0.0,
-      "duracion": 30.0
-    },
-    {
-      "id": "871",
-      "genero": "cinematic-tension",
-      "archivo": "music-871.mp3",
-      "inicio": 0.0,
-      "duracion": 30.0
-    },
-    {
-      "id": "127",
-      "genero": "ambient",
-      "archivo": "music-127.mp3",
-      "inicio": 0.0,
-      "duracion": 30.0
-    }
+    { "id": "614", "archivo": "music-614.mp3", "inicio": 0.96, "duracion": 30.0 }
+  ],
+  "sfx": [
+    { "id": "1489", "archivo": "sfx-whoosh-1.mp3", "en": 3.264, "ganancia": 0.30 },
+    { "id": "1491", "archivo": "sfx-whoosh-2.mp3", "en": 6.528, "ganancia": 0.30 },
+    { "id": "1492", "archivo": "sfx-whoosh-3.mp3", "en": 9.792, "ganancia": 0.36 },
+    { "id": "787",  "archivo": "sfx-cine-whoosh.mp3", "en": 16.320, "ganancia": 0.32 },
+    { "id": "788",  "archivo": "sfx-impact-1.mp3", "en": 19.584, "ganancia": 0.34 },
+    { "id": "2908", "archivo": "sfx-impact-2.mp3", "en": 22.848, "ganancia": 0.32 },
+    { "id": "1143", "archivo": "sfx-impact-3.mp3", "en": 26.112, "ganancia": 0.40 },
+    { "id": "1714", "archivo": "sfx-hit-open.mp3", "en": 0.0, "ganancia": 0.26 }
   ]
 }

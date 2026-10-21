@@ -12,7 +12,7 @@
 <meta charset="utf-8">
 <title>HUMO - reel de estudio 30 s</title>
 <style>
-  /* ── Tipografias (locales, nunca CDN) ─────────────────────────────── */
+  /* ── Tipografias locales (nunca CDN) ─────────────────────────────── */
   @font-face { font-family:'Anton'; font-style:normal; font-weight:400;
     src:url('../assets/fonts/anton-400.woff2') format('woff2'); }
   @font-face { font-family:'Instrument Serif'; font-style:normal; font-weight:400;
@@ -24,112 +24,93 @@
   @font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:600;
     src:url('../assets/fonts/nuevo/jetbrains-mono-latin-600-normal.woff2') format('woff2'); }
 
-  /* ── Sistema ──────────────────────────────────────────────────────── */
   :root{
-    --bg:#0B0A08;          /* negro calido, nunca #000 puro            */
-    --surface:#14110C;
-    --fg:#F4EFE3;          /* blanco calido                            */
-    --muted:#8C8174;
-    --accent:#E3A44B;      /* ambar: un solo acento en toda la pieza   */
-    --accent-deep:#A96A18;
-    --line:rgba(227,164,75,.32);
-    --m:96px;              /* margen: nada toca el borde               */
+    --bg:#0B0A08; --fg:#F4EFE3; --muted:#8C8174;
+    --accent:#E3A44B; --accent-deep:#A96A18; --cool:#4E7C8C;
+    --line:rgba(227,164,75,.30); --m:96px;
   }
-
   *{ box-sizing:border-box; margin:0; padding:0; }
   html,body{ background:var(--bg); }
   #root{
     position:relative; width:100%; height:100%; overflow:hidden;
     background:var(--bg); color:var(--fg);
-    font-family:'JetBrains Mono',monospace;
-    -webkit-font-smoothing:antialiased;
+    font-family:'JetBrains Mono',monospace; -webkit-font-smoothing:antialiased;
   }
 
-  /* ── Capa de video (clips en la raiz, el framework gestiona su ventana) */
-  .shot{
-    position:absolute; inset:0; width:100%; height:100%;
-    object-fit:cover; opacity:0; will-change:opacity;
-    background:#000;
-  }
+  /* ── Material: clips en la raiz (el framework gestiona su ventana) ── */
+  .shot{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    opacity:0; background:#000; will-change:opacity,transform; }
+  .dust{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    opacity:.26; mix-blend-mode:screen; will-change:transform,opacity; pointer-events:none; }
 
-  /* ── Capas de ambiente persistentes ─────────────────────────────── */
-  .glow{            /* halo ambar: gradiente radial, sin filter:blur  */
-    position:absolute; border-radius:50%;
-    background:radial-gradient(circle at 50% 50%, rgba(227,164,75,.34) 0%, rgba(227,164,75,.10) 42%, rgba(227,164,75,0) 70%);
-    will-change:transform,opacity; pointer-events:none;
-  }
-  .ghost{           /* tipografia fantasma: textura, no protagonista   */
-    position:absolute; font-family:'Anton',sans-serif; font-size:420px; line-height:.8;
-    letter-spacing:-.03em; color:rgba(244,239,227,.12);
-    white-space:nowrap; will-change:transform,opacity; pointer-events:none;
-  }
-  .grain{           /* grano de pelicula: asset local, deriva lenta   */
-    position:absolute; left:-8%; top:-8%; width:116%; height:116%;
+  /* ── Ambiente ───────────────────────────────────────────────────── */
+  .glow{ position:absolute; border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, rgba(227,164,75,.30) 0%, rgba(227,164,75,.09) 44%, rgba(227,164,75,0) 70%);
+    will-change:transform,opacity; pointer-events:none; }
+  .glow-cool{ background:radial-gradient(circle at 50% 50%, rgba(78,124,140,.34) 0%, rgba(78,124,140,.10) 44%, rgba(78,124,140,0) 70%); }
+  .ghost{ position:absolute; font-family:'Anton',sans-serif; font-size:430px; line-height:.8;
+    letter-spacing:-.03em; color:rgba(244,239,227,.10); white-space:nowrap;
+    will-change:transform,opacity; pointer-events:none; }
+  .grain{ position:absolute; left:-8%; top:-8%; width:116%; height:116%;
     background-image:url('../assets/grain.png'); background-size:256px 256px;
-    opacity:.09; will-change:transform; pointer-events:none;
-  }
-  .rule{            /* filete: se dibuja con scaleX                   */
-    height:2px; background:var(--line); transform-origin:left center;
-    will-change:transform;
-  }
-  .rule-v{          /* filete vertical                                */
-    width:2px; background:var(--line); transform-origin:center top;
-    will-change:transform;
-  }
+    opacity:.10; will-change:transform; pointer-events:none; }
+  .vig{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(120% 78% at 50% 42%, rgba(0,0,0,0) 36%, rgba(0,0,0,.66) 100%); }
+
+  /* ── Estructura de estudio: filetes, ticks, marcas de registro ───── */
+  .rule{ height:2px; background:var(--line); transform-origin:left center; will-change:transform; }
+  .rule-cool{ background:rgba(78,124,140,.45); }
+  .tick{ position:absolute; width:2px; height:16px; background:var(--line); will-change:transform,opacity; }
+  .reg{ position:absolute; width:26px; height:26px; will-change:opacity,transform; }
+  .reg::before,.reg::after{ content:''; position:absolute; background:var(--line); }
+  .reg::before{ left:12px; top:0; width:2px; height:26px; }
+  .reg::after{ left:0; top:12px; width:26px; height:2px; }
+  .shutter{ position:absolute; top:0; bottom:0; width:2px; background:var(--fg);
+    opacity:.16; will-change:transform,opacity; }
 
   /* ── Tipografia ─────────────────────────────────────────────────── */
-  .ttl{             /* titular condensada                             */
-    font-family:'Anton',sans-serif; text-transform:uppercase;
-    letter-spacing:-.035em; line-height:.86; will-change:transform,opacity;
-  }
-  .serif{           /* frase editorial, serif italica                 */
-    font-family:'Instrument Serif',serif; font-style:italic;
-    line-height:1.02; letter-spacing:-.01em; will-change:transform,opacity;
-  }
-  .lbl{             /* etiqueta tecnica, mono                         */
-    font-family:'JetBrains Mono',monospace; font-weight:600;
-    font-size:22px; letter-spacing:.2em; text-transform:uppercase;
-    color:var(--muted); will-change:transform,opacity;
-  }
+  .ttl{ font-family:'Anton',sans-serif; text-transform:uppercase;
+    letter-spacing:-.035em; line-height:.84; will-change:transform,opacity; }
+  .serif{ font-family:'Instrument Serif',serif; font-style:italic;
+    line-height:1.02; letter-spacing:-.01em; will-change:transform,opacity; }
+  .lbl{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:21px;
+    letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+    will-change:transform,opacity; }
   .lbl-accent{ color:var(--accent); }
-  .letter{ display:inline-block; will-change:transform; }
+  .lbl-cool{ color:var(--cool); }
   .mask{ display:inline-block; overflow:hidden; vertical-align:top; }
   .mask i{ display:inline-block; font-style:inherit; will-change:transform; }
-  #s5mask{ will-change:transform; }
+  .w{ display:inline-block; overflow:hidden; vertical-align:bottom; }
+  .w i{ display:inline-block; font-style:inherit; will-change:transform; }
 
   /* ── Escenas ───────────────────────────────────────────────────── */
   .scene{ position:absolute; inset:0; }
   .layer{ position:absolute; inset:0; will-change:transform,opacity; }
 
-  .sweep{           /* barrido de luz: barra, no degradado a pantalla   */
-    position:absolute; top:-20%; left:-40%; width:34%; height:140%;
-    background:linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,238,205,.20) 45%, rgba(255,255,255,0) 100%);
-    will-change:transform,opacity; pointer-events:none;
-  }
-  .flash{           /* fogonazo de corte                                */
-    position:absolute; inset:0; background:var(--accent); opacity:0;
-    will-change:opacity; pointer-events:none;
-  }
-  .vig{             /* vineta: radial, sin filtro                       */
-    position:absolute; inset:0; pointer-events:none;
-    background:radial-gradient(120% 80% at 50% 45%, rgba(0,0,0,0) 38%, rgba(0,0,0,.62) 100%);
-  }
+  /* ── Efectos de transicion (tecnica del catalogo de HyperFrames) ── */
+  .flash{ position:absolute; inset:0; background:#FFF8EC; opacity:0;
+    will-change:opacity,transform; pointer-events:none; }
+  .streak{ position:absolute; top:-10%; height:120%; width:46%;
+    background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,240,214,.22) 42%, rgba(255,255,255,0) 100%);
+    will-change:transform,opacity; pointer-events:none; }
+  .leak{ position:absolute; width:1200px; height:1200px; border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, rgba(255,214,150,.34) 0%, rgba(227,164,75,.10) 40%, rgba(227,164,75,0) 68%);
+    mix-blend-mode:screen; will-change:transform,opacity; pointer-events:none; }
 
-  /* ── Bloques de datos ──────────────────────────────────────────── */
-  .stat{ display:flex; align-items:baseline; gap:22px; will-change:transform,opacity; }
-  .stat-n{ font-family:'Anton',sans-serif; font-size:92px; line-height:.9; letter-spacing:-.02em; color:var(--fg); }
-  .stat-u{ font-family:'Instrument Serif',serif; font-style:italic; font-size:40px; color:var(--accent); }
-  .stat-l{ font-family:'JetBrains Mono',monospace; font-size:20px; letter-spacing:.18em; color:var(--muted); text-transform:uppercase; }
+  /* ── Datos ─────────────────────────────────────────────────────── */
+  .stat{ display:flex; align-items:baseline; gap:20px; will-change:transform,opacity; }
+  .stat-n{ font-family:'Anton',sans-serif; font-size:96px; line-height:.9; letter-spacing:-.02em; }
+  .stat-u{ font-family:'Instrument Serif',serif; font-style:italic; font-size:42px; color:var(--accent); }
+  .stat-l{ font-family:'JetBrains Mono',monospace; font-size:19px; letter-spacing:.18em;
+    color:var(--muted); text-transform:uppercase; }
   .bar{ height:6px; background:var(--accent); transform-origin:left center; will-change:transform; }
-  .bar-track{ height:6px; background:rgba(244,239,227,.13); }
+  .bar-track{ height:6px; background:rgba(244,239,227,.12); }
+  .step{ display:flex; align-items:center; gap:24px; will-change:transform,opacity; }
+  .step-n{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:19px; color:var(--accent); letter-spacing:.1em; }
+  .step-t{ font-family:'Anton',sans-serif; font-size:58px; letter-spacing:-.02em; text-transform:uppercase; }
+  .arrow{ width:78px; height:2px; background:var(--line); transform-origin:left center; will-change:transform; }
 
-  /* ── Proceso ───────────────────────────────────────────────────── */
-  .step{ display:flex; align-items:center; gap:26px; will-change:transform,opacity; }
-  .step-n{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:20px; color:var(--accent); letter-spacing:.1em; }
-  .step-t{ font-family:'Anton',sans-serif; font-size:56px; letter-spacing:-.02em; text-transform:uppercase; }
-  .arrow{ width:74px; height:2px; background:var(--line); transform-origin:left center; will-change:transform; }
-
-  /* ── Marca (SVG original) ─────────────────────────────────────── */
+  /* ── Marca ─────────────────────────────────────────────────────── */
   .mark{ position:absolute; will-change:transform,opacity; }
   .mark-ring{ fill:none; stroke:var(--accent); stroke-width:3; transform-origin:center; will-change:transform,opacity; }
   .mark-dot{ fill:var(--accent); transform-origin:center; will-change:transform; }
@@ -137,96 +118,116 @@
 </head>
 <body>
 
-<div id="root" data-composition-id="humo-reel" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
+<div id="root" data-composition-id="humo-reel" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="24">
 
-  <!-- ═══ MATERIAL: clips en la raiz, el framework gestiona su ventana ═══ -->
-  <video id="v1" class="shot clip" data-start="0"    data-duration="3.4"  data-track-index="0" src="assets/nuevo/procesado/black-background-with-smoke-foreground.mp4" muted playsinline></video>
-  <video id="v2" class="shot clip" data-start="3.4"  data-duration="3.2"  data-track-index="0" src="assets/nuevo/procesado/white-smoke-with-black-background.mp4" muted playsinline></video>
-  <video id="v3" class="shot clip" data-start="6.6"  data-duration="3.6"  data-track-index="0" src="assets/nuevo/procesado/smoke-in-motion.mp4" muted playsinline></video>
-  <video id="v4" class="shot clip" data-start="10.2" data-duration="1.5"  data-track-index="0" src="assets/nuevo/procesado/a-trail-of-smoke-rapidly-twirls-over-a-dark-background.mp4" muted playsinline></video>
-  <video id="v5" class="shot clip" data-start="11.6" data-duration="1.3"  data-track-index="0" src="assets/nuevo/procesado/plume-of-smoke-in-lower-third.mp4" muted playsinline></video>
-  <video id="v6" class="shot clip" data-start="12.8" data-duration="1.4"  data-track-index="0" src="assets/nuevo/procesado/smoke-from-power-plant.mp4" muted playsinline></video>
-  <video id="v7" class="shot clip" data-start="14.1" data-duration="1.4"  data-track-index="0" src="assets/nuevo/procesado/depressed-guy-smoking-in-the-dark.mp4" muted playsinline></video>
-  <video id="v8" class="shot clip" data-start="15.4" data-duration="1.1"  data-track-index="0" src="assets/nuevo/procesado/grey-smoke-on-a-black-background.mp4" muted playsinline></video>
-  <video id="v9" class="shot clip" data-start="16.4" data-duration="3.4"  data-track-index="0" src="assets/nuevo/procesado/grey-smoke-on-a-black-background.mp4" muted playsinline></video>
-  <video id="v10" class="shot clip" data-start="19.8" data-duration="3.4"  data-track-index="0" src="assets/nuevo/procesado/smoke-from-power-plant.mp4" muted playsinline></video>
-  <video id="v11" class="shot clip" data-start="23.2" data-duration="3.6"  data-track-index="0" src="assets/nuevo/procesado/depressed-guy-smoking-in-the-dark.mp4" muted playsinline></video>
-  <video id="v12" class="shot clip" data-start="26.8" data-duration="3.2"  data-track-index="0" src="assets/nuevo/procesado/black-background-with-smoke-foreground.mp4" muted playsinline></video>
+  <!-- ═══ MATERIAL (clips en la raiz) ═══ -->
+  <video id="v1"  class="shot clip" data-start="0"      data-duration="3.264" data-track-index="0" src="assets/nuevo/procesado/apertura.mp4" muted playsinline></video>
+  <video id="v2"  class="shot clip" data-start="3.264"  data-duration="3.264" data-track-index="0" src="assets/nuevo/procesado/declaracion.mp4" muted playsinline></video>
+  <video id="v3"  class="shot clip" data-start="6.528"  data-duration="3.264" data-track-index="0" src="assets/nuevo/procesado/titulo.mp4" muted playsinline></video>
+  <video id="v4"  class="shot clip" data-start="9.792"  data-duration="0.816" data-track-index="0" src="assets/nuevo/procesado/m1.mp4" muted playsinline></video>
+  <video id="v5"  class="shot clip" data-start="10.608" data-duration="0.816" data-track-index="0" src="assets/nuevo/procesado/m2.mp4" muted playsinline></video>
+  <video id="v6"  class="shot clip" data-start="11.424" data-duration="0.816" data-track-index="0" src="assets/nuevo/procesado/m3.mp4" muted playsinline></video>
+  <video id="v7"  class="shot clip" data-start="12.240" data-duration="0.816" data-track-index="0" src="assets/nuevo/procesado/m4.mp4" muted playsinline></video>
+  <video id="v8"  class="shot clip" data-start="13.056" data-duration="0.816" data-track-index="0" src="assets/nuevo/procesado/m5.mp4" muted playsinline></video>
+  <video id="v9"  class="shot clip" data-start="13.872" data-duration="2.448" data-track-index="0" src="assets/nuevo/procesado/m6.mp4" muted playsinline></video>
+  <video id="v10" class="shot clip" data-start="16.320" data-duration="3.264" data-track-index="0" src="assets/nuevo/procesado/tipografia.mp4" muted playsinline></video>
+  <video id="v11" class="shot clip" data-start="19.584" data-duration="3.264" data-track-index="0" src="assets/nuevo/procesado/datos.mp4" muted playsinline></video>
+  <video id="v12" class="shot clip" data-start="22.848" data-duration="3.264" data-track-index="0" src="assets/nuevo/procesado/metodo.mp4" muted playsinline></video>
+  <video id="v13" class="shot clip" data-start="26.112" data-duration="3.888" data-track-index="0" src="assets/nuevo/procesado/cierre.mp4" muted playsinline></video>
 
-  <!-- ═══ AMBIENTE PERSISTENTE ═══ -->
-  <div class="glow" id="glowA" style="left:-260px; top:180px; width:900px; height:900px;"></div>
-  <div class="glow" id="glowB" style="right:-300px; bottom:120px; width:820px; height:820px; opacity:.7;"></div>
-  <div class="ghost" id="ghostWord" style="left:-40px; bottom:280px;">HUMO</div>
+  <!-- Polvo en suspension: capa de primer plano entre el material y el texto -->
+  <video id="dust" class="dust clip" data-start="0" data-duration="30" data-track-index="1" src="assets/nuevo/procesado/polvo.mp4" muted playsinline></video>
+
+  <!-- ═══ AMBIENTE ═══ -->
+  <div class="glow" id="glowA" style="left:-280px; top:120px; width:920px; height:920px;"></div>
+  <div class="glow glow-cool" id="glowB" style="right:-320px; bottom:80px; width:840px; height:840px; opacity:.65;"></div>
+  <div class="ghost" id="ghostWord" style="left:-40px; bottom:250px;">HUMO</div>
   <div class="grain" id="grain"></div>
   <div class="vig"></div>
+  <div class="leak" id="leakA" style="left:-520px; top:220px; opacity:0;"></div>
 
-  <!-- ═══ BARRA SUPERIOR / INFERIOR ═══ -->
+  <!-- ═══ HUD DE ESTUDIO ═══ -->
   <div class="scene" id="hud" data-start="0" data-duration="30">
     <div class="layer">
       <div class="rule" id="ruleTop" style="position:absolute; left:96px; right:96px; top:150px;"></div>
       <div class="rule" id="ruleBottom" style="position:absolute; left:96px; right:96px; bottom:150px;"></div>
       <div class="lbl" id="lblTop" style="position:absolute; left:96px; top:104px;">HUMO / STUDIO</div>
       <div class="lbl lbl-accent" id="lblRight" style="position:absolute; right:96px; top:104px;">REEL 30s</div>
-      <div class="lbl" id="lblBottom" style="position:absolute; left:96px; bottom:104px;">9:16 &nbsp;30 FPS &nbsp;H.264</div>
-      <div class="lbl" id="lblTC" style="position:absolute; right:96px; bottom:104px;">00:30:00</div>
+      <div class="lbl" id="lblBottom" style="position:absolute; left:96px; bottom:104px;">9:16 &nbsp;24 FPS &nbsp;H.264</div>
+      <div class="lbl lbl-accent" id="lblTC" style="position:absolute; right:96px; bottom:104px;">00:00:00</div>
+      <div class="reg" id="reg1" style="left:44px; top:44px;"></div>
+      <div class="reg" id="reg2" style="right:44px; bottom:44px;"></div>
+      <div class="tick" id="tk1" style="left:96px; bottom:186px;"></div>
+      <div class="tick" id="tk2" style="left:108px; bottom:186px;"></div>
+      <div class="tick" id="tk3" style="left:120px; bottom:186px;"></div>
+      <div class="tick" id="tk4" style="left:132px; bottom:186px;"></div>
+      <div class="tick" id="tk5" style="left:144px; bottom:186px;"></div>
+      <div class="shutter" id="sh1" style="left:300px;"></div>
+      <div class="shutter" id="sh2" style="left:520px;"></div>
+      <div class="shutter" id="sh3" style="left:740px;"></div>
     </div>
   </div>
 
-  <!-- ═══ S1 · APERTURA ═══ -->
-  <div class="scene" id="s1" data-start="0" data-duration="3.4">
+  <!-- ═══ S1 · APERTURA (0.000 - 3.264) ═══ -->
+  <div class="scene" id="s1" data-start="0" data-duration="3.264">
     <div class="layer">
-      <div class="ttl" id="wordmark" style="position:absolute; left:96px; top:700px; font-size:240px;"><span class="mask"><i>H</i></span><span class="mask"><i>U</i></span><span class="mask"><i>M</i></span><span class="mask"><i>O</i></span></div>
-      <div class="serif" id="s1sub" style="position:absolute; left:96px; top:1010px; font-size:64px; color:var(--fg); max-width:760px;">Motion &amp; direcci&oacute;n para marcas que no saben callarse.</div>
-      <div class="lbl" id="s1lbl" style="position:absolute; left:96px; top:1140px;">01 &nbsp;/&nbsp; APERTURA</div>
+      <div class="ttl" id="wordmark" style="position:absolute; left:96px; top:660px; font-size:250px;"><span class="mask"><i>H</i></span><span class="mask"><i>U</i></span><span class="mask"><i>M</i></span><span class="mask"><i>O</i></span></div>
+      <div class="serif" id="s1sub" style="position:absolute; left:96px; top:1000px; font-size:62px; max-width:720px;">Motion &amp; direcci&oacute;n para marcas que no saben callarse.</div>
+      <div class="lbl" id="s1lbl" style="position:absolute; left:96px; top:1130px;">01 &nbsp;/&nbsp; APERTURA</div>
     </div>
   </div>
 
-  <!-- ═══ S2 · DECLARACION ═══ -->
-  <div class="scene" id="s2" data-start="3.4" data-duration="3.2">
+  <!-- ═══ S2 · DECLARACION (3.264 - 6.528) ═══ -->
+  <div class="scene" id="s2" data-start="3.264" data-duration="3.264">
     <div class="layer">
-      <div class="sweep" id="sweep2"></div>
-      <div class="serif" id="s2txt" style="position:absolute; left:96px; top:820px; font-size:86px; max-width:820px;">Todo empieza con una idea.</div>
-      <div class="rule" id="s2rule" style="position:absolute; left:96px; top:1040px; width:520px;"></div>
-      <div class="lbl" id="s2lbl" style="position:absolute; left:96px; top:1080px;">02 &nbsp;/&nbsp; DECLARACION</div>
+      <div class="streak" id="streak2" style="left:-60%;"></div>
+      <div class="serif" id="s2txt" style="position:absolute; left:96px; top:780px; font-size:92px; max-width:800px;">Todo empieza con una idea.</div>
+      <div class="rule" id="s2rule" style="position:absolute; left:96px; top:1010px; width:520px;"></div>
+      <div class="lbl" id="s2lbl" style="position:absolute; left:96px; top:1050px;">02 &nbsp;/&nbsp; DECLARACION</div>
     </div>
   </div>
 
-  <!-- ═══ S3 · TITULO ═══ -->
-  <div class="scene" id="s3" data-start="6.6" data-duration="3.6">
+  <!-- ═══ S3 · TITULO (6.528 - 9.792) ═══ -->
+  <div class="scene" id="s3" data-start="6.528" data-duration="3.264">
     <div class="layer">
-      <div class="ttl" id="s3ttl" style="position:absolute; left:96px; top:700px; font-size:176px;"><span class="mask"><i>M</i></span><span class="mask"><i>O</i></span><span class="mask"><i>V</i></span><span class="mask"><i>I</i></span><span class="mask"><i>M</i></span><span class="mask"><i>I</i></span><span class="mask"><i>E</i></span><span class="mask"><i>N</i></span><span class="mask"><i>T</i></span><span class="mask"><i>O</i></span></div>
-      <div class="serif" id="s3sub" style="position:absolute; left:96px; top:1000px; font-size:58px; color:var(--accent);">que se ve y se siente</div>
-      <div class="lbl" id="s3lbl" style="position:absolute; left:96px; top:1130px;">03 &nbsp;/&nbsp; TITULO</div>
+      <div class="ttl" id="s3ttl" style="position:absolute; left:78px; top:690px; font-size:212px; white-space:nowrap;"><span class="mask"><i>M</i></span><span class="mask"><i>O</i></span><span class="mask"><i>V</i></span><span class="mask"><i>I</i></span><span class="mask"><i>M</i></span><span class="mask"><i>I</i></span><span class="mask"><i>E</i></span><span class="mask"><i>N</i></span><span class="mask"><i>T</i></span><span class="mask"><i>O</i></span></div>
+      <div class="serif" id="s3sub" style="position:absolute; left:96px; top:1010px; font-size:58px; color:var(--accent);">que se ve y se siente</div>
+      <div class="lbl" id="s3lbl" style="position:absolute; left:96px; top:1140px;">03 &nbsp;/&nbsp; TITULO</div>
     </div>
   </div>
 
-  <!-- ═══ S4 · MONTAJE (5 cortes) ═══ -->
-  <div class="scene" id="s4" data-start="10.2" data-duration="6.2">
+  <!-- ═══ S4 · MONTAJE (9.792 - 16.320) ═══ -->
+  <div class="scene" id="s4" data-start="9.792" data-duration="6.528">
     <div class="layer">
       <div class="lbl" id="c1" style="position:absolute; left:96px; bottom:330px;">01 &nbsp;ENCUADRE</div>
       <div class="lbl" id="c2" style="position:absolute; left:96px; bottom:330px;">02 &nbsp;LUZ</div>
       <div class="lbl" id="c3" style="position:absolute; left:96px; bottom:330px;">03 &nbsp;RITMO</div>
-      <div class="lbl" id="c4" style="position:absolute; left:96px; bottom:330px;">04 &nbsp;TEXTURA</div>
-      <div class="lbl" id="c5" style="position:absolute; left:96px; bottom:330px;">05 &nbsp;AIRE</div>
-      <div class="ttl" id="s4ttl" style="position:absolute; left:96px; top:640px; font-size:120px; max-width:820px;">SIN PLANTILLAS</div>
-      <div class="flash" id="flash1"></div>
-      <div class="flash" id="flash2"></div>
+      <div class="lbl" id="c4" style="position:absolute; left:96px; bottom:330px;">04 &nbsp;AIRE</div>
+      <div class="lbl" id="c5" style="position:absolute; left:96px; bottom:330px;">05 &nbsp;COLOR</div>
+      <div class="lbl" id="c6" style="position:absolute; left:96px; bottom:330px;">06 &nbsp;GOLPE</div>
+      <div class="ttl" id="s4ttl" style="position:absolute; left:96px; top:700px; font-size:132px;">SIN PLANTILLAS</div>
+      <div class="lbl" id="s4lbl" style="position:absolute; left:96px; top:900px;">06 &nbsp;/&nbsp; MONTAJE</div>
+      <div class="flash" id="fl1"></div>
+      <div class="flash" id="fl2"></div>
+      <div class="flash" id="fl3"></div>
+      <div class="streak" id="streak4" style="left:-60%;"></div>
     </div>
   </div>
 
-  <!-- ═══ S5 · TIPOGRAFIA ═══ -->
-  <div class="scene" id="s5" data-start="16.4" data-duration="3.4">
+  <!-- ═══ S5 · TIPOGRAFIA (16.320 - 19.584) ═══ -->
+  <div class="scene" id="s5" data-start="16.320" data-duration="3.264">
     <div class="layer">
-      <div class="mask" id="s5mask" style="position:absolute; left:96px; top:700px;"><span class="ttl" id="s5ttl" style="font-size:190px;">GRAFIA</span></div>
-      <div class="serif" id="s5sub" style="position:absolute; left:96px; top:1060px; font-size:60px;">hecha a mano, no reciclada</div>
-      <div class="lbl" id="s5lbl" style="position:absolute; left:96px; top:1190px;">04 &nbsp;/&nbsp; TIPOGRAFIA</div>
+      <div class="mask" id="s5mask" style="position:absolute; left:78px; top:700px;"><span class="ttl" id="s5ttl" style="font-size:196px; white-space:nowrap;">GRAFÍA</span></div>
+      <div class="serif" id="s5sub" style="position:absolute; left:96px; top:1050px; font-size:60px;">hecha a mano, no reciclada</div>
+      <div class="lbl" id="s5lbl" style="position:absolute; left:96px; top:1180px;">07 &nbsp;/&nbsp; TIPOGRAFIA</div>
     </div>
   </div>
 
-  <!-- ═══ S6 · DATOS ═══ -->
-  <div class="scene" id="s6" data-start="19.8" data-duration="3.4">
+  <!-- ═══ S6 · FICHA TECNICA (19.584 - 22.848) ═══ -->
+  <div class="scene" id="s6" data-start="19.584" data-duration="3.264">
     <div class="layer">
-      <div class="lbl" id="s6lbl" style="position:absolute; left:96px; top:520px;">05 &nbsp;/&nbsp; FICHA TECNICA</div>
+      <div class="lbl" id="s6lbl" style="position:absolute; left:96px; top:500px;">08 &nbsp;/&nbsp; FICHA TECNICA</div>
+      <div class="rule rule-cool" id="s6rule" style="position:absolute; left:96px; top:560px; width:220px;"></div>
       <div class="stat" id="st1" style="position:absolute; left:96px; top:640px;">
         <span class="stat-n" id="n1">0</span><span class="stat-u">&times;1920</span><span class="stat-l">vertical</span>
       </div>
@@ -236,71 +237,90 @@
       <div class="stat" id="st3" style="position:absolute; left:96px; top:960px;">
         <span class="stat-n">H.264</span><span class="stat-u">baseline</span><span class="stat-l">compatibilidad</span>
       </div>
-      <div class="bar-track" style="position:absolute; left:96px; right:96px; top:1160px;"><div class="bar" id="bar1" style="width:100%;"></div></div>
-      <div class="lbl" id="s6pct" style="position:absolute; right:96px; top:1190px;">0%</div>
+      <div class="bar-track" style="position:absolute; left:96px; right:96px; top:1150px;"><div class="bar" id="bar1" style="width:100%;"></div></div>
+      <div class="lbl" id="s6pct" style="position:absolute; right:96px; top:1180px;">0%</div>
     </div>
   </div>
 
-  <!-- ═══ S7 · PROCESO ═══ -->
-  <div class="scene" id="s7" data-start="23.2" data-duration="3.6">
+  <!-- ═══ S7 · METODO (22.848 - 26.112) ═══ -->
+  <div class="scene" id="s7" data-start="22.848" data-duration="3.264">
     <div class="layer">
-      <div class="lbl" id="s7lbl" style="position:absolute; left:96px; top:520px;">06 &nbsp;/&nbsp; METODO</div>
+      <div class="lbl lbl-cool" id="s7lbl" style="position:absolute; left:96px; top:500px;">09 &nbsp;/&nbsp; METODO</div>
+      <div class="rule rule-cool" id="s7rule" style="position:absolute; left:96px; top:560px; width:220px;"></div>
       <div class="step" id="p1" style="position:absolute; left:96px; top:700px;"><span class="step-n">01</span><span class="step-t">IDEA</span></div>
-      <div class="arrow" id="a1" style="position:absolute; left:96px; top:790px;"></div>
+      <div class="arrow" id="a1" style="position:absolute; left:96px; top:792px;"></div>
       <div class="step" id="p2" style="position:absolute; left:96px; top:880px;"><span class="step-n">02</span><span class="step-t">MONTAJE</span></div>
-      <div class="arrow" id="a2" style="position:absolute; left:96px; top:970px;"></div>
+      <div class="arrow" id="a2" style="position:absolute; left:96px; top:972px;"></div>
       <div class="step" id="p3" style="position:absolute; left:96px; top:1060px;"><span class="step-n">03</span><span class="step-t">ENTREGA</span></div>
     </div>
   </div>
 
-  <!-- ═══ S8 · CIERRE ═══ -->
-  <div class="scene" id="s8" data-start="26.8" data-duration="3.2">
+  <!-- ═══ S8 · CIERRE (26.112 - 30.000) ═══ -->
+  <div class="scene" id="s8" data-start="26.112" data-duration="3.888">
     <div class="layer">
-      <svg class="mark" id="mark" width="180" height="180" viewBox="0 0 180 180" style="left:96px; top:560px;">
+      <div class="streak" id="streak8" style="left:-60%;"></div>
+      <svg class="mark" id="mark" width="190" height="190" viewBox="0 0 180 180" style="left:96px; top:540px;">
         <circle class="mark-ring" id="markRing" cx="90" cy="90" r="74"></circle>
-        <circle class="mark-ring" id="markRing2" cx="90" cy="90" r="52" opacity=".45"></circle>
+        <circle class="mark-ring" id="markRing2" cx="90" cy="90" r="52" opacity=".42"></circle>
         <circle class="mark-dot" id="markDot" cx="90" cy="90" r="11"></circle>
       </svg>
-      <div class="ttl" id="s8ttl" style="position:absolute; left:96px; top:820px; font-size:104px;"><span class="mask"><i>H</i></span><span class="mask"><i>E</i></span><span class="mask"><i>C</i></span><span class="mask"><i>H</i></span><span class="mask"><i>O</i></span><span class="mask"><i>&nbsp;</i></span><span class="mask"><i>P</i></span><span class="mask"><i>A</i></span><span class="mask"><i>R</i></span><span class="mask"><i>A</i></span><span class="mask"><i>&nbsp;</i></span><span class="mask"><i>D</i></span><span class="mask"><i>U</i></span><span class="mask"><i>R</i></span><span class="mask"><i>A</i></span><span class="mask"><i>R</i></span></div>
-      <div class="lbl lbl-accent" id="s8pie" style="position:absolute; left:96px; top:1010px; font-size:26px;">HUMO.STUDIO</div>
-      <div class="lbl" id="s8cta" style="position:absolute; left:96px; top:1060px;">PIDE PRESUPUESTO</div>
-      <div class="rule" id="s8rule" style="position:absolute; left:96px; top:1120px; width:560px;"></div>
-      <div class="flash" id="flashEnd" style="background:#0B0A08;"></div>
+      <div class="ttl" id="s8ttl" style="position:absolute; left:96px; top:800px; font-size:108px;"><span class="mask"><i>H</i></span><span class="mask"><i>E</i></span><span class="mask"><i>C</i></span><span class="mask"><i>H</i></span><span class="mask"><i>O</i></span><span class="mask"><i>&nbsp;</i></span><span class="mask"><i>P</i></span><span class="mask"><i>A</i></span><span class="mask"><i>R</i></span><span class="mask"><i>A</i></span><span class="mask"><i>&nbsp;</i></span><span class="mask"><i>D</i></span><span class="mask"><i>U</i></span><span class="mask"><i>R</i></span><span class="mask"><i>A</i></span><span class="mask"><i>R</i></span></div>
+      <div class="lbl lbl-accent" id="s8pie" style="position:absolute; left:96px; top:1000px; font-size:26px;">HUMO.STUDIO</div>
+      <div class="lbl" id="s8cta" style="position:absolute; left:96px; top:1050px;">PIDE PRESUPUESTO</div>
+      <div class="rule" id="s8rule" style="position:absolute; left:96px; top:1110px; width:560px;"></div>
+      <div class="flash" id="flEnd" style="background:#0B0A08;"></div>
     </div>
   </div>
 
-  <!-- ═══ AUDIO ═══ -->
+  <!-- ═══ AUDIO: musica + efectos sobre el compas ═══ -->
   <audio id="musica" class="clip" data-start="0" data-duration="30" data-track-index="9"
     data-var-src="musica" src="assets/nuevo/procesado/music-614.mp3" data-volume="0.85"></audio>
+  <audio id="sfx0" class="clip" data-start="0"     data-duration="1.2" data-track-index="10" src="assets/nuevo/procesado/sfx-hit-open.mp3" data-volume="0.26"></audio>
+  <audio id="sfx1" class="clip" data-start="3.264" data-duration="1.2" data-track-index="10" src="assets/nuevo/procesado/sfx-whoosh-1.mp3" data-volume="0.30"></audio>
+  <audio id="sfx2" class="clip" data-start="6.528" data-duration="1.2" data-track-index="10" src="assets/nuevo/procesado/sfx-whoosh-2.mp3" data-volume="0.30"></audio>
+  <audio id="sfx3" class="clip" data-start="9.792" data-duration="1.2" data-track-index="10" src="assets/nuevo/procesado/sfx-whoosh-3.mp3" data-volume="0.36"></audio>
+  <audio id="sfx4" class="clip" data-start="16.320" data-duration="1.2" data-track-index="10" src="assets/nuevo/procesado/sfx-cine-whoosh.mp3" data-volume="0.32"></audio>
+  <audio id="sfx5" class="clip" data-start="19.584" data-duration="1.2" data-track-index="10" src="assets/nuevo/procesado/sfx-impact-1.mp3" data-volume="0.34"></audio>
+  <audio id="sfx6" class="clip" data-start="22.848" data-duration="1.2" data-track-index="10" src="assets/nuevo/procesado/sfx-impact-2.mp3" data-volume="0.32"></audio>
+  <audio id="sfx7" class="clip" data-start="26.112" data-duration="1.5" data-track-index="10" src="assets/nuevo/procesado/sfx-impact-3.mp3" data-volume="0.40"></audio>
 
 </div>
 
 <script src="../assets/vendor/gsap.min.js"></script>
+<script src="../assets/vendor/gsap/CustomEase.min.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
-   HUMO - reel de estudio, 30 s, 9:16.
-   Timeline unica, pausada, registrada en window.__timelines["humo-reel"].
-   Todos los tiempos son absolutos (segundos). Sin setTimeout, sin rAF,
-   build sincrono (sin document.fonts.ready): si la timeline no existe en el
+   HUMO - reel de estudio, 30 s, 9:16, 24 fps.
+   Montado sobre la rejilla del compas (147 BPM medidos): el compas dura
+   1.632 s y la musica se corta en 0.96 s para que el primer golpe caiga
+   en el frame 0.
+   Timeline unica, pausada, en window.__timelines["humo-reel"]. Sin
+   setTimeout ni rAF, build sincrono: si la timeline no existe en el
    primer fotograma, el MP4 sale congelado.
    ══════════════════════════════════════════════════════════════════════ */
 (function () {
   const V = (window.__hyperframes && window.__hyperframes.getVariables)
     ? window.__hyperframes.getVariables() : {};
-
-  /* Texto variable con valor por defecto (parametrizacion en render-time). */
   const txt = (id, def) => (V && V[id] != null && V[id] !== '') ? String(V[id]) : def;
 
-  const marca   = txt('marca', 'HUMO');
-  const claim   = txt('claim', 'HECHO PARA DURAR');
-  const sub     = txt('sub', 'Todo empieza con una idea.');
-  const pie     = txt('pie', 'HUMO.STUDIO');
-  const cta     = txt('cta', 'PIDE PRESUPUESTO');
+  const marca = txt('marca', 'HUMO');
+  const claim = txt('claim', 'HECHO PARA DURAR');
+  const sub = txt('sub', 'Todo empieza con una idea.');
+  const pie = txt('pie', 'HUMO.STUDIO');
+  const cta = txt('cta', 'PIDE PRESUPUESTO');
 
-  /* Los titulares letra a letra: el HTML ya trae una <i> por caracter (el
-     auditor necesita verlas en el HTML estatico). Aqui solo se actualiza el
-     texto de cada letra con el valor de render-time; si la longitud cambia,
-     se reconstruye la mascara. */
+  /* Curvas propias: sin esto todo el bucle se siente "de plantilla". */
+  if (window.CustomEase) {
+    gsap.registerPlugin(CustomEase);
+    CustomEase.create('humo', 'M0,0 C0.12,0.86 0.18,1 1,1');
+    CustomEase.create('golpe', 'M0,0 C0.2,1.6 0.32,1 1,1');
+  }
+  const EASE = window.CustomEase ? 'humo' : 'power3.out';
+  const GOLPE = window.CustomEase ? 'golpe' : 'back.out(1.7)';
+
+  /* Los titulares letra a letra: el HTML trae una <i> por caracter (el
+     auditor necesita verlas en el HTML estatico) y aqui solo se actualiza
+     el texto con el valor de render-time. */
   function letras(el, texto) {
     if (!el) return;
     const items = el.querySelectorAll('i');
@@ -310,149 +330,174 @@
     }
     el.innerHTML = '';
     for (const ch of texto) {
-      const mask = document.createElement('span');
-      mask.className = 'mask';
+      const m = document.createElement('span');
+      m.className = 'mask';
       const it = document.createElement('i');
       it.textContent = (ch === ' ') ? '\u00A0' : ch;
-      mask.appendChild(it);
-      el.appendChild(mask);
+      m.appendChild(it);
+      el.appendChild(m);
     }
   }
-  const wm = document.getElementById('wordmark');
-  if (wm) letras(wm, marca);
-  const ttl3 = document.getElementById('s3ttl');
-  if (ttl3) letras(ttl3, 'MOVIMIENTO');
-  const ttl5 = document.getElementById('s5ttl');
-  if (ttl5) ttl5.textContent = 'GRAFÍA';
-  const ttl8 = document.getElementById('s8ttl');
-  if (ttl8) letras(ttl8, claim);
-  const ghost = document.getElementById('ghostWord');
-  if (ghost) ghost.textContent = marca;
-  const s2txt = document.getElementById('s2txt');
-  if (s2txt) s2txt.textContent = sub;
-  const s8pie = document.getElementById('s8pie');
-  if (s8pie) s8pie.textContent = pie;
-  const s8cta = document.getElementById('s8cta');
-  if (s8cta) s8cta.textContent = cta;
+  const wm = document.getElementById('wordmark'); if (wm) letras(wm, marca);
+  const t8 = document.getElementById('s8ttl'); if (t8) letras(t8, claim);
+  const gh = document.getElementById('ghostWord'); if (gh) gh.textContent = marca;
+  const s2 = document.getElementById('s2txt'); if (s2) s2.textContent = sub;
+  const sp = document.getElementById('s8pie'); if (sp) sp.textContent = pie;
+  const sc = document.getElementById('s8cta'); if (sc) sc.textContent = cta;
 
   const tl = gsap.timeline({ paused: true });
 
-  /* ── Ambiente: respiracion y deriva lentas, siempre activas ─────── */
-  tl.to('#glowA', { scale: 1.14, opacity: 0.85, duration: 6, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
-  tl.to('#glowB', { scale: 0.9,  opacity: 0.45, duration: 7.5, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
-  tl.to('#ghostWord', { x: 70, y: -24, opacity: 0.18, duration: 9, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
-  tl.to('#grain', { x: 26, y: -18, duration: 3.2, ease: 'steps(6)', repeat: -1 }, 0);
+  /* ── Ambiente: respiracion, deriva y polvo ─────────────────────── */
+  tl.to('#glowA', { scale: 1.16, opacity: 0.85, duration: 6.5, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
+  tl.to('#glowB', { scale: 0.88, opacity: 0.40, duration: 8, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
+  tl.to('#ghostWord', { x: 76, y: -26, opacity: 0.17, duration: 9.5, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
+  tl.to('#grain', { x: 24, y: -16, duration: 2.6, ease: 'steps(6)', repeat: -1 }, 0);
+  tl.to('#dust', { scale: 1.06, x: -18, duration: 14, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
 
-  /* ── HUD ─────────────────────────────────────────────────────────── */
-  tl.fromTo('#ruleTop',    { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'power3.out' }, 0.1);
-  tl.fromTo('#ruleBottom', { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'power3.out' }, 0.2);
-  tl.fromTo('#lblTop',    { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.35);
-  tl.fromTo('#lblRight',  { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.45);
-  tl.fromTo('#lblBottom', { opacity: 0, y: 14 },  { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.55);
-  tl.fromTo('#lblTC',     { opacity: 0, y: 14 },  { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 0.65);
+  /* ── HUD ───────────────────────────────────────────────────────── */
+  tl.fromTo('#ruleTop', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: EASE }, 0.05);
+  tl.fromTo('#ruleBottom', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: EASE }, 0.15);
+  tl.fromTo('#lblTop', { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.3);
+  tl.fromTo('#lblRight', { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.38);
+  tl.fromTo('#lblBottom', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.46);
+  tl.fromTo('#lblTC', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.54);
+  tl.fromTo('#reg1', { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.7, ease: GOLPE }, 0.62);
+  tl.fromTo('#reg2', { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.7, ease: GOLPE }, 0.7);
 
-  /* ── Videos: fundidos de entrada (el framework gestiona la ventana) ── */
-  const fundido = (sel, t, dur) => {
-    tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: dur, ease: 'power1.out' }, t);
+  /* Timecode real: el tiempo de la timeline (determinista) */
+  const tc = document.getElementById('lblTC');
+  const fmt = (t) => {
+    const m = Math.floor(t / 60), s = Math.floor(t % 60), f = Math.floor((t % 1) * 24);
+    return '00:' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') + ':' + String(f).padStart(2, '0');
   };
-  fundido('#v1',  0.0,  0.9);
-  fundido('#v2',  3.4,  0.7);
-  fundido('#v3',  6.6,  0.7);
-  fundido('#v4',  10.2, 0.45);
-  fundido('#v5',  11.6, 0.45);
-  fundido('#v6',  12.8, 0.45);
-  fundido('#v7',  14.1, 0.45);
-  fundido('#v8',  15.4, 0.45);
-  fundido('#v9',  16.4, 0.8);
-  fundido('#v10', 19.8, 0.8);
-  fundido('#v11', 23.2, 0.8);
-  fundido('#v12', 26.8, 0.9);
+  tl.eventCallback('onUpdate', function () { if (tc) tc.textContent = fmt(tl.time()); });
 
-  /* ── S1 apertura: el wordmark letra a letra ──────────────────────── */
-  tl.fromTo('#wordmark .mask i', { yPercent: 112 }, { yPercent: 0, duration: 0.95, ease: 'expo.out', stagger: 0.055 }, 0.25);
-  tl.fromTo('#s1sub', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, 0.85);
-  tl.fromTo('#s1lbl', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 1.05);
-  tl.to('#wordmark', { scale: 1.06, duration: 3.2, ease: 'none' }, 0.2);
+  /* ── Material: fundidos de entrada y empuje lento en cada plano ── */
+  const planos = [
+    { v: '#v1', t: 0, d: 0.9, push: 1.07 },
+    { v: '#v2', t: 3.264, d: 0.7, push: 1.09 },
+    { v: '#v3', t: 6.528, d: 0.7, push: 1.08 },
+    { v: '#v4', t: 9.792, d: 0.35, push: 1.10 },
+    { v: '#v5', t: 10.608, d: 0.35, push: 1.10 },
+    { v: '#v6', t: 11.424, d: 0.35, push: 1.10 },
+    { v: '#v7', t: 12.240, d: 0.35, push: 1.10 },
+    { v: '#v8', t: 13.056, d: 0.35, push: 1.10 },
+    { v: '#v9', t: 13.872, d: 0.7, push: 1.09 },
+    { v: '#v10', t: 16.320, d: 0.8, push: 1.10 },
+    { v: '#v11', t: 19.584, d: 0.8, push: 1.07 },
+    { v: '#v12', t: 22.848, d: 0.8, push: 1.08 },
+    { v: '#v13', t: 26.112, d: 0.9, push: 1.06 },
+  ];
+  for (const p of planos) {
+    tl.fromTo(p.v, { opacity: 0 }, { opacity: 1, duration: p.d, ease: 'power1.out' }, p.t);
+    tl.fromTo(p.v, { scale: 1 }, { scale: p.push, duration: 2.2, ease: 'none' }, p.t);
+  }
+  /* El polvo entra suave y se va al final */
+  tl.fromTo('#dust', { opacity: 0 }, { opacity: 0.26, duration: 1.4, ease: 'power1.out' }, 0.6);
+  tl.to('#dust', { opacity: 0.05, duration: 1.2, ease: 'power2.in' }, 28.8);
 
-  /* ── S2 declaracion: frase + barrido de luz ──────────────────────── */
-  tl.fromTo('#s2txt', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.95, ease: 'power3.out' }, 3.75);
-  tl.fromTo('#s2rule', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.out' }, 4.1);
-  tl.fromTo('#s2lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 4.25);
-  tl.fromTo('#sweep2', { xPercent: -40, rotation: 9, opacity: 0 }, { xPercent: 320, rotation: 9, opacity: 1, duration: 1.5, ease: 'power2.inOut' }, 4.0);
+  /* ── S1 apertura: el wordmark letra a letra + empuje ────────────── */
+  tl.fromTo('#wordmark .mask i', { yPercent: 115 }, { yPercent: 0, duration: 0.9, ease: EASE, stagger: 0.05 }, 0.2);
+  tl.fromTo('#s1sub', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: EASE }, 0.75);
+  tl.fromTo('#s1lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.95);
 
-  /* ── S3 titulo: MOVIMIENTO letra a letra ────────────────────────── */
-  tl.fromTo('#s3ttl .mask i', { yPercent: 112 }, { yPercent: 0, duration: 0.85, ease: 'expo.out', stagger: 0.035 }, 6.95);
-  tl.fromTo('#s3sub', { opacity: 0, x: -34 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }, 7.6);
-  tl.fromTo('#s3lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 7.85);
+  /* ── S2 declaracion: frase + streak de luz ─────────────────────── */
+  tl.fromTo('#s2txt', { opacity: 0, y: 38 }, { opacity: 1, y: 0, duration: 0.9, ease: EASE }, 3.55);
+  tl.fromTo('#s2rule', { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: EASE }, 3.9);
+  tl.fromTo('#s2lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 4.0);
+  tl.fromTo('#streak2', { xPercent: -30, opacity: 0 }, { xPercent: 260, opacity: 1, duration: 1.3, ease: 'power2.inOut' }, 3.7);
 
-  /* ── S4 montaje: cortes con rotulo y fogonazo ───────────────────── */
+  /* ── S3 titulo: MOVIMIENTO, sangrado por el borde ─────────────── */
+  tl.fromTo('#s3ttl .mask i', { yPercent: 115 }, { yPercent: 0, duration: 0.8, ease: EASE, stagger: 0.03 }, 6.85);
+  tl.fromTo('#s3sub', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.7, ease: EASE }, 7.5);
+  tl.fromTo('#s3lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 7.7);
+
+  /* ── S4 montaje: 6 cortes al compas, whip-pan y fogonazos ──────── */
   const cortes = [
-    { lbl: '#c1', t: 10.25, txt: '01 &nbsp;ENCUADRE' },
-    { lbl: '#c2', t: 11.65, txt: '02 &nbsp;LUZ' },
-    { lbl: '#c3', t: 12.85, txt: '03 &nbsp;RITMO' },
-    { lbl: '#c4', t: 14.15, txt: '04 &nbsp;TEXTURA' },
-    { lbl: '#c5', t: 15.45, txt: '05 &nbsp;AIRE' },
+    { sel: '#v4', lbl: '#c1', t: 9.792, txt: '01 &nbsp;ENCUADRE', pan: 1 },
+    { sel: '#v5', lbl: '#c2', t: 10.608, txt: '02 &nbsp;LUZ', pan: -1 },
+    { sel: '#v6', lbl: '#c3', t: 11.424, txt: '03 &nbsp;RITMO', pan: 1 },
+    { sel: '#v7', lbl: '#c4', t: 12.240, txt: '04 &nbsp;AIRE', pan: -1 },
+    { sel: '#v8', lbl: '#c5', t: 13.056, txt: '05 &nbsp;COLOR', pan: 1 },
+    { sel: '#v9', lbl: '#c6', t: 13.872, txt: '06 &nbsp;GOLPE', pan: 0 },
   ];
   for (const c of cortes) {
     const el = document.querySelector(c.lbl);
     if (el) el.innerHTML = c.txt;
-    tl.fromTo(c.lbl, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, c.t);
-    tl.fromTo(c.lbl, { opacity: 1 }, { opacity: 0, duration: 0.35, ease: 'power2.in' }, c.t + 0.95);
+    tl.fromTo(c.lbl, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: EASE }, c.t);
+    tl.to(c.lbl, { opacity: 0, duration: 0.3, ease: 'power2.in' }, c.t + 0.52);
+    if (c.pan) {
+      /* Whip-pan: el plano entra rayado desde el lado del corte */
+      tl.fromTo(c.sel, { x: 1080 * c.pan, scale: 1.12 }, { x: 0, scale: 1.1, duration: 0.34, ease: 'power4.out' }, c.t);
+    }
   }
-  tl.fromTo('#s4ttl', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out' }, 13.2);
-  tl.to('#s4ttl', { opacity: 0, y: -26, duration: 0.5, ease: 'power2.in' }, 14.6);
-  tl.fromTo('#flash1', { opacity: 0 }, { opacity: 0.34, duration: 0.06, ease: 'none' }, 12.82);
-  tl.to('#flash1', { opacity: 0, duration: 0.16, ease: 'none' }, 12.88);
-  tl.fromTo('#flash2', { opacity: 0 }, { opacity: 0.28, duration: 0.06, ease: 'none' }, 15.42);
-  tl.to('#flash2', { opacity: 0, duration: 0.16, ease: 'none' }, 15.48);
+  tl.fromTo('#s4ttl', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.7, ease: EASE }, 14.75);
+  tl.to('#s4ttl', { opacity: 0, y: -24, duration: 0.45, ease: 'power2.in' }, 15.85);
+  tl.fromTo('#s4lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 14.95);
+  /* Fogonazos en los tres cortes con mas energia */
+  const fogonazos = [['#fl1', 11.424], ['#fl2', 13.056], ['#fl3', 13.872]];
+  for (const [sel, t] of fogonazos) {
+    tl.fromTo(sel, { opacity: 0, scale: 0.4 }, { opacity: 0.42, scale: 1, duration: 0.07, ease: 'none' }, t);
+    tl.to(sel, { opacity: 0, duration: 0.18, ease: 'none' }, t + 0.07);
+  }
+  tl.fromTo('#streak4', { xPercent: -30, opacity: 0 }, { xPercent: 260, opacity: 1, duration: 1.1, ease: 'power2.inOut' }, 11.5);
+  /* Fuga de luz en el plano de color */
+  tl.fromTo('#leakA', { opacity: 0, x: 260, scale: 0.8 }, { opacity: 0.75, x: 0, scale: 1.1, duration: 1.4, ease: EASE }, 13.0);
+  tl.to('#leakA', { opacity: 0, duration: 1.0, ease: 'power2.in' }, 14.3);
 
-  /* ── S5 tipografia: mascara que se abre ─────────────────────────── */
-  tl.fromTo('#s5mask', { xPercent: -105 }, { xPercent: 0, duration: 0.95, ease: 'expo.out' }, 16.8);
-  tl.fromTo('#s5sub', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, 17.5);
-  tl.fromTo('#s5lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 17.75);
+  /* ── S5 tipografia: mascara que se abre ───────────────────────── */
+  tl.fromTo('#s5mask', { xPercent: -108 }, { xPercent: 0, duration: 0.9, ease: EASE }, 16.7);
+  tl.fromTo('#s5sub', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: EASE }, 17.4);
+  tl.fromTo('#s5lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 17.6);
 
-  /* ── S6 datos: contadores y barra ──────────────────────────────── */
-  tl.fromTo('#s6lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 20.0);
-  tl.fromTo('#st1', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 20.25);
-  tl.fromTo('#st2', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 20.55);
-  tl.fromTo('#st3', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 20.85);
-
-  /* Contadores:}tween sobre un objeto (determinista, sin relojes) */
+  /* ── S6 ficha tecnica: contadores y barra ─────────────────────── */
+  tl.fromTo('#s6lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 19.7);
+  tl.fromTo('#s6rule', { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: EASE }, 19.78);
+  tl.fromTo('#st1', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE }, 19.9);
+  tl.fromTo('#st2', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE }, 20.15);
+  tl.fromTo('#st3', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE }, 20.4);
   const c1 = { v: 0 }, c2 = { v: 0 }, pct = { v: 0 };
   const n1 = document.getElementById('n1'), n2 = document.getElementById('n2');
   const s6pct = document.getElementById('s6pct');
-  const n1o = { v: 0 }, n2o = { v: 0 }, po = { v: 0 };
-  tl.to(c1, { v: 1080, duration: 1.5, ease: 'power2.out',
-    onUpdate: function () { if (n1) n1.textContent = Math.round(c1.v); } }, 20.3);
-  tl.to(c2, { v: 30, duration: 1.1, ease: 'power2.out',
-    onUpdate: function () { if (n2) n2.textContent = Math.round(c2.v); } }, 20.6);
-  tl.fromTo('#bar1', { scaleX: 0 }, { scaleX: 1, duration: 2.1, ease: 'power1.inOut' }, 20.4);
-  tl.to(pct, { v: 100, duration: 2.1, ease: 'power1.inOut',
-    onUpdate: function () { if (s6pct) s6pct.textContent = Math.round(pct.v) + '%'; } }, 20.4);
+  tl.to(c1, { v: 1080, duration: 1.4, ease: 'power2.out', onUpdate: function () { if (n1) n1.textContent = Math.round(c1.v); } }, 19.95);
+  tl.to(c2, { v: 24, duration: 1.0, ease: 'power2.out', onUpdate: function () { if (n2) n2.textContent = Math.round(c2.v); } }, 20.2);
+  tl.fromTo('#bar1', { scaleX: 0 }, { scaleX: 1, duration: 2.0, ease: 'power1.inOut' }, 19.9);
+  tl.to(pct, { v: 100, duration: 2.0, ease: 'power1.inOut', onUpdate: function () { if (s6pct) s6pct.textContent = Math.round(pct.v) + '%'; } }, 19.9);
 
-  /* ── S7 metodo: tres pasos con reglas que se dibujan ───────────── */
-  tl.fromTo('#s7lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 23.4);
-  tl.fromTo('#p1', { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, 23.6);
-  tl.fromTo('#p2', { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, 24.5);
-  tl.fromTo('#p3', { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out' }, 25.4);
-  tl.fromTo('#a1', { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.out' }, 24.1);
-  tl.fromTo('#a2', { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power2.out' }, 25.0);
+  /* ── S7 metodo: tres pasos ─────────────────────────────────────── */
+  tl.fromTo('#s7lbl', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 22.95);
+  tl.fromTo('#s7rule', { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: EASE }, 23.0);
+  tl.fromTo('#p1', { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.6, ease: EASE }, 23.2);
+  tl.fromTo('#p2', { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.6, ease: EASE }, 24.0);
+  tl.fromTo('#p3', { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.6, ease: EASE }, 24.8);
+  tl.fromTo('#a1', { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: EASE }, 23.7);
+  tl.fromTo('#a2', { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: EASE }, 24.5);
 
-  /* ── S8 cierre: marca, claim y fundido a negro ──────────────────── */
-  tl.fromTo('#mark', { opacity: 0, scale: 0.82, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: 1.0, ease: 'expo.out' }, 27.1);
-  tl.fromTo('#markRing', { scale: 0.7, opacity: 0.2 }, { scale: 1, opacity: 1, duration: 1.2, ease: 'expo.out' }, 27.15);
-  tl.fromTo('#markRing2', { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 0.45, duration: 1.2, ease: 'expo.out' }, 27.3);
-  tl.fromTo('#markDot', { scale: 0 }, { scale: 1, duration: 0.7, ease: 'back.out(2)' }, 27.6);
-  tl.fromTo('#s8ttl .mask i', { yPercent: 112 }, { yPercent: 0, duration: 0.85, ease: 'expo.out', stagger: 0.03 }, 27.8);
-  tl.fromTo('#s8pie', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 28.35);
-  tl.fromTo('#s8cta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 28.55);
-  tl.fromTo('#s8rule', { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.out' }, 28.7);
-  tl.fromTo('#flashEnd', { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'power2.in' }, 29.3);
+  /* ── S8 cierre: marca, claim, streak y fundido ─────────────────── */
+  tl.fromTo('#streak8', { xPercent: -30, opacity: 0 }, { xPercent: 260, opacity: 1, duration: 1.2, ease: 'power2.inOut' }, 26.3);
+  tl.fromTo('#mark', { opacity: 0, scale: 0.8, rotation: -9 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.9, ease: GOLPE }, 26.35);
+  tl.fromTo('#markRing', { scale: 0.68, opacity: 0.2 }, { scale: 1, opacity: 1, duration: 1.1, ease: EASE }, 26.4);
+  tl.fromTo('#markRing2', { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 0.42, duration: 1.1, ease: EASE }, 26.55);
+  tl.fromTo('#markDot', { scale: 0 }, { scale: 1, duration: 0.6, ease: GOLPE }, 26.85);
+  tl.fromTo('#s8ttl .mask i', { yPercent: 115 }, { yPercent: 0, duration: 0.8, ease: EASE, stagger: 0.028 }, 27.05);
+  tl.fromTo('#s8pie', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 27.5);
+  tl.fromTo('#s8cta', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 27.68);
+  tl.fromTo('#s8rule', { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: EASE }, 27.8);
+  tl.fromTo('#flEnd', { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'power2.in' }, 29.3);
+
+  /* Ticks y persianas: se mueven con el compas (detalle de estudio) */
+  for (let i = 1; i <= 5; i++) {
+    tl.fromTo('#tk' + i, { opacity: 0, scaleY: 0.2 }, { opacity: 1, scaleY: 1, duration: 0.4, ease: GOLPE }, 0.8 + i * 0.06);
+  }
+  tl.to('#tk1', { opacity: 0.25, duration: 0.6, ease: 'sine.inOut', repeat: -1, yoyo: true }, 2.0);
+  tl.fromTo('#sh1', { x: -200, opacity: 0 }, { x: 200, opacity: 0.16, duration: 0.9, ease: 'power2.inOut' }, 3.2);
+  tl.fromTo('#sh2', { x: -200, opacity: 0 }, { x: 200, opacity: 0.16, duration: 0.9, ease: 'power2.inOut' }, 3.3);
+  tl.fromTo('#sh3', { x: -200, opacity: 0 }, { x: 200, opacity: 0.16, duration: 0.9, ease: 'power2.inOut' }, 3.4);
 
   window.__timelines["humo-reel"] = tl;
 
   /* El ticker de GSAP va a la misma cadencia que la captura (data-fps). */
-  if (gsap.ticker) gsap.ticker.fps(30);
+  if (gsap.ticker) gsap.ticker.fps(24);
 })();
 </script>
 </body>

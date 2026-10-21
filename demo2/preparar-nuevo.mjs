@@ -1,9 +1,13 @@
 /* Prepara el material NUEVO del reel en la nube (nunca en el PC del usuario).
-   Lee assets/nuevo/fuentes.json, descarga los clips y la musica de Mixkit
-   (licencia libre, sin clave), los recorta a 9:16, les aplica el grado de
-   color y los deja listos para HyperFrames:
-     - H.264 Constrained Baseline nivel 3.1 (Chrome headless solo decodifica eso)
-     - yuv420p, faststart, CRF 23 (calidad alta, peso bajo)
+   Lee assets/nuevo/fuentes.json, descarga los clips, las fugas de luz, la
+   musica y los efectos de Mixkit, y deja el material con un GRADO DE
+   COLORISTA sobre el material en bruto:
+     - recorte 9:16 con encuadre propio por plano
+     - fuga de luz compuesta en modo screen (el artefacto de lente real)
+     - curva filmica (S) + split tone (sombras frias / luces calidas)
+     - halation: las altas luces sangran hacia el rojo y el ambar
+     - vineta, grano de pelicula y micro-contraste
+     - H.264 Constrained Baseline 3.1 (Chrome headless solo decodifica eso)
    Idempotente: si el fichero ya esta, no lo vuelve a hacer.
 
    Uso:  node demo2/preparar-nuevo.mjs [manifiesto]
@@ -19,76 +23,107 @@ const OUT = path.join(ROOT, man.salida || 'assets/nuevo/procesado');
 fs.mkdirSync(OUT, { recursive: true });
 
 const P = man.perfil || {};
+const FPS = man.fps || 24;
+const W = P.ancho || 1080, H = P.alto || 1920;
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+const H2 = { 'User-Agent': UA, Referer: 'https://mixkit.co/' };
 
-const ffmpeg = (args) => {
+const ff = (args) => {
   const r = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...args], { stdio: ['ignore', 'ignore', 'pipe'] });
-  if (r.status !== 0) throw new Error('ffmpeg: ' + (r.stderr || '').toString().slice(-400));
+  if (r.status !== 0) throw new Error('ffmpeg: ' + (r.stderr || '').toString().slice(-500));
 };
 
-const have = (f) => fs.existsSync(f) && fs.statSync(f).size > 20000;
+async function baja(url, dest) {
+  const r = await fetch(url, { headers: H2 });
+  if (!r.ok) throw new Error('http ' + r.status);
+  fs.writeFileSync(dest, Buffer.from(await r.arrayBuffer()));
+}
+
+const listo = (f) => fs.existsSync(f) && fs.statSync(f).size > 20000;
 let fallos = 0;
 
-/* ── Clips ── */
-for (const c of man.clips || []) {
-  const out = path.join(OUT, `${c.slug}.mp4`);
-  if (have(out)) { console.log(`  cache  ${c.slug}.mp4`); continue; }
-  const url = `https://assets.mixkit.co/videos/${c.id}/${c.id}-${c.calidad || '720'}.mp4`;
-  try {
-    const r = await fetch(url, { headers: { 'User-Agent': UA, Referer: 'https://mixkit.co/' } });
-    if (!r.ok) throw new Error('http ' + r.status);
-    const buf = Buffer.from(await r.arrayBuffer());
-    const tmp = path.join(OUT, `_src_${c.id}.mp4`);
-    fs.writeFileSync(tmp, buf);
-    /* encuadre: el fuente puede ser horizontal (se recorta a 9:16) o vertical */
-    const w = P.ancho, h = P.alto;
-    const enc = c.encuadre || 'centro';
-    const cx = enc === 'izquierda' ? '(iw-1080)/2*0.15' : enc === 'derecha' ? '(iw-1080)/2*0.85' : '(iw-1080)/2';
-    const vf = [
-      `scale=-2:${h}:flags=lanczos`,
-      `crop=${w}:${h}:${cx}:0`,
-      P.gradado || 'null',
-      'format=yuv420p',
-    ].join(',');
-    ffmpeg([
-      '-ss', String(c.inicio || 0), '-i', tmp, '-t', String(c.duracion || 5),
-      '-vf', vf,
-      '-c:v', 'libx264', '-profile:v', P.perfil_h264 || 'baseline', '-level', P.nivel_h264 || '3.1',
-      '-preset', P.preset || 'veryfast', '-crf', String(P.crf ?? 23),
-      '-pix_fmt', P.pix_fmt || 'yuv420p', '-movflags', '+faststart', '-an',
-      out,
-    ]);
-    fs.rmSync(tmp, { force: true });
-    console.log(`  listo  ${c.slug}.mp4  ${(fs.statSync(out).size / 1048576).toFixed(1)}MB`);
-  } catch (e) {
-    fallos++;
-    console.log(`  [warning] ${c.slug}: ${e.message}`);
+/* ── Clips: base + fuga de luz + grado ─────────────────────────────── */
+async function montar(c) {
+  const out = path.join(OUT, `${c.nombre}.mp4`);
+  if (listo(out)) { console.log(`  cache  ${c.nombre}.mp4`); return; }
+  const g = man.grados[c.grado] || man.grados.neutro;
+  const enc = c.encuadre || 'centro';
+  const cx = enc === 'izquierda' ? '(iw-1080)/2*0.12' : enc === 'derecha' ? '(iw-1080)/2*0.88' : '(iw-1080)/2';
+  /* Los filtros vacios del grado (p.ej. el polvo no lleva vineta) se omiten. */
+  const grado = [g.curves, g.tono, g.eq].filter(Boolean).join(',');
+  const post = [g.vineta, g.grano].filter(Boolean).join(',');
+
+  const base = path.join(OUT, `_b_${c.nombre}.mp4`);
+  await baja(`https://assets.mixkit.co/videos/${c.base}/${c.base}-720.mp4`, base);
+
+  const ov = c.overlay ? path.join(OUT, `_o_${c.nombre}.mp4`) : null;
+  if (ov) {
+    try { await baja(`https://assets.mixkit.co/videos/${c.overlay.id}/${c.overlay.id}-720.mp4`, ov); }
+    catch (e) { console.log(`  [warning] overlay ${c.overlay.id}: ${e.message}`); }
   }
+
+  const trim = `[0:v]trim=start=${c.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=-2:${H}:flags=lanczos,crop=${W}:${H}:${cx}:0,setsar=1,unsharp=5:5:0.5:5:5:0.0[base]`;
+  const chains = [trim];
+  let last = 'base';
+
+  if (ov && fs.existsSync(ov)) {
+    chains.push(`[1:v]trim=start=${c.overlay.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1[ov]`);
+    chains.push(`[${last}][ov]blend=all_mode=screen:all_opacity=${c.overlay.opacidad}[b1]`);
+    last = 'b1';
+  }
+
+  chains.push(`[${last}]${grado}[gr]`);
+  /* Halation: las altas luces se difuminan y se vuelven a sumar en screen. */
+  chains.push(`[gr]split=2[keep][hl]`);
+  chains.push(`[hl]lutrgb=r='if(gt(val,205),val,0)':g='if(gt(val,210),val,0)':b='if(gt(val,215),val,0)',gblur=sigma=14[hlb]`);
+  const hal = g.halation ? `blend=all_mode=screen:all_opacity=${g.halation}` : 'null';
+  chains.push(`[keep][hlb]${hal}${post ? ',' + post : ''},fps=${FPS}[out]`);
+
+  ff(['-filter_complex', chains.join(';'), '-map', '[out]',
+    '-c:v', 'libx264', '-profile:v', P.perfil_h264 || 'baseline', '-level', P.nivel_h264 || '3.1',
+    '-preset', P.preset || 'veryfast', '-crf', String(P.crf ?? 21),
+    '-pix_fmt', P.pix_fmt || 'yuv420p', '-movflags', '+faststart', '-an', '-r', String(FPS), out]);
+
+  fs.rmSync(base, { force: true });
+  if (ov) fs.rmSync(ov, { force: true });
+  console.log(`  listo  ${c.nombre}.mp4  ${(fs.statSync(out).size / 1048576).toFixed(1)}MB  ${c.duracion}s`);
 }
 
-/* ── Musica ── */
+for (const c of man.clips || []) {
+  try { await montar(c); } catch (e) { fallos++; console.log(`  [warning] ${c.nombre}: ${e.message}`); }
+}
+for (const c of man.capas || []) {
+  try { await montar(c); } catch (e) { fallos++; console.log(`  [warning] ${c.nombre}: ${e.message}`); }
+}
+
+/* ── Musica ─────────────────────────────────────────────────────────── */
 for (const m of man.musica || []) {
   const out = path.join(OUT, m.archivo || `music-${m.id}.mp3`);
-  if (have(out)) { console.log(`  cache  ${m.archivo}`); continue; }
+  if (listo(out)) { console.log(`  cache  ${m.archivo}`); continue; }
   try {
-    const url = `https://assets.mixkit.co/music/${m.id}/${m.id}.mp3`;
-    const r = await fetch(url, { headers: { 'User-Agent': UA, Referer: 'https://mixkit.co/' } });
-    if (!r.ok) throw new Error('http ' + r.status);
-    const buf = Buffer.from(await r.arrayBuffer());
-    const tmp = path.join(OUT, `_src_${m.id}.mp3`);
-    fs.writeFileSync(tmp, buf);
-    ffmpeg([
-      '-ss', String(m.inicio || 0), '-i', tmp, '-t', String(m.duracion || 30),
-      '-af', 'afade=t=in:st=0:d=1.2,afade=t=out:st=28:d=2,volume=0.85',
-      '-c:a', 'libmp3lame', '-q:a', '3', '-ar', '44100', '-ac', '2',
-      out,
-    ]);
+    const tmp = path.join(OUT, `_m_${m.id}.mp3`);
+    await baja(`https://assets.mixkit.co/music/${m.id}/${m.id}.mp3`, tmp);
+    const d = m.duracion || 30;
+    ff(['-ss', String(m.inicio || 0), '-i', tmp, '-t', String(d),
+      '-af', `afade=t=in:st=0:d=1.2,afade=t=out:st=${(d - 1.8).toFixed(2)}:d=1.8,volume=0.9`,
+      '-c:a', 'libmp3lame', '-q:a', '2', '-ar', '44100', '-ac', '2', out]);
     fs.rmSync(tmp, { force: true });
     console.log(`  listo  ${m.archivo}  ${(fs.statSync(out).size / 1048576).toFixed(1)}MB`);
-  } catch (e) {
-    fallos++;
-    console.log(`  [warning] musica ${m.id}: ${e.message}`);
-  }
+  } catch (e) { fallos++; console.log(`  [warning] musica ${m.id}: ${e.message}`); }
 }
 
-console.log(`\n${man.clips?.length || 0} clips + ${man.musica?.length || 0} pistas listos en ${man.salida} (${fallos} fallo(s))`);
+/* ── Efectos de sonido (whooshes e impactos) ───────────────────────── */
+for (const s of man.sfx || []) {
+  const out = path.join(OUT, s.archivo || `sfx-${s.id}.mp3`);
+  if (listo(out)) { console.log(`  cache  ${s.archivo}`); continue; }
+  try {
+    const tmp = path.join(OUT, `_s_${s.id}.mp3`);
+    await baja(`https://assets.mixkit.co/active_storage/sfx/${s.id}/${s.id}-preview.mp3`, tmp);
+    ff(['-i', tmp, '-af', `afade=t=in:st=0:d=0.02,afade=t=out:st=0.35:d=0.5,volume=${s.ganancia ?? 0.3}`,
+      '-c:a', 'libmp3lame', '-q:a', '2', '-ar', '44100', '-ac', '2', out]);
+    fs.rmSync(tmp, { force: true });
+    console.log(`  listo  ${s.archivo}  ${(fs.statSync(out).size / 1024).toFixed(0)}KB`);
+  } catch (e) { fallos++; console.log(`  [warning] sfx ${s.id}: ${e.message}`); }
+}
+
+console.log(`\n${man.clips?.length || 0} clips + ${man.capas?.length || 0} capas + ${man.musica?.length || 0} pistas + ${man.sfx?.length || 0} sfx listos en ${man.salida} (${fallos} fallo(s))`);
