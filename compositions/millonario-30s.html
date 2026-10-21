@@ -106,6 +106,21 @@
     background:linear-gradient(to top right, rgba(4,4,6,.97) 0%, rgba(4,4,6,.97) 42%, rgba(4,4,6,0) 43%, transparent 100%); }
   .flash{ position:absolute; inset:0; background:#FFE9B0; opacity:0; pointer-events:none;
     will-change:opacity; }
+  /* Light leak: el fogonazo calido de una lente (modo screen = luz aditiva) */
+  .leak{ position:absolute; top:-25%; left:-140%; width:420px; height:2400px;
+    transform:rotate(18deg); opacity:0; pointer-events:none;
+    mix-blend-mode:screen; will-change:opacity,transform;
+    background:linear-gradient(90deg, rgba(255,140,40,0) 0%, rgba(255,196,96,.55) 38%,
+      rgba(255,240,200,.85) 52%, rgba(255,120,60,.35) 68%, rgba(255,90,30,0) 100%); }
+  /* Smear: el arrastre del golpe (el whip-pan de una transicion de cine) */
+  .smear{ position:absolute; inset:0; opacity:0; pointer-events:none;
+    mix-blend-mode:screen; will-change:opacity;
+    background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,245,225,.30) 38%,
+      rgba(255,255,255,.55) 50%, rgba(255,245,225,.28) 62%, rgba(255,255,255,0) 100%); }
+  /* Grano de pelicula: el toque que lo hace rodar y no "renders" */
+  .grano{ position:absolute; left:-8%; top:-8%; width:116%; height:116%;
+    background-image:url('../assets/grain.png'); background-size:256px 256px;
+    opacity:.055; will-change:transform; pointer-events:none; }
 </style>
 </head>
 <body>
@@ -158,6 +173,9 @@
   <div class="vineta"></div>
   <div class="diagonal"></div>
   <div class="flash" id="flash"></div>
+  <div class="leak" id="leak"></div>
+  <div class="smear" id="smear"></div>
+  <div class="grano" id="grano"></div>
 
   <!-- Musica por debajo de la voz -->
   <audio id="musica" class="clip" data-start="0" data-duration="30" data-track-index="9"
@@ -198,7 +216,9 @@
 
   /* ── Planos: entrada suave + empuje lento de camara (el vivo) ───── */
   tl.fromTo('#p1', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.035, duration: 30, ease: 'none' }, 0);
-  tl.fromTo('#p2', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.05, duration: 6, ease: 'none' }, 24);
+  /* el corte final: seco (con el smear encima) y luego empuje lento */
+  tl.fromTo('#p2', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.0, duration: .05, ease: 'none' }, 24);
+  tl.to('#p2', { scale: 1.05, duration: 6, ease: 'none' }, 24.05);
 
   /* ── La barra entra, cae y el neon parpadea como el de verdad ───── */
   tl.fromTo('#barra', { opacity: 0, y: -46 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, .05);
@@ -260,9 +280,18 @@
     if (t > 29.7) break;
   }
 
-  /* ── El destello calido antes del corte ────────────────────────── */
+  /* ── La transicion del destello: light leak + blowout + corte en seco ── */
+  /* el destello calido */
   tl.fromTo('#flash', { opacity: 0 }, { opacity: .85, duration: .07, ease: 'none' }, 22.72);
   tl.to('#flash', { opacity: 0, duration: .45, ease: 'power2.out' }, 22.79);
+  /* el light leak barre la escena (de izquierda a derecha, como una lente) */
+  tl.fromTo('#leak', { opacity: 0, x: 0 }, { opacity: .9, duration: .18, ease: 'power2.out' }, 22.70);
+  tl.to('#leak', { x: 1350, opacity: 0, duration: .55, ease: 'power2.in' }, 22.88);
+  /* el smear: el golpe del corte, con estela */
+  tl.fromTo('#smear', { opacity: 0 }, { opacity: .85, duration: .05, ease: 'none' }, 23.92);
+  tl.to('#smear', { opacity: 0, duration: .22, ease: 'power2.out' }, 23.97);
+  /* el grano se mueve: el vivo de la pelicula */
+  tl.to('#grano', { x: 18, y: -10, duration: 2.4, ease: 'steps(5)', repeat: -1, yoyo: true }, 0);
 
   /* ── La luz magenta late despacio ──────────────────────────────── */
   tl.to('#glow', { opacity: .9, x: 26, y: -14, duration: 7, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
