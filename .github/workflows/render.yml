@@ -475,6 +475,9 @@ jobs:
               sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
             fi
             node demo2/contact-sheet.mjs "$FILE" renders/qc/hoja-de-contactos.png
+            # El filmstrip denso: la edicion entera en una imagen (300 KB).
+            # Asi se revisa el montaje SIN descargar el MP4 (35 MB).
+            node demo2/filmstrip.mjs "$FILE" renders/qc/filmstrip.png 0.75 8 || true
           else
             echo "::warning::No hay MP4 que verificar"
           fi
