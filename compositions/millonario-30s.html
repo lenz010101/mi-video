@@ -5,7 +5,7 @@
   {"id":"t3","type":"string","label":"Barra 3","default":"MILLONARIO"},
   {"id":"nombres","type":"string","label":"Nombres de marca","default":"Mercedes-Benz|PORSCHE|HONDA|CHRYSLER|NISSAN|LEXUS|TOYOTA"},
   {"id":"colores","type":"string","label":"Color de cada nombre","default":"#E9EDF2|#D5001C|#CC0000|#F5C518|#111111|#C9CDD2|#EB0A1E"},
-  {"id":"palabras","type":"string","label":"Palabras","default":"pierden|el valor|todos|los años|años|es|que|que siempre|recomiendo|si quieres|mezclar|y|y confiabilidad|mantienen|muy bien|su valor|compra|para el|futuro|y si tú|quieres bajar|tus pagos|y tus|intereses|y mi equipo|miraremos|tu caso|y te daremos|los mejores|números"},
+  {"id":"palabras","type":"string","label":"Palabras","default":"pierden|el valor|los años|que siempre|recomiendo|si quieres|mezclar|y confiabilidad|mantienen|muy bien|su valor|compra|para el|futuro|y si tú|quieres bajar|tus pagos|y tus|intereses|miraremos|tu caso|y te daremos|los mejores|números"},
   {"id":"presentador1","type":"string","label":"Plano 1","default":"assets/mezcla/presentador-1.mp4"},
   {"id":"presentador2","type":"string","label":"Plano 2","default":"assets/mezcla/presentador-2.mp4"},
   {"id":"musica","type":"string","label":"Musica","default":"assets/audio/music-30s.mp3"}
@@ -28,9 +28,9 @@
   html,body{ margin:0; padding:0; background:var(--fondo); }
   body{ width:1080px; height:1920px; overflow:hidden; }
 
-  /* ── El presentador a pantalla completa ─────────────────────────── */
+  /* ── Los planos ─────────────────────────────────────────────────── */
   .plano{ position:absolute; inset:0; width:100%; height:100%;
-    object-fit:cover; opacity:0; will-change:opacity; }
+    object-fit:cover; opacity:0; will-change:opacity,transform; }
 
   /* ── Barra de neón arriba: tres paneles + tiras de LED ──────────── */
   .barra{ position:absolute; left:0; top:0; width:1080px; height:168px;
@@ -75,10 +75,13 @@
   .nombre-negro{ color:#0C0C0C; }
   .nombre-serif{ font-family:'Playfair',serif; font-size:104px; letter-spacing:.01em; }
 
-  /* ── Las palabras: abajo a la derecha ───────────────────────────── */
-  .palabra{ position:absolute; right:150px; top:1280px; font-family:'Inter',sans-serif;
-    font-weight:800; font-size:64px; letter-spacing:-.015em; color:#FFFFFF;
-    text-shadow:0 4px 18px rgba(0,0,0,.85), 0 1px 2px rgba(0,0,0,.95);
+  /* ── Las palabras: abajo a la derecha, sobre fondo limpio ───────── */
+  .velo-palabras{ position:absolute; left:470px; top:1290px; width:610px; height:250px;
+    pointer-events:none;
+    background:radial-gradient(ellipse 62% 60% at 62% 50%, rgba(3,3,7,.78) 0%, rgba(3,3,7,.40) 60%, rgba(3,3,7,0) 100%); }
+  .palabra{ position:absolute; right:150px; top:1355px; font-family:'Inter',sans-serif;
+    font-weight:800; font-size:62px; letter-spacing:-.015em; color:#FFFFFF;
+    text-shadow:0 3px 10px rgba(0,0,0,.95), 0 1px 2px rgba(0,0,0,1), 0 0 26px rgba(0,0,0,.6);
     white-space:nowrap; opacity:0; will-change:opacity,transform; }
 
   /* ── Ambiente ───────────────────────────────────────────────────── */
@@ -126,6 +129,7 @@
 
   <!-- El velo que apaga el fondo detras de los logos -->
   <div class="velo"></div>
+  <div class="velo-palabras"></div>
 
   <!-- Los logos de marca, uno a uno, en retícula -->
   <div class="logos">
@@ -192,12 +196,17 @@
 
   const tl = gsap.timeline({ paused: true });
 
-  /* ── Planos ────────────────────────────────────────────────────── */
-  tl.fromTo('#p1', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 0);
-  tl.fromTo('#p2', { opacity: 0 }, { opacity: 1, duration: .12, ease: 'none' }, 24);
+  /* ── Planos: entrada suave + empuje lento de camara (el vivo) ───── */
+  tl.fromTo('#p1', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.035, duration: 30, ease: 'none' }, 0);
+  tl.fromTo('#p2', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.05, duration: 6, ease: 'none' }, 24);
 
-  /* ── La barra entra y se va en el corte ────────────────────────── */
-  tl.fromTo('#barra', { opacity: 0 }, { opacity: 1, duration: .35, ease: 'power1.out' }, .05);
+  /* ── La barra entra, cae y el neon parpadea como el de verdad ───── */
+  tl.fromTo('#barra', { opacity: 0, y: -46 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, .05);
+  /* el parpadeo del neon: tres pulsos rapidos al_encender */
+  tl.to('.neon', { opacity: .45, duration: .05, ease: 'none' }, .62);
+  tl.to('.neon', { opacity: 1, duration: .05, ease: 'none' }, .70);
+  tl.to('.neon', { opacity: .6, duration: .04, ease: 'none' }, .78);
+  tl.to('.neon', { opacity: 1, duration: .06, ease: 'none' }, .84);
   tl.to('#barra', { opacity: 0, duration: .25, ease: 'power2.in' }, 23.75);
 
   /* ── Los logos: entran uno a uno, en cadena ─────────────────────── */
@@ -207,11 +216,11 @@
     { id: '#lgLexus', t: 8.8 }
   ];
   for (const l of logos) {
-    tl.fromTo(l.id, { opacity: 0, scale: .55, rotation: -8 },
-      { opacity: 1, scale: 1, rotation: 0, duration: .55, ease: 'back.out(1.9)' }, l.t);
+    tl.fromTo(l.id, { opacity: 0, scale: .82, y: 12 },
+      { opacity: 1, scale: 1, y: 0, duration: .45, ease: 'power4.out' }, l.t);
   }
   /* y se van todos en el corte */
-  tl.to('.logo', { opacity: 0, duration: .25, ease: 'power2.in' }, 23.75);
+  tl.to('.logo', { opacity: 0, scale: .95, duration: .28, ease: 'power2.in' }, 23.75);
 
   /* ── Los nombres de marca, uno detras de otro ──────────────────── */
   const nombres = [
@@ -220,18 +229,19 @@
     { id: '#nom6', t: 15.6, d: 2.2 }
   ];
   for (const n of nombres) {
-    tl.fromTo(n.id, { opacity: 0, y: 34, scale: .92 },
-      { opacity: 1, y: 0, scale: 1, duration: .5, ease: 'power3.out' }, n.t);
-    tl.to(n.id, { opacity: 0, y: -18, duration: .35, ease: 'power2.in' }, n.t + n.d);
+    tl.fromTo(n.id, { opacity: 0, y: 30, scale: 1.05 },
+      { opacity: 1, y: 0, scale: 1, duration: .45, ease: 'power4.out' }, n.t);
+    tl.to(n.id, { opacity: 0, y: -14, scale: .985, duration: .32, ease: 'power2.in' }, n.t + n.d);
   }
   /* el sticker de NISSAN sale con su nombre */
-  tl.fromTo('#stic4', { opacity: 0, scale: .9 },
-    { opacity: 1, scale: 1, duration: .45, ease: 'power3.out' }, 10.8);
-  tl.to('#stic4', { opacity: 0, duration: .35, ease: 'power2.in' }, 13.0);
+  tl.fromTo('#stic4', { opacity: 0, scale: .94 },
+    { opacity: 1, scale: 1, duration: .4, ease: 'power4.out' }, 10.8);
+  tl.to('#stic4', { opacity: 0, duration: .32, ease: 'power2.in' }, 13.0);
 
   /* ── Las palabras: al ritmo del habla ──────────────────────────── */
-  /* antes del corte: ~0.85 s por palabra; despues: ~0.65 s */
-  const antes = 7.6, gap1 = .85, gap2 = .65, corte = 24.0;
+  /* antes del corte: ~1,05 s por palabra; despues: ~0,82 s. Se dejan
+     ~0,6 s a pantalla completa: si no, no se leen. */
+  const antes = 6.2, gap1 = .95, gap2 = .75, corte = 24.0;
   let t = antes;
   for (let i = 0; i < PALABRAS.length; i++) {
     const es = 'pal' + i;
@@ -244,10 +254,10 @@
       document.getElementById('root').appendChild(el);
     }
     const dur = t < corte ? gap1 : gap2;
-    tl.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .22, ease: 'power2.out' }, t);
-    tl.to(el, { opacity: 0, duration: .28, ease: 'power2.in' }, t + dur - .28);
+    tl.fromTo(el, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: .26, ease: 'power3.out' }, t);
+    tl.to(el, { opacity: 0, x: -16, duration: .26, ease: 'power2.in' }, t + dur - .26);
     t += dur;
-    if (t > 29.6) break;
+    if (t > 29.7) break;
   }
 
   /* ── El destello calido antes del corte ────────────────────────── */
