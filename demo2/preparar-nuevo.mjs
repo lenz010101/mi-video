@@ -76,11 +76,15 @@ async function montar(c) {
   }
 
   chains.push(`[${last}]${grado}[gr]`);
-  /* Halation: las altas luces se difuminan y se vuelven a sumar en screen. */
-  chains.push(`[gr]split=2[keep][hl]`);
-  chains.push(`[hl]lutrgb=r='if(gt(val,205),val,0)':g='if(gt(val,210),val,0)':b='if(gt(val,215),val,0)',gblur=sigma=14[hlb]`);
-  const hal = g.halation ? `blend=all_mode=screen:all_opacity=${g.halation}` : 'null';
-  chains.push(`[keep][hlb]${hal}${post ? ',' + post : ''},fps=${FPS}[out]`);
+  /* Halation: las altas luces se difuminan y se vuelven a sumar en screen.
+     Si el grado no lleva halation, la cadena se queda en un solo plano. */
+  if (g.halation) {
+    chains.push(`[gr]split=2[keep][hl]`);
+    chains.push(`[hl]lutrgb=r='if(gt(val,205),val,0)':g='if(gt(val,210),val,0)':b='if(gt(val,215),val,0)',gblur=sigma=14[hlb]`);
+    chains.push(`[keep][hlb]blend=all_mode=screen:all_opacity=${g.halation}${post ? ',' + post : ''},fps=${FPS}[out]`);
+  } else {
+    chains.push(`[gr]${post ? post + ',' : ''}fps=${FPS}[out]`);
+  }
 
   ff(['-filter_complex', chains.join(';'), '-map', '[out]',
     '-c:v', 'libx264', '-profile:v', P.perfil_h264 || 'baseline', '-level', P.nivel_h264 || '3.1',
@@ -104,8 +108,8 @@ function montarSeguro(c) {
   }
 }
 
-for (const c of man.clips || []) montarSeguro(c);
-for (const c of man.capas || []) montarSeguro(c);
+for (const c of man.clips || []) { if (!process.env.SOLO || c.nombre === process.env.SOLO) montarSeguro(c); }
+for (const c of man.capas || []) { if (!process.env.SOLO || c.nombre === process.env.SOLO) montarSeguro(c); }
 
 /* ── Musica ─────────────────────────────────────────────────────────── */
 for (const m of man.musica || []) {
