@@ -118,7 +118,7 @@
 </head>
 <body>
 
-<div id="root" data-composition-id="humo-reel" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="24">
+<div id="root" data-composition-id="humo-reel" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
 
   <!-- ═══ MATERIAL (clips en la raiz) ═══ -->
   <video id="v1"  class="shot clip" data-start="0"      data-duration="3.264" data-track-index="0" src="assets/nuevo/procesado/apertura.mp4" muted playsinline></video>
@@ -153,7 +153,7 @@
       <div class="rule" id="ruleBottom" style="position:absolute; left:96px; right:96px; bottom:150px;"></div>
       <div class="lbl" id="lblTop" style="position:absolute; left:96px; top:104px;">HUMO / STUDIO</div>
       <div class="lbl lbl-accent" id="lblRight" style="position:absolute; right:96px; top:104px;">REEL 30s</div>
-      <div class="lbl" id="lblBottom" style="position:absolute; left:96px; bottom:104px;">9:16 &nbsp;24 FPS &nbsp;H.264</div>
+      <div class="lbl" id="lblBottom" style="position:absolute; left:96px; bottom:104px;">9:16 &nbsp;30 FPS &nbsp;H.264</div>
       <div class="lbl lbl-accent" id="lblTC" style="position:absolute; right:96px; bottom:104px;">00:00:00</div>
       <div class="reg" id="reg1" style="left:44px; top:44px;"></div>
       <div class="reg" id="reg2" style="right:44px; bottom:44px;"></div>
@@ -460,7 +460,7 @@
   const n1 = document.getElementById('n1'), n2 = document.getElementById('n2');
   const s6pct = document.getElementById('s6pct');
   tl.to(c1, { v: 1080, duration: 1.4, ease: 'power2.out', onUpdate: function () { if (n1) n1.textContent = Math.round(c1.v); } }, 19.95);
-  tl.to(c2, { v: 24, duration: 1.0, ease: 'power2.out', onUpdate: function () { if (n2) n2.textContent = Math.round(c2.v); } }, 20.2);
+  tl.to(c2, { v: 30, duration: 1.0, ease: 'power2.out', onUpdate: function () { if (n2) n2.textContent = Math.round(c2.v); } }, 20.2);
   tl.fromTo('#bar1', { scaleX: 0 }, { scaleX: 1, duration: 2.0, ease: 'power1.inOut' }, 19.9);
   tl.to(pct, { v: 100, duration: 2.0, ease: 'power1.inOut', onUpdate: function () { if (s6pct) s6pct.textContent = Math.round(pct.v) + '%'; } }, 19.9);
 
@@ -497,7 +497,7 @@
   window.__timelines["humo-reel"] = tl;
 
   /* El ticker de GSAP va a la misma cadencia que la captura (data-fps). */
-  if (gsap.ticker) gsap.ticker.fps(24);
+  if (gsap.ticker) gsap.ticker.fps(30);
 })();
 </script>
 </body>

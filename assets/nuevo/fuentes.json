@@ -1,7 +1,7 @@
 {
   "_nota": "Fuentes del reel HUMO v2 (calidad Resolve). El repo solo guarda este manifiesto: los clips, la musica y los efectos se descargan y se montan en la nube (demo2/preparar-nuevo.mjs). Origen: Mixkit (licencia libre, sin clave).",
   "salida": "assets/nuevo/procesado",
-  "fps": 24,
+  "fps": 30,
   "rejilla": {
     "_nota": "147 BPM medidos en la pista 614. Compas = 1.632 s. La musica se corta en 0.96 s para que el primer golpe caiga en 0.",
     "compas": 1.632,
