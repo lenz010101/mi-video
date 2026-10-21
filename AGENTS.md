@@ -36,10 +36,15 @@
   (`node demo2/verify-vendor.mjs`).
   Los pasos usan el wrapper `hf` (prepara la CLI instalada y cae a `npx` si
   no está sana), así que el render nunca se queda sin HyperFrames.
-- **Workflow `validate.yml`**: valida el repo **sin renderizar vídeo** (lint +
-  auditor de reglas + verify-vendor + 7 fotogramas de la composición). Sirve
-  para probar cambios en `assets/vendor` o en las librerías sin gastar un
-  render completo. `node demo2/ciclo.mjs` sigue siendo el ciclo completo con MP4.
+- **Workflow `validate.yml`**: valida el repo **sin renderizar vídeo**
+  (`hf check .` = lint estático del proyecto + muestras en runtime + contraste
+  WCAG, más `hf lint .`, el auditor de reglas, la comparación vendor/npm y 7
+  fotogramas). Sirve para probar cambios en `assets/vendor` o en las librerías
+  sin gastar un render completo. Tarda ~2 min. `node demo2/ciclo.mjs` sigue
+  siendo el ciclo completo con MP4.
+  Ojo: `hf check` y `hf snapshot` solo aceptan **proyectos** (directorios con
+  `index.html`), no ficheros sueltos; en `render` sí vale `--composition
+  compositions/x.html`, pero en `snapshot` es el `data-composition-id`.
 - **Las reglas son globales**, no solo de este repo:
   `~/.config/opencode/AGENTS.md` + skill `hyperframes-composition`
   (con el auditor y el fixer en `~/.config/opencode/skills/.../scripts/`).
