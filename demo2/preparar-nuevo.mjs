@@ -55,7 +55,11 @@ async function montar(c) {
   const cx = enc === 'izquierda' ? '(iw-1080)/2*0.12' : enc === 'derecha' ? '(iw-1080)/2*0.88' : '(iw-1080)/2';
   /* Los filtros vacios del grado (p.ej. el polvo no lleva vineta) se omiten. */
   const grado = [g.curves, g.tono, g.eq].filter(Boolean).join(',');
-  const post = [g.vineta, g.grano].filter(Boolean).join(',');
+  /* El grano NO se mete aqui: el ruido en el video dispara el bitrate
+     (74 MB en 30 s) y la escena ya lleva su capa de grano en CSS, que es
+     gratis. Con el video limpio el MP4 baja a un tercio y se descarga
+     mucho antes. */
+  const post = [g.vineta].filter(Boolean).join(',');
 
   const base = path.join(OUT, `_b_${c.nombre}.mp4`);
   await baja(`https://assets.mixkit.co/videos/${c.base}/${c.base}-720.mp4`, base);

@@ -1,18 +1,18 @@
-name: Render video
+﻿name: Render video
 
-# Renderiza la composición index.html en la nube de GitHub y publica el MP4
+# Renderiza la composiciÃ³n index.html en la nube de GitHub y publica el MP4
 # como artefacto descargable. No requiere instalar nada en tu ordenador.
 #
-# Optimizado para la máquina gratuita de GitHub:
-#   * Instala solo ffmpeg y sin paquetes recomendados (las tipografías van
+# Optimizado para la mÃ¡quina gratuita de GitHub:
+#   * Instala solo ffmpeg y sin paquetes recomendados (las tipografÃ­as van
 #     empaquetadas en assets/fonts, no hacen falta las del sistema).
-#   * Cachea ~/.npm y ~/.cache para no volver a descargar en cada ejecución
-#     el paquete de HyperFrames, su navegador ni las tipografías.
-#   * La versión de HyperFrames está fijada, para que el render sea
-#     reproducible y no cambie solo porque salga una versión nueva.
+#   * Cachea ~/.npm y ~/.cache para no volver a descargar en cada ejecuciÃ³n
+#     el paquete de HyperFrames, su navegador ni las tipografÃ­as.
+#   * La versiÃ³n de HyperFrames estÃ¡ fijada, para que el render sea
+#     reproducible y no cambie solo porque salga una versiÃ³n nueva.
 
 on:
-  # Botón "Run workflow" en la pestaña Actions.
+  # BotÃ³n "Run workflow" en la pestaÃ±a Actions.
   workflow_dispatch:
     inputs:
       quality:
@@ -70,7 +70,7 @@ on:
           - "si"
           - "no"
 
-  # También se ejecuta solo al cambiar la composición.
+  # TambiÃ©n se ejecuta solo al cambiar la composiciÃ³n.
   push:
     branches: [main]
     paths:
@@ -100,7 +100,7 @@ jobs:
           node-version: "22"
 
       # Evita volver a descargar el paquete de HyperFrames, su navegador
-      # headless y las tipografías en cada ejecución.
+      # headless y las tipografÃ­as en cada ejecuciÃ³n.
       - name: Cache de HyperFrames, navegador y fuentes
         uses: actions/cache@v4
         with:
@@ -266,7 +266,7 @@ jobs:
           fi
           ffmpeg -version | head -1
 
-      # Recorta la música a la duración del vídeo y le aplica los fundidos.
+      # Recorta la mÃºsica a la duraciÃ³n del vÃ­deo y le aplica los fundidos.
       - name: Prepare the soundtrack
         run: |
           mkdir -p assets/audio
@@ -306,7 +306,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: assets/nuevo/procesado
-          key: nuevo-v2-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+          key: nuevo-v3-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
 
       - name: Prepare the new material
         run: node demo2/preparar-nuevo.mjs
@@ -400,7 +400,7 @@ jobs:
           fi
 
       - name: Capture review frames
-        # Los fotogramas de revisión cuestan ~18 s de render aparte: solo se
+        # Los fotogramas de revisiÃ³n cuestan ~18 s de render aparte: solo se
         # generan si se piden a mano desde "Run workflow".
         if: ${{ inputs.frames == 'si' }}
         continue-on-error: true
@@ -412,7 +412,7 @@ jobs:
             --no-browser-gpu \
             --output snapshots
 
-      # Comprueba duración y pista de audio leyendo la cabecera del MP4,
+      # Comprueba duraciÃ³n y pista de audio leyendo la cabecera del MP4,
       # sin necesitar ffprobe. Si algo falta, avisa en el resumen.
       - name: Verify the output
         if: always()
@@ -466,3 +466,4 @@ jobs:
           path: snapshots/
           if-no-files-found: ignore
           retention-days: 14
+
