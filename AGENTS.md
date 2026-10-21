@@ -126,6 +126,16 @@
 
 ## Preferencias del usuario
 
+- **Cada pieza nueva nace con el pipeline rápido** (no se monta desde cero):
+  material en la nube → comp **horneado** con ffmpeg (un plano por bloque,
+  sin blends por frame) → **`mode: frames`** para revisar la dirección de arte
+  en ~1 min → `demo2/ciclo.ps1` para entregar. Los pasos y sus tiempos están
+  en `demo2/GUIA.md`.
+- **El PC del usuario es malo (i3, 2 núcleos, 16 GB): solo valida y descarga.**
+  En local: auditor (2 s), lint (1 min) y descargar el MP4 final. **Nunca**
+  renders, snapshots, `ffmpeg` pesado ni análisis de vídeo frame a frame: todo
+  eso va en la nube. Las descargas de paquetes pesados también: las librerías
+  y los skills se instalan en el runner, no en su máquina.
 - **Nunca una hora de trabajo (regla permanente):** ni editando el vídeo ni
   creándolo. El usuario no se queda esperando y no quiere cadenas de
   experimentos ni investigaciones largas. Si algo no se puede comprobar en
