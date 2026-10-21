@@ -62,12 +62,15 @@ async function montar(c) {
     catch (e) { console.log(`  [warning] overlay ${c.overlay.id}: ${e.message}`); }
   }
 
-  const trim = `[0:v]trim=start=${c.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=-2:${H}:flags=lanczos,crop=${W}:${H}:${cx}:0,setsar=1,unsharp=5:5:0.5:5:5:0.0[base]`;
+  /* base y overlay deben entrar al blend con el MISMO frame rate y timebase
+     (si no, ffmpeg aborta con "Error binding filtergraph inputs/outputs"). */
+  const norm = `fps=${FPS},settb=AVTB,format=yuv420p,`;
+  const trim = `[0:v]trim=start=${c.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=-2:${H}:flags=lanczos,crop=${W}:${H}:${cx}:0,setsar=1,${norm}unsharp=5:5:0.5:5:5:0.0[base]`;
   const chains = [trim];
   let last = 'base';
 
   if (ov && fs.existsSync(ov)) {
-    chains.push(`[1:v]trim=start=${c.overlay.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1[ov]`);
+    chains.push(`[1:v]trim=start=${c.overlay.inicio || 0}:duration=${c.duracion},setpts=PTS-STARTPTS,scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,${norm}[ov]`);
     chains.push(`[${last}][ov]blend=all_mode=screen:all_opacity=${c.overlay.opacidad}[b1]`);
     last = 'b1';
   }
@@ -89,12 +92,20 @@ async function montar(c) {
   console.log(`  listo  ${c.nombre}.mp4  ${(fs.statSync(out).size / 1048576).toFixed(1)}MB  ${c.duracion}s`);
 }
 
-for (const c of man.clips || []) {
-  try { await montar(c); } catch (e) { fallos++; console.log(`  [warning] ${c.nombre}: ${e.message}`); }
+/* Si un plano falla, se borra el fichero roto: un MP4 a medias hace fallar el
+   render entero con "moov atom not found". */
+function montarSeguro(c) {
+  try { montar(c); }
+  catch (e) {
+    fallos++;
+    const out = path.join(OUT, `${c.nombre}.mp4`);
+    if (fs.existsSync(out)) { fs.rmSync(out, { force: true }); console.log(`  [warning] ${c.nombre}: roto, se borra`); }
+    console.log(`  [warning] ${c.nombre}: ${e.message}`);
+  }
 }
-for (const c of man.capas || []) {
-  try { await montar(c); } catch (e) { fallos++; console.log(`  [warning] ${c.nombre}: ${e.message}`); }
-}
+
+for (const c of man.clips || []) montarSeguro(c);
+for (const c of man.capas || []) montarSeguro(c);
 
 /* ── Musica ─────────────────────────────────────────────────────────── */
 for (const m of man.musica || []) {
@@ -124,6 +135,26 @@ for (const s of man.sfx || []) {
     fs.rmSync(tmp, { force: true });
     console.log(`  listo  ${s.archivo}  ${(fs.statSync(out).size / 1024).toFixed(0)}KB`);
   } catch (e) { fallos++; console.log(`  [warning] sfx ${s.id}: ${e.message}`); }
+}
+
+/* Comprobacion final: si falta un solo plano, el CI para aqui. Es preferible
+   fallar en 2 minutos que renderizar 3 minutos con material roto. */
+const faltan = [];
+for (const c of [...(man.clips || []), ...(man.capas || [])]) {
+  const f = path.join(OUT, `${c.nombre}.mp4`);
+  if (!fs.existsSync(f) || fs.statSync(f).size < 20000) faltan.push(c.nombre);
+}
+for (const m of man.musica || []) {
+  const f = path.join(OUT, m.archivo);
+  if (!fs.existsSync(f)) faltan.push(m.archivo);
+}
+for (const s of man.sfx || []) {
+  const f = path.join(OUT, s.archivo);
+  if (!fs.existsSync(f)) faltan.push(s.archivo);
+}
+if (faltan.length) {
+  console.error(`\nFALTA MATERIAL: ${faltan.join(', ')}`);
+  process.exit(1);
 }
 
 console.log(`\n${man.clips?.length || 0} clips + ${man.capas?.length || 0} capas + ${man.musica?.length || 0} pistas + ${man.sfx?.length || 0} sfx listos en ${man.salida} (${fallos} fallo(s))`);

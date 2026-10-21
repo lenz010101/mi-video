@@ -306,7 +306,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: assets/nuevo/procesado
-          key: nuevo-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+          key: nuevo-v2-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
 
       - name: Prepare the new material
         run: node demo2/preparar-nuevo.mjs
