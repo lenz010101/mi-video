@@ -126,6 +126,13 @@
 
 ## Preferencias del usuario
 
+- **REGLA PERMANENTE (el usuario la ha repetido): no dejar nada colgado y no
+  pedirle que me acuerde de las cosas.** El usuario no puede estar recordán-
+  dome en cada momento el ritmo, así que el agente tiene que: (a) arrancar
+  pronto, (b) no encadenar análisis largos, (c) tener siempre un entregable a
+  punto, y (d) avisar de los tiempos **antes** de lanzar algo largo. Si una
+  tarea se alarga, se entrega lo que haya (aunque sea el MP4 sin revisar) y se
+  dice qué falta. **Nunca dejar el trabajo a medias esperando.**
 - **Cada pieza nueva nace con el pipeline rápido** (no se monta desde cero):
   material en la nube → comp **horneado** con ffmpeg (un plano por bloque,
   sin blends por frame) → **`mode: frames`** para revisar la dirección de arte
