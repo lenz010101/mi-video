@@ -36,6 +36,14 @@ const MAP = {
 /* Los plugins de GSAP se comprueban uno a uno contra gsap/dist/ */
 const PLUGIN_DIR = 'assets/vendor/gsap';
 
+/* Carpetas vendorizadas -> carpeta del paquete de npm: se comprueba cada
+   fichero por separado (mapas, typegpu...). */
+const DIRS = {
+  'assets/vendor/maplibre': 'maplibre-gl/dist',
+  'assets/vendor/mapbox': 'mapbox-gl/dist',
+  'assets/vendor/typegpu': 'typegpu',
+};
+
 function sha(b) {
   return b.length > 0 ? b.length + ' bytes' : 'vacio';
 }
@@ -79,6 +87,14 @@ if (fs.existsSync(pluginDir)) {
   }
 } else {
   bad.push(`${PLUGIN_DIR}  (no existe la carpeta de plugins)`);
+}
+
+for (const [dir, npmDir] of Object.entries(DIRS)) {
+  const abs = path.join(REPO, dir);
+  if (!fs.existsSync(abs)) { bad.push(`${dir}  (no existe la carpeta)`); continue; }
+  for (const f of fs.readdirSync(abs).sort()) {
+    check(`${dir}/${f}`, `${npmDir}/${f}`);
+  }
 }
 
 console.log('');

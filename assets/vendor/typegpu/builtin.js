@@ -1,0 +1,35 @@
+import { arrayOf } from "./data/array.js";
+import { attribute } from "./data/attributes.js";
+import { bool, f32, u32 } from "./data/numeric.js";
+import { vec3u, vec4f } from "./data/vector.js";
+import { $internal } from "./shared/symbols.js";
+function defineBuiltin(dataType, value) {
+    return attribute(dataType, {
+        [$internal]: true,
+        type: '@builtin',
+        // oxlint-disable-next-line typescript/no-explicit-any -- it's fine
+        params: [value],
+    });
+}
+export const builtin = {
+    vertexIndex: defineBuiltin(u32, 'vertex_index'),
+    instanceIndex: defineBuiltin(u32, 'instance_index'),
+    clipDistances: defineBuiltin(arrayOf(u32, 8), 'clip_distances'),
+    position: defineBuiltin(vec4f, 'position'),
+    frontFacing: defineBuiltin(bool, 'front_facing'),
+    fragDepth: defineBuiltin(f32, 'frag_depth'),
+    primitiveIndex: defineBuiltin(u32, 'primitive_index'),
+    sampleIndex: defineBuiltin(u32, 'sample_index'),
+    sampleMask: defineBuiltin(u32, 'sample_mask'),
+    localInvocationId: defineBuiltin(vec3u, 'local_invocation_id'),
+    localInvocationIndex: defineBuiltin(u32, 'local_invocation_index'),
+    globalInvocationId: defineBuiltin(vec3u, 'global_invocation_id'),
+    globalInvocationIndex: defineBuiltin(u32, 'global_invocation_index'),
+    workgroupId: defineBuiltin(vec3u, 'workgroup_id'),
+    workgroupIndex: defineBuiltin(u32, 'workgroup_index'),
+    numWorkgroups: defineBuiltin(vec3u, 'num_workgroups'),
+    subgroupInvocationId: defineBuiltin(u32, 'subgroup_invocation_id'),
+    subgroupSize: defineBuiltin(u32, 'subgroup_size'),
+    subgroupId: defineBuiltin(u32, 'subgroup_id'),
+    numSubgroups: defineBuiltin(u32, 'num_subgroups'),
+};

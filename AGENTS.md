@@ -187,8 +187,10 @@ render fluido (sin fotogramas congelados) y automatización escalable.
   | Three.js | `three.module.js` | `three@0.181.2` (ESM: necesita `importmap`) |
   | D3 | `d3.min.js` | `d3@7.9.0` |
   | Leaflet | `leaflet/` (js, css, marcadores) | `leaflet@1.9.4` |
+  | MapLibre | `maplibre/` (mjs, worker, css) | `maplibre-gl@6.15.0` |
+  | Mapbox | `mapbox/` (js, css; necesita token) | `mapbox-gl@3.33.0` |
+  | TypeGPU | `typegpu/` (WebGPU; el runner no tiene GPU) | `typegpu@0.12.8` |
   | WAAPI / CSS | nativo del navegador | — |
-  | MapLibre / Mapbox / TypeGPU | solo instalados en la nube (npm) | `maplibre-gl`, `mapbox-gl`, `typegpu` |
   Three.js es ESM, así que va con importmap local:
   ```html
   <script type="importmap">

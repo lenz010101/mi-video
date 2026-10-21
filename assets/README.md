@@ -18,6 +18,9 @@ los paquetes de npm, y `node demo2/verify-vendor.mjs` lo comprueba en el CI.
 | `vendor/three.module.js` | Three.js 0.181.2 (ESM → necesita `importmap`) | `three@0.181.2` |
 | `vendor/d3.min.js` | D3 7.9.0 (gráficos) | `d3@7.9.0` |
 | `vendor/leaflet/` | Leaflet 1.9.4 (js, css, iconos de marcador) | `leaflet@1.9.4` |
+| `vendor/maplibre/` | MapLibre GL 6.15.0 (mjs, worker, css) | `maplibre-gl@6.15.0` |
+| `vendor/mapbox/` | Mapbox GL 3.33.0 (js, css; necesita token) | `mapbox-gl@3.33.0` |
+| `vendor/typegpu/` | TypeGPU 0.12.8 (WebGPU; el runner no tiene GPU) | `typegpu@0.12.8` |
 
 Los plugins de GSAP se cargan **uno a uno** y hay que registrarlos:
 

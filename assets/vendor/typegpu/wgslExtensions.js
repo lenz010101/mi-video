@@ -1,0 +1,14 @@
+export const wgslEnableExtensions = [
+    'f16',
+    'clip_distances',
+    'dual_source_blending',
+    'subgroups',
+    'primitive_index',
+];
+export const wgslEnableExtensionToFeatureName = {
+    f16: 'shader-f16',
+    clip_distances: 'clip-distances',
+    dual_source_blending: 'dual-source-blending',
+    subgroups: 'subgroups',
+    primitive_index: 'primitive-index',
+};
