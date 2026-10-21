@@ -51,6 +51,13 @@ on:
         options:
           - "no"
           - "si"
+      qc:
+        description: "Verificar el MP4 (frames congelados + hoja). En modo revision se puede apagar para ganar ~40 s"
+        type: choice
+        default: "si"
+        options:
+          - "si"
+          - "no"
       composition:
         description: "Archivo de composicion a renderizar (vacio = index.html del proyecto)"
         type: string
@@ -394,7 +401,7 @@ jobs:
       # congelados) y hoja de contactos con timecodes. El PC del usuario no
       # analiza nada: solo descarga el resultado del artifact.
       - name: Verify the MP4 (frozen frames + contact sheet)
-        if: always()
+        if: always() && inputs.qc != 'no'
         env:
           FILENAME: ${{ inputs.filename }}
         run: |
