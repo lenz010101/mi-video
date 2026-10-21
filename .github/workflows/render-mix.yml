@@ -225,18 +225,44 @@ jobs:
       - name: Render the orb column with remotion
         working-directory: remotion
         run: |
-          mkdir -p ../renders
-          # La columna de orbes dorados, sobre negro: en HyperFrames se compone
-          # en modo screen sobre el presentador.
-          npx remotion render OrbColumn "../renders/orbes.mp4" --log=error
-          ls -lh ../renders/orbes.mp4
+          mkdir -p ../assets/mezcla ../renders
+          # La columna de orbes dorados, sobre negro: se hornea despues encima
+          # del presentador en modo screen.
+          npx remotion render OrbColumn "../assets/mezcla/orbes.mp4" --log=error
+          ls -lh ../assets/mezcla/orbes.mp4
+
+      - name: Bake the plates (presentador + coche + orbes en un solo plano)
+        run: |
+          # Aplanado del comp, como en After Effects: se compone UNA vez por
+          # puesto (presentador enmarcado + foto del coche + capa de orbes en
+          # modo screen) y la composicion solo reproduce ese plano. Asi el
+          # navegador no compone dos videos a pantalla completa en cada uno
+          # de los 900 fotogramas: la captura va bastante mas rapida y el
+          # resultado es identico.
+          mkdir -p assets/mezcla
+          # la voz del presentador, suelta (el video horneado va mudo)
+          ffmpeg -v error -y -i assets/clips/talker-slow.mp4 -t 30 -c:a aac -b:a 160k -ac 2 assets/mezcla/voz.m4a
+          for N in 1 2 3 4 5; do
+            INI=$(node -e "const t={1:22.0,2:16.8,3:11.6,4:6.4,5:1.2}; console.log(t[$N])")
+            DUR=$(node -e "const d={1:8.0,2:5.2,3:5.2,4:5.2,5:5.2}; console.log(d[$N])")
+            CASE=$(node -e "const c={1:'assets/coches/toyota.jpg',2:'assets/coches/honda.jpg',3:'assets/coches/mercedes.jpg',4:'assets/coches/bmw.jpg',5:'assets/coches/porsche.jpg'}; console.log(c[$N])")
+            ffmpeg -v error -y \
+              -ss "$INI" -t "$DUR" -i assets/clips/talker-slow.mp4 \
+              -ss "$INI" -t "$DUR" -i assets/mezcla/orbes.mp4 \
+              -loop 1 -t "$DUR" -i "$CASE" \
+              -filter_complex "\
+                [0:v]scale=530:940,fps=30,format=rgb24,pad=1080:1920:502:360:color=black[pp];\
+                [1:v]scale=1080:1920,fps=30,format=rgb24[oo];\
+                [2:v]scale=1080:660:force_original_aspect_ratio=increase,crop=1080:660:0:0,fps=30,eq=brightness=-0.07:saturation=0.92,format=rgb24,pad=1080:1920:0:1260:color=black[cd];\
+                [pp][cd]blend=all_mode=screen[pc];\
+                [pc][oo]blend=all_mode=screen:all_opacity=1,format=yuv420p[v]" \
+              -map "[v]" -c:v libx264 -profile:v baseline -level 3.1 -preset veryfast \
+              -crf 21 -pix_fmt yuv420p -r 30 -movflags +faststart "assets/mezcla/plato-$N.mp4"
+            echo "plato-$N listo"
+          done
+          ls -lh assets/mezcla
 
       # ── 2) HYPERFRAMES: el montaje final ────────────────────────────
-      - name: Copy the plates into the project
-        run: |
-          mkdir -p assets/mezcla
-          cp renders/orbes.mp4 assets/mezcla/orbes.mp4
-          ls -lh assets/mezcla
 
       - name: Lint the composition
         run: hf lint .

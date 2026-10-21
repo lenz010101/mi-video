@@ -58,14 +58,23 @@
      vez). Valida ANTES de subir. En local son esperables los errores de
      material ausente (`assets/nuevo/**/procesado/*`, `assets/mezcla/*`),
      porque el material se monta en la nube.
-- Herramientas del repo:
+- Herramientas del repo (**la guía completa está en `demo2/GUIA.md`**):
   | Script | Para qué |
   |---|---|
-  | `demo2/audit-rules.mjs` | reglas 9.9 (0 problemas) |
+  | `demo2/ciclo.ps1` | **EL comando único**: valida en local → sube → render en
+    la nube → baja el MP4 al Escritorio. `.\demo2\ciclo.ps1 -Composition
+    compositions/x.html -Filename x.mp4 -Workflow render-mix.yml -Paths
+    compositions/x.html` (`-SinLint` ahorra 1 min, `-SinQc` ahorra 40 s) |
+  | `demo2/audit-rules.mjs` | reglas 9.9 (0 problemas), 2 s, sin Chrome |
   | `demo2/check-css-integrity.mjs` | el CSS solo cambia en `will-change` |
   | `demo2/verify-render.mjs` | MP4 entregado: frames congelados + cortes |
   | `demo2/contact-sheet.mjs` | hoja de contactos con timecodes (revisión) |
-  | `demo2/ciclo.mjs` | render nube + entrega + verificación, un comando |
+  | `demo2/ciclo.mjs` | render nube + entrega + verificación (piezas HyperFrames) |
+  | `demo2/dispatch.ps1` | lanza el render final en la nube y espera (30 fps +
+    `high`; `-SinQc` sin verificación) |
+  | `demo2/descargar.ps1` | baja **solo el MP4** de un run al Escritorio
+    (`-QC` para ver la hoja de contactos) |
+  | `demo2/commit-api.ps1` | sube ficheros por la API de GitHub, sin `git` |
   | `demo2/gh.ps1` | API de GitHub sin `git` instalado (lee el token del
     Administrador de Credenciales de Windows, en memoria) |
 - **Librerías de edición instaladas en la nube** (paso `Install the editing
@@ -92,6 +101,18 @@
   Ojo: `hf check` y `hf snapshot` solo aceptan **proyectos** (directorios con
   `index.html`), no ficheros sueltos; en `render` sí vale `--composition
   compositions/x.html`, pero en `snapshot` es el `data-composition-id`.
+- **Workflow `render-mix.yml`** (Remotion + ffmpeg + HyperFrames): el orden es
+  `Remotion (gráficos) → ffmpeg (HORNEADO del comp) → HyperFrames (montaje)`.
+  El **horneado** es la clave de la velocidad: se compone *una vez* por plano
+  (presentador + foto + capa de orbes en `screen`, como en After Effects) y la
+  composición de HyperFrames solo reproduce ese plano → el navegador no
+  compone dos vídeos a pantalla completa en cada uno de los 900 fotogramas
+  (de ~0,22 s/frame a ~0,15-0,17 s/frame). El aspecto es idéntico.
+  - Al cambiar la composición, **no toques los planos horneados**: se rehacen
+    en la nube en cada run (30 s) a partir de `assets/clips/talker-slow.mp4`,
+    `assets/coches/*.jpg` y `assets/mezcla/orbes.mp4`.
+  - La voz del presentador va suelta (`assets/mezcla/voz.m4a`, generado en el
+    mismo paso) porque los planos horneados van mudos.
 - **Las reglas son globales**, no solo de este repo:
   `~/.config/opencode/AGENTS.md` + skill `hyperframes-composition`
   (con el auditor y el fixer en `~/.config/opencode/skills/.../scripts/`).

@@ -56,7 +56,7 @@ if ($isMix) {
   $inputs = @{ quality = $quality; fps = $fps; filename = $Filename; format = 'mp4'; workers = '1'; frames = 'no'; qc = $qc; composition = $Composition }
 }
 Api POST "/actions/workflows/$Workflow/dispatches" @{ ref = $Branch; inputs = $inputs } | Out-Null
-Write-Output "dispatch [$Preset]: $Composition -> $Filename (fps=$fps quality=$quality qc=$qc)"
+Write-Output "dispatch: $Composition -> $Filename (fps=$fps quality=$quality qc=$qc)"
 
 $run = $null
 for ($i = 0; $i -lt 20 -and -not $run; $i++) {
@@ -78,6 +78,7 @@ while ($true) {
   if (((Get-Date) - $t0).TotalMinutes -gt 35) { throw "timeout" }
 }
 Write-Output "conclusion: $($r.conclusion) en $([int]((Get-Date) - $t0).TotalSeconds) s"
+Write-Output "RUNID=$($run.id)"
 if ($r.conclusion -ne 'success') {
   $job2 = (Api GET "/actions/runs/$($run.id)/jobs?per_page=10").jobs[0]
   $job2.steps | Where-Object { $_.conclusion -eq 'failure' } | ForEach-Object { Write-Output "FALLO: $($_.name)" }

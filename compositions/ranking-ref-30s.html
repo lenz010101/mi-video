@@ -16,8 +16,7 @@
     {"id":"n1Line","type":"string","label":"Frase 1","default":"quieres bajar"},
     {"id":"verdictPie","type":"string","label":"Pie final","default":"y te daremos los numeros"},
     {"id":"source","type":"string","label":"Fuente","default":"FUENTE: THE NATIONAL STUDY OF MILLIONAIRES"},
-    {"id":"presentador","type":"string","label":"Presentador","default":"assets/clips/talker-slow.mp4"},
-    {"id":"orbes","type":"string","label":"Capa de orbes (Remotion)","default":"assets/mezcla/orbes.mp4"}
+    {"id":"presentador","type":"string","label":"Presentador","default":"assets/clips/talker-slow.mp4"}
   ]'>
 <head>
 <meta charset="utf-8">
@@ -39,25 +38,17 @@
     font-family:'JetBrains Mono',monospace; -webkit-font-smoothing:antialiased;
   }
 
-  /* El presentador: en un panel enmarcado (tipo ventana editorial) a la
-     derecha, CON SU VOZ. Encima, la foto del coche de cada marca. */
-  .presentador{ position:absolute; right:48px; top:360px; width:530px; height:940px;
-    object-fit:cover; object-position:58% 24%; opacity:0;
-    border:2px solid rgba(227,164,75,.42);
-    box-shadow:0 30px 70px rgba(0,0,0,.62); will-change:opacity,transform; }
+  /* Los planos: el comp ya viene HORNEADO de la nube (presentador enmarcado
+     + foto del coche + capa de orbes en modo screen). Aqui solo se reproduce,
+     asi el navegador no compone dos videos a pantalla completa en cada
+     fotograma: la captura va mucho mas rapida y el resultado es identico. */
+  .plato{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    opacity:0; will-change:opacity,transform; }
   .marco-presentador{ position:absolute; right:48px; top:360px; width:530px; height:940px;
     border:2px solid rgba(227,164,75,.42); pointer-events:none; }
-  /* La foto del coche: banda inferior a sangre */
-  .coche{ position:absolute; left:0; right:0; bottom:0; height:660px; width:100%;
-    object-fit:cover; object-position:50% 56%; opacity:0; will-change:opacity,transform; }
   .coche-velo{ position:absolute; left:0; right:0; bottom:0; height:660px; width:100%;
-    background:linear-gradient(to bottom, rgba(11,10,8,.99) 0%, rgba(11,10,8,.72) 18%, rgba(11,10,8,.18) 42%, rgba(11,10,8,.30) 100%);
+    background:linear-gradient(to bottom, rgba(11,10,8,.92) 0%, rgba(11,10,8,.45) 16%, rgba(11,10,8,0) 38%, rgba(11,10,8,.18) 100%);
     pointer-events:none; }
-
-  /* La capa de orbes la renderiza Remotion sobre negro: en modo screen solo
-     sobrevive la luz, igual que en una composicion de After Effects. */
-  .orbes{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-    mix-blend-mode:screen; opacity:0; pointer-events:none; will-change:opacity; }
 
   /* El logo gigante flotando (tecnica extruded-logo del catalogo) */
   .logo-grande{ position:absolute; left:50%; top:150px; transform:translateX(-50%);
@@ -101,8 +92,10 @@
     will-change:opacity; pointer-events:none; }
   .fundido{ position:absolute; inset:0; background:#0B0A08; opacity:0;
     will-change:opacity; pointer-events:none; }
-  /* Fuga de luz organica (tecnica del catalogo): radiales + screen */
-  .fuga{ position:absolute; inset:-10%; mix-blend-mode:screen; opacity:0; pointer-events:none;
+  /* Fuga de luz organica (tecnica del catalogo): radiales. Sin mix-blend-mode
+     (sobre fondo oscuro el resultado es el mismo y el navegador no tiene que
+     recomponer la pantalla entera en cada fotograma). */
+  .fuga{ position:absolute; inset:-10%; opacity:0; pointer-events:none;
     background:
       radial-gradient(ellipse 52% 110% at 12% 58%, rgba(255,241,197,.34) 0%, transparent 45%),
       radial-gradient(ellipse 72% 120% at 26% 54%, rgba(255,126,57,.26) 0%, transparent 66%);
@@ -122,24 +115,16 @@
 
 <div id="root" data-composition-id="ranking-ref" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
 
-  <!-- El presentador, en panel enmarcado, con su audio (la voz del video) -->
-  <video id="presentador" class="presentador clip" data-start="0" data-duration="30" data-track-index="0"
-    data-var-src="presentador" src="assets/clips/talker-slow.mp4" data-has-audio playsinline></video>
+  <!-- Los 5 planos, horneados en la nube (presentador + coche + orbes) -->
+  <video id="pl5" class="plato clip" data-start="1.2"   data-duration="5.2" data-track-index="0" src="assets/mezcla/plato-5.mp4" muted playsinline></video>
+  <video id="pl4" class="plato clip" data-start="6.4"   data-duration="5.2" data-track-index="0" src="assets/mezcla/plato-4.mp4" muted playsinline></video>
+  <video id="pl3" class="plato clip" data-start="11.6"  data-duration="5.2" data-track-index="0" src="assets/mezcla/plato-3.mp4" muted playsinline></video>
+  <video id="pl2" class="plato clip" data-start="16.8"  data-duration="5.2" data-track-index="0" src="assets/mezcla/plato-2.mp4" muted playsinline></video>
+  <video id="pl1" class="plato clip" data-start="22.0"  data-duration="8"   data-track-index="0" src="assets/mezcla/plato-1.mp4" muted playsinline></video>
   <div class="marco-presentador"></div>
-
-  <!-- La foto del coche de cada marca: banda inferior a sangre -->
-  <img id="coche5" class="coche" src="assets/coches/porsche.jpg" alt="">
-  <img id="coche4" class="coche" src="assets/coches/bmw.jpg" alt="">
-  <img id="coche3" class="coche" src="assets/coches/mercedes.jpg" alt="">
-  <img id="coche2" class="coche" src="assets/coches/honda.jpg" alt="">
-  <img id="coche1" class="coche" src="assets/coches/toyota.jpg" alt="">
   <div class="coche-velo"></div>
 
-  <!-- La capa de orbes dorados: la renderiza Remotion -->
-  <video id="orbes" class="orbes clip" data-start="0" data-duration="30" data-track-index="1"
-    data-var-src="orbes" src="assets/mezcla/orbes.mp4" muted playsinline></video>
-
-  <!-- Ambiente -->
+  <!-- Ambiente (los orbes ya van horneados en los planos) -->
   <div class="fuga" id="fuga"></div>
   <div class="grano" id="grano"></div>
   <div class="vineta"></div>
@@ -170,7 +155,9 @@
   <div class="pie" id="pieV">y te daremos los numeros</div>
   <div class="fuente" id="fuente">FUENTE: THE NATIONAL STUDY OF MILLIONAIRES</div>
 
-  <!-- Musica por debajo de la voz -->
+  <!-- Musica por debajo de la voz, y la voz del presentador (audio suelto) -->
+  <audio id="voz" class="clip" data-start="0" data-duration="30" data-track-index="8"
+    src="assets/mezcla/voz.m4a" data-volume="1"></audio>
   <audio id="musica" class="clip" data-start="0" data-duration="30" data-track-index="9"
     src="assets/audio/music-30s.mp3" data-volume="0.22"></audio>
 </div>
@@ -180,9 +167,12 @@
 <script>
 /* ══════════════════════════════════════════════════════════════════════
    TOP 5 COCHOS DE LOS MILLONARIOS - estilo de la referencia del usuario.
-   REMOTION hace la columna de orbes dorados (sobre negro, se compone en
-   modo screen). HYPERFRAMES hace el montaje: presentador con su voz, logos
-   flotantes, pies de foto, flashes y musica.
+   El "comp" (presentador + foto del coche + columna de orbes) se HORNEA en
+   la nube con ffmpeg: un solo plano por puesto, ya compuesto. aqui solo se
+   reproduce ese plano y se monta el texto encima: logos flotantes, pies de
+   foto, flashes, la voz del presentador y la musica.
+   REMOTION dibuja la columna de orbes dorados (sobre negro); HYPERFRAMES
+   monta la pieza final.
    ══════════════════════════════════════════════════════════════════════ */
 (function () {
   const V = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
@@ -213,9 +203,15 @@
   tl.to('#fuga', { opacity: .8, x: 30, y: -18, duration: 9, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
   tl.to('#grano', { x: 20, y: -12, duration: 2.6, ease: 'steps(6)', repeat: -1 }, 0);
 
-  /* El presentador entra en su panel y la foto del coche se abre */
-  tl.fromTo('#presentador', { opacity: 0, y: 40, scale: 1.06 }, { opacity: 1, y: 0, scale: 1, duration: .8, ease: EASE }, .1);
-  tl.fromTo('#orbes', { opacity: 0 }, { opacity: 1, duration: .8, ease: 'power1.out' }, .15);
+  /* Los planos entran con un fundido; el resto (orbes, coche, presentador) ya
+     viene horneado dentro de ellos. */
+  tl.fromTo('#pl5', { opacity: 0 }, { opacity: 1, duration: .5, ease: 'power1.out' }, .85);
+  tl.fromTo('#pl4', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 6.05);
+  tl.fromTo('#pl3', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 11.25);
+  tl.fromTo('#pl2', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 16.45);
+  tl.fromTo('#pl1', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'power1.out' }, 21.65);
+  /* el veredicto vuelve al plano de la marca #1, mas grande y con luz */
+  tl.fromTo('#pl1', { scale: 1 }, { scale: 1.06, duration: 2.6, ease: 'power2.out' }, 26.7);
 
   /* Apertura */
   tl.fromTo('#pie0', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .55, ease: EASE }, .5);
@@ -226,16 +222,13 @@
   /* Los 5 puestos: enciende el orbe (Remotion), entra el logo flotante,
      el pie de foto, y un flash-through-white en el corte. */
   const puestos = [
-    { n: 5, t: 1.2, dur: 5.2, lg: 'lg5', halo: 'halo5', pie: 'pie5', coche: 'coche5' },
-    { n: 4, t: 6.4, dur: 5.2, lg: 'lg4', halo: 'halo4', pie: 'pie4', coche: 'coche4' },
-    { n: 3, t: 11.6, dur: 5.2, lg: 'lg3', halo: 'halo3', pie: 'pie3', coche: 'coche3' },
-    { n: 2, t: 16.8, dur: 5.2, lg: 'lg2', halo: 'halo2', pie: 'pie2', coche: 'coche2' },
-    { n: 1, t: 22.0, dur: 5.2, lg: 'lg1', halo: 'halo1', pie: 'pie1', coche: 'coche1' },
+    { n: 5, t: 1.2, dur: 5.2, lg: 'lg5', halo: 'halo5', pie: 'pie5' },
+    { n: 4, t: 6.4, dur: 5.2, lg: 'lg4', halo: 'halo4', pie: 'pie4' },
+    { n: 3, t: 11.6, dur: 5.2, lg: 'lg3', halo: 'halo3', pie: 'pie3' },
+    { n: 2, t: 16.8, dur: 5.2, lg: 'lg2', halo: 'halo2', pie: 'pie2' },
+    { n: 1, t: 22.0, dur: 8, lg: 'lg1', halo: 'halo1', pie: 'pie1' },
   ];
   for (const p of puestos) {
-    /* la foto del coche entra con un empuje lento y se va */
-    tl.fromTo('#' + p.coche, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 1.1, ease: EASE }, p.t - .35);
-    tl.to('#' + p.coche, { opacity: 0, scale: 1.04, duration: .5, ease: 'power2.in' }, p.t + p.dur - .7);
     tl.fromTo('#' + p.lg, { opacity: 0, y: -26, scale: .92 }, { opacity: 1, y: 0, scale: 1, duration: .7, ease: EASE }, p.t + .15);
     tl.fromTo('#' + p.halo, { opacity: 0 }, { opacity: 1, duration: .6, ease: EASE }, p.t + .15);
     tl.to('#' + p.lg, { y: -10, duration: 2.4, ease: 'sine.inOut', yoyo: true, repeat: 1 }, p.t + .9);
@@ -249,12 +242,10 @@
     tl.to('#' + p.halo, { opacity: 0, duration: .4, ease: 'power2.in' }, p.t + p.dur - .5);
   }
 
-  /* Veredicto + MOMENTO HERO: la marca #1 con extrusion, el brillo que barre
-     el logo, la luz que recorre el borde y el flash final. */
+  /* el veredicto: la marca #1 con extrusion, el brillo que barre el logo, la
+     luz que recorre el borde y el flash final. */
   tl.fromTo('#pieV', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .6, ease: EASE }, 27.3);
   tl.fromTo('#fuente', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .5, ease: EASE }, 27.8);
-  /* la foto del coche hace push-in y sube de luz en el veredicto */
-  tl.fromTo('#coche1', { opacity: 0, scale: 1.02 }, { opacity: 1, scale: 1.1, duration: 2.4, ease: 'power2.out' }, 27.0);
   /* el logo entra con mas presencia y el brillo lo barre */
   tl.fromTo('#lg1', { opacity: 0, y: -30, scale: .88 }, { opacity: 1, y: 0, scale: 1, duration: .8, ease: GOLPE }, 27.25);
   tl.fromTo('#halo1', { opacity: 0 }, { opacity: 1, duration: .6, ease: EASE }, 27.3);
