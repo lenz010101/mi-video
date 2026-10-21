@@ -36,6 +36,23 @@
   barrido de luz sobre el cartel, cierre con halo y filete) está **en el código
   pero sin renderizar** (commit `983a728`). Para verlo:
   `node demo2/ciclo.mjs` → render + MP4 y hoja de contactos en el Escritorio.
+- **Reglas de velocidad** (el usuario se quejó del tiempo empleado; van en pie):
+  1. **NO tocar `assets/nuevo/fuentes.json` ni `assets/nuevo/inmo/fuentes.json`**
+     si solo cambia el copy o los colores: la clave de caché del material es el
+     hash del manifiesto, así que tocarlo **vuelve a graduar los 14 clips**
+     (+4 min). El copy va en **variables de render-time**.
+  2. **Borrador antes que final**: `fps=15` + `quality=draft` para revisar (la
+     mitad de tiempo) y el render bueno solo cuando el usuario aprueba.
+  3. **Piezas en paralelo**: cada dispatch es un runner distinto y en un repo
+     público son gratis → 2 vídeos = el tiempo de 1.
+  4. **No descargar el MP4 salvo que lo pida**: pesa 55-90 MB y su conexión es
+     el cuello de botella real. Para revisar, bastan los fotogramas clave
+     (200 KB) o la hoja de contactos.
+  5. **Validar en local antes de subir**: `node demo2/audit-rules.mjs` (ya caza
+     los errores de sintaxis) y `node demo2/audit-perf.mjs`. Un render fallido
+     cuesta 3-8 min.
+  6. El render nunca es lo lento: son los renders **muertos** por bugs, el
+     material re-gradado y las descargas.
 - Herramientas del repo:
   | Script | Para qué |
   |---|---|
