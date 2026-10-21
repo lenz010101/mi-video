@@ -83,7 +83,7 @@
     -webkit-mask-position:center; mask-position:center;
     filter:drop-shadow(0 8px 14px rgba(0,0,0,.65)); }
   .insignia::after{ content:''; position:absolute; inset:0;
-    background:linear-gradient(155deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.12) 45%,rgba(0,0,0,0) 70%);
+    background:linear-gradient(155deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.25) 45%,rgba(0,0,0,0) 70%);
     -webkit-mask-image:var(--src); mask-image:var(--src);
     -webkit-mask-size:contain; mask-size:contain;
     -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
@@ -91,25 +91,27 @@
     transform:translateY(4px); }
 
   /* â”€â”€ El nombre de marca grande, abajo a la izquierda â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .nombre{ position:absolute; left:0; right:0; top:1430px; text-align:center;
+  .nombre{ position:absolute; left:0; right:0; top:1075px; text-align:center;
     font-family:'Anton',sans-serif;
-    font-size:118px; line-height:1; letter-spacing:.005em; white-space:nowrap;
-    opacity:0; text-shadow:0 10px 34px rgba(0,0,0,.85); will-change:opacity,transform; }
+    font-size:132px; line-height:1; letter-spacing:.005em; white-space:nowrap;
+    opacity:0; text-shadow:0 8px 22px rgba(0,0,0,.95), 0 2px 4px rgba(0,0,0,.9),
+      0 0 46px rgba(0,0,0,.55); will-change:opacity,transform; }
   /* El sticker rasgado (NISSAN): un recorte irregular con borde duro */
-  .sticker{ position:absolute; left:calc(50% - 260px); top:1412px; width:520px; height:158px;
+  .sticker{ position:absolute; left:calc(50% - 260px); top:1057px; width:520px; height:158px;
     background:#F4F4F0; opacity:0; will-change:opacity,transform;
     clip-path:polygon(2% 18%,8% 4%,16% 14%,24% 2%,33% 12%,42% 3%,52% 13%,61% 2%,71% 11%,80% 1%,89% 12%,98% 5%,100% 26%,97% 42%,100% 58%,96% 74%,99% 88%,90% 96%,81% 88%,72% 98%,62% 89%,52% 97%,43% 88%,33% 98%,24% 89%,14% 97%,6% 86%,1% 70%,4% 54%,0% 38%); }
   .nombre-negro{ color:#0C0C0C; }
-  .nombre-serif{ font-family:'Playfair',serif; font-size:104px; letter-spacing:.01em; }
+  .nombre-serif{ font-family:'Playfair',serif; font-size:112px; letter-spacing:.01em; }
 
   /* â”€â”€ Las palabras: abajo a la derecha, sobre fondo limpio â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-  .velo-palabras{ position:absolute; left:170px; top:905px; width:740px; height:250px;
+  .velo-palabras{ position:absolute; left:420px; top:720px; width:660px; height:230px;
     pointer-events:none;
     background:radial-gradient(ellipse 62% 60% at 62% 50%, rgba(3,3,7,.45) 0%, rgba(3,3,7,.20) 60%, rgba(3,3,7,0) 100%); }
-  .palabra{ position:absolute; left:0; right:0; top:985px; text-align:center;
+  .palabra{ position:absolute; left:0; right:70px; top:800px; text-align:right;
     font-family:'Inter',sans-serif;
     font-weight:800; font-size:62px; letter-spacing:-.015em; color:#FFFFFF;
-    text-shadow:0 3px 10px rgba(0,0,0,.95), 0 1px 2px rgba(0,0,0,1), 0 0 26px rgba(0,0,0,.6);
+    text-shadow:0 4px 12px rgba(0,0,0,1), 0 1px 2px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,.75),
+      -webkit-text-stroke:2px rgba(0,0,0,.55);
     white-space:nowrap; opacity:0; will-change:opacity,transform; }
 
   /* â”€â”€ Ambiente â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -182,6 +184,17 @@
   <div class="insignia" id="lgNissan" style="--x:440px; --y:556px; --w:205px; --h:92px; --src:url('../assets/logos/nissan.png');"></div>
   <div class="insignia" id="lgPorsche" style="--x:790px; --y:196px; --w:225px; --h:95px; --src:url('../assets/logos/porsche.png');"></div>
   <div class="insignia" id="lgLexus" style="--x:800px; --y:366px; --w:205px; --h:105px; --src:url('../assets/logos/lexus.png');"></div>
+
+  <!-- Los nombres de marca grandes (al 55-60% de la altura, como el original) -->
+  <div class="nombre nombre-serif" id="nom0">Mercedes-Benz</div>
+  <div class="nombre" id="nom1">PORSCHE</div>
+  <div class="nombre" id="nom2">HONDA</div>
+  <div class="nombre" id="nom3">CHRYSLER</div>
+  <div class="sticker" id="stic4"></div>
+  <div class="nombre nombre-negro" id="nom4">NISSAN</div>
+  <div class="nombre nombre-serif" id="nom5">LEXUS</div>
+  <div class="nombre" id="nom6">TOYOTA</div>
+
   <!-- El cierre: la guia de "comenta tu marca" -->
   <div class="cta" id="cta">
     <div class="cta-1">COMENTA TU MARCA FAVORITA</div>
