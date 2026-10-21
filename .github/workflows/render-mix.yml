@@ -256,6 +256,7 @@ jobs:
           hf render \
             --composition compositions/ranking-ref-30s.html \
             --quality "${QUALITY:-high}" \
+            --crf 23 \
             --fps "${FPS:-30}" \
             --format mp4 \
             --no-browser-gpu \

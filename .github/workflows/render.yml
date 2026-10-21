@@ -387,6 +387,7 @@ jobs:
           hf render \
             $COMPOSITION_ARGS \
             --quality "${QUALITY:-standard}" \
+            --crf 23 \
             --fps "${FPS:-30}" \
             --format "${FORMAT:-mp4}" \
             --no-browser-gpu \

@@ -8,7 +8,8 @@ param(
   [string]$Composition = '',
   [string]$Filename = 'video.mp4',
   [string]$Repo = 'lenz010101/mi-video',
-  [string]$Branch = 'demo-premium'
+  [string]$Branch = 'demo-premium',
+  [switch]$SinQc
 )
 $ErrorActionPreference = 'Stop'
 
@@ -45,7 +46,8 @@ function Api([string]$m, [string]$p, $body) {
 }
 
 $wid = (Api GET "/actions/workflows/$Workflow").id
-$fps = '30'; $quality = 'high'; $qc = 'si'
+$fps = '30'; $quality = 'high'
+$qc = if ($SinQc) { 'no' } else { 'si' }
 
 $isMix = $Workflow -like 'render-mix*'
 if ($isMix) {
