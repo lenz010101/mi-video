@@ -126,13 +126,24 @@
 
 ## Preferencias del usuario
 
-- **REGLA PERMANENTE (el usuario la ha repetido): no dejar nada colgado y no
-  pedirle que me acuerde de las cosas.** El usuario no puede estar recordán-
-  dome en cada momento el ritmo, así que el agente tiene que: (a) arrancar
-  pronto, (b) no encadenar análisis largos, (c) tener siempre un entregable a
-  punto, y (d) avisar de los tiempos **antes** de lanzar algo largo. Si una
-  tarea se alarga, se entrega lo que haya (aunque sea el MP4 sin revisar) y se
-  dice qué falta. **Nunca dejar el trabajo a medias esperando.**
+- **REGLA PERMANENTE (el usuario la ha repetido): el trabajo completo debe
+  caber en 30 MINUTOS, o menos si es posible.** Ni una hora ni "casi una
+  hora": 30 minutos es el techo. El usuario no puede estar recordán-
+  dormelo en cada momento, así que el agente tiene que: (a) arrancar pronto,
+  (b) no encadenar análisis largos, (c) tener siempre un entregable a punto
+  (aunque sea el MP4 sin revisar), y (d) avisar de los tiempos **antes** de
+  lanzar algo largo. Si una tarea se alarga, se entrega lo que haya y se dice
+  qué falta. **Nunca dejar el trabajo a medias esperando.**
+  - **Lecciones de la pieza "millonario" (se pasó de 30 min):**
+    1. Antes de lanzar un run, **comprobar los flags exactos en local**
+       (`hf snapshot --help`): 3 runs muertos por flags inventados =
+       ~15 min tirados.
+    2. El lint de la nube tiene que **tolerar los assets que monta el propio
+       runner** (`demo2/lint-ci.mjs`), o el render se cae antes de empezar.
+    3. Un render por cada tanda de cambios del usuario: no encadenar más de
+       uno con la misma observación.
+    4. Si la dirección de arte está en duda, **revisar con 6 PNG del propio
+       MP4** (ffmpeg local, segundos) antes de pedir otro render.
 - **Cada pieza nueva nace con el pipeline rápido** (no se monta desde cero):
   material en la nube → comp **horneado** con ffmpeg (un plano por bloque,
   sin blends por frame) → **`mode: frames`** para revisar la dirección de arte
