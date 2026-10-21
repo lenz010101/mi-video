@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es"
+  data-composition-variables='[
+    {"id":"marca","type":"string","label":"Inmobiliaria","default":"ARCO DESARROLLOS"},
+    {"id":"desarrollo","type":"string","label":"Tipo","default":"DESARROLLO HABITACIONAL"},
+    {"id":"zona","type":"string","label":"Zona","default":"COLONIA ROMA NORTE, CDMX"},
+    {"id":"precio","type":"string","label":"Precio","default":"DESDE $2.9 MDP"},
+    {"id":"precioM2","type":"string","label":"Precio por m2","default":"$29,300 MXN/M2"},
+    {"id":"mensual","type":"string","label":"Mensualidad","default":"$11,500 MXN/MES"},
+    {"id":"m2","type":"string","label":"Metros","default":"99 M2"},
+    {"id":"recamaras","type":"string","label":"Recamaras","default":"3 RECAMARAS"},
+    {"id":"banos","type":"string","label":"Banos","default":"2 BANOS"},
+    {"id":"estacionamiento","type":"string","label":"Estacionamiento","default":"1 ESTACIONAMIENTO"},
+    {"id":"amenidades","type":"string","label":"Amenidades","default":"ROOFTOP / GIM / COWORKING / PET FRIENDLY"},
+    {"id":"minutos","type":"string","label":"Acceso","default":"A 8 MIN DE POLANCO"},
+    {"id":"visita","type":"string","label":"Visita","default":"VISITAS CON CITA"},
+    {"id":"telefono","type":"string","label":"Telefono","default":"+52 55 1234 5678"},
+    {"id":"web","type":"string","label":"Web","default":"ARCODEV.MX"},
+    {"id":"esquire","type":"string","label":"Oferta","default":"ESQUIRE EN SITIO"},
+    {"id":"logo","type":"image","label":"Logo","default":""},
+    {"id":"musica","type":"string","label":"Musica","default":"assets/nuevo/inmo/procesado/music.mp3"}
+  ]'>
+<head>
+<meta charset="utf-8">
+<title>ARCO - pieza inmobiliaria 30 s</title>
+<style>
+  /* ── Tipografias locales ─────────────────────────────────────────── */
+  @font-face { font-family:'Instrument Serif'; font-style:normal; font-weight:400;
+    src:url('../assets/fonts/nuevo/instrument-serif-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Instrument Serif'; font-style:italic; font-weight:400;
+    src:url('../assets/fonts/nuevo/instrument-serif-latin-400-italic.woff2') format('woff2'); }
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:300;
+    src:url('../assets/fonts/inmo/montserrat-latin-300-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:400;
+    src:url('../assets/fonts/inmo/montserrat-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'Montserrat'; font-style:normal; font-weight:600;
+    src:url('../assets/fonts/inmo/montserrat-latin-600-normal.woff2') format('woff2'); }
+  @font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:400;
+    src:url('../assets/fonts/nuevo/jetbrains-mono-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family:'JetBrains Mono'; font-style:normal; font-weight:600;
+    src:url('../assets/fonts/nuevo/jetbrains-mono-latin-600-normal.woff2') format('woff2'); }
+
+  :root{
+    --papel:#F4F1E9;      /* marfil: el lienzo de una inmobiliaria      */
+    --tinta:#14120E;      /* casi negro, nunca #000                    */
+    --gris:#6E6A60;       /* gris calido, nunca gris muerto            */
+    --terracota:#A8643C;  /* UN solo acento                            */
+    --salvia:#3E5A4C;     /* verde salvia: solo en el mapa            */
+    --linea:rgba(20,18,14,.16);
+    --m:96px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:var(--papel); }
+  #root{
+    position:relative; width:100%; height:100%; overflow:hidden;
+    background:var(--papel); color:var(--tinta);
+    font-family:'Montserrat',sans-serif; -webkit-font-smoothing:antialiased;
+  }
+
+  /* ── Material: clips en la raiz (el framework gestiona su ventana) ── */
+  .shot{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    opacity:0; background:var(--papel); will-change:opacity,transform; }
+
+  /* ── Ambiente de luz ────────────────────────────────────────────── */
+  .velo{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(120% 80% at 50% 30%, rgba(255,252,244,.28) 0%, rgba(244,241,233,0) 62%);
+    will-change:transform,opacity; }
+  .luz{ position:absolute; width:1100px; height:1100px; border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, rgba(255,246,226,.55) 0%, rgba(255,246,226,.16) 42%, rgba(255,246,226,0) 68%);
+    mix-blend-mode:screen; will-change:transform,opacity; pointer-events:none; }
+  .grano{ position:absolute; left:-8%; top:-8%; width:116%; height:116%;
+    background-image:url('../assets/grain.png'); background-size:256px 256px;
+    opacity:.07; mix-blend-mode:multiply; will-change:transform; pointer-events:none; }
+  .vineta{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(130% 85% at 50% 40%, rgba(0,0,0,0) 55%, rgba(60,50,35,.20) 100%); }
+
+  /* ── Estructura editorial ───────────────────────────────────────── */
+  .regla{ height:2px; background:var(--linea); transform-origin:left center; will-change:transform; }
+  .marca-regla{ height:3px; background:var(--terracota); transform-origin:left center; will-change:transform; }
+  .esquina{ position:absolute; width:28px; height:28px; will-change:opacity,transform; }
+  .esquina::before,.esquina::after{ content:''; position:absolute; background:var(--linea); }
+  .esquina::before{ left:13px; top:0; width:2px; height:28px; }
+  .esquina::after{ left:0; top:13px; width:28px; height:2px; }
+
+  /* ── Tipografia ─────────────────────────────────────────────────── */
+  .display{ font-family:'Instrument Serif',serif; line-height:.94; letter-spacing:-.015em;
+    will-change:transform,opacity; }
+  .display-it{ font-family:'Instrument Serif',serif; font-style:italic; line-height:1.0; letter-spacing:-.01em;
+    will-change:transform,opacity; }
+  .titulo{ font-family:'Montserrat',sans-serif; font-weight:600; text-transform:uppercase;
+    letter-spacing:-.02em; line-height:1.02; will-change:transform,opacity; }
+  .cuerpo{ font-family:'Montserrat',sans-serif; font-weight:300; line-height:1.42; letter-spacing:.005em;
+    will-change:transform,opacity; }
+  .mono{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:21px;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--gris);
+    will-change:transform,opacity; }
+  .mono-t{ color:var(--terracota); }
+  .mono-ink{ color:var(--tinta); }
+  .palabra{ display:inline-block; overflow:hidden; vertical-align:bottom; }
+  .palabra i{ display:inline-block; font-style:inherit; will-change:transform; }
+  .chip{ display:inline-block; padding:12px 22px; border:2px solid var(--linea);
+    font-family:'JetBrains Mono',monospace; font-weight:600; font-size:20px;
+    letter-spacing:.14em; text-transform:uppercase; will-change:transform,opacity; }
+
+  /* ── Escenas ───────────────────────────────────────────────────── */
+  .scene{ position:absolute; inset:0; }
+  .capa{ position:absolute; inset:0; will-change:transform,opacity; }
+
+  /* ── Transiciones ───────────────────────────────────────────────── */
+  .dip{ position:absolute; inset:0; background:var(--papel); opacity:0;
+    will-change:opacity; pointer-events:none; }
+  .barrido{ position:absolute; top:-10%; height:120%; width:44%;
+    background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,252,244,.34) 45%, rgba(255,255,255,0) 100%);
+    will-change:transform,opacity; pointer-events:none; }
+
+  /* ── Ficha de datos ────────────────────────────────────────────── */
+  .dato{ display:flex; align-items:baseline; gap:18px; will-change:transform,opacity; }
+  .dato-n{ font-family:'Instrument Serif',serif; font-size:84px; line-height:.92; letter-spacing:-.02em; }
+  .dato-l{ font-family:'JetBrains Mono',monospace; font-weight:400; font-size:19px;
+    letter-spacing:.16em; color:var(--gris); text-transform:uppercase; }
+  .barra{ height:5px; background:var(--terracota); transform-origin:left center; will-change:transform; }
+  .barra-pista{ height:5px; background:rgba(20,18,14,.10); }
+  .cont{ font-family:'Instrument Serif',serif; font-size:132px; line-height:.9; letter-spacing:-.02em;
+    will-change:transform,opacity; }
+  .cont-u{ font-family:'Montserrat',sans-serif; font-weight:300; font-size:30px; color:var(--gris);
+    letter-spacing:.04em; }
+
+  /* ── Plano de la planta (SVG original, se dibuja linea a linea) ─── */
+  .muro{ fill:none; stroke:var(--tinta); stroke-width:5; transform-origin:left center; will-change:transform,opacity; }
+  .muro-v{ fill:none; stroke:var(--tinta); stroke-width:5; transform-origin:center top; will-change:transform,opacity; }
+  .sala{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:19px;
+    letter-spacing:.14em; color:var(--gris); will-change:transform,opacity; }
+  .mueble{ fill:rgba(168,100,60,.16); stroke:none; transform-origin:center; will-change:transform,opacity; }
+
+  /* ── Tarjeta de precio (el unico elemento oscuro) ───────────────── */
+  .precio{ position:absolute; background:var(--tinta); color:var(--papel);
+    will-change:transform,opacity; }
+  .precio-t{ font-family:'Instrument Serif',serif; font-size:118px; line-height:.9; letter-spacing:-.02em;
+    will-change:transform,opacity; }
+  .precio-s{ font-family:'Montserrat',sans-serif; font-weight:300; font-size:34px; color:rgba(244,241,233,.72);
+    letter-spacing:.02em; will-change:transform,opacity; }
+  .precio-m{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:22px;
+    letter-spacing:.16em; color:var(--terracota); text-transform:uppercase; will-change:transform,opacity; }
+
+  /* ── Ubicacion: mapa dibujado ───────────────────────────────────── */
+  .calle{ fill:none; stroke:rgba(20,18,14,.13); stroke-width:14; stroke-linecap:round; }
+  .ruta{ fill:none; stroke:var(--salvia); stroke-width:9; stroke-linecap:round; stroke-linejoin:round;
+    transform-origin:left center; will-change:transform,opacity; }
+  .pin{ width:44px; height:44px; border-radius:50% 50% 50% 0; background:var(--terracota);
+    transform:rotate(-45deg); will-change:transform,opacity; }
+  .pin-hueco{ position:absolute; width:16px; height:16px; border-radius:50%; background:var(--papel);
+    will-change:opacity; }
+</style>
+</head>
+<body>
+
+<div id="root" data-composition-id="inmo-mx-30s" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
+
+  <!-- ═══ MATERIAL (clips en la raiz) ═══ -->
+  <video id="v1"  class="shot clip" data-start="0"    data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/exterior.mp4" muted playsinline></video>
+  <video id="v2"  class="shot clip" data-start="2"    data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/promesa.mp4" muted playsinline></video>
+  <video id="v3"  class="shot clip" data-start="4"    data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/obra1.mp4" muted playsinline></video>
+  <video id="v4"  class="shot clip" data-start="6"    data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/obra2.mp4" muted playsinline></video>
+  <video id="v5"  class="shot clip" data-start="8"    data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/entrega.mp4" muted playsinline></video>
+  <video id="v6"  class="shot clip" data-start="10"   data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/casa1.mp4" muted playsinline></video>
+  <video id="v7"  class="shot clip" data-start="12"   data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/casa2.mp4" muted playsinline></video>
+  <video id="v8"  class="shot clip" data-start="14"   data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/casa3.mp4" muted playsinline></video>
+  <video id="v9"  class="shot clip" data-start="16"   data-duration="4"   data-track-index="0" src="assets/nuevo/inmo/procesado/ficha.mp4" muted playsinline></video>
+  <video id="v11" class="shot clip" data-start="24"   data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/presentador.mp4" muted playsinline></video>
+  <video id="v13" class="shot clip" data-start="28"   data-duration="2"   data-track-index="0" src="assets/nuevo/inmo/procesado/cierre.mp4" muted playsinline></video>
+
+  <!-- ═══ AMBIENTE DE LUZ ═══ -->
+  <div class="velo" id="velo"></div>
+  <div class="luz" id="luzA" style="left:-420px; top:60px;"></div>
+  <div class="luz" id="luzB" style="right:-380px; bottom:140px; opacity:.7;"></div>
+  <div class="grano" id="grano"></div>
+  <div class="vineta"></div>
+
+  <!-- ═══ HUD EDITORIAL ═══ -->
+  <div class="scene" id="hud" data-start="0" data-duration="30">
+    <div class="capa">
+      <div class="regla" id="reglaTop" style="position:absolute; left:96px; right:96px; top:150px;"></div>
+      <div class="regla" id="reglaBottom" style="position:absolute; left:96px; right:96px; bottom:150px;"></div>
+      <div class="mono" id="hudTop" style="position:absolute; left:96px; top:104px;">ARCO DESARROLLOS</div>
+      <div class="mono mono-t" id="hudRight" style="position:absolute; right:96px; top:104px;">CDMX</div>
+      <div class="mono" id="hudBottom" style="position:absolute; left:96px; bottom:104px;">COLONIA ROMA NORTE</div>
+      <div class="mono mono-ink" id="hudTC" style="position:absolute; right:96px; bottom:104px;">00:00:00</div>
+      <div class="esquina" id="esq1" style="left:44px; top:44px;"></div>
+      <div class="esquina" id="esq2" style="right:44px; bottom:44px;"></div>
+    </div>
+  </div>
+
+  <!-- ═══ S1 · GANCHO (0 - 2) ═══ -->
+  <div class="scene" id="s1" data-start="0" data-duration="2">
+    <div class="capa">
+      <div class="barrido" id="barrido1" style="left:-60%;"></div>
+      <div class="display" id="gancho1" style="position:absolute; left:96px; top:1180px; font-size:132px;">UNA CASA</div>
+      <div class="display-it" id="gancho2" style="position:absolute; left:96px; top:1320px; font-size:132px; color:var(--terracota);">lista para mudarse</div>
+      <div class="mono mono-t" id="gancho3" style="position:absolute; left:96px; top:1450px;">DESARROLLO HABITACIONAL</div>
+      <div class="dip" id="dip1"></div>
+    </div>
+  </div>
+
+  <!-- ═══ S2 · PROMESA (2 - 4) ═══ -->
+  <div class="scene" id="s2" data-start="2" data-duration="2">
+    <div class="capa">
+      <div class="titulo" id="promesa" style="position:absolute; left:96px; right:96px; top:1180px; font-size:74px;">ENTREGA INMEDIATA</div>
+      <div class="cuerpo" id="promesa2" style="position:absolute; left:96px; right:96px; top:1300px; font-size:36px; color:var(--gris);">Sin obra. Sin contratas. Llaves en tus manos.</div>
+      <div class="marca-regla" id="promesaRegla" style="position:absolute; left:96px; top:1262px; width:180px;"></div>
+    </div>
+  </div>
+
+  <!-- ═══ S3 · PROCESO (4 - 10) ═══ -->
+  <div class="scene" id="s3" data-start="4" data-duration="6">
+    <div class="capa">
+      <div class="mono mono-t" id="pr1" style="position:absolute; left:96px; bottom:330px;">01 / OBRA</div>
+      <div class="mono mono-t" id="pr2" style="position:absolute; left:96px; bottom:330px;">02 / ACABADOS</div>
+      <div class="mono mono-t" id="pr3" style="position:absolute; left:96px; bottom:330px;">03 / ENTREGA</div>
+      <div class="titulo" id="prTitulo" style="position:absolute; left:96px; top:1150px; font-size:66px;">DE LA ESTRUCTURA<br>A LAS LLAVES</div>
+      <div class="barra-pista" style="position:absolute; left:96px; right:96px; bottom:250px;"><div class="barra" id="prBarra" style="width:100%;"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ S4 · LA CASA (10 - 16) ═══ -->
+  <div class="scene" id="s4" data-start="10" data-duration="6">
+    <div class="capa">
+      <div class="display" id="casaT" style="position:absolute; left:96px; top:1200px; font-size:120px;">Así se vive</div>
+      <div class="mono" id="casaL" style="position:absolute; left:96px; top:1400px;">COZINA / SALON / TERRAZA</div>
+    </div>
+  </div>
+
+  <!-- ═══ S5 · FICHA (16 - 20) ═══ -->
+  <div class="scene" id="s5" data-start="16" data-duration="4">
+    <div class="capa">
+      <div class="mono mono-t" id="fichaL" style="position:absolute; left:96px; top:420px;">FICHA TECNICA</div>
+      <div class="dato" id="d1" style="position:absolute; left:96px; top:520px;">
+        <span class="dato-n" id="n1">0</span><span class="dato-l">metros cuadrados</span>
+      </div>
+      <div class="dato" id="d2" style="position:absolute; left:96px; top:640px;">
+        <span class="dato-n" id="n2">0</span><span class="dato-l">recamaras</span>
+      </div>
+      <div class="dato" id="d3" style="position:absolute; left:96px; top:760px;">
+        <span class="dato-n" id="n3">0</span><span class="dato-l">banos</span>
+      </div>
+      <div class="dato" id="d4" style="position:absolute; left:96px; top:880px;">
+        <span class="dato-n" id="n4">0</span><span class="dato-l">estacionamiento</span>
+      </div>
+      <div class="chip" id="ch1" style="position:absolute; left:96px; top:1030px;">ROOFTOP</div>
+      <div class="chip" id="ch2" style="position:absolute; left:330px; top:1030px;">GIM</div>
+      <div class="chip" id="ch3" style="position:absolute; left:520px; top:1030px;">COWORKING</div>
+      <div class="chip" id="ch4" style="position:absolute; left:96px; top:1120px;">PET FRIENDLY</div>
+      <!-- Plano de la planta: se dibuja linea a linea -->
+      <svg width="420" height="300" viewBox="0 0 420 300" style="position:absolute; left:96px; top:1230px;">
+        <rect class="mueble" id="mu1" x="24" y="24" width="120" height="70" rx="4"></rect>
+        <rect class="mueble" id="mu2" x="276" y="24" width="120" height="70" rx="4"></rect>
+        <rect class="mueble" id="mu3" x="24" y="206" width="150" height="70" rx="4"></rect>
+        <line class="muro" id="muA" x1="10" y1="10" x2="410" y2="10"></line>
+        <line class="muro" id="muB" x1="10" y1="10" x2="10" y2="290"></line>
+        <line class="muro" id="muC" x1="410" y1="10" x2="410" y2="290"></line>
+        <line class="muro" id="muD" x1="10" y1="290" x2="410" y2="290"></line>
+        <line class="muro-v" id="muE" x1="190" y1="10" x2="190" y2="150"></line>
+        <line class="muro" id="muF" x1="10" y1="150" x2="190" y2="150"></line>
+        <line class="muro-v" id="muG" x1="190" y1="210" x2="190" y2="290"></line>
+        <line class="muro" id="muH" x1="10" y1="210" x2="190" y2="210"></line>
+        <line class="muro" id="muI" x1="290" y1="110" x2="290" y2="190"></line>
+      </svg>
+      <div class="sala" id="sala1" style="position:absolute; left:150px; top:1290px;">SALA</div>
+      <div class="sala" id="sala2" style="position:absolute; left:300px; top:1290px;">COCINA</div>
+      <div class="sala" id="sala3" style="position:absolute; left:130px; top:1500px;">RECAMARA</div>
+      <div class="sala" id="sala4" style="position:absolute; left:330px; top:1420px;">BAÑO</div>
+    </div>
+  </div>
+
+  <!-- ═══ S6 · UBICACION (20 - 24) ═══ -->
+  <div class="scene" id="s6" data-start="20" data-duration="4">
+    <div class="capa">
+      <div class="mono mono-t" id="ubiL" style="position:absolute; left:96px; top:420px;">UBICACION</div>
+      <svg width="888" height="640" viewBox="0 0 888 640" style="position:absolute; left:96px; top:520px;">
+        <path class="calle" d="M60 40 L60 600"></path>
+        <path class="calle" d="M240 40 L240 600"></path>
+        <path class="calle" d="M420 40 L420 600"></path>
+        <path class="calle" d="M600 40 L600 600"></path>
+        <path class="calle" d="M780 40 L780 600"></path>
+        <path class="calle" d="M20 140 L860 140"></path>
+        <path class="calle" d="M20 320 L860 320"></path>
+        <path class="calle" d="M20 500 L860 500"></path>
+        <path class="ruta" id="ruta" d="M120 560 L120 320 L520 320 L520 150 L700 150"></path>
+      </svg>
+      <div class="pin" id="pin" style="position:absolute; left:672px; top:120px;"></div>
+      <div class="pin-hueco" id="pinHueco" style="position:absolute; left:686px; top:134px;"></div>
+      <div class="display" id="ubiT" style="position:absolute; left:96px; top:1230px; font-size:108px;">A 8 min de Polanco</div>
+      <div class="cuerpo" id="ubiS" style="position:absolute; left:96px; top:1380px; font-size:34px; color:var(--gris);">Colonia Roma Norte. Metro, cafes y servicios a un paso.</div>
+    </div>
+  </div>
+
+  <!-- ═══ S7 · LA OFERTA (24 - 26) ═══ -->
+  <div class="scene" id="s7" data-start="24" data-duration="2">
+    <div class="capa">
+      <div class="titulo" id="ofertaT" style="position:absolute; left:96px; right:96px; top:1180px; font-size:66px;">VISITAS CON CITA</div>
+      <div class="display" id="ofertaTel" style="position:absolute; left:96px; top:1290px; font-size:88px;">+52 55 1234 5678</div>
+      <div class="mono" id="ofertaW" style="position:absolute; left:96px; top:1430px;">ARCODEV.MX</div>
+    </div>
+  </div>
+
+  <!-- ═══ S8 · PRECIO (26 - 28) ═══ -->
+  <div class="scene" id="s8" data-start="26" data-duration="2">
+    <div class="capa">
+      <div class="precio" id="precioPanel" style="left:96px; right:96px; top:1080px; height:420px; padding:56px 60px;"></div>
+      <div class="precio-m" id="precioK" style="position:absolute; left:156px; top:1140px;">PRECIO DE SALIDA</div>
+      <div class="precio-t" id="precioT" style="position:absolute; left:156px; top:1200px;">DESDE $2.9 MDP</div>
+      <div class="precio-s" id="precioS" style="position:absolute; left:156px; top:1350px;">$29,300 MXN/M2 &nbsp;·&nbsp; $11,500 MXN/MES</div>
+    </div>
+  </div>
+
+  <!-- ═══ S9 · CIERRE (28 - 30) ═══ -->
+  <div class="scene" id="s9" data-start="28" data-duration="2">
+    <div class="capa">
+      <div class="barrido" id="barrido9" style="left:-60%;"></div>
+      <div class="display" id="cierreT" style="position:absolute; left:96px; top:1200px; font-size:128px;">Quiero mi espacio</div>
+      <div class="mono mono-t" id="cierreL" style="position:absolute; left:96px; top:1400px;">ESQUIRE EN SITIO</div>
+      <div class="mono" id="cierreW" style="position:absolute; right:96px; top:1400px;">ARCODEV.MX</div>
+      <div class="regla" id="cierreR" style="position:absolute; left:96px; right:96px; top:1340px;"></div>
+      <div class="dip" id="dip9"></div>
+    </div>
+  </div>
+
+  <!-- ═══ DIPS A BLANCO (uno por corte, encima de todo) ═══ -->
+  <div class="dip" id="dip2"></div><div class="dip" id="dip3"></div><div class="dip" id="dip4"></div>
+  <div class="dip" id="dip5"></div><div class="dip" id="dip6"></div><div class="dip" id="dip7"></div>
+  <div class="dip" id="dip8"></div><div class="dip" id="dip9"></div><div class="dip" id="dip10"></div>
+  <div class="dip" id="dip11"></div><div class="dip" id="dip12"></div><div class="dip" id="dip13"></div>
+
+  <!-- ═══ AUDIO ═══ -->
+  <audio id="musica" class="clip" data-start="0" data-duration="30" data-track-index="9"
+    data-var-src="musica" src="assets/nuevo/inmo/procesado/music.mp3" data-volume="0.8"></audio>
+  <audio id="sfx1" class="clip" data-start="2"  data-duration="1.2" data-track-index="10" src="assets/nuevo/inmo/procesado/sfx-whoosh-1.mp3" data-volume="0.26"></audio>
+  <audio id="sfx2" class="clip" data-start="4"  data-duration="1.2" data-track-index="10" src="assets/nuevo/inmo/procesado/sfx-whoosh-2.mp3" data-volume="0.24"></audio>
+  <audio id="sfx3" class="clip" data-start="8"  data-duration="1.2" data-track-index="10" src="assets/nuevo/inmo/procesado/sfx-whoosh-3.mp3" data-volume="0.24"></audio>
+  <audio id="sfx4" class="clip" data-start="16" data-duration="1.2" data-track-index="10" src="assets/nuevo/inmo/procesado/sfx-impact.mp3" data-volume="0.26"></audio>
+  <audio id="sfx5" class="clip" data-start="20" data-duration="1.2" data-track-index="10" src="assets/nuevo/inmo/procesado/sfx-sweep.mp3" data-volume="0.22"></audio>
+  <audio id="sfx6" class="clip" data-start="26" data-duration="1.2" data-track-index="10" src="assets/nuevo/inmo/procesado/sfx-hit.mp3" data-volume="0.30"></audio>
+
+</div>
+
+<script src="../assets/vendor/gsap.min.js"></script>
+<script src="../assets/vendor/gsap/CustomEase.min.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   ARCO - pieza de inmobiliaria (Mexico), 30 s, 9:16, 30 fps.
+   Motor "LUZ": marfil, tinta y un solo acento terracota. Rejilla de compas
+   de 2,0 s (60 fotogramas exactos). Timeline unica y pausada en
+   window.__timelines["inmo-mx-30s"]; build sincrono (sin fonts.ready).
+   ══════════════════════════════════════════════════════════════════════ */
+(function () {
+  const V = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+  const txt = (id, def) => (V && V[id] != null && V[id] !== '') ? String(V[id]) : def;
+
+  const marca = txt('marca', 'ARCO DESARROLLOS');
+  const desarrollo = txt('desarrollo', 'DESARROLLO HABITACIONAL');
+  const zona = txt('zona', 'COLONIA ROMA NORTE, CDMX');
+  const precio = txt('precio', 'DESDE $2.9 MDP');
+  const precioM2 = txt('precioM2', '$29,300 MXN/M2');
+  const mensual = txt('mensual', '$11,500 MXN/MES');
+  const m2 = txt('m2', '99 M2');
+  const recamaras = txt('recamaras', '3 RECAMARAS');
+  const banos = txt('banos', '2 BANOS');
+  const estacionamiento = txt('estacionamiento', '1 ESTACIONAMIENTO');
+  const amenidades = txt('amenidades', 'ROOFTOP / GIM / COWORKING / PET FRIENDLY');
+  const minutos = txt('minutos', 'A 8 MIN DE POLANCO');
+  const visita = txt('visita', 'VISITAS CON CITA');
+  const telefono = txt('telefono', '+52 55 1234 5678');
+  const web = txt('web', 'ARCODEV.MX');
+  const esquire = txt('esquire', 'ESQUIRE EN SITIO');
+
+  if (window.CustomEase) {
+    gsap.registerPlugin(CustomEase);
+    CustomEase.create('luz', 'M0,0 C0.14,0.88 0.2,1 1,1');
+    CustomEase.create('cierre', 'M0,0 C0.18,1.5 0.3,1 1,1');
+  }
+  const EASE = window.CustomEase ? 'luz' : 'power3.out';
+  const GOLPE = window.CustomEase ? 'cierre' : 'back.out(1.6)';
+
+  /* Texto que se parte en palabras (el HTML trae los <i>; aqui solo se actualiza) */
+  function palabras(el, texto) {
+    if (!el) return;
+    const items = el.querySelectorAll('i');
+    const partes = texto.split(' ');
+    if (items.length === partes.length) {
+      items.forEach((it, i) => { it.textContent = partes[i]; });
+      return;
+    }
+    el.innerHTML = '';
+    for (const p of partes) {
+      const w = document.createElement('span');
+      w.className = 'palabra';
+      const it = document.createElement('i');
+      it.textContent = p;
+      w.appendChild(it);
+      el.appendChild(w);
+    }
+  }
+
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('hudTop', marca);
+  set('hudRight', 'CDMX');
+  set('hudBottom', zona);
+  set('gancho3', desarrollo);
+  set('ofertaT', visita);
+  set('ofertaTel', telefono);
+  set('ofertaW', web);
+  set('precioK', 'PRECIO DE SALIDA');
+  set('precioT', precio);
+  set('precioS', precioM2 + '  ·  ' + mensual);
+  set('cierreL', esquire);
+  set('cierreW', web);
+  set('ubiT', minutos);
+  set('casaL', amenidades);
+  set('fichaL', 'FICHA TECNICA');
+
+  /* La ficha: de cada variable sale el numero (contador) y la unidad (etiqueta).
+     "99 M2" -> contador hasta 99, etiqueta "M2". */
+  function ficha(fila, valor) {
+    const m = String(valor).match(/^\s*(\d+)\s*(.*)$/);
+    const n = m ? parseInt(m[1], 10) : 0;
+    const unidad = (m && m[2]) ? m[2] : '';
+    const row = document.getElementById(fila);
+    if (!row) return { n: 0, el: null };
+    row.innerHTML = '<span class="dato-n" id="n' + fila.slice(1) + '">0</span>' +
+      '<span class="dato-l">' + unidad + '</span>';
+    return { n: n, el: document.getElementById('n' + fila.slice(1)) };
+  }
+  const F1 = ficha('d1', m2), F2 = ficha('d2', recamaras);
+  const F3 = ficha('d3', banos), F4 = ficha('d4', estacionamiento);
+  /* Los chips de amenidades vienen en la variable separados por / */
+  const chips = ['ch1', 'ch2', 'ch3', 'ch4'];
+  amenidades.split('/').map(s => s.trim()).filter(Boolean).slice(0, 4).forEach((a, i) => set(chips[i], a));
+
+  const tl = gsap.timeline({ paused: true });
+
+  /* ── Ambiente de luz ────────────────────────────────────────────── */
+  tl.to('#velo', { scale: 1.08, opacity: .9, duration: 9, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
+  tl.to('#luzA', { x: 180, y: -90, scale: 1.1, duration: 11, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
+  tl.to('#luzB', { x: -160, y: 70, scale: .9, duration: 13, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
+  tl.to('#grano', { x: 22, y: -14, duration: 2.8, ease: 'steps(6)', repeat: -1 }, 0);
+
+  /* ── HUD ────────────────────────────────────────────────────────── */
+  tl.fromTo('#reglaTop', { scaleX: 0 }, { scaleX: 1, duration: .8, ease: EASE }, .05);
+  tl.fromTo('#reglaBottom', { scaleX: 0 }, { scaleX: 1, duration: .8, ease: EASE }, .15);
+  tl.fromTo('#hudTop', { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, .3);
+  tl.fromTo('#hudRight', { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, .36);
+  tl.fromTo('#hudBottom', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, .42);
+  tl.fromTo('#hudTC', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, .48);
+  tl.fromTo('#esq1', { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .7, ease: GOLPE }, .55);
+  tl.fromTo('#esq2', { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .7, ease: GOLPE }, .62);
+
+  const tc = document.getElementById('hudTC');
+  const fmt = (t) => {
+    const m = Math.floor(t / 60), s = Math.floor(t % 60), f = Math.floor((t % 1) * 30);
+    return '00:' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') + ':' + String(f).padStart(2, '0');
+  };
+  tl.eventCallback('onUpdate', function () { if (tc) tc.textContent = fmt(tl.time()); });
+
+  /* ── Material: entrada con dip a blanco y empuje lento ─────────── */
+  const planos = [
+    { v: '#v1', t: 0, d: .5 }, { v: '#v2', t: 2, d: .45 }, { v: '#v3', t: 4, d: .4 },
+    { v: '#v4', t: 6, d: .4 }, { v: '#v5', t: 8, d: .4 }, { v: '#v6', t: 10, d: .4 },
+    { v: '#v7', t: 12, d: .4 }, { v: '#v8', t: 14, d: .4 }, { v: '#v9', t: 16, d: .5 },
+    { v: '#v11', t: 24, d: .45 }, { v: '#v13', t: 28, d: .5 },
+  ];
+  for (const p of planos) {
+    tl.fromTo(p.v, { opacity: 0 }, { opacity: 1, duration: p.d, ease: 'power1.out' }, p.t);
+    tl.fromTo(p.v, { scale: 1 }, { scale: 1.07, duration: 2.4, ease: 'none' }, p.t);
+  }
+  /* Dip a blanco en cada corte: el cambio de plano se siente, sin flash */
+  const dips = [['#dip1', 0], ['#dip2', 2], ['#dip3', 4], ['#dip4', 6], ['#dip5', 8], ['#dip6', 10], ['#dip7', 12], ['#dip8', 14], ['#dip9', 16], ['#dip10', 20], ['#dip11', 24], ['#dip12', 26], ['#dip13', 28]];
+  for (const [sel, t] of dips) {
+    tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: .07, ease: 'none' }, t);
+    tl.to(sel, { opacity: 0, duration: .22, ease: 'power2.out' }, t + .07);
+  }
+
+  /* ── S1 gancho ─────────────────────────────────────────────────── */
+  tl.fromTo('#gancho1', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .8, ease: EASE }, .25);
+  tl.fromTo('#gancho2', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .8, ease: EASE }, .42);
+  tl.fromTo('#gancho3', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, .6);
+  tl.fromTo('#barrido1', { xPercent: -30, opacity: 0 }, { xPercent: 260, opacity: 1, duration: 1.3, ease: 'power2.inOut' }, .35);
+
+  /* ── S2 promesa ────────────────────────────────────────────────── */
+  tl.fromTo('#promesa', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: .7, ease: EASE }, 2.2);
+  tl.fromTo('#promesa2', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .7, ease: EASE }, 2.45);
+  tl.fromTo('#promesaRegla', { scaleX: 0 }, { scaleX: 1, duration: .6, ease: EASE }, 2.6);
+
+  /* ── S3 proceso: 3 cortes con rotulo ───────────────────────────── */
+  const pasos = [['#pr1', 4.0], ['#pr2', 6.0], ['#pr3', 8.0]];
+  for (const [sel, t] of pasos) {
+    tl.fromTo(sel, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .4, ease: EASE }, t);
+    tl.to(sel, { opacity: 0, duration: .3, ease: 'power2.in' }, t + 1.5);
+  }
+  tl.fromTo('#prTitulo', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .7, ease: EASE }, 8.4);
+  tl.fromTo('#prBarra', { scaleX: 0 }, { scaleX: 1, duration: 5.4, ease: 'none' }, 4.2);
+
+  /* ── S4 la casa ────────────────────────────────────────────────── */
+  tl.fromTo('#casaT', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: .7, ease: EASE }, 10.3);
+  tl.fromTo('#casaL', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, 10.5);
+
+  /* ── S5 ficha: contadores, chips y plano que se dibuja ─────────── */
+  tl.fromTo('#fichaL', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, 16.1);
+  const filas = [['#d1', 16.3, F1], ['#d2', 16.55, F2], ['#d3', 16.8, F3], ['#d4', 17.05, F4]];
+  for (const [sel, t, f] of filas) {
+    tl.fromTo(sel, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: .55, ease: EASE }, t);
+    if (f.el) {
+      const obj = { v: 0 };
+      tl.to(obj, { v: f.n, duration: 1.1, ease: 'power2.out', onUpdate: function () { f.el.textContent = Math.round(obj.v); } }, t);
+    }
+  }
+  const chips = [['#ch1', 17.4], ['#ch2', 17.55], ['#ch3', 17.7], ['#ch4', 17.85]];
+  for (const [sel, t] of chips) {
+    tl.fromTo(sel, { opacity: 0, y: 14, scale: .92 }, { opacity: 1, y: 0, scale: 1, duration: .5, ease: GOLPE }, t);
+  }
+  /* El plano se dibuja linea a linea */
+  const muros = [['#muA', 18.0], ['#muB', 18.1], ['#muC', 18.2], ['#muD', 18.3], ['#muE', 18.45], ['#muF', 18.55], ['#muG', 18.7], ['#muH', 18.8], ['#muI', 18.95]];
+  for (const [sel, t] of muros) {
+    const v = sel === '#muE' || sel === '#muG';
+    tl.fromTo(sel, v ? { scaleY: 0 } : { scaleX: 0 }, v ? { scaleY: 1 } : { scaleX: 1 }, duration: .35, ease: EASE }, t);
+  }
+  tl.fromTo('#mu1', { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .5, ease: GOLPE }, 18.1);
+  tl.fromTo('#mu2', { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .5, ease: GOLPE }, 18.25);
+  tl.fromTo('#mu3', { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .5, ease: GOLPE }, 18.4);
+  const salas = [['#sala1', 18.6], ['#sala2', 18.75], ['#sala3', 18.9], ['#sala4', 19.05]];
+  for (const [sel, t] of salas) {
+    tl.fromTo(sel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .4, ease: 'power2.out' }, t);
+  }
+
+  /* ── S6 ubicacion: el mapa dibujado ────────────────────────────── */
+  tl.fromTo('#ubiL', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, 20.1);
+  tl.fromTo('#ruta', { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 1.5, ease: EASE }, 20.4);
+  tl.fromTo('#pin', { opacity: 0, y: -40, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .6, ease: GOLPE }, 21.7);
+  tl.fromTo('#pinHueco', { opacity: 0 }, { opacity: 1, duration: .4, ease: 'none' }, 21.9);
+  tl.fromTo('#ubiT', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .7, ease: EASE }, 22.1);
+  tl.fromTo('#ubiS', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .6, ease: EASE }, 22.35);
+
+  /* ── S7 oferta ─────────────────────────────────────────────────── */
+  tl.fromTo('#ofertaT', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .65, ease: EASE }, 24.2);
+  tl.fromTo('#ofertaTel', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: .65, ease: EASE }, 24.4);
+  tl.fromTo('#ofertaW', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, 24.6);
+
+  /* ── S8 precio: la tarjeta tinta ───────────────────────────────── */
+  tl.fromTo('#precioPanel', { opacity: 0, y: 60, scale: .97 }, { opacity: 1, y: 0, scale: 1, duration: .7, ease: EASE }, 26.15);
+  tl.fromTo('#precioK', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, 26.4);
+  tl.fromTo('#precioT', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .7, ease: EASE }, 26.55);
+  tl.fromTo('#precioS', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .6, ease: EASE }, 26.8);
+
+  /* ── S9 cierre ─────────────────────────────────────────────────── */
+  tl.fromTo('#cierreT', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .8, ease: EASE }, 28.2);
+  tl.fromTo('#cierreR', { scaleX: 0 }, { scaleX: 1, duration: .7, ease: EASE }, 28.45);
+  tl.fromTo('#cierreL', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, 28.6);
+  tl.fromTo('#cierreW', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, ease: 'power2.out' }, 28.72);
+  tl.fromTo('#barrido9', { xPercent: -30, opacity: 0 }, { xPercent: 260, opacity: 1, duration: 1.2, ease: 'power2.inOut' }, 28.3);
+
+  window.__timelines["inmo-mx-30s"] = tl;
+  if (gsap.ticker) gsap.ticker.fps(30);
+})();
+</script>
+</body>
+</html>

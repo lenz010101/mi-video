@@ -300,20 +300,26 @@ jobs:
       # la nube (recorte 9:16, grado de color, H.264 baseline). El repo solo
       # guarda el manifiesto, asi que el PC del usuario no toca video.
       - name: Preparar el directorio del material nuevo
-        run: mkdir -p assets/nuevo/procesado
+        run: mkdir -p assets/nuevo/procesado assets/nuevo/inmo/procesado
 
       - name: Cache del material nuevo
         uses: actions/cache@v4
         with:
-          path: |
-            assets/nuevo/procesado
-            assets/nuevo/inmo/procesado
-          key: nuevo-v6-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json', 'assets/nuevo/inmo/fuentes.json') }}
+          path: assets/nuevo/procesado
+          key: nuevo-v6-${{ runner.os }}-${{ hashFiles('assets/nuevo/fuentes.json') }}
+
+      - name: Cache del material de la inmobiliaria
+        uses: actions/cache@v4
+        with:
+          path: assets/nuevo/inmo/procesado
+          key: inmo-v1-${{ runner.os }}-${{ hashFiles('assets/nuevo/inmo/fuentes.json') }}
 
       - name: Prepare the new material
         run: |
-            node demo2/preparar-nuevo.mjs assets/nuevo/fuentes.json
+          node demo2/preparar-nuevo.mjs assets/nuevo/fuentes.json
+          if [ -f assets/nuevo/inmo/fuentes.json ]; then
             node demo2/preparar-nuevo.mjs assets/nuevo/inmo/fuentes.json
+          fi
 
       - name: Lint the composition
         # "hf" = la libreria de HyperFrames instalada en la nube (misma version

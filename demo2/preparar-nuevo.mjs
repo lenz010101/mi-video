@@ -138,11 +138,20 @@ for (const m of man.musica || []) {
     const tmp = path.join(OUT, `_m_${m.id}.mp3`);
     await baja(`https://assets.mixkit.co/music/${m.id}/${m.id}.mp3`, tmp);
     const d = m.duracion || 30;
+    /* atempo cambia el tempo sin cambiar el pitch: se usa para que la rejilla
+       de la composicion (compas de 2 s) caiga exacta en el golpe. */
+    const tempo = m.tempo || 1;
+    const cadena = [
+      tempo !== 1 ? `atempo=${tempo}` : '',
+      'afade=t=in:st=0:d=1.2',
+      `afade=t=out:st=${(d - 1.8).toFixed(2)}:d=1.8`,
+      'volume=0.9',
+    ].filter(Boolean).join(',');
     ff(['-ss', String(m.inicio || 0), '-i', tmp, '-t', String(d),
-      '-af', `afade=t=in:st=0:d=1.2,afade=t=out:st=${(d - 1.8).toFixed(2)}:d=1.8,volume=0.9`,
+      '-af', cadena,
       '-c:a', 'libmp3lame', '-q:a', '2', '-ar', '44100', '-ac', '2', out]);
     fs.rmSync(tmp, { force: true });
-    console.log(`  listo  ${m.archivo}  ${(fs.statSync(out).size / 1048576).toFixed(1)}MB`);
+    console.log(`  listo  ${m.archivo}  ${(fs.statSync(out).size / 1048576).toFixed(1)}MB${tempo !== 1 ? '  (tempo x' + tempo + ')' : ''}`);
   } catch (e) { fallos++; console.log(`  [warning] musica ${m.id}: ${e.message}`); }
 }
 

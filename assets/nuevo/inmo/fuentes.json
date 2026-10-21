@@ -1,0 +1,55 @@
+{
+  "_nota": "Material de la pieza de inmobiliaria (Mexico). El repo solo guarda este manifiesto: los clips, la musica y los efectos se descargan y se montan en la nube (demo2/preparar-nuevo.mjs). Origen: Mixkit (licencia libre, sin clave).",
+  "salida": "assets/nuevo/inmo/procesado",
+  "fps": 30,
+  "rejilla": {
+    "_nota": "La pista 676 esta a ~88 BPM reales (176/2). Se estira con atempo a 120 BPM (x1.363) para que el compas de 2,0 s de la composicion caiga exacto en el golpe. atempo no cambia el pitch.",
+    "compas": 2.0,
+    "corte_musica": 0.96,
+    "tempo": 1.363
+  },
+  "perfil": {
+    "ancho": 1080,
+    "alto": 1920,
+    "perfil_h264": "baseline",
+    "nivel_h264": "3.1",
+    "pix_fmt": "yuv420p",
+    "crf": 21,
+    "preset": "veryfast"
+  },
+  "grados": {
+    "claro": {
+      "curves": "curves=r='0/0 0.25/0.22 0.5/0.5 0.75/0.78 1/0.98':g='0/0.01 0.25/0.23 0.5/0.5 0.75/0.78 1/0.98':b='0/0.03 0.25/0.24 0.5/0.51 0.75/0.79 1/0.99'",
+      "tono": "colorbalance=rs=0.01:gs=0:bs=-0.01:rm=0.02:gm=0:bm=0:rh=0.03:gh=0:bh=0",
+      "eq": "eq=contrast=1.08:saturation=0.95:gamma=1.02",
+      "halation": 0.10,
+      "vineta": "vignette=angle=PI/5",
+      "grano": "noise=alls=4:allf=t+u"
+    }
+  },
+  "clips": [
+    { "nombre": "exterior",   "base": "49872", "inicio": 3.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "promesa",    "base": "52075", "inicio": 4.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "obra1",      "base": "40718", "inicio": 5.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "obra2",      "base": "22809", "inicio": 9.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "entrega",    "base": "12877", "inicio": 2.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "casa1",      "base": "43033", "inicio": 3.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "casa2",      "base": "4030",  "inicio": 2.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "casa3",      "base": "4047",  "inicio": 3.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "ficha",      "base": "3112",  "inicio": 2.0, "duracion": 4.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "presentador","base": "1526",  "inicio": 5.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null },
+    { "nombre": "cierre",     "base": "4489",  "inicio": 2.0, "duracion": 2.0, "encuadre": "centro", "grado": "claro", "overlay": null }
+  ],
+  "capas": [],
+  "musica": [
+    { "id": "676", "archivo": "music.mp3", "inicio": 0.96, "duracion": 30.0, "tempo": 1.363 }
+  ],
+  "sfx": [
+    { "id": "1491", "archivo": "sfx-whoosh-1.mp3", "en": 2.0,  "ganancia": 0.24 },
+    { "id": "2343", "archivo": "sfx-whoosh-2.mp3", "en": 5.44, "ganancia": 0.22 },
+    { "id": "1714", "archivo": "sfx-whoosh-3.mp3", "en": 10.88,"ganancia": 0.22 },
+    { "id": "2198", "archivo": "sfx-impact.mp3",   "en": 19.04,"ganancia": 0.24 },
+    { "id": "2630", "archivo": "sfx-sweep.mp3",    "en": 21.76,"ganancia": 0.20 },
+    { "id": "561",  "archivo": "sfx-hit.mp3",      "en": 27.2, "ganancia": 0.28 }
+  ]
+}
