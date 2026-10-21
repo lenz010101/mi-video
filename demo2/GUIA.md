@@ -5,6 +5,24 @@ valida (2 s) y descarga el MP4 final.
 
 ---
 
+## 0. Antes de nada: medir la referencia (3 min, un comando)
+
+```powershell
+node demo2/medir-referencia.mjs "C:\ruta\al\video.mp4" demo2\new\ref
+```
+
+Saca el **perfil de movimiento** (la tabla de cortes), la **hoja de contactos** y
+dos **tiras por zonas** (arriba / medio) para copiar los tiempos de cada
+elemento. Antes esto se hacía a mano y eran 20 minutos.
+
+Y si un run falla, el log en un comando (sin abrir el navegador):
+
+```powershell
+.\demo2\log-run.ps1 -RunId 39672914920 -Patron "error" -Ultimas 20
+```
+
+---
+
 ## 1. El comando único (el ciclo entero)
 
 ```powershell

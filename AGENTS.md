@@ -127,13 +127,24 @@
 ## Preferencias del usuario
 
 - **REGLA PERMANENTE (el usuario la ha repetido): el trabajo completo debe
-  caber en 30 MINUTOS, o menos si es posible.** Ni una hora ni "casi una
-  hora": 30 minutos es el techo. El usuario no puede estar recordán-
-  dormelo en cada momento, así que el agente tiene que: (a) arrancar pronto,
-  (b) no encadenar análisis largos, (c) tener siempre un entregable a punto
-  (aunque sea el MP4 sin revisar), y (d) avisar de los tiempos **antes** de
-  lanzar algo largo. Si una tarea se alarga, se entrega lo que haya y se dice
-  qué falta. **Nunca dejar el trabajo a medias esperando.**
+  caber en 20 MINUTOS; 30 es el techo duro y menos de 20 es lo que quiere.**
+  Ni una hora ni "casi una hora": si no cabe en 20, hay que recortar alcance
+  (menos iteraciones, menos análisis), no alargar el reloj. El usuario no
+  puede estar recordán- domelo en cada momento, así que el agente tiene que:
+  (a) arrancar pronto, (b) no encadenar análisis largos, (c) tener siempre un
+  entregable a punto (aunque sea el MP4 sin revisar), y (d) avisar de los
+  tiempos **antes** de lanzar algo largo. Si una tarea se alarga, se entrega
+  lo que haya y se dice qué falta. **Nunca dejar el trabajo a medias
+  esperando.**
+  - **Reparto de tiempos objetivo (pieza nueva, 20 min):**
+    | fase | objetivo |
+    |---|---|
+    | medir la referencia (1 comando) | 3 min |
+    | escribir/adaptar la composición | 5 min |
+    | validar en local (auditor + lint) | 2 min |
+    | render en la nube | 5 min |
+    | descargar + revisar 6 PNG | 3 min |
+    | un ajuste si hace falta | 2 min |
   - **Lecciones de la pieza "millonario" (se pasó de 30 min):**
     1. Antes de lanzar un run, **comprobar los flags exactos en local**
        (`hf snapshot --help`): 3 runs muertos por flags inventados =
