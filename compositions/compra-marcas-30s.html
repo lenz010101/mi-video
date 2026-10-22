@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es" data-composition-variables='[
+  {"id":"t1","type":"string","label":"Barra 1","default":"POBRE"},
+  {"id":"t2","type":"string","label":"Barra 2","default":"RICO"},
+  {"id":"t3","type":"string","label":"Barra 3","default":"MILLONARIO"},
+  {"id":"nombres","type":"string","label":"Nombres de marca","default":"Mercedes-Benz|PORSCHE|HONDA|BMW|NISSAN|LEXUS|TOYOTA"},
+  {"id":"colores","type":"string","label":"Color de cada nombre","default":"#E9EDF2|#D5001C|#CC0000|#0F86E0|#111111|#C9CDD2|#EB0A1E"},
+  {"id":"palabras","type":"string","label":"Palabras","default":"toyota|honda|bmw|o mercedes|cual|compraria|yo|ninguna|marca|es perfecta|todo|depende|de tu|dinero|si quieres|mezclar|y si|piensas|en tu|futuro|mi equipo|te dice|los numeros"},
+  {"id":"presentador1","type":"string","label":"Plano 1","default":"assets/mezcla/presentador-1.mp4"},
+  {"id":"presentador2","type":"string","label":"Plano 2","default":"assets/mezcla/presentador-2.mp4"},
+  {"id":"musica","type":"string","label":"Musica","default":"assets/audio/music-30s.mp3"}
+]'>
+<head>
+<meta charset="utf-8">
+<title>No existe una marca perfecta - clon de referencia</title>
+<style>
+  @font-face { font-family:'Anton'; font-style:normal; font-weight:400;
+    src:url('../assets/fonts/anton-400.woff2') format('woff2'); }
+  @font-face { font-family:'Inter'; font-style:normal; font-weight:800;
+    src:url('../assets/fonts/inter-800.woff2') format('woff2'); }
+  @font-face { font-family:'Playfair'; font-style:normal; font-weight:600;
+    src:url('../assets/fonts/playfair+display-600.woff2') format('woff2'); }
+
+  :root{
+    --rojo:#FF2A2A; --azul:#35C8FF; --oro:#FFC02A;
+    --fondo:#07070A;
+  }
+  html,body{ margin:0; padding:0; background:var(--fondo); }
+  body{ width:1080px; height:1920px; overflow:hidden; }
+
+  /* â”€â”€ Los planos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  .plano{ position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; opacity:0; will-change:opacity,transform; }
+
+  /* â”€â”€ Barra de neón arriba: tres paneles + tiras de LED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  .barra{ position:absolute; left:0; top:0; width:1080px; height:168px;
+    display:flex; align-items:center; opacity:0; will-change:opacity,transform; }
+  .p1{ width:378px; height:168px; background:linear-gradient(90deg,#2A0606 0%,#5C0F0F 55%,#7C1414 100%);
+    display:flex; align-items:center; justify-content:center; }
+  .p2{ width:300px; height:168px; background:linear-gradient(90deg,#0A2FB8 0%,#1447E8 45%,#0A2FB8 100%);
+    display:flex; align-items:center; justify-content:center; }
+  .p3{ width:402px; height:168px; background:linear-gradient(90deg,#2E1B05 0%,#5A3A0A 55%,#7A5210 100%);
+    display:flex; align-items:center; justify-content:center; }
+  .led-wrap{ width:20px; height:168px; overflow:hidden; flex:0 0 20px; }
+  .led{ width:20px; height:420px; margin-top:-70px;
+    background:repeating-linear-gradient(180deg,#FFFFFF 0 14px,#14141A 14px 22px);
+    opacity:.92; will-change:transform; }
+  .neon{ font-family:'Anton',sans-serif; font-size:56px; letter-spacing:.02em;
+    will-change:opacity; }
+  .n-rojo{ color:var(--rojo); text-shadow:0 0 14px rgba(255,42,42,.95), 0 0 44px rgba(255,0,0,.65); }
+  .n-azul{ color:var(--azul); text-shadow:0 0 14px rgba(53,200,255,.95), 0 0 44px rgba(0,120,255,.7); }
+  .n-oro{ color:var(--oro); text-shadow:0 0 14px rgba(255,192,42,.95), 0 0 44px rgba(255,150,0,.6); }
+
+  /* â”€â”€ Logos de marca (cromados), en retícula sobre un velo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* El cierre: la guia de "comenta tu marca" */
+  .cta{ position:absolute; left:50%; top:1000px; transform:translateX(-50%);
+    opacity:0; will-change:opacity,transform; }
+  /* La barra de busqueda del cierre (como la referencia) */
+  .buscar{ width:960px; height:118px; background:#FFFFFF; border-radius:30px;
+    box-shadow:0 18px 44px rgba(0,0,0,.55); display:flex; align-items:center;
+    padding:0 24px 0 18px; pointer-events:none; }
+  .ico{ width:48px; height:48px; flex:0 0 48px; margin:0 20px 0 6px; }
+  .tipico{ font-family:'Inter',sans-serif; font-weight:500; font-size:46px;
+    color:#3F4854; white-space:nowrap; letter-spacing:.01em; }
+  .cursor{ width:3px; height:58px; background:#3D53F5; margin-left:3px;
+    will-change:opacity; }
+  .flecha{ margin-left:auto; width:88px; height:76px; border-radius:24px;
+    background:#3D53F5; color:#FFFFFF; font-size:46px; line-height:76px;
+    text-align:center; font-family:'Inter',sans-serif; font-weight:800;
+    box-shadow:0 6px 16px rgba(61,83,245,.45); }
+  .fundido{ position:absolute; inset:0; background:#05050A; opacity:0;
+    pointer-events:none; will-change:opacity; }
+  .velo{ position:absolute; left:420px; top:0; width:660px; height:920px;
+    pointer-events:none;
+    background:radial-gradient(ellipse 72% 60% at 76% 34%, rgba(3,3,7,.42) 0%, rgba(3,3,7,.20) 56%, rgba(3,3,7,0) 100%); }
+  .logos{ position:absolute; left:560px; top:185px; width:500px; height:520px;
+    display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:173px;
+    align-items:center; justify-items:center; gap:0 10px; pointer-events:none; }
+  /* Insignia de cromo: el logo real hace de mascara de un gradiente de
+     metal, con una capa oscura debajo (bisel) y sombra proyectada. */
+  .insignia{ position:absolute; left:var(--x); top:var(--y); width:var(--w); height:var(--h);
+    opacity:0; will-change:opacity,transform;
+    transform:perspective(900px) rotateY(-16deg) rotateX(7deg); }
+  .insignia::before{ content:''; position:absolute; inset:0;
+    background:linear-gradient(155deg,#FFFFFF 0%,#AEB4BA 14%,#F4F6F7 28%,#7C8288 46%,
+      #E9ECEE 60%,#878D93 76%,#FFFFFF 94%);
+    -webkit-mask-image:var(--src); mask-image:var(--src);
+    -webkit-mask-size:contain; mask-size:contain;
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    -webkit-mask-position:center; mask-position:center;
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.65)); }
+  .insignia::after{ content:''; position:absolute; inset:0;
+    background:linear-gradient(155deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.25) 45%,rgba(0,0,0,0) 70%);
+    -webkit-mask-image:var(--src); mask-image:var(--src);
+    -webkit-mask-size:contain; mask-size:contain;
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    -webkit-mask-position:center; mask-position:center;
+    transform:translateY(4px); }
+
+  /* â”€â”€ El nombre de marca grande, abajo a la izquierda â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  .nombre{ position:absolute; left:0; right:0; top:1075px; text-align:center;
+    font-family:'Anton',sans-serif;
+    font-size:132px; line-height:1; letter-spacing:.005em; white-space:nowrap;
+    opacity:0; text-shadow:0 8px 22px rgba(0,0,0,.95), 0 2px 4px rgba(0,0,0,.9),
+      0 0 46px rgba(0,0,0,.55); will-change:opacity,transform; }
+  /* El sticker rasgado (NISSAN): un recorte irregular con borde duro */
+  .sticker{ position:absolute; left:calc(50% - 260px); top:1057px; width:520px; height:158px;
+    background:#F4F4F0; opacity:0; will-change:opacity,transform;
+    clip-path:polygon(2% 18%,8% 4%,16% 14%,24% 2%,33% 12%,42% 3%,52% 13%,61% 2%,71% 11%,80% 1%,89% 12%,98% 5%,100% 26%,97% 42%,100% 58%,96% 74%,99% 88%,90% 96%,81% 88%,72% 98%,62% 89%,52% 97%,43% 88%,33% 98%,24% 89%,14% 97%,6% 86%,1% 70%,4% 54%,0% 38%); }
+  .nombre-negro{ color:#0C0C0C; }
+  .nombre-serif{ font-family:'Playfair',serif; font-size:112px; letter-spacing:.01em; }
+
+  /* â”€â”€ Las palabras: abajo a la derecha, sobre fondo limpio â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  .velo-palabras{ position:absolute; left:420px; top:720px; width:660px; height:230px;
+    pointer-events:none;
+    background:radial-gradient(ellipse 62% 60% at 62% 50%, rgba(3,3,7,.45) 0%, rgba(3,3,7,.20) 60%, rgba(3,3,7,0) 100%); }
+  .palabra{ position:absolute; left:0; right:70px; top:800px; text-align:right;
+    font-family:'Inter',sans-serif;
+    font-weight:800; font-size:62px; letter-spacing:-.015em; color:#FFFFFF;
+    text-shadow:0 4px 12px rgba(0,0,0,1), 0 1px 2px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,.75); -webkit-text-stroke:2px rgba(0,0,0,.55);
+    white-space:nowrap; opacity:0; will-change:opacity,transform; }
+
+  /* â”€â”€ Ambiente â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  .glow{ position:absolute; left:-26%; top:2%; width:66%; height:72%;
+    background:radial-gradient(ellipse 52% 50% at 42% 42%, rgba(255,42,110,.20) 0%, rgba(255,20,90,.07) 45%, transparent 72%);
+    opacity:0; pointer-events:none; will-change:opacity,transform; }
+  .vineta{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(118% 78% at 46% 42%, rgba(0,0,0,0) 50%, rgba(0,0,0,.30) 100%); }
+  /* El degradado bajo la barra: la cabeza del presentador no choca con el neon */
+  .sombra-barra{ position:absolute; left:0; top:150px; width:1080px; height:120px;
+    pointer-events:none;
+    background:linear-gradient(to bottom, rgba(4,4,8,.85) 0%, rgba(4,4,8,.35) 45%, rgba(4,4,8,0) 100%); }
+  /* El halo del neon: la luz de los tres paneles cae sobre la escena */
+  .brillo-barra{ position:absolute; left:0; top:158px; width:1080px; height:170px;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse 24% 100% at 17% 0%, rgba(255,42,42,.30) 0%, transparent 70%),
+      radial-gradient(ellipse 17% 100% at 50% 0%, rgba(53,200,255,.30) 0%, transparent 70%),
+      radial-gradient(ellipse 24% 100% at 83% 0%, rgba(255,192,42,.26) 0%, transparent 70%); }
+  /* La esquina inferior en diagonal */
+  .diagonal{ position:absolute; left:0; bottom:0; width:1080px; height:330px; pointer-events:none;
+    background:linear-gradient(to top right, rgba(4,4,6,.97) 0%, rgba(4,4,6,.97) 42%, rgba(4,4,6,0) 43%, transparent 100%); }
+  .flash{ position:absolute; inset:0; background:#FFE9B0; opacity:0; pointer-events:none;
+    will-change:opacity; }
+  /* Light leak: el fogonazo calido de una lente (modo screen = luz aditiva) */
+  .leak{ position:absolute; top:-25%; left:-140%; width:420px; height:2400px;
+    transform:rotate(18deg); opacity:0; pointer-events:none;
+    mix-blend-mode:screen; will-change:opacity,transform;
+    background:linear-gradient(90deg, rgba(255,140,40,0) 0%, rgba(255,196,96,.55) 38%,
+      rgba(255,240,200,.85) 52%, rgba(255,120,60,.35) 68%, rgba(255,90,30,0) 100%); }
+  /* Smear: el arrastre del golpe (el whip-pan de una transicion de cine) */
+  .smear{ position:absolute; inset:0; opacity:0; pointer-events:none;
+    mix-blend-mode:screen; will-change:opacity;
+    background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,245,225,.30) 38%,
+      rgba(255,255,255,.55) 50%, rgba(255,245,225,.28) 62%, rgba(255,255,255,0) 100%); }
+  /* Grano de pelicula: el toque que lo hace rodar y no "renders" */
+  .grano{ position:absolute; left:-8%; top:-8%; width:116%; height:116%;
+    background-image:url('../assets/grain.png'); background-size:256px 256px;
+    opacity:.055; will-change:transform; pointer-events:none; }
+</style>
+</head>
+<body>
+
+<div id="root" data-composition-id="compra" data-start="0" data-duration="30" data-width="1080" data-height="1920" data-fps="30">
+
+  <!-- Los dos planos del presentador (graduados en la nube) -->
+  <video id="p1" class="plano clip" data-start="0" data-duration="24" data-track-index="0"
+    data-var-src="presentador1" src="assets/mezcla/presentador-1.mp4" data-has-audio playsinline></video>
+  <video id="p2" class="plano clip" data-start="24" data-duration="6" data-track-index="0"
+    data-var-src="presentador2" src="assets/mezcla/presentador-2.mp4" data-has-audio playsinline></video>
+
+  <!-- La barra de neón -->
+  <div class="barra" id="barra">
+    <div class="p1"><span class="neon n-rojo" id="t1">POBRE</span></div>
+    <div class="led-wrap"><div class="led"></div></div>
+    <div class="p2"><span class="neon n-azul" id="t2">RICO</span></div>
+    <div class="led-wrap"><div class="led"></div></div>
+    <div class="p3"><span class="neon n-oro" id="t3">MILLONARIO</span></div>
+  </div>
+
+  <!-- El velo que apaga el fondo detras de los logos -->
+  <div class="velo"></div>
+  <div class="velo-palabras"></div>
+
+  <!-- Las insignias de marca en cromo, apiladas bajo su categoria -->
+  <div class="insignia" id="lgHonda" style="--x:78px; --y:196px; --w:230px; --h:110px; --src:url('../assets/logos/honda.png');"></div>
+  <div class="insignia" id="lgToyota" style="--x:78px; --y:366px; --w:230px; --h:110px; --src:url('../assets/logos/toyota.png');"></div>
+  <div class="insignia" id="lgMercedes" style="--x:432px; --y:196px; --w:225px; --h:110px; --src:url('../assets/logos/mercedes.png');"></div>
+  <div class="insignia" id="lgBmw" style="--x:470px; --y:366px; --w:150px; --h:150px; --src:url('../assets/logos/bmw.png');"></div>
+  <div class="insignia" id="lgNissan" style="--x:440px; --y:556px; --w:205px; --h:92px; --src:url('../assets/logos/nissan.png');"></div>
+  <div class="insignia" id="lgPorsche" style="--x:790px; --y:196px; --w:225px; --h:95px; --src:url('../assets/logos/porsche.png');"></div>
+  <div class="insignia" id="lgLexus" style="--x:800px; --y:366px; --w:205px; --h:105px; --src:url('../assets/logos/lexus.png');"></div>
+
+  <!-- Los nombres de marca grandes (al 55-60% de la altura, como el original) -->
+  <div class="nombre nombre-serif" id="nom0">Mercedes-Benz</div>
+  <div class="nombre" id="nom1">PORSCHE</div>
+  <div class="nombre" id="nom2">HONDA</div>
+  <div class="nombre" id="nom3">CHRYSLER</div>
+  <div class="sticker" id="stic4"></div>
+  <div class="nombre nombre-negro" id="nom4">NISSAN</div>
+  <div class="nombre nombre-serif" id="nom5">LEXUS</div>
+  <div class="nombre" id="nom6">TOYOTA</div>
+
+  <!-- El cierre: la barra de busqueda "escribe tu marca" -->
+  <div class="cta" id="cta">
+    <div class="buscar">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#4A5568" stroke-width="1.8" stroke-linejoin="round">
+        <rect x="3" y="4.5" width="18" height="15" rx="2.6"></rect>
+        <circle cx="8.8" cy="9.9" r="1.6"></circle>
+        <path d="M4 17.2l4.8-4.4 3.3 3 3.8-3.6 4.4 4"></path>
+      </svg>
+      <span class="tipico" id="tipico">Marca</span>
+      <span class="cursor" id="cursor"></span>
+      <div class="flecha">&#8593;</div>
+    </div>
+  </div>
+
+  <div class="sombra-barra"></div>
+  <div class="brillo-barra"></div>
+  <div class="glow" id="glow"></div>
+  <div class="vineta"></div>
+  <div class="diagonal"></div>
+  <div class="flash" id="flash"></div>
+  <div class="leak" id="leak"></div>
+  <div class="smear" id="smear"></div>
+  <div class="grano" id="grano"></div>
+  <div class="fundido" id="fundido"></div>
+
+  <!-- Musica por debajo de la voz -->
+  <audio id="musica" class="clip" data-start="0" data-duration="30" data-track-index="9"
+    data-var-src="musica" src="assets/audio/music-30s.mp3" data-volume="0.2"></audio>
+</div>
+
+<script src="../assets/vendor/gsap.min.js"></script>
+<script>
+
+(function () {
+  const V = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+  const txt = (id, def) => (V && V[id] != null && V[id] !== '') ? String(V[id]) : def;
+  const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+
+  setTxt('t1', txt('t1', 'POBRE'));
+  setTxt('t2', txt('t2', 'RICO'));
+  setTxt('t3', txt('t3', 'MILLONARIO'));
+
+  const NOMBRES = txt('nombres', 'Mercedes-Benz|PORSCHE|HONDA|BMW|NISSAN|LEXUS|TOYOTA').split('|');
+  const COLORES = txt('colores', '#E9EDF2|#D5001C|#CC0000|#0F86E0|#111111|#C9CDD2|#EB0A1E').split('|');
+  for (let i = 0; i < 7; i++) {
+    const e = document.getElementById('nom' + i);
+    if (e) {
+      e.textContent = NOMBRES[i] || e.textContent;
+      e.style.color = COLORES[i] || '#FFFFFF';
+    }
+  }
+
+  const PALABRAS = txt('palabras', '').split('|').filter(function (s) { return s.length; });
+
+  const tl = gsap.timeline({ paused: true });
+
+  tl.set('#p1', { opacity: 1 }, 0);
+  tl.fromTo('#p1', { scale: 1.0 }, { scale: 1.035, duration: 30, ease: 'none' }, 0);
+  tl.fromTo('#p2', { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.0, duration: .05, ease: 'none' }, 24);
+  tl.to('#p2', { scale: 1.05, duration: 6, ease: 'none' }, 24.05);
+
+  tl.fromTo('#barra', { opacity: 0, y: -46 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' }, .05);
+  tl.to('.neon', { opacity: .45, duration: .05, ease: 'none' }, .62);
+  tl.to('.neon', { opacity: 1, duration: .05, ease: 'none' }, .70);
+  tl.to('.neon', { opacity: .6, duration: .04, ease: 'none' }, .78);
+  tl.to('.neon', { opacity: 1, duration: .06, ease: 'none' }, .84);
+  tl.to('#barra', { opacity: 0, duration: .25, ease: 'power2.in' }, 23.75);
+
+  const logos = [
+    { id: '#lgHonda', t: 1.8 }, { id: '#lgToyota', t: 3.4 },
+    { id: '#lgMercedes', t: 5 }, { id: '#lgBmw', t: 6.6 },
+    { id: '#lgNissan', t: 8.2 }, { id: '#lgPorsche', t: 9.8 },
+    { id: '#lgLexus', t: 11.4 }
+  ];
+  for (const l of logos) {
+    tl.fromTo(l.id, { opacity: 0, scale: .82, y: 12 },
+      { opacity: 1, scale: 1, y: 0, duration: .45, ease: 'power4.out' }, l.t);
+  }
+
+  const nombres = [
+    { id: '#nom0', t: .3, d: 3.1 }, { id: '#nom1', t: 3.6, d: 2.2 }, { id: '#nom2', t: 6.0, d: 2.2 },
+    { id: '#nom3', t: 8.4, d: 2.2 }, { id: '#nom4', t: 10.8, d: 2.2 }, { id: '#nom5', t: 13.2, d: 2.2 },
+    { id: '#nom6', t: 15.6, d: 2.2 }
+  ];
+  for (const n of nombres) {
+    tl.fromTo(n.id, { opacity: 0, y: 30, scale: 1.05 },
+      { opacity: 1, y: 0, scale: 1, duration: .45, ease: 'power4.out' }, n.t);
+    tl.to(n.id, { opacity: 0, y: -14, scale: .985, duration: .32, ease: 'power2.in' }, n.t + n.d);
+  }
+  tl.fromTo('#stic4', { opacity: 0, scale: .94 },
+    { opacity: 1, scale: 1, duration: .4, ease: 'power4.out' }, 10.8);
+  tl.to('#stic4', { opacity: 0, duration: .32, ease: 'power2.in' }, 13.0);
+
+  /* antes del corte: ~1,05 s por palabra; despues: ~0,82 s. Se dejan
+     ~0,6 s a pantalla completa: si no, no se leen. */
+  const antes = 6.2, gap1 = .95, gap2 = .75, corte = 24.0;
+  let t = antes;
+  for (let i = 0; i < PALABRAS.length; i++) {
+    const es = 'pal' + i;
+    let el = document.getElementById(es);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'palabra';
+      el.id = es;
+      el.textContent = PALABRAS[i];
+      document.getElementById('root').appendChild(el);
+    }
+    const dur = t < corte ? gap1 : gap2;
+    tl.fromTo(el, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: .26, ease: 'power3.out' }, t);
+    tl.to(el, { opacity: 0, x: -16, duration: .26, ease: 'power2.in' }, t + dur - .26);
+    t += dur;
+    if (t > 27.6) break;
+  }
+
+  tl.fromTo('#flash', { opacity: 0 }, { opacity: .85, duration: .07, ease: 'none' }, 22.72);
+  tl.to('#flash', { opacity: 0, duration: .45, ease: 'power2.out' }, 22.79);
+  tl.fromTo('#leak', { opacity: 0, x: 0 }, { opacity: .9, duration: .18, ease: 'power2.out' }, 22.70);
+  tl.to('#leak', { x: 1350, opacity: 0, duration: .55, ease: 'power2.in' }, 22.88);
+  tl.fromTo('#smear', { opacity: 0 }, { opacity: .85, duration: .05, ease: 'none' }, 23.92);
+  tl.to('#smear', { opacity: 0, duration: .22, ease: 'power2.out' }, 23.97);
+  tl.to('#grano', { x: 18, y: -10, duration: 2.4, ease: 'steps(5)', repeat: -1, yoyo: true }, 0);
+
+  tl.to('#glow', { opacity: .9, x: 26, y: -14, duration: 7, ease: 'sine.inOut', repeat: -1, yoyo: true }, 0);
+
+  tl.to('.led', { y: -22, duration: .9, ease: 'none', repeat: -1 }, 0);
+
+  tl.fromTo('#cta', { opacity: 0, y: 36, scale: .94 }, { opacity: 1, y: 0, scale: 1, duration: .5, ease: 'power4.out' }, 24.45);
+  tl.to('#cursor', { opacity: 0, duration: .01, ease: 'none', repeat: -1, yoyo: true, repeatDelay: .53 }, 25.1);
+  tl.fromTo('#fundido', { opacity: 0 }, { opacity: 1, duration: .6, ease: 'power2.inOut' }, 29.4);
+  window.__timelines["compra"] = tl;
+  if (gsap.ticker) gsap.ticker.fps(30);
+})();
+</script>
+</body>
+</html>
