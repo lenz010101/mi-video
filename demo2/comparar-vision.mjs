@@ -11,10 +11,11 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 const [a, b, key, salida] = process.argv.slice(2);
-if (!a || !b || !key) {
-  console.log('uso: node demo2/comparar-vision.mjs <A.mp4> <B.mp4> <APIKEY> <salida.md> [seg]');
+if (!a || !key) {
+  console.log('uso: node demo2/comparar-vision.mjs <A.mp4> [<B.mp4>] <APIKEY> <salida.md> [seg]');
   process.exit(1);
 }
+const soloA = !b || b.startsWith('solo');
 const tiempos = (process.argv[6] || '0,6,12,18,24,28').split(',').map(Number);
 
 const ff = (args) => execFileSync('ffmpeg', ['-v', 'error', '-y', ...args], { stdio: ['ignore', 'pipe', 'pipe'] });
@@ -39,9 +40,21 @@ console.log(`fotogramas: A=${fa.length} B=${fb.length}`);
 
 const partes = [];
 for (const f of fa) partes.push({ inline_data: { mime_type: 'image/jpeg', data: f.data } });
-for (const f of fb) partes.push({ inline_data: { mime_type: 'image/jpeg', data: f.data } });
+if (!soloA) for (const f of fb) partes.push({ inline_data: { mime_type: 'image/jpeg', data: f.data } });
 
-const pregunta = `Tienes dos videos de 30 segundos, 9:16, el mismo estilo. Las primeras ${fa.length} imagenes son del VIDEO A (el original de referencia) en los segundos ${tiempos.join(', ')}. Las siguientes ${fa.length} imagenes son del VIDEO B (mi version) en los mismos segundos.
+const pregunta = soloA
+  ? `Estas son las imagenes de un video de 30 segundos, 9:16, tomadas en los segundos ${tiempos.join(', ')}.
+
+Analiza sus MOTION GRAPHICS y describe, de forma concreta y numerada, como esta hecho:
+1) CAPAS: que elementos hay superpuestos (barra, logos, titulos, palabras, pies, CTA) y donde se coloca cada uno (coordenadas en % de la altura y de la anchura).
+2) TIPOGRAFIA de cada capa: familia aproximada, tamano relativo, color, contorno, sombra, efecto.
+3) MOVIMIENTO: como entra y sale cada elemento (direccion, escala, inercia, rotacion, fundido, rebote), con su duracion aproximada.
+4) COLOR Y LUZ: paleta dominante, temperatura, contraste, vineta, grano, destellos.
+5) RITMO: en que segundos ocurre cada cosa y cuanto dura.
+6) TRANSICIONES: como son los cambios de plano y los cambios de bloque.
+
+Todo en una lista numerada, como una hoja de estilo que pueda replicar un editor de video. No comentes el tema ni los actores: solo el montaje.`
+  : `Tienes dos videos de 30 segundos, 9:16, el mismo estilo. Las primeras ${fa.length} imagenes son del VIDEO A (el original de referencia) en los segundos ${tiempos.join(', ')}. Las siguientes ${fa.length} imagenes son del VIDEO B (mi version) en los mismos segundos.
 
 Compara la EDICION de los dos y dame una lista CONCRETA y ACCIONABLE de las diferencias, separando:
 1) CAPAS Y POSICIONES (donde esta cada elemento en el cuadro: barra, logos, nombres de marca, palabras, pie de foto, CTA), con las coordenadas en % de la altura.
