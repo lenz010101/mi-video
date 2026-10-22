@@ -347,7 +347,7 @@ jobs:
       # video de referencia (luz magenta a la izquierda) sin tocar el PC.
       # Solo hace falta para las piezas que usan assets/clips/talker-*.mp4.
       - name: Graduar al presentador
-        if: contains(inputs.composition, 'millonario')
+        if: contains(inputs.composition, 'millonario') || contains(inputs.composition, 'ranking-orbes')
         run: |
           mkdir -p assets/mezcla
           # PLANO 1 (24 s): el plano largo, con su voz.
