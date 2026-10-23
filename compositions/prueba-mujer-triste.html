@@ -37,6 +37,17 @@
   #c13p{ opacity:0; }
 
   .fade{ position:absolute; inset:0; background:#000; opacity:0; will-change:opacity; pointer-events:none; }
+
+  /* ── toma de apoyo (la mujer al espejo): tarjeta arriba, la cocina
+     sigue rodando debajo ───────────────────────────────────────────── */
+  .pip{ position:absolute; left:70px; right:70px; top:150px; height:700px;
+        border-radius:26px; overflow:hidden; opacity:0; background:#0b0a08;
+        box-shadow:0 26px 70px rgba(0,0,0,.55), 0 0 0 2px rgba(255,255,255,.08);
+        will-change:transform,opacity,visibility; }
+  #w3{ will-change:transform; }
+  .pip video{ position:absolute; inset:0; width:100%; height:100%;
+        object-fit:cover; object-position:50% 45%;
+        will-change:transform; }
 </style>
 </head>
 <body>
@@ -47,15 +58,17 @@
   <div class="wrap" id="w1">
     <video id="v1" class="shot clip" data-start="0" data-duration="12.98" data-track-index="0" src="../assets/prueba/toma-a.mp4" muted playsinline></video>
   </div>
-  <video id="v2" class="shot clip" data-start="12.98" data-duration="2.20" data-track-index="0" src="../assets/prueba/espejo.mp4" muted playsinline></video>
-  <div class="wrap" id="w3">
-    <video id="v3" class="shot clip" data-start="15.18" data-duration="3.50" data-track-index="0" src="../assets/prueba/toma-b.mp4" muted playsinline></video>
-  </div>
+  <video id="v2" class="shot clip" data-start="12.98" data-duration="3.50" data-track-index="0" src="../assets/prueba/toma-b.mp4" muted playsinline></video>
 
-  <!-- ═══ VOZ (audio de la toma + audio del inserto con su música) ═══ -->
+  <!-- ═══ VOZ (audio de la toma) + música instrumental de fondo ═══ -->
   <audio id="vozA" class="clip" data-start="0"     data-duration="12.98" data-track-index="1" src="../assets/prueba/voz-a.m4a" data-volume="1"></audio>
-  <audio id="vozE" class="clip" data-start="12.98" data-duration="2.20"  data-track-index="1" src="../assets/prueba/espejo-a.m4a" data-volume="1"></audio>
-  <audio id="vozb" class="clip" data-start="15.18" data-duration="3.50"  data-track-index="1" src="../assets/prueba/voz-b.m4a" data-volume="1"></audio>
+  <audio id="vozb" class="clip" data-start="12.98" data-duration="3.50"  data-track-index="1" src="../assets/prueba/voz-b.m4a" data-volume="1"></audio>
+  <audio id="mus"  class="clip" data-start="0"     data-duration="18.75" data-track-index="9" src="../assets/nuevo/mus/m614.mp3" data-volume="0.16"></audio>
+
+  <!-- ═══ TOMA DE APOYO arriba: la mujer al espejo (12.98 - 15.18) ═══ -->
+  <div class="pip" id="pip">
+    <video id="v2" class="pipv clip" data-start="12.98" data-duration="2.20" data-track-index="2" src="../assets/prueba/espejo.mp4" muted playsinline></video>
+  </div>
 
   <!-- ═══ SUBTÍTULOS (mismo texto y ritmo que la referencia) ═══ -->
   <div class="cap" id="c1"><span class="cap-pre" id="c1p" data-var-text="encabezado">Si tienes</span><span class="cap-main y" id="c1m">más de 40</span></div>
@@ -99,8 +112,13 @@
 
   /* ── material: zoom lento + fundido de cierre ───────────────────── */
   tl.fromTo('#w1', { scale: 1.02 }, { scale: 1.075, duration: 12.98, ease: 'none', immediateRender: false }, 0);
-  tl.fromTo('#w3', { scale: 1.075 }, { scale: 1.02, duration: 3.50, ease: 'none', immediateRender: false }, 15.18);
+  tl.fromTo('#w3', { scale: 1.075 }, { scale: 1.02, duration: 5.50, ease: 'none', immediateRender: false }, 12.98);
   tl.fromTo('#fade', { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power1.in', immediateRender: false }, 18.2);
+
+  /* ── toma de apoyo (espejo): pop de entrada arriba, salida deslizando ── */
+  tl.set('#pip', { visibility: 'visible' }, 12.98);
+  tl.fromTo('#pip', { opacity: 0, y: 26, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.36, ease: EASE, immediateRender: false }, 12.98);
+  tl.to('#pip', { opacity: 0, y: -30, scale: 1.02, duration: 0.3, ease: 'power2.in' }, 15.1);
 
   /* ── frases: cada bloque de subtitulo con su tiempo ────────────── */
   const bloques = [
