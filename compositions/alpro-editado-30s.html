@@ -1,135 +1,217 @@
 <!DOCTYPE html>
 <html lang="es" data-composition-variables='[
-  {"id":"resource","type":"string","label":"Toma cruda","default":"../assets/clips/alpro-raw-cut.mp4"},
-  {"id":"meme","type":"string","label":"Meme del espejo","default":"../assets/clips/alpro-meme.mp4"},
-  {"id":"captions","type":"string","label":"Subtitulos (JSON)","default":"[{\"t\":0.13,\"d\":1.47,\"a\":\"si tienes\",\"b\":\"más de 40\"},{\"t\":1.87,\"d\":0.66,\"a\":\"eres\",\"b\":\"vegana\"},{\"t\":2.80,\"d\":0.64,\"a\":\"y pesas\"},{\"t\":3.44,\"d\":0.94,\"a\":\"lo mismo que a los\",\"b\":\"30\"},{\"t\":4.56,\"d\":0.64,\"a\":\"que estés\"},{\"t\":5.20,\"d\":1.07,\"a\":\"celebrando justo\"},{\"t\":6.31,\"d\":0.39,\"a\":\"lo que tienes\"},{\"t\":6.70,\"d\":0.64,\"a\":\"que\",\"b\":\"vigilar\",\"big\":true},{\"t\":7.45,\"d\":0.85,\"a\":\"porque puedes\"},{\"t\":8.30,\"d\":1.00,\"a\":\"estar\",\"b\":\"pensando\"},{\"t\":9.30,\"d\":0.45,\"a\":\"y estar\"},{\"t\":9.75,\"d\":1.00,\"p\":[\"perdiendo\",\"lo más\",\"importante\"],\"c\":[\"R\",\"\",\"M\"]},{\"t\":10.87,\"d\":1.43,\"a\":\"el\",\"b\":\"MÚSCULO\",\"big\":true},{\"t\":12.30,\"d\":1.45,\"a\":\"te describo.\"}]"}
+  {"id":"marca","type":"string","label":"Marca (cierre)","default":"ALPRO"},
+  {"id":"claim","type":"string","label":"Claim (cierre)","default":"PROTEÍNA VEGETAL"},
+  {"id":"video","type":"string","label":"Material montado","default":"../assets/clips/alpro-final.mp4"},
+  {"id":"voz","type":"string","label":"Voz","default":"../assets/clips/alpro-voz.m4a"}
 ]'>
 <head>
 <meta charset="utf-8">
-<title>Alpro - edicion estilo PRUEBA (capcut)</title>
+<title>Alpro · edición motion graphics</title>
 <style>
   @font-face { font-family:'Inter'; font-style:normal; font-weight:800;
     src:url('../assets/fonts/inter-800.woff2') format('woff2'); }
-  @font-face { font-family:'Inter'; font-style:normal; font-weight:500;
-    src:url('../assets/fonts/inter-500.woff2') format('woff2'); }
+  @font-face { font-family:'Inter'; font-style:normal; font-weight:600;
+    src:url('../assets/fonts/inter-600.woff2') format('woff2'); }
 
   :root{
-    --amarillo:#F8E33C;
-    --rojo:#FF4038;
+    --amarillo:#FFE33C;
+    --rojo:#FF4A3D;
+    --cyan:#32E6FF;
   }
   html,body{ margin:0; padding:0; background:#000; }
   body{ width:1080px; height:1920px; overflow:hidden; }
 
-  /* Las tomas */
   .plano{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
     opacity:0; will-change:opacity,transform; }
 
-  /* El velo del fondo (la cabeza no choca con los bordes) */
-  .vineta{ position:absolute; inset:0; pointer-events:none;
-    background:radial-gradient(120% 80% at 46% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,.28) 100%); }
+  .grano{ position:absolute; inset:0; pointer-events:none; opacity:.16;
+    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.045) 0 1px, rgba(0,0,0,0) 1px 3px); }
+  .vig{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(115% 78% at 50% 42%, rgba(0,0,0,0) 52%, rgba(0,0,0,.34) 100%); }
 
-  /* Subtitulos estilo PRUEBA: blanco + palabras clave en amarillo, borde negro */
-  .cap{ position:absolute; left:90px; right:90px; top:52%; transform:translateY(-50%);
-    text-align:center; opacity:0; pointer-events:none;
-    will-change:opacity,transform; }
-  .cap-estilo{ position:relative; display:inline-block; }
-  .cap-texto{ position:relative; z-index:2;
-    font-family:'Inter',sans-serif; font-weight:800;
-    font-size:72px; line-height:1.14; letter-spacing:-.005em; color:#FFFFFF; }
-  .cap-borde{ position:absolute; left:0; top:0; z-index:1;
-    font-family:'Inter',sans-serif; font-weight:800;
-    font-size:72px; line-height:1.14; letter-spacing:-.005em; color:transparent;
-    -webkit-text-stroke:10px #0B0B0B; }
-  .cap-grande .cap-texto, .cap-grande .cap-borde{ font-size:104px; }
-  .m-amar{ color:var(--amarillo); text-shadow:0 0 22px rgba(248,227,60,.35); }
-  .m-rojo{ color:var(--rojo); text-shadow:0 0 26px rgba(255,64,56,.35); }
+  /* ── marca de agua arriba a la izquierda ── */
+  .bug{ position:absolute; left:56px; top:64px; display:flex; align-items:center; gap:14px;
+    opacity:0; will-change:opacity,transform; }
+  .bug .dot{ width:16px; height:16px; border-radius:50%; background:var(--amarillo);
+    box-shadow:0 0 0 5px rgba(255,227,60,.16); }
+  .bug span{ font-family:'Inter',sans-serif; font-weight:800; font-size:30px; letter-spacing:.22em;
+    color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.65); }
 
-  .fundido{ position:absolute; inset:0; background:#000; opacity:0;
-    pointer-events:none; will-change:opacity; }
+  /* ── subtítulos ── */
+  .cap{ position:absolute; left:54px; right:54px; top:58%; margin-top:-60px;
+    text-align:center; opacity:1; pointer-events:none; }
+  .row{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:center;
+    gap:.02em .16em; }
+  .w{ display:inline-block; opacity:0; font-family:'Inter',sans-serif; font-weight:800;
+    font-size:66px; line-height:1.12; letter-spacing:-.012em; color:#fff;
+    padding:0 .04em; will-change:transform,opacity;
+    text-shadow: 4px 0 0 #000, -4px 0 0 #000, 0 4px 0 #000, 0 -4px 0 #000,
+                 3px 3px 0 #000, -3px 3px 0 #000, 3px -3px 0 #000, -3px -3px 0 #000,
+                 0 8px 0 rgba(0,0,0,.5); }
+  .w.big{ font-size:112px; line-height:1.02; letter-spacing:-.03em; }
+  .w.y{ color:var(--amarillo); }
+  .w.r{ color:var(--rojo); }
+  .w.pill{ color:#0A0A0A; background:linear-gradient(180deg,#FFEE72,#FFD51F);
+    border-radius:.15em; padding:.015em .17em; text-shadow:none;
+    box-shadow:0 .06em 0 #B38500, 0 .12em .28em rgba(0,0,0,.45); }
+  .w.pillr{ color:#fff; background:linear-gradient(180deg,#FF6A5E,#E02014);
+    border-radius:.15em; padding:.015em .17em;
+    text-shadow:0 2px 0 rgba(0,0,0,.35);
+    box-shadow:0 .06em 0 #8B0D06, 0 .12em .28em rgba(0,0,0,.45); }
+
+  .ul{ width:118px; height:9px; margin:16px auto 0; border-radius:6px;
+    background:var(--amarillo); transform:scaleX(0); transform-origin:50% 50%;
+    will-change:transform; }
+  .ul.c{ background:var(--cyan); }
+  .ul.r{ background:var(--rojo); }
+
+  /* ── cierre ── */
+  .end{ position:absolute; inset:0; opacity:0; will-change:opacity;
+    background:
+      radial-gradient(75% 55% at 50% 40%, rgba(255,227,60,.10) 0%, rgba(255,227,60,0) 62%),
+      linear-gradient(180deg,#0A0A0C 0%,#050506 100%); }
+  .end-inner{ position:absolute; left:0; right:0; top:50%; margin-top:-150px;
+    text-align:center; }
+  .end-mark{ font-family:'Inter',sans-serif; font-weight:800; font-size:178px;
+    line-height:1; letter-spacing:-.045em; color:#fff; opacity:0;
+    will-change:transform,opacity; }
+  .end-line{ width:260px; height:10px; margin:34px auto 0; border-radius:6px;
+    background:var(--amarillo); transform:scaleX(0); transform-origin:50% 50%;
+    will-change:transform; }
+  .end-sub{ margin-top:30px; font-family:'Inter',sans-serif; font-weight:600;
+    font-size:34px; letter-spacing:.42em; color:rgba(255,255,255,.72); opacity:0;
+    will-change:transform,opacity; }
+
+  .fade{ position:absolute; inset:0; background:#000; opacity:0; pointer-events:none;
+    will-change:opacity; }
 </style>
 </head>
 <body>
 
-<div id="root" data-composition-id="alpro-edit" data-start="0" data-duration="16.4" data-width="1080" data-height="1920" data-fps="30">
+<div id="root" data-composition-id="alpro-edit" data-start="0" data-duration="26.2"
+     data-width="1080" data-height="1920" data-fps="30">
 
-  <!-- La toma cruda ya cortada (sin pausas) y el meme del espejo -->
-  <video id="mainv" class="plano" data-start="0" data-duration="13.8" data-track-index="0"
-    data-var-src="resource" src="../assets/clips/alpro-raw-cut.mp4" data-has-audio playsinline></video>
-  <video id="memev" class="plano" data-start="13.77" data-duration="2.57" data-track-index="0"
-    data-var-src="meme" src="../assets/clips/alpro-meme.mp4" data-has-audio playsinline></video>
+  <video id="plano" class="plano clip" data-start="0" data-duration="22.24" data-track-index="0"
+    data-var-src="video" src="../assets/clips/alpro-final.mp4" muted playsinline></video>
 
-  <div class="vineta"></div>
-  <div class="fundido" id="fundido"></div>
+  <audio id="voz" class="clip" data-start="0" data-duration="22.24" data-track-index="9"
+    data-var-src="voz" src="../assets/clips/alpro-voz.m4a" data-volume="1"></audio>
+
+  <div class="grano"></div>
+  <div class="vig"></div>
+
+  <div class="bug" id="bug"><span class="dot"></span><span data-var-text="marca">ALPRO</span></div>
+
+  <div id="caps"></div>
+
+  <div class="end" id="end">
+    <div class="end-inner">
+      <div class="end-mark" id="endmark" data-var-text="marca">ALPRO</div>
+      <div class="end-line" id="endline"></div>
+      <div class="end-sub" id="endsub" data-var-text="claim">PROTEÍNA VEGETAL</div>
+    </div>
+  </div>
+
+  <div class="fade" id="fade"></div>
 </div>
 
 <script src="../assets/vendor/gsap.min.js"></script>
 <script>
 (function () {
   const V = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
-  const txt = (id, def) => (V && V[id] != null && V[id] !== '') ? String(V[id]) : def;
-  const root = document.getElementById('root');
+  const g = (id, def) => (V && V[id] != null && V[id] !== '') ? String(V[id]) : def;
 
-  /* ---- reconstruccion de los subtitulos desde la variable ---- */
-  let TARJETAS = [];
-  try { TARJETAS = JSON.parse(txt('captions', '[]')); }
-  catch (e) { TARJETAS = []; }
-  const span = (s, cls) => { const el = document.createElement('span'); if (cls) el.className = cls; el.textContent = s; return el; };
+  /* ── subtítulos: [texto, clase] ──────────────────────────────────
+     '' blanco · 'y' amarillo · 'r' rojo · 'pill' pastilla amarilla
+     'pillr' pastilla roja · 'big' tamaño grande                    */
+  const CAPS = [
+    { t: 2.40,  d: 0.62, ul: '',   w: [['si', ''], ['tienes', '']] },
+    { t: 3.02,  d: 1.13, ul: '',   w: [['más', ''], ['de', ''], ['40', 'pill big']] },
+    { t: 4.237, d: 0.86, ul: 'c',  w: [['eres', ''], ['vegana', 'pill']] },
+    { t: 5.204, d: 0.52, ul: '',   w: [['y', ''], ['pesas', '']] },
+    { t: 5.75,  d: 1.27, ul: '',   w: [['lo', ''], ['mismo', ''], ['que', ''], ['a', ''], ['los', ''], ['30', 'pill big']] },
+    { t: 7.139, d: 0.69, ul: '',   w: [['que', ''], ['estés', '']] },
+    { t: 7.86,  d: 1.12, ul: 'c',  w: [['celebrando', ''], ['justo', 'y']] },
+    { t: 9.096, d: 0.35, ul: '',   w: [['lo', ''], ['que', ''], ['tienes', '']] },
+    { t: 9.46,  d: 0.82, ul: '',   w: [['que', ''], ['vigilar', 'pill']] },
+    { t: 10.335,d: 1.01, ul: '',   w: [['porque', ''], ['puedes', '']] },
+    { t: 11.40, d: 1.05, ul: 'c',  w: [['estar', ''], ['pensando', 'pill']] },
+    { t: 12.50, d: 0.35, ul: '',   w: [['y', ''], ['estar', '']] },
+    { t: 12.90, d: 1.08, ul: 'r',  w: [['perdiendo', 'r'], ['lo', ''], ['más', ''], ['importante', 'pill']] },
+    { t: 16.633,d: 1.17, ul: '',   w: [['el', ''], ['MÚSCULO', 'y big']] },
+    { t: 17.85, d: 1.80, ul: 'c',  w: [['te', ''], ['describo.', '']] }
+  ];
 
-  TARJETAS.forEach((c, i) => {
+  const caps = document.getElementById('caps');
+  CAPS.forEach((c, i) => {
     const cap = document.createElement('div');
-    cap.className = 'cap' + (c.big ? ' cap-grande' : '');
+    cap.className = 'cap';
     cap.id = 'cap' + i;
-    const estilo = document.createElement('div');
-    estilo.className = 'cap-estilo';
-    const borde = document.createElement('div');
-    borde.className = 'cap-borde';
-    const texto = document.createElement('div');
-    texto.className = 'cap-texto';
-    const piezas = c.p ? c.p : [c.a || '', c.b || ''];
-    const colores = (c.c && c.p) ? c.c : (c.p ? ['', 'M'] : ['', '']);
-    piezas.forEach((p, j) => {
-      if (!p) return;
-      const cls = (colores[j] === 'R') ? 'm-rojo' : (colores[j] === 'M' ? 'm-amar' : '');
-      texto.appendChild(span(p, cls));
-      borde.appendChild(span(p, ''));
-      // separador de una linea completa (la segunda pieza baja de linea si viene
-      // de dos piezas con el flag big, como el MUSCULO del original)
-      if (j === 0 && piezas[1] && piezas[1].length) {
-        texto.appendChild(document.createElement('br'));
-        borde.appendChild(document.createElement('br'));
-      }
+    cap.style.top = (c.bigTop || 58) + '%';
+    const row = document.createElement('div');
+    row.className = 'row';
+    c.w.forEach((w, j) => {
+      const s = document.createElement('span');
+      s.className = 'w ' + w[1];
+      s.id = 'w' + i + '_' + j;
+      s.textContent = w[0];
+      row.appendChild(s);
     });
-    estilo.appendChild(borde);
-    estilo.appendChild(texto);
-    cap.appendChild(estilo);
-    root.appendChild(cap);
+    cap.appendChild(row);
+    if (c.ul !== undefined && c.ul !== null && c.ul !== 'none') {
+      const u = document.createElement('div');
+      u.className = 'ul ' + c.ul;
+      u.id = 'ul' + i;
+      cap.appendChild(u);
+    }
+    caps.appendChild(cap);
   });
 
-  /* ---- timeline ---- */
+  /* ── timeline ── */
   const tl = gsap.timeline({ paused: true });
+  if (gsap.ticker) gsap.ticker.fps(30);
 
-  tl.set('#mainv', { opacity: 1 }, 0);
-  /* deriva lenta de la toma + los empujes al estilo PRUEBA */
-  tl.fromTo('#mainv', { scale: 1.04 }, { scale: 1.10, duration: 13.77, ease: 'none' }, 0);
-  tl.to('#mainv', { scale: 1.20, duration: .30, ease: 'power3.out' }, 9.75);
-  tl.to('#mainv', { scale: 1.30, duration: .55, ease: 'power3.out' }, 10.87);
-  tl.to('#mainv', { scale: 1.05, duration: .45, ease: 'power3.out' }, 12.30);
+  tl.set('#plano', { opacity: 1 }, 0);
+  tl.fromTo('#plano', { scale: 1.00 }, { scale: 1.035, duration: 2.40, ease: 'none' }, 0);
 
-  /* el meme del espejo entra con corte seco a los 13.77 */
-  tl.set('#mainv', { opacity: 0 }, 13.76);
-  tl.set('#memev', { opacity: 1 }, 13.77);
-  tl.fromTo('#memev', { scale: 1.02 }, { scale: 1.065, duration: 2.57, ease: 'none' }, 13.77);
-
-  /* subtitulos */
-  TARJETAS.forEach((c, i) => {
-    tl.fromTo('#cap' + i, { opacity: 0, y: 16, scale: .92 },
-      { opacity: 1, y: 0, scale: 1, duration: .24, ease: 'power3.out' }, c.t);
-    tl.to('#cap' + i, { opacity: 0, y: -12, duration: .18, ease: 'power2.in' }, c.t + c.d);
+  /* empujes en cada cambio de bloque (estilo capcut) */
+  const CUTS = [
+    [2.40, 1.075], [4.237, 1.05], [5.204, 1.10], [7.139, 1.055], [9.096, 1.105],
+    [10.335, 1.06], [14.063, 1.09], [16.633, 1.055], [19.883, 1.08]
+  ];
+  CUTS.forEach((c, i) => {
+    tl.fromTo('#plano', { scale: c[1] + 0.055 }, { scale: c[1], duration: 0.6, ease: 'power3.out' }, c[0]);
   });
 
-  tl.to('#fundido', { opacity: 1, duration: .60, ease: 'power2.inOut' }, 15.75);
+  tl.fromTo('#bug', { opacity: 0, x: -22 }, { opacity: 1, x: 0, duration: 0.45, ease: 'power3.out' }, 0.30);
+
+  /* subtítulos: palabra a palabra, con rebote */
+  CAPS.forEach((c, i) => {
+    c.w.forEach((w, j) => {
+      tl.fromTo('#w' + i + '_' + j,
+        { opacity: 0, y: 38, scale: 0.66, rotation: (j % 2 ? 5 : -5) },
+        { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 0.34, ease: 'back.out(2.4)' },
+        c.t + j * 0.055);
+    });
+    if (document.getElementById('ul' + i)) {
+      tl.fromTo('#ul' + i, { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: 'power3.out' }, c.t + 0.06);
+    }
+    tl.to('#cap' + i, { opacity: 0, duration: 0.14, ease: 'power1.in' }, Math.max(c.t + 0.22, c.t + c.d - 0.14));
+    tl.set('#cap' + i, { opacity: 0 }, c.t + c.d + 0.30);
+  });
+
+  /* cierre de marca */
+  tl.set('#end', { opacity: 1 }, 22.18);
+  tl.set('#bug', { opacity: 0 }, 22.16);
+  tl.fromTo('#endmark', { opacity: 0, scale: 0.86, y: 26 },
+    { opacity: 1, scale: 1, y: 0, duration: 0.60, ease: 'expo.out' }, 22.36);
+  tl.fromTo('#endline', { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: 'power3.out' }, 22.72);
+  tl.fromTo('#endsub', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 22.95);
+
+  tl.to('#fade', { opacity: 1, duration: 0.70, ease: 'power2.inOut' }, 25.40);
+
   window.__timelines["alpro-edit"] = tl;
-  if (gsap.ticker) gsap.ticker.fps(30);
 })();
 </script>
 </body>
