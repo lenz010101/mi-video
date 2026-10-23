@@ -34,9 +34,9 @@
   .cap .m{ display:inline-block; overflow:hidden; vertical-align:bottom;
         padding-bottom:.06em; margin-bottom:-.06em; will-change:transform; }
   .cap .w{ display:inline-block; opacity:0; will-change:transform,opacity; }
-  #c1p .w,#c3p .w,#c4p .w,#c8p .w,#c10p .w,#c12p .w,#c13p .w,
+  #c1p .w,#c3p .w,#c4p .w,#c8p .w,#c10p .w,#c12p .w,#c13p .w,#c14p .w,#c15p .w,
   #c1m .w,#c2m .w,#c3m .w,#c4m .w,#c5m .w,#c6m .w,#c7m .w,#c8m .w,
-  #c9m .w,#c10m .w,#c10s .w,#c11m .w,#c12m .w{ will-change:transform,opacity; }
+  #c9m .w,#c10m .w,#c10s .w,#c11m .w,#c12m .w,#c14m .w,#c15m .w,#c16m .w{ will-change:transform,opacity; }
   .cap-sub{ display:block; font-size:66px; line-height:1.04; font-weight:800; color:#fff;
         margin-top:12px; opacity:0; text-shadow:0 3px 12px rgba(0,0,0,.55); will-change:transform,opacity; }
 
@@ -89,6 +89,9 @@
   <div class="cap" id="c11"><span class="cap-main w" id="c11m"><span class="m"><span class="w">y</span></span> <span class="m"><span class="w">estar</span></span></span></div>
   <div class="cap" id="c12"><span class="cap-pre r" id="c12p"><span class="m"><span class="w">perdiendo</span></span> <span class="m"><span class="w">lo</span></span></span><span class="cap-main y" id="c12m"><span class="m"><span class="w">más</span></span> <span class="m"><span class="w">importante</span></span></span></div>
   <div class="cap" id="c13"><span class="cap-main w" id="c13p"><span class="m"><span class="w">el</span></span></span><span class="cap-main y mx" id="c13m"><i>M</i><i>Ú</i><i>S</i><i>C</i><i>U</i><i>L</i><i>O</i></span></div>
+  <div class="cap" id="c14"><span class="cap-pre" id="c14p"><span class="m"><span class="w">brazos</span></span></span><span class="cap-main y" id="c14m"><span class="m"><span class="w">blandos</span></span></span></div>
+  <div class="cap" id="c15"><span class="cap-pre" id="c15p"><span class="m"><span class="w">la</span></span> <span class="m"><span class="w">tripa</span></span></span><span class="cap-main y" id="c15m"><span class="m"><span class="w">que</span></span></span></div>
+  <div class="cap" id="c16"><span class="cap-main y" id="c16m"><span class="m"><span class="w">nada</span></span> <span class="m"><span class="w">firme</span></span></span></div>
 
   <div class="fade" id="fade"></div>
 </div>
@@ -140,14 +143,18 @@
     { id: 'c11', t: 10.00, e: 10.40 },
     { id: 'c12', t: 10.40, e: 11.55 },
     { id: 'c13', t: 11.55, e: 12.92 },
+    { id: 'c14', t: 15.40, e: 16.45 },
+    { id: 'c15', t: 16.45, e: 17.45 },
+    { id: 'c16', t: 17.45, e: 18.55 },
   ];
   for (const b of bloques) {
     tl.set('#' + b.id, { opacity: 1 }, b.t);
     tl.fromTo('#' + b.id, { y: 26 }, { y: 0, duration: 0.26, ease: EASE, immediateRender: false }, b.t);
     tl.to('#' + b.id, { opacity: 0, duration: 0.1, ease: 'power1.in' }, b.e - 0.1);
     /* punch-in del plano de fondo con cada frase */
-    tl.fromTo('#v1', { scale: 1.0 }, { scale: 1.065, duration: 0.09, ease: 'power2.out', overwrite: 'auto', immediateRender: false }, b.t);
-    tl.to('#v1', { scale: 1.0, duration: 0.4, ease: 'power2.out', overwrite: 'auto' }, b.t + 0.09);
+    const pl = b.t < 12.98 ? '#v1' : '#v3';
+    tl.fromTo(pl, { scale: 1.0 }, { scale: 1.065, duration: 0.09, ease: 'power2.out', overwrite: 'auto', immediateRender: false }, b.t);
+    tl.to(pl, { scale: 1.0, duration: 0.4, ease: 'power2.out', overwrite: 'auto' }, b.t + 0.09);
   }
 
   /* ── karaoke palabra a palabra (como la referencia): cada palabra
@@ -176,6 +183,9 @@
   kara('#c11m .w', [10.03, 10.20], true);
   kara('#c12p .w', [10.46, 10.82]);    kara('#c12m .w', [11.02, 11.28], true);
   kara('#c13p .w', [11.60]);
+  kara('#c14p .w', [15.42]);           kara('#c14m .w', [15.72], true);
+  kara('#c15p .w', [16.47, 16.72]);    kara('#c15m .w', [17.05], true);
+  kara('#c16m .w', [17.50, 17.80], true);
 
   /* ── "MÚSCULO": letras deslizandose por la mascara + golpe ─────── */
   tl.fromTo('#c13 .mx i', { opacity: 0, yPercent: 115 },
