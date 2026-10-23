@@ -21,18 +21,22 @@
   /* ── subtítulos estilo motion-graphics (logo de la referencia) ───── */
   .cap{ position:absolute; left:40px; right:40px; top:952px;
         text-align:center; opacity:0; will-change:transform,opacity; }
-  .cap-pre{ display:block; font-size:66px; line-height:1.04; font-weight:800; color:#fff;
+  .cap-pre{ display:block; font-size:72px; line-height:1.04; font-weight:800; color:#fff;
         letter-spacing:-0.005em; text-shadow:0 3px 12px rgba(0,0,0,.55); will-change:transform,opacity; }
   .cap-pre.r{ color:#FF2A24; text-shadow:0 0 22px rgba(255,42,36,.32), 0 3px 12px rgba(0,0,0,.45); }
-  .cap-main{ display:block; font-size:148px; line-height:.98; font-weight:800;
-        margin-top:18px; will-change:transform,opacity; }
+  .cap-main{ display:block; font-size:164px; line-height:.98; font-weight:800;
+        margin-top:18px; will-change:transform,opacity; overflow:hidden;
+        padding-bottom:.06em; margin-bottom:-.06em; }
   .cap-main.y{ color:#FFE800; text-shadow:0 0 26px rgba(255,232,0,.45), 0 4px 16px rgba(0,0,0,.35); }
   .cap-main.w{ color:#fff; text-shadow:0 4px 16px rgba(0,0,0,.5); }
   .cap-main.mx i{ display:inline-block; font-style:normal; opacity:0; }
   #c13 .mx i{ will-change:transform,opacity; }
+  .cap .m{ display:inline-block; overflow:hidden; vertical-align:bottom;
+        padding-bottom:.06em; margin-bottom:-.06em; will-change:transform; }
   .cap .w{ display:inline-block; opacity:0; will-change:transform,opacity; }
-  #c1p .w,#c3p .w,#c4p .w,#c8p .w,#c10p .w,#c12p .w,
-  #c1m .w,#c4m .w,#c9m .w,#c10s .w,#c11m .w,#c12m .w{ will-change:transform,opacity; }
+  #c1p .w,#c3p .w,#c4p .w,#c8p .w,#c10p .w,#c12p .w,#c13p .w,
+  #c1m .w,#c2m .w,#c3m .w,#c4m .w,#c5m .w,#c6m .w,#c7m .w,#c8m .w,
+  #c9m .w,#c10m .w,#c10s .w,#c11m .w,#c12m .w{ will-change:transform,opacity; }
   .cap-main,.cap-sub{ opacity:0; }
   .cap-sub{ display:block; font-size:66px; line-height:1.04; font-weight:800; color:#fff;
         margin-top:12px; opacity:0; text-shadow:0 3px 12px rgba(0,0,0,.55); will-change:transform,opacity; }
@@ -73,19 +77,19 @@
 
   <!-- ═══ SUBTÍTULOS (mismo texto y ritmo que la referencia) ·
        cada frase entra palabra a palabra (karaoke con pop) ═══ -->
-  <div class="cap" id="c1"><span class="cap-pre" id="c1p"><span class="w">Si</span> <span class="w">tienes</span></span><span class="cap-main y" id="c1m"><span class="w">más</span> <span class="w">de</span> <span class="w">40</span></span></div>
-  <div class="cap" id="c2"><span class="cap-main y" id="c2m">vegana</span></div>
-  <div class="cap" id="c3"><span class="cap-pre" id="c3p"><span class="w">y</span></span><span class="cap-main y" id="c3m">pesas</span></div>
-  <div class="cap" id="c4"><span class="cap-pre" id="c4p"><span class="w">lo</span> <span class="w">mismo</span> <span class="w">que</span></span><span class="cap-main y" id="c4m"><span class="w">a</span> <span class="w">los</span> <span class="w">30</span></span></div>
-  <div class="cap" id="c5"><span class="cap-main w" id="c5m">puede</span></div>
-  <div class="cap" id="c6"><span class="cap-main w" id="c6m">celebrando</span></div>
-  <div class="cap" id="c7"><span class="cap-main w" id="c7m">justo</span></div>
-  <div class="cap" id="c8"><span class="cap-pre" id="c8p"><span class="w">lo</span> <span class="w">que</span> <span class="w">tienes</span> <span class="w">que</span></span><span class="cap-main y" id="c8m">vigilar</span></div>
-  <div class="cap" id="c9"><span class="cap-main w" id="c9m"><span class="w">porque</span> <span class="w">puedes</span></span></div>
-  <div class="cap" id="c10"><span class="cap-pre" id="c10p"><span class="w">estar</span></span><span class="cap-main y" id="c10m">pensando</span><span class="cap-sub" id="c10s"><span class="w">lo</span> <span class="w">mismo</span></span></div>
-  <div class="cap" id="c11"><span class="cap-main w" id="c11m"><span class="w">y</span> <span class="w">estar</span></span></div>
-  <div class="cap" id="c12"><span class="cap-pre r" id="c12p"><span class="w">perdiendo</span> <span class="w">lo</span></span><span class="cap-main y" id="c12m"><span class="w">más</span> <span class="w">importante</span></span></div>
-  <div class="cap" id="c13"><span class="cap-main w" id="c13p"><span class="w">el</span></span><span class="cap-main y mx" id="c13m"><i>M</i><i>Ú</i><i>S</i><i>C</i><i>U</i><i>L</i><i>O</i></span></div>
+  <div class="cap" id="c1"><span class="cap-pre" id="c1p"><span class="m"><span class="w">Si</span></span> <span class="m"><span class="w">tienes</span></span></span><span class="cap-main y" id="c1m"><span class="m"><span class="w">más</span></span> <span class="m"><span class="w">de</span></span> <span class="m"><span class="w">40</span></span></span></div>
+  <div class="cap" id="c2"><span class="cap-main y" id="c2m"><span class="m"><span class="w">vegana</span></span></span></div>
+  <div class="cap" id="c3"><span class="cap-pre" id="c3p"><span class="m"><span class="w">y</span></span></span><span class="cap-main y" id="c3m"><span class="m"><span class="w">pesas</span></span></span></div>
+  <div class="cap" id="c4"><span class="cap-pre" id="c4p"><span class="m"><span class="w">lo</span></span> <span class="m"><span class="w">mismo</span></span> <span class="m"><span class="w">que</span></span></span><span class="cap-main y" id="c4m"><span class="m"><span class="w">a</span></span> <span class="m"><span class="w">los</span></span> <span class="m"><span class="w">30</span></span></span></div>
+  <div class="cap" id="c5"><span class="cap-main w" id="c5m"><span class="m"><span class="w">puede</span></span></span></div>
+  <div class="cap" id="c6"><span class="cap-main w" id="c6m"><span class="m"><span class="w">celebrando</span></span></span></div>
+  <div class="cap" id="c7"><span class="cap-main w" id="c7m"><span class="m"><span class="w">justo</span></span></span></div>
+  <div class="cap" id="c8"><span class="cap-pre" id="c8p"><span class="m"><span class="w">lo</span></span> <span class="m"><span class="w">que</span></span> <span class="m"><span class="w">tienes</span></span> <span class="m"><span class="w">que</span></span></span><span class="cap-main y" id="c8m"><span class="m"><span class="w">vigilar</span></span></span></div>
+  <div class="cap" id="c9"><span class="cap-main w" id="c9m"><span class="m"><span class="w">porque</span></span> <span class="m"><span class="w">puedes</span></span></span></div>
+  <div class="cap" id="c10"><span class="cap-pre" id="c10p"><span class="m"><span class="w">estar</span></span></span><span class="cap-main y" id="c10m"><span class="m"><span class="w">pensando</span></span></span><span class="cap-sub" id="c10s"><span class="m"><span class="w">lo</span></span> <span class="m"><span class="w">mismo</span></span></span></div>
+  <div class="cap" id="c11"><span class="cap-main w" id="c11m"><span class="m"><span class="w">y</span></span> <span class="m"><span class="w">estar</span></span></span></div>
+  <div class="cap" id="c12"><span class="cap-pre r" id="c12p"><span class="m"><span class="w">perdiendo</span></span> <span class="m"><span class="w">lo</span></span></span><span class="cap-main y" id="c12m"><span class="m"><span class="w">más</span></span> <span class="m"><span class="w">importante</span></span></span></div>
+  <div class="cap" id="c13"><span class="cap-main w" id="c13p"><span class="m"><span class="w">el</span></span></span><span class="cap-main y mx" id="c13m"><i>M</i><i>Ú</i><i>S</i><i>C</i><i>U</i><i>L</i><i>O</i></span></div>
 
   <div class="fade" id="fade"></div>
 </div>
@@ -154,28 +158,29 @@
       const t = times[i];
       tl.set(el, { opacity: 1 }, t);
       tl.fromTo(el,
-        { y: big ? 34 : 16, scale: big ? 1.42 : 1.2 },
-        { y: 0, scale: 1, duration: big ? 0.42 : 0.2,
-          ease: big ? 'back.out(2.2)' : 'back.out(2.6)', immediateRender: false }, t);
+        { yPercent: 118, scale: big ? 1.26 : 1 },
+        { yPercent: 0, scale: 1, duration: big ? 0.42 : 0.22,
+          ease: big ? 'back.out(1.8)' : 'back.out(2.4)', immediateRender: false }, t);
     });
   }
   kara('#c1p .w', [0.30, 0.62]);        kara('#c1m .w', [1.05, 1.30, 1.50], true);
-  kara('#c2m', [1.92], true);
-  kara('#c3p .w', [2.42]);             kara('#c3m', [2.72], true);
+  kara('#c2m .w', [1.92], true);
+  kara('#c3p .w', [2.42]);             kara('#c3m .w', [2.72], true);
   kara('#c4p .w', [3.45, 3.68, 3.92]); kara('#c4m .w', [4.16, 4.26, 4.36], true);
-  kara('#c5m', [4.43], true);
-  kara('#c6m', [4.98], true);
-  kara('#c7m', [5.50], true);
-  kara('#c8p .w', [6.95, 7.17, 7.38, 7.60]); kara('#c8m', [7.84], true);
+  kara('#c5m .w', [4.43], true);
+  kara('#c6m .w', [4.98], true);
+  kara('#c7m .w', [5.50], true);
+  kara('#c8p .w', [6.95, 7.17, 7.38, 7.60]); kara('#c8m .w', [7.84], true);
   kara('#c9m .w', [8.33, 8.60], true);
-  kara('#c10p .w', [9.02]);            kara('#c10m', [9.30], true);
+  kara('#c10p .w', [9.02]);            kara('#c10m .w', [9.30], true);
   kara('#c10s .w', [9.55, 9.72]);
   kara('#c11m .w', [10.03, 10.20], true);
   kara('#c12p .w', [10.46, 10.82]);    kara('#c12m .w', [11.02, 11.28], true);
   kara('#c13p .w', [11.60]);
 
-  /* ── "MÚSCULO" tecleado letra a letra + golpe grande ──────────── */
-  tl.fromTo('#c13 .mx i', { opacity: 0 }, { opacity: 1, duration: 0.02, stagger: 0.05, ease: 'none', immediateRender: false }, 11.75);
+  /* ── "MÚSCULO": letras deslizandose por la mascara + golpe ─────── */
+  tl.fromTo('#c13 .mx i', { opacity: 0, yPercent: 115 },
+    { opacity: 1, yPercent: 0, duration: 0.3, stagger: 0.05, ease: 'back.out(2)', immediateRender: false }, 11.75);
   tl.set('#c13m', { opacity: 1 }, 11.75);
   tl.fromTo('#c13m', { scale: 1.35 }, { scale: 1, duration: 0.45, ease: 'back.out(2.2)', immediateRender: false }, 11.75);
 
